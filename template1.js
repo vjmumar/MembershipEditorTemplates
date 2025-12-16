@@ -1,4 +1,4 @@
-    import "https://kit.fontawesome.com/91a03c8b1f.js";
+import "https://kit.fontawesome.com/91a03c8b1f.js";
     window.templateCustomizationSchema = {
         name: "Template 1",
         global: [
@@ -2020,6 +2020,7 @@
     class CourseTemplate {
         constructor() {
             this.initializers.init();
+            window.dispatchEvent(new CustomEvent("templateReady"));
         }
 
         initializers = {

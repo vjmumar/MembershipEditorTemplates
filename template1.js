@@ -1,5 +1,4 @@
-<script type="module">
-    import "https://kit.fontawesome.com/91a03c8b1f.js";
+import "https://kit.fontawesome.com/91a03c8b1f.js";
     window.templateCustomizationSchema = {
         name: "Template 1",
         id: "template-1",
@@ -3015,4 +3014,3 @@
     }
 
     window.CourseTemplate = new CourseTemplate();
-</script>

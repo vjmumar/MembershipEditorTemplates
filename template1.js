@@ -1,6 +1,8 @@
+<script type="module">
     import "https://kit.fontawesome.com/91a03c8b1f.js";
     window.templateCustomizationSchema = {
         name: "Template 1",
+        id: "template-1",
         global: [
             {
                 name: "Loading Overlay",
@@ -2151,7 +2153,7 @@
                     if ($container) {
                         clearInterval(interval);
                         setTimeout(async () => {
-                            // Then we will fetch the category data and prepare the breadcrumbs
+                            // First we will fetch the category data and prepare the breadcrumbs
                             const breadCrumbs = (() => {
                                 const $el = document.querySelector("#product-breadcrumbs");
                                 $el?.querySelectorAll("a").forEach((e) => {
@@ -2250,7 +2252,7 @@
                     if ($container) {
                         clearInterval(interval);
                         setTimeout(async () => {
-                            // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
+                            //First we will fetch all necessary data for the lesson (Post, Category, Completions)
                             const category = await this.data.fetchCategory();
                             const currentPost = await this.data.fetchPost();
                             const allPosts = category.category.posts.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
@@ -2306,7 +2308,7 @@
                                     return ""
                                 })();
 
-                                // Logic for the Mark as Complete button
+                                // Then we will create the Mark as Complete button
                                 const markAsCompleteButton = (() => {
                                     const locationId = location.href.split(".")[0].replace("https://", "");
                                     const productId = location.href.split("/products/")[1].split("?")[0].split("/")[0];
@@ -2364,6 +2366,8 @@
                                         return `<button class="template-post-page-header__mark-as-complete" data-is-completed='true' data-uncomplete-id='${postInsideCompletedPost?.id}'>Lesson Done</button>`
                                     }
                                 })();
+
+                                // Finallly we will create the header template
                                 return `
                                 <div class="template-post-page-header">
                                     ${downloadsHTML}  
@@ -2374,38 +2378,38 @@
                             `
                             })();
 
-                            // Finally we will render the page and re-attach the scraped elements (video, audio, comments)
+                            // Then we will render the page and re-attach the scraped elements (video, audio, comments)
                             $container.innerHTML = `
                             ${headerHTML}
-                            <div class='template-container'>
-                                <div class="template-post-page">
-                                    <div class="template-post-page__breadcrumbs">${breadCrumbs}</div>
-                                    <div class="template-post-page__wrapper">
-                                        <p class="template-post-page__title">${currentPost?.title || ""}</p>
-                                        <div class="template-post-page__video"></div>    
-                                        <div class="template-post-page__audio"></div>
-                                        <div class="template-post-page__description">${currentPost?.description || ""}</div>  
-                                        <div class="template-post-page__comments"></div>  
+                                <div class='template-container'>
+                                    <div class="template-post-page">
+                                        <div class="template-post-page__breadcrumbs">${breadCrumbs}</div>
+                                        <div class="template-post-page__wrapper">
+                                            <p class="template-post-page__title">${currentPost?.title || ""}</p>
+                                            <div class="template-post-page__video"></div>    
+                                            <div class="template-post-page__audio"></div>
+                                            <div class="template-post-page__description">${currentPost?.description || ""}</div>  
+                                            <div class="template-post-page__comments"></div>  
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        `;
-
-                            if (videoContainer) {
-                                document.querySelector(".template-post-page__video").append(videoContainer);
-                            }
-
-                            if (audioContainer) {
-                                document.querySelector(".template-post-page__audio").append(audioContainer);
-                            }
-
-                            if (commentContainer) {
-                                document.querySelector(".template-post-page__comments").append(commentContainer);
-                            }
-
+                            `;
                             this.initializers.initializeStyles();
                             this.initializers.initializeNavBar($container);
                             this.initializers.initializeSidebar($container);
+
+                            // Finally we will append all container conditionally
+                            if (videoContainer) {
+                                document.querySelector(".template-post-page__video")?.append(videoContainer);
+                            }
+
+                            if (audioContainer) {
+                                document.querySelector(".template-post-page__audio")?.append(audioContainer);
+                            }
+
+                            if (commentContainer) {
+                                document.querySelector(".template-post-page__comments")?.append(commentContainer);
+                            }
                         }, 1000)
                     }
                 }, 0);
@@ -3011,3 +3015,4 @@
     }
 
     window.CourseTemplate = new CourseTemplate();
+</script>

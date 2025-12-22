@@ -1,7 +1,7 @@
 import "https://kit.fontawesome.com/91a03c8b1f.js";
     window.templateCustomizationSchema = {
         name: "Template 1",
-        id: "template-1",
+        id: "template-0",
         global: [
             {
                 name: "Loading Overlay",
@@ -470,13 +470,13 @@ import "https://kit.fontawesome.com/91a03c8b1f.js";
                             {
                                 name: "Border Top Color",
                                 property: "border-top-color",
-                                type: "text",
+                                type: "color",
                                 value: "",
                             },
                             {
                                 name: "Border Bottom Color",
                                 property: "border-bottom-color",
-                                type: "text",
+                                type: "color",
                                 value: "",
                             },
                         ],

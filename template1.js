@@ -1,7 +1,7 @@
 import "https://kit.fontawesome.com/91a03c8b1f.js";
     window.templateCustomizationSchema = {
         name: "Template 1",
-        id: "template-0",
+        id: "template-1",
         global: [
             {
                 name: "Loading Overlay",

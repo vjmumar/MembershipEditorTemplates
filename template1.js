@@ -2018,6 +2018,7 @@ import "https://kit.fontawesome.com/91a03c8b1f.js";
             }
         ]
     };
+
     class CourseTemplate {
         constructor() {
             this.initializers.init();

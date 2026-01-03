@@ -1,4 +1,4 @@
-import "https://kit.fontawesome.com/91a03c8b1f.js";
+    import "https://kit.fontawesome.com/91a03c8b1f.js";
     window.templateCustomizationSchema = {
         name: "Template 1",
         id: "template-0",
@@ -2088,7 +2088,7 @@ import "https://kit.fontawesome.com/91a03c8b1f.js";
                 // Then we will generate the html
                 const html = `
                     <div class="template-loader-overlay">
-                        <img src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2161088211/settings_images/64f5a33-a5b-d0d-8348-c382c18ab2c7_28760b44-cf55-4cbf-a32c-4c4724027fe2.webp" class="template-loader-overlay__logo" alt="Loading..." />
+                        <img src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png" class="template-loader-overlay__logo" alt="Loading..." />
                     </div>
                 `;
 
@@ -2392,7 +2392,7 @@ import "https://kit.fontawesome.com/91a03c8b1f.js";
             initNavBar: async ($container = null) => {
                 // First we will fetch the product details
                 const product = await this.data.fetchProduct();
-                const logo = "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/6958d144397a316c7bbf929d.png";
+                const logo = "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png";
                 const defaultLinks = [
                     { text: 'Home', url: '/' },
                     { text: 'What\'s New', url: '/whats-new' },
@@ -2530,7 +2530,7 @@ import "https://kit.fontawesome.com/91a03c8b1f.js";
                                 <p class="template-sidebar__back-button__text">Library</p>    
                             </a>
                             <a href="/courses/products/${product.id}">
-                                <img class="template-sidebar__logo" src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/6958d144397a316c7bbf929d.png">    
+                                <img class="template-sidebar__logo" src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png">    
                             </a>
                             <p class='template-sidebar__titles'>Modules</p>
                             <div class="template-sidebar__category">

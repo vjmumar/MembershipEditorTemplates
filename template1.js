@@ -1,4 +1,4 @@
-    import "https://kit.fontawesome.com/91a03c8b1f.js";
+import "https://kit.fontawesome.com/91a03c8b1f.js";
     window.templateCustomizationSchema = {
         name: "Template 1",
         id: "template-0",
@@ -2103,6 +2103,7 @@
 
             initLandingPage: async () => {
                 this.utils.waitForElement(".product-container", async ($container) => {
+                    console.log($container)
                     // First we will retrieve the templates and fetch all necessary user and product data
                     const userData = await this.data.fetchUser();
                     const userProductProgress = await this.data.fetchUserProductProgress();

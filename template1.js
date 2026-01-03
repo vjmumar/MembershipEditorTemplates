@@ -1,3 +1,4 @@
+
     import "https://kit.fontawesome.com/91a03c8b1f.js";
     window.templateCustomizationSchema = {
         name: "Template 1",
@@ -2595,11 +2596,13 @@
                 `;
                 return html;
             },
-            heroBanner: (title = "Welcome to Flix", subtitle = "[YOGA ANYWHERE, ANYTIME].", paragraphHTML = "", embedHTML = "") => {
+            heroBanner: (title = "Welcome to Template", subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", paragraphHTML = "", embedHTML = "") => {
                 const defaultEmbed = `<iframe width="560" height="315" src="https://www.youtube.com/embed/yCjJyiqpAuU?si=GwkgG-HTW4OChx95" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
                 const defaultParagraph = `
-                    <p><strong>Simply choose your favorite style from below, pick a lesson and off you go.</strong></p>
-                    <p>Or come along to one of our Live Yoga Classes held fortnightly. Just choose your preferred day on the calendar and book yourself a spot. These are held on Zoom.</p>
+                    <p>
+                        <strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius non neque ullamcorper rutrum. Integer et malesuada metus. Nulla facilisi. Integer non commodo justo. Nam sed urna sit amet orci placerat vehicula. Nulla quis molestie mauris. Suspendisse mi est, ultrices at scelerisque nec, efficitur in leo. Cras at ultrices justo, ut sollicitudin nisi.</strong><br/>
+                        Ut interdum erat nec lectus euismod sagittis. Nulla semper, massa sed cursus vulputate, nisl sapien placerat diam, ut fermentum turpis sapien sit amet est. Phasellus convallis laoreet congue. Donec congue lobortis ex pellentesque malesuada. Maecenas mattis quis dui a malesuada. Morbi nec laoreet velit, id consequat leo. Maecenas nisi ex, iaculis at enim nec, bibendum vehicula lacus. Donec quis felis nisi. Aliquam cursus enim sit amet consequat eleifend. Aliquam eu sapien sapien. Morbi mollis nisl tellus, vitae bibendum dui interdum et. Vivamus accumsan diam vitae laoreet interdum.    
+                    </p>
                 `;
                 const html = `
                     <div class="template-hero">

@@ -1,4 +1,4 @@
-import "https://kit.fontawesome.com/91a03c8b1f.js";
+    import "https://kit.fontawesome.com/91a03c8b1f.js";
     window.templateCustomizationSchema = {
         name: "Template 1",
         id: "template-0",
@@ -2050,10 +2050,10 @@ import "https://kit.fontawesome.com/91a03c8b1f.js";
                 }
 
                 // Finally we will initialize the loading
-                this.initializers.initializeLoading();
+                this.initializers.initLoading();
             },
 
-            initializeLoading: () => {
+            initLoading: () => {
                 // First we will generate the css
                 const css = `
                     <style id="loader-styles">
@@ -2134,8 +2134,8 @@ import "https://kit.fontawesome.com/91a03c8b1f.js";
                     </div>
                     `;
                     this.initializers.initializeStyles();
-                    this.initializers.initializeNavBar();
-                    this.initializers.initializeSidebar();
+                    this.initializers.initializeNavBar($container);
+                    this.initializers.initializeSidebar($container);
                 }, 1000);
             },
 

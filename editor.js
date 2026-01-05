@@ -592,7 +592,7 @@ https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js
                     id: "template-0",
                     imageUrl: "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69492d947614ce184f7e9b76.png",
                     title: "Template 1",
-                    scriptLink: "https://cdn.jsdelivr.net/gh/vjmumar/MembershipEditorTemplates@main/template1.js",
+                    scriptLink: "https://rawcdn.githack.com/vjmumar/MembershipEditorTemplates/f6015455d3728feb368bfbeb72c8bce01991d92d/template1.js",
                     previewLink: ""
                 },
                 {
@@ -875,7 +875,7 @@ https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js
                 // Then we will disable all anchor tags to prevent accidental navigation while editing
                 setTimeout(() => {
                     document.querySelectorAll("a").forEach((a) => {
-                        a.href = "#";
+                        a.href = "javascript:void(0)";
                         a.removeAttribute("download")
                     });
                 }, 2000);

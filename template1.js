@@ -2169,10 +2169,10 @@
                         })();
 
                         if (userProductProgress?.completedPosts >= 1) {
-                            const lastCompletedPost = allPosts.find((e) => e.id === completedPosts.slice[0]?.postId);
+                            const lastCompletedPost = allPosts.find((e) => e.id === completedPosts?.[0]?.postId);
                             text = "Resume Course";
                             console.log(lastCompletedPost, completedPosts)
-                            nextPost = allPosts[lastCompletedPost.index + 1];
+                            nextPost = allPosts[lastCompletedPost?.index || 0 + 1];
                         } else {
                             nextPost = allPosts[0];
                         }

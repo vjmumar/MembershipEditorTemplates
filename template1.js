@@ -2150,11 +2150,11 @@
                                 }
                             });
                             let index = 0;
-                            const allPost = allCategories.reduce((a, c) => {
-                                c.posts.forEach((post) => {
+                            const allPost = allCategories?.reduce((a, c) => {
+                                c?.posts?.forEach((post) => {
                                     index++;
-                                    if (post.posts) {
-                                        post.posts.forEach((subPost) => {
+                                    if (post?.posts) {
+                                        post?.posts.forEach((subPost) => {
                                             subPost.index = index;
                                             a.push(subPost)
                                         })
@@ -2524,7 +2524,7 @@
 
                 // Then we will generate the HTML for the sidebar navigation
                 const sideBarCategories = categories.reduce((a, c, i) => {
-                    const postsHTML = c.posts.reduce((cPA, cP) => {
+                    const postsHTML = c?.posts.reduce((cPA, cP) => {
                         if (!cP?.posts) {
                             cPA += `
                             <a href="${`/courses/products/${cP?.productId}/categories/${cP?.categoryId}/posts/${cP?.id}`}" class="template-sidebar__category__item__post">
@@ -2827,7 +2827,7 @@
         // This object holds data related methods
         data = {
             fetchProduct: async () => {
-                const previousProduct = null;
+                let previousProduct = null;
                 return await new Promise((resolved, reject) => {
                     const locationId = location.href.split(".")[0].replace("https://", "");
                     const productId = location.href.split("/products/")[1].split("?")[0].split("/")[0];
@@ -3038,7 +3038,7 @@
                 });
             },
             fetchUser: async (cId = "") => {
-                const previousUser = null;
+                let previousUser = null;
                 return await new Promise(async (resolved, reject) => {
                     const locationId = location.href.split(".")[0].replace("https://", "");
                     const acatToken = $cookies.get("acat") || $cookies.get("cat");

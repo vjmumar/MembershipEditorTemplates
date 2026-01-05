@@ -2169,7 +2169,7 @@
                         })();
 
                         if (userProductProgress?.completedPosts >= 1) {
-                            const indexOfLastCompletedPost = allPosts.findIndex((e) => e.id === completedPosts.slice[0]?.id);
+                            const indexOfLastCompletedPost = allPosts.findIndex((e) => e.id === completedPosts.slice[0]?.postId);
                             text = "Resume Course";
                             nextPost = allPosts[indexOfLastCompletedPost + 1];
                         } else {

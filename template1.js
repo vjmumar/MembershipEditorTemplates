@@ -2131,12 +2131,12 @@
                     const bannerButtonLinkAndText = await (async () => {
                         // First we will create the variables that will hold the text and link values
                         let text = "Let's Start";
-                        let post = null;
+                        let nextPost = null;
 
                         // Then we will retrieve all post
                         const allPosts = await (async () => {
                             let allCategories = await this.data.fetchCategories();
-                            allCategories = categories.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
+                            allCategories = allCategories.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
                             allCategories.forEach((e) => {
                                 if (e.parentCategory) {
                                     e.posts = e.posts.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
@@ -2172,12 +2172,12 @@
                             const indexOfLastCompletedPost = allPost.findIndex((e) => e.id === completedPosts.slice(-1)[0].id);
                             console.log(indexOfLastCompletedPost)
                             text = "Resume Course";
-                            post = allPost[indexOfLastCompletedPost + 1];
+                            nextPost = allPost[indexOfLastCompletedPost + 1];
                         } else {
-                            post = allPosts[0];
+                            nextPost = allPosts[0];
                         }
 
-                        console.log(post);
+                        console.log(post, allPosts);
 
                         return {
                             text,

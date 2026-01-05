@@ -688,10 +688,18 @@
                                 value: "",
                             },
                             {
-                                name: "Backkground Color",
+                                name: "Background Color",
                                 property: "background-color",
                                 type: "color",
                                 value: "",
+                            },
+                        ],
+                        elementCustomizations: [
+                            {
+                                name: "Link To",
+                                type: "attribute",
+                                target: "href",
+                                value: ""
                             },
                         ],
                     },
@@ -2107,6 +2115,7 @@
                     // First we will retrieve the templates and fetch all necessary user and product data
                     const userData = await this.data.fetchUser();
                     const userProductProgress = await this.data.fetchUserProductProgress();
+                    const completedPosts = await this.data.fetchCompletedPosts();
 
                     // Then we will process the categories data
                     const categories = await (async () => {
@@ -2118,11 +2127,69 @@
                         }))
                     })();
 
+                    // Then we will generate the link and text for the banner button
+                    const bannerButtonLinkAndText = await (async () => {
+                        // First we will create the variables that will hold the text and link values
+                        let text = "Let's Start";
+                        let post = null;
+
+                        // Then we will retrieve all post
+                        const allPosts = await (async () => {
+                            let allCategories = await this.data.fetchCategories();
+                            allCategories = categories.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
+                            allCategories.forEach((e) => {
+                                if (e.parentCategory) {
+                                    e.posts = e.posts.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
+                                    allCategories.forEach((ca) => {
+                                        if (ca.id === e.parentCategory) {
+                                            allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
+                                            ca.posts.push(e);
+                                            ca.posts = ca.posts.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
+                                        }
+                                    })
+                                }
+                            });
+                            let index = 0;
+                            const allPost = allCategories.reduce((a, c) => {
+                                c.posts.forEach((post) => {
+                                    index++;
+                                    if (post.posts) {
+                                        post.posts.forEach((subPost) => {
+                                            subPost.index = index;
+                                            a.push(subPost)
+                                        })
+                                    } else {
+                                        post.index = index;
+                                        a.push(post)
+                                    }
+                                });
+                                return a
+                            }, []);
+                            return allPost;
+                        })();
+
+                        if (userProductProgress?.completedPosts >= 1) {
+                            const indexOfLastCompletedPost = allPost.findIndex((e) => e.id === completedPosts.slice(-1)[0].id);
+                            text = "Resume Course";
+                            post = allPost[indexOfLastCompletedPost + 1];
+                        } else {
+                            post = allPosts[0];
+                        }
+
+                        return {
+                            text,
+                            link: `/courses/products/${post?.productId}/categories/${post?.categoryId}/posts/${post?.id}`
+                        }
+                    })();
+
+
+                    console.log(bannerButtonLinkAndText);
+
                     // Finally we will inject the Dashboard HTML and initialize the navigation components
                     $container.innerHTML = `
                     <div class='template-container'>
                         <div class="dashboard">
-                                ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", "Let's Start")}
+                                ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", bannerButtonLinkAndText.text, bannerButtonLinkAndText.link)}
                                 <div class="dashboard__wrapper">
                                     ${this.widgets.communityToggle()}
                                     ${this.widgets.heroBanner()}
@@ -2537,9 +2604,9 @@
                             <div class="template-sidebar__category">
                                 ${sideBarCategories}    
                             </div>    
-                            <div class="template-sidebar__image">
-                                <img src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2152332827/settings_images/f4b8184-d2c1-e23b-a102-0c7fb032440_0c45fcdc-c904-42fd-a06d-be150deda680.png" />    
-                            </div>
+                            <a class="template-sidebar__image" href="#">
+                                <img src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/690ed3310269a35386dd56dd.png" />    
+                            </a>
                         </div>
                         <div class="template-sidebar__toggler">
                             <i class="fa-solid fa-arrow-right-arrow-left open"></i>
@@ -2597,7 +2664,7 @@
                 return html;
             },
             heroBanner: (title = "Welcome to Template", subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", paragraphHTML = "", embedHTML = "") => {
-                const defaultEmbed = `<iframe width="560" height="315" src="https://www.youtube.com/embed/yCjJyiqpAuU?si=GwkgG-HTW4OChx95" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+                const defaultEmbed = `<iframe width="560" height="315" src="https://youtu.be/AiXiBvy1t1s?si=JoAeoljw4LCT4kMq<iframe width="560" height="315" src="https://www.youtube.com/embed/AiXiBvy1t1s?si=JoAeoljw4LCT4kMq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
                 const defaultParagraph = `
                     <p>
                         <strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius non neque ullamcorper rutrum. Integer et malesuada metus. Nulla facilisi. Integer non commodo justo. Nam sed urna sit amet orci placerat vehicula. Nulla quis molestie mauris. Suspendisse mi est, ultrices at scelerisque nec, efficitur in leo. Cras at ultrices justo, ut sollicitudin nisi.</strong><br/>
@@ -2722,7 +2789,7 @@
                     
                         <!-- This is the container that will be toggled by JavaScript -->
                         <div class="template-community-embed" id="community-embed-area">
-                            ${embedHTML}
+                            ${embedHTML || "Embed anything here..."}
                         </div>
                     </div>
                 `;
@@ -2760,6 +2827,7 @@
         // This object holds data related methods
         data = {
             fetchProduct: async () => {
+                const previousProduct = null;
                 return await new Promise((resolved, reject) => {
                     const locationId = location.href.split(".")[0].replace("https://", "");
                     const productId = location.href.split("/products/")[1].split("?")[0].split("/")[0];
@@ -2780,7 +2848,12 @@
                                 method: "GET",
                             }
                         )
-                            .then((e) => resolved(e.json()))
+                            .then((e) => e.json()).then((e) => {
+                                resolved(previousProduct || e);
+                                if (e) {
+                                    previousProduct = e;
+                                }
+                            })
                     } else {
                         console.log("No Token Found!");
                     }
@@ -2834,6 +2907,7 @@
                 });
             },
             fetchCategories: async () => {
+                var previousCategories = null;
                 return await new Promise((resolved, reject) => {
                     const locationId = location.href.split(".")[0].replace("https://", "");
                     const productId = location.href.split("/products/")[1].split("?")[0].split("/")[0];
@@ -2856,7 +2930,10 @@
                         )
                             .then((e) => e.json())
                             .then((e) => {
-                                resolved(e.categories);
+                                resolved(previousCategories || e.categories);
+                                if (e.categories) {
+                                    previousCategories = e.categories;
+                                }
                             });
                     } else {
                         console.log("No Token Found!");
@@ -2894,6 +2971,7 @@
                 });
             },
             fetchCompletedPosts: async (pId = "") => {
+                var previousCompletedPost = null;
                 return await new Promise(async (resolved, reject) => {
                     const locationId = location.href.split(".")[0].replace("https://", "");
                     const productId = location.href.split("/products/")[1].split("?")[0].split("/")[0];
@@ -2917,7 +2995,10 @@
                         )
                             .then((e) => e.json())
                             .then((e) => {
-                                resolved(e);
+                                resolved(previousCompletedPost || e);
+                                if (previousCompletedPost) {
+                                    previousCompletedPost = e;
+                                }
                             });
                     } else {
                         console.log("No Token Found!");
@@ -2925,6 +3006,7 @@
                 });
             },
             fetchUserProductProgress: async (cId = "") => {
+                var previousProductProgress = null;
                 return await new Promise(async (resolved, reject) => {
                     const locationId = location.href.split(".")[0].replace("https://", "");
                     const acatToken = $cookies.get("acat") || $cookies.get("cat");
@@ -2945,7 +3027,10 @@
                             .then((e) => e.json())
                             .then((e) => {
                                 e.progressPercentage = ((e.completedPosts / e.totalPosts) * 100).toFixed(0);
-                                resolved(e);
+                                resolved(previousProductProgress || e);
+                                if (e) {
+                                    previousProductProgress = e;
+                                }
                             });
                     } else {
                         console.log("No Token Found!");
@@ -2953,6 +3038,7 @@
                 });
             },
             fetchUser: async (cId = "") => {
+                const previousUser = null;
                 return await new Promise(async (resolved, reject) => {
                     const locationId = location.href.split(".")[0].replace("https://", "");
                     const acatToken = $cookies.get("acat") || $cookies.get("cat");
@@ -2976,8 +3062,10 @@
                         })
                             .then((e) => e.json())
                             .then((e) => {
-                                console.log(e)
-                                resolved(e);
+                                resolved(previousUser || e);
+                                if (e) {
+                                    previousUser = e;
+                                }
                             });
                     } else {
                         console.log("No Token Found!");

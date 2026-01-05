@@ -2170,11 +2170,14 @@
 
                         if (userProductProgress?.completedPosts >= 1) {
                             const indexOfLastCompletedPost = allPost.findIndex((e) => e.id === completedPosts.slice(-1)[0].id);
+                            console.log(indexOfLastCompletedPost)
                             text = "Resume Course";
                             post = allPost[indexOfLastCompletedPost + 1];
                         } else {
                             post = allPosts[0];
                         }
+
+                        console.log(post);
 
                         return {
                             text,

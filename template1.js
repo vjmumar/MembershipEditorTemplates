@@ -1,3 +1,4 @@
+
     import "https://kit.fontawesome.com/91a03c8b1f.js";
     window.templateCustomizationSchema = {
         name: "Template 1",
@@ -2467,6 +2468,7 @@
 
             initNavBar: async ($container = null) => {
                 // First we will fetch the product details
+                const userData = await this.data.fetchUser();
                 const product = await this.data.fetchProduct();
                 const logo = "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png";
                 const defaultLinks = [
@@ -2496,7 +2498,7 @@
                                 <a href="/account?activeTab=Profile" class="template-navbar__content__avatar" id="navbar-avatar">
                                     <!-- Placeholder image, ideally replaced with user's actual avatar -->
                                     <img 
-                                        src="https://i0.wp.com/s3.amazonaws.com/kajabi-storefronts-production/static_assets/default_avatar.jpg?ssl=1" 
+                                        src="${userData?.avatar || 'https://i0.wp.com/s3.amazonaws.com/kajabi-storefronts-production/static_assets/default_avatar.jpg?ssl=1'}" 
                                         alt="User Avatar" 
                                         class="template-navbar__content__avatar-img"
                                     />

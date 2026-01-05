@@ -2177,11 +2177,11 @@
                             nextPost = allPosts[0];
                         }
 
-                        console.log(post, allPosts);
+                        console.log(nextPost, allPosts);
 
                         return {
                             text,
-                            link: `/courses/products/${post?.productId}/categories/${post?.categoryId}/posts/${post?.id}`
+                            link: `/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`
                         }
                     })();
 

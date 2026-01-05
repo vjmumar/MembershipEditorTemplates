@@ -1,4 +1,3 @@
-
     import "https://kit.fontawesome.com/91a03c8b1f.js";
     window.templateCustomizationSchema = {
         name: "Template 1",
@@ -2469,6 +2468,7 @@
             initNavBar: async ($container = null) => {
                 // First we will fetch the product details
                 const userData = await this.data.fetchUser();
+                console.log(userData);
                 const product = await this.data.fetchProduct();
                 const logo = "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png";
                 const defaultLinks = [

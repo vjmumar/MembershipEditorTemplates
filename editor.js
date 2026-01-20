@@ -572,11 +572,16 @@
          ];
 
          /**
-          * Then we determine the currently active template based on the window configuration and dynamically load its script,
-          * falling back to the first template as a safe default when none is explicitly active
+          * First, we determine the currently active template by searching through the saved configurations array,
+          * then we dynamically load its corresponding script, falling back to the first available template if no
+          * active configuration is found.
           */
+         const savedTemplates = window?.activeTemplatesConfig || [];
+         const activeTemplateFromSavedTemplates = savedTemplates.find(
+            (tem) => tem.isActive,
+         );
          const currentTemplate = this.templates.find(
-            (tem) => tem.id === window?.activeTemplateConfig?.id,
+            (tem) => tem.id === activeTemplateFromSavedTemplates?.id,
          );
          const script = document.createElement("script");
          script.src = (currentTemplate ? currentTemplate : this.templates[0])?.scriptLink;
@@ -592,23 +597,26 @@
           * resolve the default page editor state, and finally trigger the application initialization sequence
           */
          script.onload = () => {
-            // First we will initialize the active template by merging runtime configuration with the customization schema when applicable
+            // First, we initialize the active template by merging the saved array data with the master schema when id match
             this.activeTemplate = (() => {
-               if (window.activeTemplateConfig && window.activeTemplateConfig?.name) {
+               if (
+                  activeTemplateFromSavedTemplates &&
+                  activeTemplateFromSavedTemplates?.id
+               ) {
                   if (
-                     window.activeTemplateConfig?.name ===
+                     activeTemplateFromSavedTemplates?.name ===
                      window?.templateCustomizationSchema?.name
                   ) {
                      /**
-                      * Merges the User's saved configuration into the Master Template Schema.
-                      * * We use _.mergeWith to ensure that if we fix a CSS selector or property
+                      * Merges the specific active template from the saved array into the Master Template Schema.
+                      * We use _.mergeWith to ensure that if we fix a CSS selector or property
                       * in our code (the schema), those fixes are applied, while still
                       * preserving the specific 'value' the user entered.
                       */
                      return window?._?.mergeWith(
                         // We clone the schema so we don't mutate the original "Master" object in memory
                         window._.cloneDeep(window?.templateCustomizationSchema),
-                        window?.activeTemplateConfig,
+                        activeTemplateFromSavedTemplates,
                         (objectValue, srcValue, key) => {
                            // --- STEP 1: USER DATA OVERWRITES ---
                            // If the current property is 'value' (the actual color/text)
@@ -619,17 +627,14 @@
 
                            // --- STEP 2: RECURSIVE DRILLING ---
                            // If the current property is an Object or Array (a "branch"),
-                           // we return 'undefined'. This tells Lodash:
-                           // "Don't stop here. Go deeper into this object to find the nested values."
+                           // we return 'undefined' to tell Lodash to keep digging deeper.
                            if (window._.isObject(objectValue)) {
                               return undefined;
                            }
 
                            // --- STEP 3: SCHEMA PROTECTION (THE LOCK) ---
-                           // For every other property (elementSelector, property, name, type, etc.),
-                           // we return 'objectValue' (the Schema version).
-                           // This ensures that even if the user has an old/broken selector saved,
-                           // our latest code fix will overwrite it.
+                           // For every other structural property, we prioritize 'objectValue'
+                           // to ensure the latest code fixes overwrite any stale saved data.
                            return objectValue;
                         },
                      );
@@ -921,8 +926,7 @@
                if (isGlobal && globalName) {
                   return this.activeTemplate.global
                      ?.find((item) => item.name === globalName)
-                     ?.customizations
-                     ?.find((item) => item.key === key);
+                     ?.customizations?.find((item) => item.key === key);
                } else {
                   return this.activePageOnTemplate.find((item) => item.key === key);
                }
@@ -1219,10 +1223,10 @@
 
             // Then we will generate the HTML structure by iterating through the global contents
             const globalItemsHTML = this.activeTemplate.global.reduce((a, c) => {
-                  // First we will generate the elements of the current global item
-                  const globalItemElements = c?.customizations?.reduce((ac, cc) => {
-                      // We will generate a clickable global contents item which will open the element editor in global mode
-                      ac += `
+               // First we will generate the elements of the current global item
+               const globalItemElements = c?.customizations?.reduce((ac, cc) => {
+                  // We will generate a clickable global contents item which will open the element editor in global mode
+                  ac += `
                       <div class="global-contents-item__item" onclick="window.MembershipCustomization.initializers.initializeElementEditor('${cc.key}','template1',document.querySelector('${cc.elementSelector}'), true, '${c.name}');">
                           <p class="global-contents-item__item__title">
                               ${cc.label}
@@ -1231,9 +1235,9 @@
                       </div>
                   `;
 
-                   // Finally we will return the accumulator
-                   return ac;
-                }, "");
+                  // Finally we will return the accumulator
+                  return ac;
+               }, "");
 
                // Finally we will push the current global item into accumulator
                a += `
@@ -1872,18 +1876,41 @@
             // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
             if (this.token) {
                try {
-                  // First we will stringify the active template and do advance parsing for functions
+                  // First we will create a variable where we will store the updated window?.activeTemplatesConfig
+                  let updatedActiveTemplatesConfig = window?.activeTemplatesConfig || [];
+
+                  // Then, we reset the active state for all templates in the global configuration
+                  updatedActiveTemplatesConfig.forEach((tem) => {
+                     tem.isActive = false;
+                  });
+
+                  // Then we will set the current active template as active
+                  this.activeTemplate.isActive = true;
+
+                  // Then we will filter out the old version of the template from the array and push the newly updated active template
+                  updatedActiveTemplatesConfig = updatedActiveTemplatesConfig.filter(
+                     (tem) => tem.id !== this.activeTemplate.id,
+                  );
+                  updatedActiveTemplatesConfig.push(this.activeTemplate);
+
+                  /**
+                   * Then, we stringify the entire template configuration array and apply a replacer function
+                   * to convert executable functions into strings, allowing them to be safely stored in the database.
+                   */
                   const stringifiedTemplateData = JSON.stringify(
-                     this.activeTemplate,
+                     updatedActiveTemplatesConfig,
                      (key, value) => {
                         if (typeof value === "function") {
-                           return value?.toString();
+                           return value.toString();
                         }
                         return value;
                      },
                   );
 
-                  // Then we will attempt to update the product configuration with the rehydration script included
+                  /**
+                   * Then, we attempt to update the product configuration via a PUT request, injecting a rehydration
+                   * script into the custom JS field that will revive our stringified functions back into executable code upon page load.
+                   */
                   await fetch(url, {
                      method: "PUT",
                      headers: {
@@ -1899,12 +1926,15 @@
                         "version": "2021-07-28",
                      },
                      body: JSON.stringify({
-                        customJs: `var s = ${stringifiedTemplateData}; window.activeTemplateConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === 'string' && (value.startsWith('function') || value.startsWith('(customizations = []) =>') || value.startsWith('(e=[])=>'))){return new Function('return ' + value)();}return value;});`,
+                        customJs: `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
                      }),
                      redirect: "follow",
                   });
 
-                  // Finally we will show an alert saying the active template structure is saved
+                  /**
+                   * Finally, we provide visual confirmation to the user that their changes have been saved successfully,
+                   * or we catch any errors to provide a helpful failure message.
+                   */
                   alert("✅ Your current changes for this page have been saved.");
                } catch (err) {
                   alert(
@@ -1919,13 +1949,8 @@
 
          // This method is responsible for updating the user's selected theme inside the current product custom js in ghl
          updateTemplateToProductsCustomJs: async (templateId = "") => {
-            // First we will confirm the user's intent since switching templates will overwrite the current in-editor progress
-            if (
-               !confirm(
-                  "Warning: Progress will be lost Selecting a different template will clear your current edits. Do you want to proceed?",
-               )
-            )
-               return;
+            // First we will confirm the user's intent to switch template
+            if (!confirm("Do you want to proceed?")) return;
 
             // First we will retrieve the authentication token and extract the location and product IDs from the URL
             const productData = JSON.parse(window.atob($cookies.get("acat")));
@@ -1946,14 +1971,42 @@
                      (e) => e.id === templateId,
                   );
 
-                  // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
-                  const stringifiedTemplateData = JSON.stringify(
-                     {
-                        name: selectedTemplate.name,
+                  // Then we will create a variable where we will store the updated window?.activeTemplatesConfig
+                  let updatedActiveTemplatesConfig = window?.activeTemplatesConfig || [];
+
+                  // Then, we reset the active state for all templates in the global configuration
+                  updatedActiveTemplatesConfig?.forEach((tem) => {
+                     tem.isActive = false;
+                  });
+
+                  // Then we will check if it exist inside the saved templates
+                  const isExist = updatedActiveTemplatesConfig?.find(
+                     (tem) => tem.id === templateId,
+                  );
+
+                  /**
+                   * Then, depending on whether the template already exists in user's saved configurations,
+                   * we will either initialize a new entry with empty defaults or mark the existing
+                   * template as the active selection.
+                   */
+                  if (!isExist) {
+                     updatedActiveTemplatesConfig.push({
                         id: selectedTemplate.id,
+                        isActive: true,
                         pages: [],
                         global: [],
-                     },
+                     });
+                  } else {
+                     updatedActiveTemplatesConfig.forEach((tem) => {
+                        if (tem.id === templateId) {
+                           tem.isActive = true;
+                        }
+                     });
+                  }
+
+                  // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
+                  const stringifiedTemplateData = JSON.stringify(
+                     updatedActiveTemplatesConfig,
                      (key, value) => {
                         if (typeof value === "function") {
                            return value?.toString();
@@ -1979,14 +2032,14 @@
                      },
                      body: JSON.stringify({
                         // Finally we will persist the selected template into customJs and rehydrate any serialized functions back into executable form on load
-                        customJs: `var s = ${stringifiedTemplateData}; window.activeTemplateConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === 'string' && (value.startsWith('function') || value.startsWith('(customizations = []) =>') || value.startsWith('(e=[])=>'))){return new Function('return ' + value)();}return value;});`,
+                        customJs: `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
                      }),
                      redirect: "follow",
                   });
 
                   // Finally we will show an alert saying the active template structure is saved
                   alert(
-                     "✅ Done! The selected template has been saved. At this point, the changes are irreversible.",
+                     "✅ Done! The selected template has been saved.",
                   );
                   location.reload();
                } catch (err) {

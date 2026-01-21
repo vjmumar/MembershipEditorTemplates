@@ -1931,6 +1931,9 @@
                      redirect: "follow",
                   });
 
+                  // Then we will update the window?.activeTemplatesConfig with updatedActiveTemplatesConfig
+                  window?.activeTemplatesConfig = updatedActiveTemplatesConfig;
+
                   /**
                    * Finally, we provide visual confirmation to the user that their changes have been saved successfully,
                    * or we catch any errors to provide a helpful failure message.
@@ -2037,10 +2040,11 @@
                      redirect: "follow",
                   });
 
-                  // Finally we will show an alert saying the active template structure is saved
-                  alert(
-                     "✅ Done! The selected template has been saved.",
-                  );
+                  // Then we will update the window?.activeTemplatesConfig with updatedActiveTemplatesConfig
+                  window?.activeTemplatesConfig = updatedActiveTemplatesConfig;
+
+                  // Finally we will show a success message
+                  alert("✅ Done! You’ve switched to a new template.");
                   location.reload();
                } catch (err) {
                   // Finally we will notify the user and log the error for debugging if saving fails for any reason

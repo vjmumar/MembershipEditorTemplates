@@ -1931,8 +1931,8 @@
                      redirect: "follow",
                   });
 
-                  // Then we will update the window?.activeTemplatesConfig with updatedActiveTemplatesConfig
-                  window?.activeTemplatesConfig = updatedActiveTemplatesConfig;
+                  // Then we will update the window.activeTemplatesConfig with updatedActiveTemplatesConfig
+                  window.activeTemplatesConfig = updatedActiveTemplatesConfig;
 
                   /**
                    * Finally, we provide visual confirmation to the user that their changes have been saved successfully,
@@ -2040,8 +2040,8 @@
                      redirect: "follow",
                   });
 
-                  // Then we will update the window?.activeTemplatesConfig with updatedActiveTemplatesConfig
-                  window?.activeTemplatesConfig = updatedActiveTemplatesConfig;
+                  // Then we will update the window.activeTemplatesConfig with updatedActiveTemplatesConfig
+                  window.activeTemplatesConfig = updatedActiveTemplatesConfig;
 
                   // Finally we will show a success message
                   alert("✅ Done! You’ve switched to a new template.");

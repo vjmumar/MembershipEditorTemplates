@@ -1,5 +1,4 @@
- import "https://kit.fontawesome.com/91a03c8b1f.js";
-    window.templateCustomizationSchema = {
+window.templateCustomizationSchema = {
         name: "Template 2",
         id: "template-1",
         global: [
@@ -1610,6 +1609,11 @@
 
                 // Then we will append a class to the body indicating that the template is ready
                 document.body.classList.add("template-ready");
+
+                // Then we will insert the font-awesome script into the head
+                const fScript = document.createElement("script");
+                fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
+                document.head.append(fScript);
 
                 // Then we will check the URL against regex patterns to determine which page view to load
                 if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {

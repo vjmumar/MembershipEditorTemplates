@@ -2571,7 +2571,7 @@ class CourseTemplate {
                         <a href="/courses/products/${product.id}" class="template-navbar__logo-link"><img src="${logo}" /></a>
                         <!-- Center: Navigation Links -->
                         <div class="template-navbar__content">
-                            <i class="fa-solid fa-xmark template-navbar__content__close"></i>
+                            <i class="fa-solid fa-xmark template-navbar__content__close" onclick="this.parentElement.classList.remove('active')"></i>
                             <nav class="template-navbar__content__nav-links">${linksHTML}</nav>
                             <div class="template-navbar__content__actions">
                                 <!-- User Avatar -->
@@ -2585,7 +2585,7 @@ class CourseTemplate {
                                 </a>
                             </div>    
                         </div>
-                        <i class="fa-solid fa-bars template-navbar__burgermenu"></i>
+                        <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.closest('.template-navbar__content').classList.add('active')"></i>
                     </header>
                 `;
          ($container || document.querySelector(".product-container")).insertAdjacentHTML(

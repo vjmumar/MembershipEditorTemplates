@@ -2135,8 +2135,11 @@ class CourseTemplate {
             async ($container) => {
                // First we will retrieve the templates and fetch all necessary user and product data
                const userData = await this.data.fetchUser();
+               console.log(userData);
                const userProductProgress = await this.data.fetchUserProductProgress();
+                console.log(userProductProgress);
                const completedPosts = await this.data.fetchCompletedPosts();
+                            console.log(completedPosts);
 
                // Then we will process the categories data
                const categories = await (async () => {

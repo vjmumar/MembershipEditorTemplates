@@ -2584,7 +2584,7 @@ class CourseTemplate {
                                 </a>
                             </div>    
                         </div>
-                        <i class="fa-solid fa-bars" class="template-navbar__burgermenu"></i>
+                        <i class="fa-solid fa-bars template-navbar__burgermenu"></i>
                     </header>
                 `;
          ($container || document.querySelector(".product-container")).insertAdjacentHTML(

@@ -2045,7 +2045,10 @@ class CourseTemplate {
          document.head.append(fScript);
 
          // Then we will check the URL against regex patterns to determine which page view to load
-         if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
+         if (
+            /products\/[^/]+\/?(\?.*)?$/.test(url) ||
+            /courses\/library(-v2)?\/?(\?.*)?$/.test(url)
+         ) {
             document.body.classList.add("page-dashboard");
             this.initializers.initLandingPage();
          } else if (

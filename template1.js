@@ -1,12 +1,3 @@
-if (window.innerWidth <= 1024) {
-   var viewport = document.querySelector("meta[name=viewport]");
-   if (viewport) {
-      // We set width to 1025 to bypass GHL's 1024 breakpoint
-      // But we keep initial-scale at 1.0 so your CSS can still scale things
-      viewport.setAttribute("content", "width=1025, initial-scale=1.0");
-   }
-}
-
 window.templateCustomizationSchema = {
    name: "Template 1",
    id: "template-0",
@@ -2054,7 +2045,12 @@ class CourseTemplate {
          document.head.append(fScript);
 
          // Then we will check the URL against regex patterns to determine which page view to load
-         if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
+         if (
+            /products\/[^/]+\/?(\?.*)?$/.test(url) ||
+            /products\/[0-9a-fA-F-]{36}\/categories\?.*category_id=[0-9a-fA-F-]{36}/.test(
+               url,
+            )
+         ) {
             document.body.classList.add("page-dashboard");
             this.initializers.initLandingPage();
          } else if (

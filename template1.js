@@ -2149,7 +2149,7 @@ class CourseTemplate {
                      ?.map((cat) => ({
                         thumbnail:
                            cat?.posterImage ||
-                           "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/site/24410/products/4YTC9RNTS7KLyCz4UWmw_pexels-alexy-almond-3758056.jpg",
+                           "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
                         title: cat.title,
                         url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
                      }));

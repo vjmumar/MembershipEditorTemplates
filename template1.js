@@ -1,6 +1,6 @@
 window.templateCustomizationSchema = {
-   name: "Template 1",
-   id: "template-0",
+   name: "Production",
+   id: "template-3",
    global: [
       {
          name: "Loading Overlay",

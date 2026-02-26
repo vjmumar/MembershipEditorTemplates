@@ -2075,7 +2075,7 @@ class CourseTemplate {
          }
 
          // Finally we will initialize the loading
-         // this.initializers.initLoading();
+         this.initializers.initLoading();
       },
 
       initLoading: () => {
@@ -2124,9 +2124,7 @@ class CourseTemplate {
          );
 
          // Finally after 4s we will remove the loader
-         setTimeout(() => {
-            document.querySelector(".template-loader").style.display = "none";
-         }, 3000);
+         document.querySelector(".template-loader").style.display = "none";
       },
 
       initLandingPage: async () => {

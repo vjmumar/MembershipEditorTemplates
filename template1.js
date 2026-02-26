@@ -2075,7 +2075,7 @@ class CourseTemplate {
          }
 
          // Finally we will initialize the loading
-         this.initializers.initLoading();
+         // this.initializers.initLoading();
       },
 
       initLoading: () => {

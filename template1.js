@@ -2133,11 +2133,8 @@ class CourseTemplate {
             async ($container) => {
                // First we will retrieve the templates and fetch all necessary user and product data
                const userData = await this.data.fetchUser();
-               console.log(userData);
                const userProductProgress = await this.data.fetchUserProductProgress();
-               console.log(userProductProgress);
                const completedPosts = await this.data.fetchCompletedPosts();
-               console.log(completedPosts);
 
                // Then we will process the categories data
                const categories = await (async () => {
@@ -2969,6 +2966,11 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat") || $cookies.get("cat");
             if (acatToken) {
                const token = JSON.parse(window.atob(acatToken))?.tokenId;
+               const cachedData = JSON.parse(sessionStorage.getItem(`${productId}-product`));
+               if (cachedData) {
+                  resolved(cachedData)
+                  return;
+               };
                fetch(url, {
                   headers: {
                      "accept": "application/json, text/plain, */*",
@@ -2984,6 +2986,7 @@ class CourseTemplate {
                      resolved(previousProduct || e);
                      if (e) {
                         previousProduct = e;
+                        sessionStorage.setItem(`${productId}-product`, previousProduct);
                      }
                   });
             } else {
@@ -3005,6 +3008,11 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat") || $cookies.get("cat");
             if (acatToken) {
                const token = JSON.parse(window.atob(acatToken))?.tokenId;
+               const cachedData = JSON.parse(sessionStorage.getItem(`${productId}-category`));
+               if (cachedData) {
+                  resolved(cachedData)
+                  return;
+               };
                fetch(url, {
                   headers: {
                      "accept": "application/json, text/plain, */*",
@@ -3035,6 +3043,7 @@ class CourseTemplate {
 
                      // 4. Resolve the promise with the fully structured 'e' object,
                      //    which now contains posts and its aggregated subcategories.
+                     sessionStorage.setItem(`${productId}-category`, e);
                      resolved(e);
                   });
             } else {
@@ -3054,6 +3063,11 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat") || $cookies.get("cat");
             if (acatToken) {
                const token = JSON.parse(window.atob(acatToken))?.tokenId;
+               const cachedData = JSON.parse(sessionStorage.getItem(`${productId}-categories`) || "[]");
+               if (cachedData.length) {
+                  resolved(cachedData)
+                  return;
+               };
                fetch(url, {
                   headers: {
                      "accept": "application/json, text/plain, */*",
@@ -3069,6 +3083,7 @@ class CourseTemplate {
                      resolved(previousCategories || e.categories);
                      if (e.categories) {
                         previousCategories = e.categories;
+                        sessionStorage.setItem(`${productId}-categories`, previousCategories);
                      }
                   });
             } else {
@@ -3117,6 +3132,11 @@ class CourseTemplate {
                const token = JSON.parse(window.atob(acatToken))?.tokenId;
                const userId = JSON.parse(window.atob(acatToken))?.externalUserId;
                const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`;
+               const cachedData = JSON.parse(sessionStorage.getItem(`${productId}-cpost`));
+               if (cachedData) {
+                  resolved(cachedData)
+                  return;
+               };
                fetch(url, {
                   headers: {
                      "accept": "application/json, text/plain, */*",
@@ -3132,6 +3152,7 @@ class CourseTemplate {
                      resolved(previousCompletedPost || e);
                      if (previousCompletedPost) {
                         previousCompletedPost = e;
+                        sessionStorage.setItem(`${productId}-cpost`,previousCompletedPost)
                      }
                   });
             } else {

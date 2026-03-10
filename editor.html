@@ -202,9 +202,7 @@
       font-size: 11px;
    }
 
-   .editor-customizer-item__form__item__input__group.feature.active
-      .editor-customizer-item__form__item__input__group__name__toggler
-      i {
+   .editor-customizer-item__form__item__input__group.feature.active .editor-customizer-item__form__item__input__group__name__toggler i {
       rotate: 90deg !important;
    }
 
@@ -212,8 +210,7 @@
       display: none;
    }
 
-   .editor-customizer-item__form__item__input__group.feature.active
-      .editor-customizer-item__form__item__input__group__content {
+   .editor-customizer-item__form__item__input__group.feature.active .editor-customizer-item__form__item__input__group__content {
       display: flex;
       flex-direction: column;
       padding-block: 10px;
@@ -528,25 +525,16 @@
    }
 </style>
 <!-- CSS for features -->
-<link
-   rel="stylesheet"
-   href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 <!-- JS for features -->
 <script src="
     https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js
     "></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-<script
-   src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js"
-   referrerpolicy="origin"
-></script>
-<script
-   src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.2/jscolor.min.js"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.2/jscolor.min.js"
    integrity="sha512-qFhMEJrjI50TwLDGZ7Oi0ksTSWnFOqTNXhlqqUgWnE65S23rWUtQOv+tMNEybkMYSXKgAc3eg/SzkX+qrtJT/g=="
-   crossorigin="anonymous"
-   referrerpolicy="no-referrer"
-></script>
+   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script defer>
    class MembershipCustomization {
       constructor() {
@@ -590,7 +578,7 @@
                   document.body.append(script);
                   return e;
                });
-               
+
             /**
              * Then, we determine the currently active template by searching through the saved configurations array,
              * then we dynamically load its corresponding script, falling back to the first available template if no
@@ -1304,7 +1292,7 @@
                      } else {
                         return `
                            <div class="theme-selector__list__item__controller">
-                               <a href="#" onclick="window.MembershipCustomization.actions.updateTemplateToProductsCustomJs('${c.id}')" class="theme-selector__list__item__controller__button">
+                               <a href="#" onclick="window.MembershipCustomization.actions.updateTemplateChangesToMediaAndSaveInfoToProductsCustomJs('${c.id}')" class="theme-selector__list__item__controller__button">
                                    <i class="fa-solid fa-check"></i>
                                </a>
                                <a href="${c.previewLink}" target="__blank" class="theme-selector__list__item__controller__button">
@@ -1658,19 +1646,19 @@
                return `
                            <style class="bm-template-style">
                            ${this.activePageOnTemplate.reduce((a, c) => {
-                              a += `
+                  a += `
                                ${c.elementSelector} {
                                ${c.cssCustomizations.reduce((ac, cc) => {
-                                  const important = cc?.important ? "!important" : "";
-                                  if (cc.value) {
-                                     ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
-                                  }
-                                  return ac;
-                               }, "")}
+                     const important = cc?.important ? "!important" : "";
+                     if (cc.value) {
+                        ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
+                     }
+                     return ac;
+                  }, "")}
                                }
                                `;
-                              return a;
-                           }, "")}
+                  return a;
+               }, "")}
                            </style>
                            `;
                return "";
@@ -1679,26 +1667,26 @@
                return `
                            <style class="bm-template-style">
                            ${this.activeTemplate.global?.reduce((a, c) => {
-                              c.customizations?.forEach((gCustomizations) => {
-                                 a += `
+                  c.customizations?.forEach((gCustomizations) => {
+                     a += `
                                        ${gCustomizations?.elementSelector} {
                                            ${gCustomizations?.cssCustomizations?.reduce(
-                                              (ac, cc) => {
-                                                 if (cc.value) {
-                                                    const important = cc?.important
-                                                       ? "!important"
-                                                       : "";
-                                                    ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
-                                                 }
-                                                 return ac;
-                                              },
-                                              "",
-                                           )}
+                        (ac, cc) => {
+                           if (cc.value) {
+                              const important = cc?.important
+                                 ? "!important"
+                                 : "";
+                              ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
+                           }
+                           return ac;
+                        },
+                        "",
+                     )}
                                        }
                                        `;
-                              });
-                              return a;
-                           }, "")}
+                  });
+                  return a;
+               }, "")}
                            </style>
                            `;
             })();
@@ -1978,7 +1966,7 @@
          },
 
          // This method is responsible for updating the user's selected theme inside the current product custom js in ghl
-         updateTemplateToProductsCustomJs: async (templateId = "") => {
+         updateTemplateChangesToMediaAndSaveInfoToProductsCustomJs: async (templateId = "") => {
             // First we will confirm the user's intent to switch template
             if (!confirm("Do you want to proceed?")) return;
 
@@ -2095,14 +2083,30 @@
             }
          },
 
-         // This function uploads image to ghl media
+         // This function upload and save the changes of the template to ghl media
          uploadTextToGHL: async (textContent = "", fileName = "", parentFolder = "") => {
+            //  First, retrieve the product data stored in the "acat" cookie
             const productData = JSON.parse(window.atob($cookies.get("acat")));
+
+            /**
+             * Then, convert the text content into a Blob so it can be uploaded
+             * as a file with the correct content type.
+            */
             const blob = new Blob([textContent], { type: "text/plain" });
             const size = blob.size;
+
+            // Then extract the locationId which will be used as the altId when registering and verifying the file in GHL.
             const locationId = productData?.locationId;
+
+            // Then track whether an error occurred during the process.
             let isError = false;
+
+            // Finally start the upload process
             try {
+               /**
+                * First, register the file with GHL's media service.
+                * This returns a signed upload URL where the file content can be uploaded directly.
+               */
                const registerResponse = await fetch(
                   "https://services.leadconnectorhq.com/medias/files/",
                   {
@@ -2126,6 +2130,11 @@
                   },
                );
                const registerJSON = await registerResponse.json();
+
+               /**
+                * Then, upload the actual file content to the signed URL
+                * provided in the registration response.
+               */
                await fetch(registerJSON.url, {
                   method: "PUT",
                   headers: {
@@ -2133,6 +2142,11 @@
                   },
                   body: blob,
                });
+
+               /**
+                * Then, verify the uploaded file with GHL so it becomes
+                * accessible within the media library.
+               */
                const validateResponse = await fetch(
                   "https://services.leadconnectorhq.com/medias/files/verify",
                   {
@@ -2153,6 +2167,8 @@
                   },
                );
                const validateJSON = await validateResponse.json();
+
+               // Finally return the finalized file information after verification.
                return {
                   id: validateJSON._id,
                   altId: validateJSON.altId,
@@ -2162,30 +2178,19 @@
                   size: validateJSON.size,
                };
             } catch (err) {
+               // If any step fails, mark the process as errored
+               // and notify the user to retry.
                isError = true;
                alert("Something went wrong, please reload or try again.");
             } finally {
+               /**
+                * Finally, attempt to clean up any previously stored file
+                * reference (savedTemplatesFileInfo) to avoid leaving
+                * unused files in the media storage.
+               */
                if (isError && typeof window.savedTemplatesFileInfo !== "undefined")
                   return;
-               const de = {
-                  altId: String(window.savedTemplatesFileInfo?.altId),
-                  altType: window.savedTemplatesFileInfo?.altType,
-                  mode: "public",
-                  status: "trashed",
-                  filesToBeDeleted: [
-                     {
-                        _id: String(window.savedTemplatesFileInfo?.id),
-                        altId: String(window.savedTemplatesFileInfo?.altId),
-                        altType: window.savedTemplatesFileInfo?.altType,
-                        parentId: "",
-                        name: window.savedTemplatesFileInfo?.name,
-                        url: window.savedTemplatesFileInfo?.url,
-                        size: window.savedTemplatesFileInfo?.size,
-                        contentType: "text/plain",
-                        isPrivate: false,
-                     },
-                  ],
-               };
+
                fetch("https://services.leadconnectorhq.com/medias/delete-files", {
                   method: "PUT",
                   headers: {
@@ -2195,7 +2200,25 @@
                      "Content-Type": "application/json",
                      "token-id": this.token,
                   },
-                  body: JSON.stringify(de),
+                  body: JSON.stringify({
+                     altId: String(window.savedTemplatesFileInfo?.altId),
+                     altType: window.savedTemplatesFileInfo?.altType,
+                     mode: "public",
+                     status: "trashed",
+                     filesToBeDeleted: [
+                        {
+                           _id: String(window.savedTemplatesFileInfo?.id),
+                           altId: String(window.savedTemplatesFileInfo?.altId),
+                           altType: window.savedTemplatesFileInfo?.altType,
+                           parentId: "",
+                           name: window.savedTemplatesFileInfo?.name,
+                           url: window.savedTemplatesFileInfo?.url,
+                           size: window.savedTemplatesFileInfo?.size,
+                           contentType: "text/plain",
+                           isPrivate: false,
+                        },
+                     ],
+                  }),
                });
             }
          },
@@ -2203,7 +2226,7 @@
 
       // Widgets module
       widgets = {
-         multiInput: (templateKey, property, value = "", onChange = () => {}) => {
+         multiInput: (templateKey, property, value = "", onChange = () => { }) => {
             // First we will create a helper function to interpret a CSS spacing string (e.g. "10px 20px")
             const parseValue = (val) => {
                if (!val || val.trim() === "0")
@@ -2317,7 +2340,7 @@
             value = "",
             type = "text",
             placeholder = "",
-            onChange = () => {},
+            onChange = () => { },
             isTextArea = false,
          ) => {
             // First we will create a listener for ANY input change inside the widget

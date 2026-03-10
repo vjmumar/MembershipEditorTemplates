@@ -558,7 +558,7 @@
                   "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69492d947614ce184f7e9b76.png",
                title: "Template 1",
                scriptLink:
-                  "https://rawcdn.githack.com/vjmumar/MembershipEditorTemplates/f6015455d3728feb368bfbeb72c8bce01991d92d/template1.js",
+                  "https://rawcdn.githack.com/vjmumar/MembershipEditorTemplates/187216093c01adfaae17be828216243d060eeedc/template1.js",
                previewLink: "",
             },
             {
@@ -566,96 +566,114 @@
                imageUrl: "https://dummyimage.com/700x400/000/fff&text=Dummy+Template",
                title: "Template 2",
                scriptLink:
-                  "https://cdn.jsdelivr.net/gh/vjmumar/MembershipEditorTemplates@main/template2.js",
+                  "https://rawcdn.githack.com/vjmumar/MembershipEditorTemplates/ee752f16fad820ee05c13140225c4cbaf02c607c/template2.js",
+               previewLink: "",
+            },
+            {
+               id: "template-3",
+               imageUrl: "https://dummyimage.com/700x400/000/fff&text=Dummy+Template",
+               title: "Production",
+               scriptLink: "https://membershipeditor.netlify.app/template1.js",
                previewLink: "",
             },
          ];
-
-         /**
-          * First, we determine the currently active template by searching through the saved configurations array,
-          * then we dynamically load its corresponding script, falling back to the first available template if no
-          * active configuration is found.
-          */
-         const savedTemplates = window?.activeTemplatesConfig || [];
-         const activeTemplateFromSavedTemplates = savedTemplates.find(
-            (tem) => tem.isActive,
-         );
-         const currentTemplate = this.templates.find(
-            (tem) => tem.id === activeTemplateFromSavedTemplates?.id,
-         );
-         const script = document.createElement("script");
-         script.src = (currentTemplate ? currentTemplate : this.templates[0])?.scriptLink;
-         script.type = "module";
-         document.body.append(script);
-
-         // Then we initialize runtime state placeholders for the active template and active page editor
          this.activeTemplate = null;
          this.activePageOnTemplate = null;
 
-         /**
-          * Then, once the template script has finished loading, we initialize the active template configuration,
-          * resolve the default page editor state, and finally trigger the application initialization sequence
-          */
-         script.onload = () => {
-            // First, we initialize the active template by merging the saved array data with the master schema when id match
-            this.activeTemplate = (() => {
-               if (
-                  activeTemplateFromSavedTemplates &&
-                  activeTemplateFromSavedTemplates?.id
-               ) {
+         (async () => {
+            // First we will retrieve the saved template changes from media and append it
+            await fetch(window?.savedTemplatesFileInfo?.url)
+               ?.then((e) => e.text())
+               ?.then((e) => {
+                  const script = document.createElement("script");
+                  script.innerHTML = e;
+                  document.body.append(script);
+                  return e;
+               });
+               
+            /**
+             * Then, we determine the currently active template by searching through the saved configurations array,
+             * then we dynamically load its corresponding script, falling back to the first available template if no
+             * active configuration is found.
+             */
+            const savedTemplates = window?.activeTemplatesConfig || [];
+            const activeTemplateFromSavedTemplates = savedTemplates.find(
+               (tem) => tem.isActive,
+            );
+            const currentTemplate = this.templates.find(
+               (tem) => tem.id === activeTemplateFromSavedTemplates?.id,
+            );
+            const script = document.createElement("script");
+            script.src = (
+               currentTemplate ? currentTemplate : this.templates[0]
+            )?.scriptLink;
+            document.body.append(script);
+
+            /**
+             * Then, once the template script has finished loading, we initialize the active template configuration,
+             * resolve the default page editor state, and finally trigger the application initialization sequence
+             */
+            script.onload = () => {
+               // First, we initialize the active template by merging the saved array data with the master schema when id match
+               this.activeTemplate = (() => {
                   if (
-                     activeTemplateFromSavedTemplates?.name ===
-                     window?.templateCustomizationSchema?.name
+                     activeTemplateFromSavedTemplates &&
+                     activeTemplateFromSavedTemplates?.id
                   ) {
-                     /**
-                      * Merges the specific active template from the saved array into the Master Template Schema.
-                      * We use _.mergeWith to ensure that if we fix a CSS selector or property
-                      * in our code (the schema), those fixes are applied, while still
-                      * preserving the specific 'value' the user entered.
-                      */
-                     return window?._?.mergeWith(
-                        // We clone the schema so we don't mutate the original "Master" object in memory
-                        window._.cloneDeep(window?.templateCustomizationSchema),
-                        activeTemplateFromSavedTemplates,
-                        (objectValue, srcValue, key) => {
-                           // --- STEP 1: USER DATA OVERWRITES ---
-                           // If the current property is 'value' (the actual color/text)
-                           // or 'isTurnedOn' (the toggle state), we want the user's saved data.
-                           if (key === "value" || key === "isTurnedOn") {
-                              return srcValue;
-                           }
+                     if (
+                        activeTemplateFromSavedTemplates?.name ===
+                        window?.templateCustomizationSchema?.name
+                     ) {
+                        /**
+                         * Merges the specific active template from the saved array into the Master Template Schema.
+                         * We use _.mergeWith to ensure that if we fix a CSS selector or property
+                         * in our code (the schema), those fixes are applied, while still
+                         * preserving the specific 'value' the user entered.
+                         */
+                        return window?._?.mergeWith(
+                           // We clone the schema so we don't mutate the original "Master" object in memory
+                           window._.cloneDeep(window?.templateCustomizationSchema),
+                           activeTemplateFromSavedTemplates,
+                           (objectValue, srcValue, key) => {
+                              // --- STEP 1: USER DATA OVERWRITES ---
+                              // If the current property is 'value' (the actual color/text)
+                              // or 'isTurnedOn' (the toggle state), we want the user's saved data.
+                              if (key === "value" || key === "isTurnedOn") {
+                                 return srcValue;
+                              }
 
-                           // --- STEP 2: RECURSIVE DRILLING ---
-                           // If the current property is an Object or Array (a "branch"),
-                           // we return 'undefined' to tell Lodash to keep digging deeper.
-                           if (window._.isObject(objectValue)) {
-                              return undefined;
-                           }
+                              // --- STEP 2: RECURSIVE DRILLING ---
+                              // If the current property is an Object or Array (a "branch"),
+                              // we return 'undefined' to tell Lodash to keep digging deeper.
+                              if (window._.isObject(objectValue)) {
+                                 return undefined;
+                              }
 
-                           // --- STEP 3: SCHEMA PROTECTION (THE LOCK) ---
-                           // For every other structural property, we prioritize 'objectValue'
-                           // to ensure the latest code fixes overwrite any stale saved data.
-                           return objectValue;
-                        },
-                     );
+                              // --- STEP 3: SCHEMA PROTECTION (THE LOCK) ---
+                              // For every other structural property, we prioritize 'objectValue'
+                              // to ensure the latest code fixes overwrite any stale saved data.
+                              return objectValue;
+                           },
+                        );
+                     } else {
+                        return window.templateCustomizationSchema;
+                     }
                   } else {
                      return window.templateCustomizationSchema;
                   }
-               } else {
-                  return window.templateCustomizationSchema;
-               }
-            })();
+               })();
 
-            // Then we will select the default page editor configuration from the active template
-            this.activePageOnTemplate = this.activeTemplate?.pages[0]?.editor;
+               // Then we will select the default page editor configuration from the active template
+               this.activePageOnTemplate = this.activeTemplate?.pages[0]?.editor;
 
-            // Finally we will invoke the initialization sequence to start the application
-            this.initializers.init();
-         };
+               // Finally we will invoke the initialization sequence to start the application
+               this.initializers.init();
+            };
 
-         // Finally we will retrieve the authentication token by parsing the product data from the cookies
-         const productData = JSON.parse(window.atob($cookies.get("acat")));
-         this.token = productData?.tokenId;
+            // Finally we will retrieve the authentication token by parsing the product data from the cookies
+            const productData = JSON.parse(window.atob($cookies.get("acat")));
+            this.token = productData?.tokenId;
+         })();
       }
 
       // Initializer module
@@ -711,51 +729,51 @@
          initFloatingWidgetToggler: () => {
             // First we will define the visual styles and HTML structure for the floating toggle button
             const html = `
-                        <style>
-                        .editor-floating-toggler {
-                            position: fixed;
-                            bottom: 30px;
-                            right: 30px;
-                            width: 60px;
-                            height: 60px;
-                            background-color: white;
-                            border-radius: 50%;
-                            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
-                            z-index: 2147483647;
-                            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                            border: 2px solid black;
-                        }
+                           <style>
+                           .editor-floating-toggler {
+                               position: fixed;
+                               bottom: 30px;
+                               right: 30px;
+                               width: 60px;
+                               height: 60px;
+                               background-color: white;
+                               border-radius: 50%;
+                               box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                               display: flex;
+                               align-items: center;
+                               justify-content: center;
+                               cursor: pointer;
+                               z-index: 2147483647;
+                               transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                               border: 2px solid black;
+                           }
 
-                        .editor-floating-toggler:hover {
-                            transform: scale(1.1) rotate(10deg);
-                            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-                            background-color: black;
-                            border-color: black;
-                        }
+                           .editor-floating-toggler:hover {
+                               transform: scale(1.1) rotate(10deg);
+                               box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+                               background-color: black;
+                               border-color: black;
+                           }
 
-                        .editor-floating-toggler svg {
-                            width: 24px;
-                            height: 24px;
-                            color: black;
-                            stroke-width: 2px;
-                            pointer-events: none;
-                            transition: color 0.3s ease;
-                        }
+                           .editor-floating-toggler svg {
+                               width: 24px;
+                               height: 24px;
+                               color: black;
+                               stroke-width: 2px;
+                               pointer-events: none;
+                               transition: color 0.3s ease;
+                           }
 
-                        .editor-floating-toggler:hover svg {
-                            color: white;
-                        }
-                        </style>
-                        <div class="editor-floating-toggler">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                            </svg>
-                        </div>
-                    `;
+                           .editor-floating-toggler:hover svg {
+                               color: white;
+                           }
+                           </style>
+                           <div class="editor-floating-toggler">
+                               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                   <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                               </svg>
+                           </div>
+                       `;
 
             // Then we will inject the floating widget into the document body
             document.body.insertAdjacentHTML("beforeend", html);
@@ -832,17 +850,17 @@
 
             // Then we will inject the customization sidebar HTML into the application container
             const sidebarHTML = `
-                        <div class="editor-customizer-sidebar active">
-                            <div class="editor-customizer-sidebar__content">
-                                <p style="font-size: 20px; text-align:center; padding-block: 30px; margin-inline: 10px;">👋 Click any editable element to start customizing</p>
-                            </div>
-                            <div class="editor-customizer-sidebar__footer">
-                                <button class="editor-customizer-sidebar__footer__button editor-customizer-exit">Exit</button>  
-                                <button class="editor-customizer-sidebar__footer__button editor-customizer-hide" onclick="this.closest('.editor-customizer-sidebar').classList.remove('active')">Hide</button>  
-                                <button class="editor-customizer-sidebar__footer__button editor-customizer-save"></button>      
-                            </div>
-                        </div>
-                    `;
+                           <div class="editor-customizer-sidebar active">
+                               <div class="editor-customizer-sidebar__content">
+                                   <p style="font-size: 20px; text-align:center; padding-block: 30px; margin-inline: 10px;">👋 Click any editable element to start customizing</p>
+                               </div>
+                               <div class="editor-customizer-sidebar__footer">
+                                   <button class="editor-customizer-sidebar__footer__button editor-customizer-exit">Exit</button>
+                                   <button class="editor-customizer-sidebar__footer__button editor-customizer-hide" onclick="this.closest('.editor-customizer-sidebar').classList.remove('active')">Hide</button>
+                                   <button class="editor-customizer-sidebar__footer__button editor-customizer-save"></button>
+                               </div>
+                           </div>
+                       `;
             document.querySelector("#app").insertAdjacentHTML("beforeend", sidebarHTML);
 
             // Then we will initialize/show the global contents settings after a short delay
@@ -1000,11 +1018,11 @@
                   }
                })();
                a += `
-                    <div class="editor-customizer-item__form__item__input__group">
-                        <h3 class="editor-customizer-item__form__item__input__group__name">${c.name}</h3>
-                        ${input}
-                    </div>
-                `;
+                       <div class="editor-customizer-item__form__item__input__group">
+                           <h3 class="editor-customizer-item__form__item__input__group__name">${c.name}</h3>
+                           ${input}
+                       </div>
+                   `;
                return a;
             }, "");
 
@@ -1061,11 +1079,11 @@
                      );
                   })();
                   a += `
-                        <div class="editor-customizer-item__form__item__input__group">
-                            <p class="editor-customizer-item__form__item__input__group__name">${c.name}</p> 
-                            ${input}
-                        </div>
-                        `;
+                           <div class="editor-customizer-item__form__item__input__group">
+                               <p class="editor-customizer-item__form__item__input__group__name">${c.name}</p>
+                               ${input}
+                           </div>
+                           `;
                   return a;
                },
                "",
@@ -1113,11 +1131,11 @@
                      );
                   })();
                   ac += `
-                        <div class="editor-customizer-item__form__item__input__group">
-                            <p class="editor-customizer-item__form__item__input__group__name">${cc.name}</p> 
-                            ${input}
-                        </div>
-                    `;
+                           <div class="editor-customizer-item__form__item__input__group">
+                               <p class="editor-customizer-item__form__item__input__group__name">${cc.name}</p>
+                               ${input}
+                           </div>
+                       `;
                   return ac;
                }, "");
 
@@ -1132,25 +1150,25 @@
 
                // Then we will append this feature (toggle + customizations) into the features HTML
                a += `
-                    <div class="editor-customizer-item__form__item__input__group feature">
-                        <h3 class="editor-customizer-item__form__item__input__group__name__toggler" onClick="this.parentElement.classList.toggle('active')">
-                            ${c.name}
-                            <i class="fa-solid fa-angle-right"></i>
-                        </h3>
-                        <div class="editor-customizer-item__form__item__input__group__content">
-                            <div class="editor-customizer-item__form__item__input__group__toggler">
-                            <input 
-                                class="editor-customizer-item__form__item__input__group__input" 
-                                type="checkbox"
-                                ${c.isTurnedOn ? "checked" : ""}
-                                onInput="${toggleFeatureInlineJs}" 
-                            />    
-                            <p>Turn On Feature</p>
-                            </div>
-                            <div class="editor-customizer-item__form__item__input__group__customizations">${customizationHTML}</div>    
-                        </div>
-                    </div>
-                `;
+                       <div class="editor-customizer-item__form__item__input__group feature">
+                           <h3 class="editor-customizer-item__form__item__input__group__name__toggler" onClick="this.parentElement.classList.toggle('active')">
+                               ${c.name}
+                               <i class="fa-solid fa-angle-right"></i>
+                           </h3>
+                           <div class="editor-customizer-item__form__item__input__group__content">
+                               <div class="editor-customizer-item__form__item__input__group__toggler">
+                               <input
+                                   class="editor-customizer-item__form__item__input__group__input"
+                                   type="checkbox"
+                                   ${c.isTurnedOn ? "checked" : ""}
+                                   onInput="${toggleFeatureInlineJs}"
+                               />
+                               <p>Turn On Feature</p>
+                               </div>
+                               <div class="editor-customizer-item__form__item__input__group__customizations">${customizationHTML}</div>
+                           </div>
+                       </div>
+                   `;
 
                // Finally we return the accumulator
                return a;
@@ -1178,36 +1196,36 @@
                   return a;
                }, "");
                return `
-                    <div class="editor-customizer-category">
-                        ${tabItems}
-                    </div>
-                `;
+                       <div class="editor-customizer-category">
+                           ${tabItems}
+                       </div>
+                   `;
             })();
 
             // Then we will compile the entire form HTML by combining CSS, Element, and Feature sections
             const formItemFallbackHTML = `<p style="font-size: 15px; font-style: normal; text-align: center;">- No Settings -</p>`;
             const form = `
-                    <div class="editor-customizer-header">
-                        <i class="fa-solid fa-arrow-left editor-customizer-header__global" onclick="window.window.MembershipCustomization.initializers.initializeGlobalContents()"></i>
-                        <p class="editor-customizer-header__text">
-                            ${globalName ? `${globalName}<br/>` : ""}
-                            ${templateItem.label}
-                        </p>
-                        <div></div>
-                    </div>
-                    ${editorTabsHTML}
-                    <div class="editor-customizer-item__form">
-                        <div class="editor-customizer-item__form__item" data-category-type="contents">
-                            ${elementCustomizationHTML || formItemFallbackHTML}
-                        </div>  
-                        <div class="editor-customizer-item__form__item active" data-category-type="styles">
-                            ${cssCustomizationHtml || formItemFallbackHTML}
-                        </div>
-                        <div class="editor-customizer-item__form__item" data-category-type="advance">
-                            ${featuresHTML || formItemFallbackHTML}
-                        </div>  
-                    </div>
-                `;
+                       <div class="editor-customizer-header">
+                           <i class="fa-solid fa-arrow-left editor-customizer-header__global" onclick="window.window.MembershipCustomization.initializers.initializeGlobalContents()"></i>
+                           <p class="editor-customizer-header__text">
+                               ${globalName ? `${globalName}<br/>` : ""}
+                               ${templateItem.label}
+                           </p>
+                           <div></div>
+                       </div>
+                       ${editorTabsHTML}
+                       <div class="editor-customizer-item__form">
+                           <div class="editor-customizer-item__form__item" data-category-type="contents">
+                               ${elementCustomizationHTML || formItemFallbackHTML}
+                           </div>
+                           <div class="editor-customizer-item__form__item active" data-category-type="styles">
+                               ${cssCustomizationHtml || formItemFallbackHTML}
+                           </div>
+                           <div class="editor-customizer-item__form__item" data-category-type="advance">
+                               ${featuresHTML || formItemFallbackHTML}
+                           </div>
+                       </div>
+                   `;
 
             // Finally we will inject the generated form into the sidebar
             $sidebarContent.innerHTML = form;
@@ -1227,13 +1245,13 @@
                const globalItemElements = c?.customizations?.reduce((ac, cc) => {
                   // We will generate a clickable global contents item which will open the element editor in global mode
                   ac += `
-                      <div class="global-contents-item__item" onclick="window.MembershipCustomization.initializers.initializeElementEditor('${cc.key}','template1',document.querySelector('${cc.elementSelector}'), true, '${c.name}');">
-                          <p class="global-contents-item__item__title">
-                              ${cc.label}
-                              <i class="fa-solid fa-angle-right"></i>
-                          </p>
-                      </div>
-                  `;
+                         <div class="global-contents-item__item" onclick="window.MembershipCustomization.initializers.initializeElementEditor('${cc.key}','template1',document.querySelector('${cc.elementSelector}'), true, '${c.name}');">
+                             <p class="global-contents-item__item__title">
+                                 ${cc.label}
+                                 <i class="fa-solid fa-angle-right"></i>
+                             </p>
+                         </div>
+                     `;
 
                   // Finally we will return the accumulator
                   return ac;
@@ -1241,28 +1259,28 @@
 
                // Finally we will push the current global item into accumulator
                a += `
-                    <div class="global-contents-item">
-                        <div class="global-contents-item__toggler" onClick="this.parentElement.classList.toggle('active')">
-                            <p>${c.name}</p>    
-                            <i class="fa-solid fa-angle-right"></i>
-                        </div>    
-                        <div class="global-contents-item__wrapper">${globalItemElements}</div>
-                    </div>
-               `;
+                       <div class="global-contents-item">
+                           <div class="global-contents-item__toggler" onClick="this.parentElement.classList.toggle('active')">
+                               <p>${c.name}</p>
+                               <i class="fa-solid fa-angle-right"></i>
+                           </div>
+                           <div class="global-contents-item__wrapper">${globalItemElements}</div>
+                       </div>
+                  `;
                return a;
             }, "");
 
             // Finally we will render the fully generated global contents into the sidebar content area
             $sidebarContent.innerHTML = `
-                <div class="global-contents">
-                    <div class="global-contents__header">
-                        <div></div>
-                        <p class="global-contents__header__text">Global</p>    
-                        <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipCustomization.initializers.initializeThemeSelector()"></i> 
-                    </div>
-                    ${globalItemsHTML}
-                </div>
-            `;
+                   <div class="global-contents">
+                       <div class="global-contents__header">
+                           <div></div>
+                           <p class="global-contents__header__text">Global</p>
+                           <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipCustomization.initializers.initializeThemeSelector()"></i>
+                       </div>
+                       ${globalItemsHTML}
+                   </div>
+               `;
          },
 
          // This method will initialize the theme selector sidebar
@@ -1279,32 +1297,32 @@
                   const controllerHTML = (() => {
                      if (this.activeTemplate.id === c.id) {
                         return `
-                            <div class="theme-selector__list__item__controller">
-                                <p class="theme-selector__list__item__controller__info">Current</p>
-                            </div>
-                        `;
+                               <div class="theme-selector__list__item__controller">
+                                   <p class="theme-selector__list__item__controller__info">Current</p>
+                               </div>
+                           `;
                      } else {
                         return `
-                        <div class="theme-selector__list__item__controller">
-                            <a href="#" onclick="window.MembershipCustomization.actions.updateTemplateToProductsCustomJs('${c.id}')" class="theme-selector__list__item__controller__button">
-                                <i class="fa-solid fa-check"></i>
-                            </a>   
-                            <a href="${c.previewLink}" target="__blank" class="theme-selector__list__item__controller__button">
-                                <i class="fa-solid fa-eye"></i>    
-                            </a>    
-                        </div>       
-                        `;
+                           <div class="theme-selector__list__item__controller">
+                               <a href="#" onclick="window.MembershipCustomization.actions.updateTemplateToProductsCustomJs('${c.id}')" class="theme-selector__list__item__controller__button">
+                                   <i class="fa-solid fa-check"></i>
+                               </a>
+                               <a href="${c.previewLink}" target="__blank" class="theme-selector__list__item__controller__button">
+                                   <i class="fa-solid fa-eye"></i>
+                               </a>
+                           </div>
+                           `;
                      }
                   })();
                   a += `
-                    <div class="theme-selector__list__item">
-                        <div class="theme-selector__list__item__content">
-                            <img src="${c.imageUrl}" class="theme-selector__list__item__image" />
-                            ${controllerHTML}
-                        </div>
-                        <p class="theme-selector__list__item__title">${c.title}</p>
-                    </div>
-                    `;
+                       <div class="theme-selector__list__item">
+                           <div class="theme-selector__list__item__content">
+                               <img src="${c.imageUrl}" class="theme-selector__list__item__image" />
+                               ${controllerHTML}
+                           </div>
+                           <p class="theme-selector__list__item__title">${c.title}</p>
+                       </div>
+                       `;
                   return a;
                }, "");
                return `<div class="theme-selector__list">${itemHTML}</div>`;
@@ -1312,15 +1330,15 @@
 
             // Finally we will render the fully generated HTML into the sidebar content area
             $sidebarContent.innerHTML = `
-                <div class="theme-selector">
-                    <div class="theme-selector__header">
-                        <i class="fa-solid fa-arrow-left theme-selector__header__icon" onclick="window.MembershipCustomization.initializers.initializeGlobalContents()"></i>
-                        <p class="theme-selector__header__text">Templates</p>     
-                        <div></div>
-                    </div>
-                    ${themeHTML}
-                </div>
-            `;
+                   <div class="theme-selector">
+                       <div class="theme-selector__header">
+                           <i class="fa-solid fa-arrow-left theme-selector__header__icon" onclick="window.MembershipCustomization.initializers.initializeGlobalContents()"></i>
+                           <p class="theme-selector__header__text">Templates</p>
+                           <div></div>
+                       </div>
+                       ${themeHTML}
+                   </div>
+               `;
          },
       };
 
@@ -1355,10 +1373,10 @@
                   document.body.insertAdjacentHTML(
                      "beforeend",
                      `
-                        <style id="${templateItemKey}-${featureKey}">
-                            ${featureItem.css(featureItem.customizations)}
-                        </style>
-                    `,
+                           <style id="${templateItemKey}-${featureKey}">
+                               ${featureItem.css(featureItem.customizations)}
+                           </style>
+                       `,
                   );
 
                   // Finally we will insert and execute the feature's JavaScript
@@ -1638,51 +1656,51 @@
             // Then we will generate the HTML strings for both the active page and global styles
             const commonTemplateStyles = (() => {
                return `
-                        <style class="bm-template-style">
-                        ${this.activePageOnTemplate.reduce((a, c) => {
-                           a += `
-                            ${c.elementSelector} {
-                            ${c.cssCustomizations.reduce((ac, cc) => {
-                               const important = cc?.important ? "!important" : "";
-                               if (cc.value) {
-                                  ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
+                           <style class="bm-template-style">
+                           ${this.activePageOnTemplate.reduce((a, c) => {
+                              a += `
+                               ${c.elementSelector} {
+                               ${c.cssCustomizations.reduce((ac, cc) => {
+                                  const important = cc?.important ? "!important" : "";
+                                  if (cc.value) {
+                                     ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
+                                  }
+                                  return ac;
+                               }, "")}
                                }
-                               return ac;
-                            }, "")}
-                            }
-                            `;
-                           return a;
-                        }, "")}
-                        </style>
-                        `;
+                               `;
+                              return a;
+                           }, "")}
+                           </style>
+                           `;
                return "";
             })();
             const globalTemplateStyles = (() => {
                return `
-                        <style class="bm-template-style">
-                        ${this.activeTemplate.global?.reduce((a, c) => {
-                           c.customizations?.forEach((gCustomizations) => {
-                              a += `
-                                    ${gCustomizations?.elementSelector} {
-                                        ${gCustomizations?.cssCustomizations?.reduce(
-                                           (ac, cc) => {
-                                              if (cc.value) {
-                                                 const important = cc?.important
-                                                    ? "!important"
-                                                    : "";
-                                                 ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
-                                              }
-                                              return ac;
-                                           },
-                                           "",
-                                        )}
-                                    }
-                                    `;
-                           });
-                           return a;
-                        }, "")}
-                        </style>
-                        `;
+                           <style class="bm-template-style">
+                           ${this.activeTemplate.global?.reduce((a, c) => {
+                              c.customizations?.forEach((gCustomizations) => {
+                                 a += `
+                                       ${gCustomizations?.elementSelector} {
+                                           ${gCustomizations?.cssCustomizations?.reduce(
+                                              (ac, cc) => {
+                                                 if (cc.value) {
+                                                    const important = cc?.important
+                                                       ? "!important"
+                                                       : "";
+                                                    ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
+                                                 }
+                                                 return ac;
+                                              },
+                                              "",
+                                           )}
+                                       }
+                                       `;
+                              });
+                              return a;
+                           }, "")}
+                           </style>
+                           `;
             })();
 
             // Finally we will insert the fresh style tags with the updated CSS values
@@ -1791,10 +1809,10 @@
                document.body.insertAdjacentHTML(
                   "beforeend",
                   `
-                            <style id="${templateItemKey}-${featureKey}">
-                                ${featureItem.css(featureItem.customizations)}
-                            </style>
-                        `,
+                               <style id="${templateItemKey}-${featureKey}">
+                                   ${featureItem.css(featureItem.customizations)}
+                               </style>
+                           `,
                );
 
                // Finally we will re-insert the fresh script tag with the updated JavaScript
@@ -1863,7 +1881,7 @@
          },
 
          // This method is responsible for saving the user's edits inside the current product custom js in ghl
-         saveEditsToProductsCustomJs: async () => {
+         saveEditsToProductsCustomJs: async (seamlessUpdate = false) => {
             // First we will retrieve the authentication token and extract the location and product IDs from the URL
             const productData = JSON.parse(window.atob($cookies.get("acat")));
             const locationId = productData?.locationId;
@@ -1907,6 +1925,13 @@
                      },
                   );
 
+                  const fileData = await this.actions.uploadTextToGHL(
+                     `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
+                     `${productId}.txt`,
+                  );
+
+                  window.savedTemplatesFileInfo = fileData;
+
                   /**
                    * Then, we attempt to update the product configuration via a PUT request, injecting a rehydration
                    * script into the custom JS field that will revive our stringified functions back into executable code upon page load.
@@ -1926,7 +1951,7 @@
                         "version": "2021-07-28",
                      },
                      body: JSON.stringify({
-                        customJs: `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
+                        customJs: `window.savedTemplatesFileInfo = ${JSON.stringify(fileData)}`,
                      }),
                      redirect: "follow",
                   });
@@ -1938,7 +1963,9 @@
                    * Finally, we provide visual confirmation to the user that their changes have been saved successfully,
                    * or we catch any errors to provide a helpful failure message.
                    */
-                  alert("✅ Your current changes for this page have been saved.");
+                  if (!seamlessUpdate) {
+                     alert("✅ Your current changes for this page have been saved.");
+                  }
                } catch (err) {
                   alert(
                      "❌ Oops! Something went wrong while saving. Try refreshing the page or contact support.",
@@ -1969,7 +1996,10 @@
             // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
             if (this.token) {
                try {
-                  // First we will locate the selected template metadata based on the provided template id
+                  // First we will save the current changes of the current template
+                  await this.actions.saveEditsToProductsCustomJs(true);
+
+                  // Then we will locate the selected template metadata based on the provided template id
                   const selectedTemplate = this.templates.find(
                      (e) => e.id === templateId,
                   );
@@ -2018,6 +2048,13 @@
                      },
                   );
 
+                  const fileData = await this.actions.uploadTextToGHL(
+                     `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
+                     `${productId}.txt`,
+                  );
+
+                  window.savedTemplatesFileInfo = fileData;
+
                   // Then we will attempt to update the product configuration by sending a PUT request with a rehydration script embedded in customJs
                   await fetch(url, {
                      method: "PUT",
@@ -2034,8 +2071,7 @@
                         "version": "2021-07-28",
                      },
                      body: JSON.stringify({
-                        // Finally we will persist the selected template into customJs and rehydrate any serialized functions back into executable form on load
-                        customJs: `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
+                        customJs: `window.savedTemplatesFileInfo = ${JSON.stringify(fileData)}`,
                      }),
                      redirect: "follow",
                   });
@@ -2056,6 +2092,111 @@
             } else {
                // Finally we will block the save action and instruct the user to refresh or contact support when no valid token is available
                alert("❌ Invalid token. Please refresh the page or contact support.");
+            }
+         },
+
+         // This function uploads image to ghl media
+         uploadTextToGHL: async (textContent = "", fileName = "", parentFolder = "") => {
+            const productData = JSON.parse(window.atob($cookies.get("acat")));
+            const blob = new Blob([textContent], { type: "text/plain" });
+            const size = blob.size;
+            const locationId = productData?.locationId;
+            let isError = false;
+            try {
+               const registerResponse = await fetch(
+                  "https://services.leadconnectorhq.com/medias/files/",
+                  {
+                     method: "POST",
+                     headers: {
+                        "Version": "2021-07-28",
+                        "Source": "WEB_USER",
+                        "Channel": "APP",
+                        "Content-Type": "application/json",
+                        "token-id": this.token,
+                     },
+                     body: JSON.stringify({
+                        name: fileName,
+                        contentType: "text/plain",
+                        parentId: parentFolder,
+                        altType: "location",
+                        altId: String(locationId),
+                        size: size,
+                        mode: "public",
+                     }),
+                  },
+               );
+               const registerJSON = await registerResponse.json();
+               await fetch(registerJSON.url, {
+                  method: "PUT",
+                  headers: {
+                     "Content-Type": "text/plain",
+                  },
+                  body: blob,
+               });
+               const validateResponse = await fetch(
+                  "https://services.leadconnectorhq.com/medias/files/verify",
+                  {
+                     method: "POST",
+                     headers: {
+                        "Version": "2021-07-28",
+                        "Source": "WEB_USER",
+                        "Channel": "APP",
+                        "Content-Type": "application/json",
+                        "token-id": this.token,
+                     },
+                     body: JSON.stringify({
+                        altId: String(locationId),
+                        altType: "location",
+                        id: registerJSON.aknId,
+                        mode: "public",
+                     }),
+                  },
+               );
+               const validateJSON = await validateResponse.json();
+               return {
+                  id: validateJSON._id,
+                  altId: validateJSON.altId,
+                  altType: validateJSON.altType,
+                  name: validateJSON.name,
+                  url: validateJSON.url,
+                  size: validateJSON.size,
+               };
+            } catch (err) {
+               isError = true;
+               alert("Something went wrong, please reload or try again.");
+            } finally {
+               if (isError && typeof window.savedTemplatesFileInfo !== "undefined")
+                  return;
+               const de = {
+                  altId: String(window.savedTemplatesFileInfo?.altId),
+                  altType: window.savedTemplatesFileInfo?.altType,
+                  mode: "public",
+                  status: "trashed",
+                  filesToBeDeleted: [
+                     {
+                        _id: String(window.savedTemplatesFileInfo?.id),
+                        altId: String(window.savedTemplatesFileInfo?.altId),
+                        altType: window.savedTemplatesFileInfo?.altType,
+                        parentId: "",
+                        name: window.savedTemplatesFileInfo?.name,
+                        url: window.savedTemplatesFileInfo?.url,
+                        size: window.savedTemplatesFileInfo?.size,
+                        contentType: "text/plain",
+                        isPrivate: false,
+                     },
+                  ],
+               };
+               fetch("https://services.leadconnectorhq.com/medias/delete-files", {
+                  method: "PUT",
+                  headers: {
+                     "Version": "2021-07-28",
+                     "Source": "WEB_USER",
+                     "Channel": "APP",
+                     "Content-Type": "application/json",
+                     "token-id": this.token,
+                  },
+                  body: JSON.stringify(de),
+               });
             }
          },
       };
@@ -2161,14 +2302,14 @@
 
             // Finally return the actual HTML for the widget
             return `
-                    <div class="widget-multi-input" data-template-key="${templateKey}" data-property="${property}">
-                        <input type="number" placeholder="Top" data-side="top" value="${top.replace("px", "")}">
-                        <input type="number" placeholder="Right" data-side="right" value="${right.replace("px", "")}">
-                        <input type="number" placeholder="Bottom" data-side="bottom" value="${bottom.replace("px", "")}">
-                        <input type="number" placeholder="Left" data-side="left" value="${left.replace("px", "")}">
-                        <input type="number" placeholder="All" data-side="all" value="${all.replace("px", "")}">
-                    </div>
-                `;
+                       <div class="widget-multi-input" data-template-key="${templateKey}" data-property="${property}">
+                           <input type="number" placeholder="Top" data-side="top" value="${top.replace("px", "")}">
+                           <input type="number" placeholder="Right" data-side="right" value="${right.replace("px", "")}">
+                           <input type="number" placeholder="Bottom" data-side="bottom" value="${bottom.replace("px", "")}">
+                           <input type="number" placeholder="Left" data-side="left" value="${left.replace("px", "")}">
+                           <input type="number" placeholder="All" data-side="all" value="${all.replace("px", "")}">
+                       </div>
+                   `;
          },
          input: (
             templateKey,
@@ -2252,23 +2393,23 @@
             // Finally return the actual HTML for the widget
             return isTextArea
                ? `
-                        <textarea 
-                        data-template-key=${templateKey}
-                        data-template-property=${property}
-                        id="${templateKey}${property}"
-                        class="editor-customizer-form__item__input rich-text">${value}</textarea>
-                    `
+                           <textarea
+                           data-template-key=${templateKey}
+                           data-template-property=${property}
+                           id="${templateKey}${property}"
+                           class="editor-customizer-form__item__input rich-text">${value}</textarea>
+                       `
                : `
-                    <input 
-                            class="editor-customizer-form__item__input" 
-                            data-template-key=${templateKey}
-                            data-template-property=${property}
-                            type="${type === "color" ? "text" : type || "text"}" 
-                            value="${value}" 
-                            ${type === "color" ? `data-jscolor='{"alphaChannel":true,"format":"hexa"}'` : ""}
-                            placeholder="${placeholder}"
-                        />
-                    `;
+                       <input
+                               class="editor-customizer-form__item__input"
+                               data-template-key=${templateKey}
+                               data-template-property=${property}
+                               type="${type === "color" ? "text" : type || "text"}"
+                               value="${value}"
+                               ${type === "color" ? `data-jscolor='{"alphaChannel":true,"format":"hexa"}'` : ""}
+                               placeholder="${placeholder}"
+                           />
+                       `;
          },
       };
 

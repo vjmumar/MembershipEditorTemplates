@@ -2980,7 +2980,7 @@ class CourseTemplate {
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e);
-                     sessionStorage.setItem(storageName, e);
+                     sessionStorage.setItem(storageName, JSON.stringify(e));
                   });
             } else {
                console.log("No Token Found!");
@@ -3036,7 +3036,7 @@ class CourseTemplate {
                      // 4. Resolve the promise with the fully structured 'e' object,
                      //    which now contains posts and its aggregated subcategories.
                      resolved(e);
-                     sessionStorage.setItem(storageName, e);
+                     sessionStorage.setItem(storageName, JSON.stringify(e));
                   });
             } else {
                console.log("No Token Found!");
@@ -3071,7 +3071,7 @@ class CourseTemplate {
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e.categories);
-                     sessionStorage.setItem(storageName, e.categories);
+                     sessionStorage.setItem(storageName, JSON.stringify(e.categories));
                   });
             } else {
                console.log("No Token Found!");
@@ -3107,7 +3107,7 @@ class CourseTemplate {
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e);
-                     sessionStorage.setItem(storageName, e);
+                     sessionStorage.setItem(storageName, JSON.stringify(e));
                   });
             } else {
                console.log("No Token Found!");
@@ -3143,7 +3143,7 @@ class CourseTemplate {
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e);
-                     sessionStorage.setItem(storageName, e);
+                     sessionStorage.setItem(storageName, JSON.stringify(e));
                   });
             } else {
                console.log("No Token Found!");

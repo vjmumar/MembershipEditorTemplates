@@ -807,7 +807,7 @@
                   const url = window.location.href;
 
                   // Finally we will iterate through the template pages to find the current view and initialize the editor logic
-                  console.log(this.activePageOnTemplate)
+                  console.log(this.activeTemplate)
                   this.activeTemplate?.pages?.forEach((page) => {
                      const urlRegex = new RegExp(page?.urlRegex);
                      if (urlRegex?.test(url)) {

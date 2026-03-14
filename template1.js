@@ -2073,9 +2073,6 @@ class CourseTemplate {
          // First we will generate the css
          const css = `
                     <style id="loader-styles">
-                        #app {
-                          opacity: 0;
-                        }
                         .template-loader-overlay {
                             position: fixed;
                             top: 0; 
@@ -2243,7 +2240,7 @@ class CourseTemplate {
                this.initializers.initSidebar($container);
                document.body.classList.add("page-dashboard");
             },
-            1000,
+            0,
          );
       },
 

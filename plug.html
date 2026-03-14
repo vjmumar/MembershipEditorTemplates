@@ -1,11 +1,29 @@
 <script>
-    fetch("https://membershipeditor.netlify.app/editor")
-    ?.then((e) => e.text())
-    ?.then(e => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(e, 'text/html');
-        Array.from(doc.head.children).forEach(el => {
-            document.body.prepend(el);
-        })
+  fetch("https://membershipeditor.netlify.app/editor")
+    .then(res => res.text())
+    .then(htmlString => {
+      // 1. Create a dummy div to turn the string into real DOM nodes
+      const temp = document.createElement('div');
+      temp.innerHTML = htmlString;
+
+      // 2. Separate scripts from other tags (CSS/HTML)
+      const scripts = temp.querySelectorAll('script');
+      const otherTags = temp.querySelectorAll('style, div, link, section');
+
+      // 3. Append the CSS and HTML first
+      otherTags.forEach(tag => document.body.appendChild(tag));
+
+      // 4. Inject the Scripts using Blobs (This prevents "Cut Offs")
+      scripts.forEach(oldScript => {
+        const scriptContent = oldScript.textContent;
+        const blob = new Blob([scriptContent], { type: 'text/javascript' });
+        const url = URL.createObjectURL(blob);
+
+        const newScript = document.createElement('script');
+        newScript.src = url;
+        document.body.appendChild(newScript);
+      });
+
+      console.log("Injection complete. No more truncations!");
     });
 </script>

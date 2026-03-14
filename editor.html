@@ -600,7 +600,6 @@
             const currentTemplate = this.templates.find(
                (tem) => tem.id === activeTemplateFromSavedTemplates?.id,
             );
-            console.log(activeTemplateFromSavedTemplates,currentTemplate);
             const script = document.createElement("script");
             script.src = (
                currentTemplate ? currentTemplate : this.templates[0]
@@ -660,6 +659,8 @@
                      return window.templateCustomizationSchema;
                   }
                })();
+
+               console.log(this.activeTemplate);
 
                // Then we will select the default page editor configuration from the active template
                this.activePageOnTemplate = this.activeTemplate?.pages[0]?.editor;

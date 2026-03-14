@@ -2306,7 +2306,7 @@ class CourseTemplate {
                this.initializers.initSidebar($container);
                document.body.classList.add("page-category-posts");
             },
-            1000,
+            0,
          );
       },
 
@@ -3241,9 +3241,13 @@ class CourseTemplate {
             const $element = document.querySelector(elementSelector);
             if ($element) {
                clearInterval(interval);
-               setTimeout(() => {
+               if(cbInvokationDelay) {
+                  setTimeout(() => {
                   cb($element);
                }, cbInvokationDelay);
+               } else {
+                  cb($element)
+               }
             }
          }, 0);
       },

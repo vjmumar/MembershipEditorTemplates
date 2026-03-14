@@ -2046,24 +2046,20 @@ class CourseTemplate {
 
          // Then we will check the URL against regex patterns to determine which page view to load
          if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
-            document.body.classList.add("page-dashboard");
             await this.initializers.initLandingPage();
          } else if (
             /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
                url,
             )
          ) {
-            document.body.classList.add("page-category-posts");
             await this.initializers.initCategoryPostPage();
          } else if (/products\/[0-9a-fA-F-]{36}\/categories\/?(\?.*)?$/.test(url)) {
-            document.body.classList.add("page-categories");
             await this.initializers.initCategoriesPage();
          } else if (
             /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/posts\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
                url,
             )
          ) {
-            document.body.classList.add("page-post");
             await this.initializers.initPostPage();
          } else {
             console.log("No page found");
@@ -2242,6 +2238,7 @@ class CourseTemplate {
                this.initializers.initStyles();
                this.initializers.initNavBar($container);
                this.initializers.initSidebar($container);
+               document.body.classList.add("page-dashboard");
             },
             1000,
          );
@@ -2307,6 +2304,7 @@ class CourseTemplate {
                this.initializers.initStyles();
                this.initializers.initNavBar($container);
                this.initializers.initSidebar($container);
+               document.body.classList.add("page-category-posts");
             },
             1000,
          );
@@ -2344,6 +2342,7 @@ class CourseTemplate {
                this.initializers.initStyles();
                this.initializers.initNavBar($container);
                this.initializers.initSidebar($container);
+               document.body.classList.add("page-categories");
             },
             1000,
          );
@@ -2521,6 +2520,7 @@ class CourseTemplate {
             this.initializers.initStyles();
             this.initializers.initNavBar($container);
             this.initializers.initSidebar($container);
+            document.body.classList.add("page-post");
 
             // Finally we will append all container conditionally
             if (videoContainer) {

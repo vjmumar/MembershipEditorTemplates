@@ -2286,7 +2286,6 @@ class CourseTemplate {
                   "",
                );
 
-               document.body.classList.add("page-category-posts");
                // Finally we will render the Category Page HTML
                $container.innerHTML = `
                     <p class="template-category-post-title">${category?.category?.title}</p>
@@ -2305,8 +2304,9 @@ class CourseTemplate {
                this.initializers.initStyles();
                this.initializers.initNavBar($container);
                this.initializers.initSidebar($container);
+               document.body.classList.add("page-category-posts");
             },
-            100,
+            0,
          );
       },
 

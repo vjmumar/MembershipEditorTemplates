@@ -2254,7 +2254,7 @@ class CourseTemplate {
                   $el?.querySelectorAll("a").forEach((e) => {
                      e.href = `/courses${e.getAttribute("href")}`;
                   });
-                  return $el.innerHTML;
+                  return $el?.innerHTML;
                })();
                const category = await this.data.fetchCategory();
 
@@ -2360,7 +2360,7 @@ class CourseTemplate {
 
             // Then we will create the bread crumbs
             const breadCrumbs = (() => {
-               const $el = document.querySelector("#product-breadcrumbs");
+               const $el = document.querySelector("#product-breadcrumbs, #breadcrumb-container");
                $el?.querySelectorAll("a").forEach((e) => {
                   e.href = `/courses${e.getAttribute("href")}`;
                });

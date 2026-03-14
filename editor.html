@@ -702,7 +702,7 @@
             const url = window.location.href;
 
             // Finally we will iterate through the template pages to find the current view and process it
-            this.activeTemplate.pages.forEach((page) => {
+            this.activeTemplate?.pages?.forEach((page) => {
                // First we will create a new RegExp instance using the regex pattern from the current page configuration
                const urlRegex = new RegExp(page?.urlRegex);
 

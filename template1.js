@@ -2306,7 +2306,7 @@ class CourseTemplate {
                this.initializers.initSidebar($container);
                document.body.classList.add("page-category-posts");
             },
-            0,
+            1000,
          );
       },
 

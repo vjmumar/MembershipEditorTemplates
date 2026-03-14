@@ -2122,7 +2122,7 @@ class CourseTemplate {
          // Finally after 4s we will remove the loader
          setTimeout(() => {
             document.querySelector(".template-loader").style.display = "none";
-         }, 3000);
+         }, 2000);
       },
 
       initLandingPage: async () => {

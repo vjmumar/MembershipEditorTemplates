@@ -576,6 +576,7 @@
          this.activeTemplate = null;
          this.activePageOnTemplate = null;
 
+         // Finally we will initialize the editor
          (async () => {
             // First we will retrieve the saved template changes from media and append it
             await fetch(window?.savedTemplatesFileInfo?.url)
@@ -806,6 +807,7 @@
                   const url = window.location.href;
 
                   // Finally we will iterate through the template pages to find the current view and initialize the editor logic
+                  console.log(this.activePageOnTemplate)
                   this.activeTemplate?.pages?.forEach((page) => {
                      const urlRegex = new RegExp(page?.urlRegex);
                      if (urlRegex?.test(url)) {

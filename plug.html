@@ -3,8 +3,7 @@
     ?.then((e) => e.text())
     ?.then(e => {
         const parser = new DOMParser();
-        const doc = parser.parseFromString(yourTextString, 'text/html');
-
+        const doc = parser.parseFromString(e, 'text/html');
         doc.querySelectorAll("*").forEach(el => {
             document.body.prepend(el);
         })

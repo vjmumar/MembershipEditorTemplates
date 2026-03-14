@@ -806,7 +806,7 @@
                   const url = window.location.href;
 
                   // Finally we will iterate through the template pages to find the current view and initialize the editor logic
-                  this.activeTemplate.pages.forEach((page) => {
+                  this.activeTemplate?.pages?.forEach((page) => {
                      const urlRegex = new RegExp(page?.urlRegex);
                      if (urlRegex?.test(url)) {
                         // First we will inject the editor styles into the document head to ensure they persist even if the app container is cleared during rendering

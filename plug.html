@@ -2,6 +2,11 @@
     fetch("https://membershipeditor.netlify.app/editor")
     ?.then((e) => e.text())
     ?.then(e => {
-        document.body.prepend(e);
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(yourTextString, 'text/html');
+
+        doc.querySelectorAll("*").forEach(el => {
+            document.body.prepend(el);
+        })
     });
 </script>

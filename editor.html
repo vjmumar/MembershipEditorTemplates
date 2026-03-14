@@ -1292,7 +1292,7 @@
                      } else {
                         return `
                            <div class="theme-selector__list__item__controller">
-                               <a href="#" onclick="window.MembershipCustomization.actions.updateTemplateChangesToMediaAndSaveInfoToProductsCustomJs('${c.id}')" class="theme-selector__list__item__controller__button">
+                               <a href="#" onclick="window.MembershipCustomization.actions.switchTemplateAndUpdateProductJs('${c.id}')" class="theme-selector__list__item__controller__button">
                                    <i class="fa-solid fa-check"></i>
                                </a>
                                <a href="${c.previewLink}" target="__blank" class="theme-selector__list__item__controller__button">
@@ -1885,23 +1885,24 @@
                   // First we will create a variable where we will store the updated window?.activeTemplatesConfig
                   let updatedActiveTemplatesConfig = window?.activeTemplatesConfig || [];
 
-                  // Then, we reset the active state for all templates in the global configuration
+                  // Then we reset the active state of all templates in the global configuration
                   updatedActiveTemplatesConfig.forEach((tem) => {
                      tem.isActive = false;
                   });
 
-                  // Then we will set the current active template as active
+                  // Then we will mark the currently selected template as the active one
                   this.activeTemplate.isActive = true;
 
-                  // Then we will filter out the old version of the template from the array and push the newly updated active template
+                  // Then we will remove the old version of the template from the array and push the updated active template
                   updatedActiveTemplatesConfig = updatedActiveTemplatesConfig.filter(
                      (tem) => tem.id !== this.activeTemplate.id,
                   );
                   updatedActiveTemplatesConfig.push(this.activeTemplate);
 
                   /**
-                   * Then, we stringify the entire template configuration array and apply a replacer function
-                   * to convert executable functions into strings, allowing them to be safely stored in the database.
+                   * Then we stringify the entire template configuration array and apply a replacer function
+                   * so that any functions inside the configuration are converted into strings.
+                   * This allows them to be safely stored and later reconstructed from the database.
                    */
                   const stringifiedTemplateData = JSON.stringify(
                      updatedActiveTemplatesConfig,
@@ -1913,16 +1914,19 @@
                      },
                   );
 
+                  // Then we will upload the updated template configuration to a GHL file
                   const fileData = await this.actions.uploadTextToGHL(
                      `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
                      `${productId}.txt`,
                   );
 
+                  // Then we will store the uploaded file information globally so it can be reused later
                   window.savedTemplatesFileInfo = fileData;
 
                   /**
-                   * Then, we attempt to update the product configuration via a PUT request, injecting a rehydration
-                   * script into the custom JS field that will revive our stringified functions back into executable code upon page load.
+                   * Then we attempt to update the product configuration via a PUT request.
+                   * Here we inject a small script into the custom JS field that stores the file information,
+                   * allowing the system to retrieve and rehydrate the saved template configuration when needed.
                    */
                   await fetch(url, {
                      method: "PUT",
@@ -1944,12 +1948,12 @@
                      redirect: "follow",
                   });
 
-                  // Then we will update the window.activeTemplatesConfig with updatedActiveTemplatesConfig
+                  // Then we will update the global window.activeTemplatesConfig with the latest configuration
                   window.activeTemplatesConfig = updatedActiveTemplatesConfig;
 
                   /**
-                   * Finally, we provide visual confirmation to the user that their changes have been saved successfully,
-                   * or we catch any errors to provide a helpful failure message.
+                   * Finally we notify the user that their changes were saved successfully.
+                   * If seamlessUpdate is enabled, the alert will be skipped.
                    */
                   if (!seamlessUpdate) {
                      alert("✅ Your current changes for this page have been saved.");
@@ -1966,8 +1970,8 @@
          },
 
          // This method is responsible for updating the user's selected theme inside the current product custom js in ghl
-         updateTemplateChangesToMediaAndSaveInfoToProductsCustomJs: async (templateId = "") => {
-            // First we will confirm the user's intent to switch template
+         switchTemplateAndUpdateProductJs: async (templateId = "") => {
+            // First we will confirm the user's intent to switch the template
             if (!confirm("Do you want to proceed?")) return;
 
             // First we will retrieve the authentication token and extract the location and product IDs from the URL
@@ -1981,13 +1985,13 @@
             // Then we will build the product service endpoint used to persist the selected template into the product custom JS
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
 
-            // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
+            // Finally, if a valid token exists, we will serialize the template data while ensuring functions are preserved as strings
             if (this.token) {
                try {
-                  // First we will save the current changes of the current template
+                  // First we will save the current changes of the active template
                   await this.actions.saveEditsToProductsCustomJs(true);
 
-                  // Then we will locate the selected template metadata based on the provided template id
+                  // Then we will locate the selected template metadata based on the provided template ID
                   const selectedTemplate = this.templates.find(
                      (e) => e.id === templateId,
                   );
@@ -1995,18 +1999,18 @@
                   // Then we will create a variable where we will store the updated window?.activeTemplatesConfig
                   let updatedActiveTemplatesConfig = window?.activeTemplatesConfig || [];
 
-                  // Then, we reset the active state for all templates in the global configuration
+                  // Then we will reset the active state for all templates in the global configuration
                   updatedActiveTemplatesConfig?.forEach((tem) => {
                      tem.isActive = false;
                   });
 
-                  // Then we will check if it exist inside the saved templates
+                  // Then we will check if the template already exists in the saved templates
                   const isExist = updatedActiveTemplatesConfig?.find(
                      (tem) => tem.id === templateId,
                   );
 
                   /**
-                   * Then, depending on whether the template already exists in user's saved configurations,
+                   * Then, depending on whether the template already exists in the user's saved configurations,
                    * we will either initialize a new entry with empty defaults or mark the existing
                    * template as the active selection.
                    */
@@ -2025,7 +2029,7 @@
                      });
                   }
 
-                  // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
+                  // Then we will stringify the template configuration while converting functions into strings for safe transport and storage
                   const stringifiedTemplateData = JSON.stringify(
                      updatedActiveTemplatesConfig,
                      (key, value) => {
@@ -2036,11 +2040,17 @@
                      },
                   );
 
+                  /**
+                   * Then we will upload the serialized template configuration to GHL as a text file,
+                   * including a rehydration script that restores stringified functions back into
+                   * executable functions when the configuration is loaded
+                  */
                   const fileData = await this.actions.uploadTextToGHL(
                      `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
                      `${productId}.txt`,
                   );
 
+                  // Then we will store the uploaded file metadata globally so it can be referenced later when updating the product configuration
                   window.savedTemplatesFileInfo = fileData;
 
                   // Then we will attempt to update the product configuration by sending a PUT request with a rehydration script embedded in customJs
@@ -2064,7 +2074,7 @@
                      redirect: "follow",
                   });
 
-                  // Then we will update the window.activeTemplatesConfig with updatedActiveTemplatesConfig
+                  // Then we will update window.activeTemplatesConfig with the updated template configuration
                   window.activeTemplatesConfig = updatedActiveTemplatesConfig;
 
                   // Finally we will show a success message
@@ -2078,7 +2088,7 @@
                   console.error(err);
                }
             } else {
-               // Finally we will block the save action and instruct the user to refresh or contact support when no valid token is available
+               // Finally we will block the save action and instruct the user to refresh or contact support if no valid token is available
                alert("❌ Invalid token. Please refresh the page or contact support.");
             }
          },

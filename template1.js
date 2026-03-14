@@ -2240,7 +2240,7 @@ class CourseTemplate {
                this.initializers.initSidebar($container);
                document.body.classList.add("page-dashboard");
             },
-            0,
+            100,
          );
       },
 
@@ -2306,7 +2306,7 @@ class CourseTemplate {
                this.initializers.initSidebar($container);
                document.body.classList.add("page-category-posts");
             },
-            1000,
+            100,
          );
       },
 
@@ -2344,7 +2344,7 @@ class CourseTemplate {
                this.initializers.initSidebar($container);
                document.body.classList.add("page-categories");
             },
-            1000,
+            100,
          );
       },
 

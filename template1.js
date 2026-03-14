@@ -2063,9 +2063,7 @@ class CourseTemplate {
          }
 
          // Then we will append a class to the body indicating that the template is ready
-        setTimeout(() => {
-          document.body.classList.add("template-ready");
-        },1000);
+         document.body.classList.add("template-ready");
 
          // Finally we will initialize the loading
          this.initializers.initLoading();
@@ -2119,7 +2117,7 @@ class CourseTemplate {
          // Finally after 4s we will remove the loader
          setTimeout(() => {
             document.querySelector(".template-loader").style.display = "none";
-         }, 500);
+         }, 1000);
       },
 
       initLandingPage: async () => {

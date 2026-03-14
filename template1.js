@@ -3238,15 +3238,25 @@ class CourseTemplate {
          cb = (element) => null,
          cbInvokationDelay = 1000,
       ) => {
-         const interval = setInterval(() => {
-            const $element = document.querySelector(elementSelector);
-            if ($element) {
-               clearInterval(interval);
-               setTimeout(() => {
-                  cb($element);
-               }, cbInvokationDelay);
-            }
-         }, 0);
+         // const interval = setInterval(() => {
+         //    const $element = document.querySelector(elementSelector);
+         //    if ($element) {
+         //       clearInterval(interval);
+         //       setTimeout(() => {
+         //          cb($element);
+         //       }, cbInvokationDelay);
+         //    }
+         // }, 0);
+         const observer = new MutationObserver((mutations) => {
+            // Every time GHL changes the DOM, try to re-apply the template
+            cb();
+         });
+
+         // 3. Start watching the body for changes
+         observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+         });
       },
    };
 }

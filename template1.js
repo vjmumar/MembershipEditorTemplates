@@ -2073,6 +2073,9 @@ class CourseTemplate {
          // First we will generate the css
          const css = `
                     <style id="loader-styles">
+                        #app {
+                          opacity: 0;
+                        }
                         .template-loader-overlay {
                             position: fixed;
                             top: 0; 

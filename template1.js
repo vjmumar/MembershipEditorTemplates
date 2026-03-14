@@ -2306,7 +2306,7 @@ class CourseTemplate {
                this.initializers.initSidebar($container);
                document.body.classList.add("page-category-posts");
             },
-            0,
+            100,
          );
       },
 
@@ -2540,7 +2540,7 @@ class CourseTemplate {
                   .querySelector(".template-post-page__comments")
                   ?.append(commentContainer);
             }
-         });
+         },100);
       },
 
       initNavBar: async ($container = null) => {

@@ -2351,12 +2351,12 @@ class CourseTemplate {
       initPostPage: async () => {
          this.utils.waitForElement("#app-container", async ($container) => {
             //First we will fetch all necessary data for the lesson (Post, Category, Completions)
+            const completedPosts = await this.data.fetchCompletedPosts();
             const category = await this.data.fetchCategory();
             const currentPost = await this.data.fetchPost();
             const allPosts = category.category.posts.sort((a, b) =>
                a.sequenceNo > b.sequenceNo ? 1 : -1,
             );
-            const completedPosts = await this.data.fetchCompletedPosts();
 
             // Then we will create the bread crumbs
             const breadCrumbs = (() => {
@@ -2546,7 +2546,6 @@ class CourseTemplate {
       initNavBar: async ($container = null) => {
          // First we will fetch the product details
          const userData = await this.data.fetchUser();
-         console.log(userData);
          const product = await this.data.fetchProduct();
          const logo =
             "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png";
@@ -2957,7 +2956,7 @@ class CourseTemplate {
             .split("/products/")[1]
             .split("?")[0]
             .split("/")[0];
-         const storageName = `${productId}-completed-post`;
+         const storageName = `${productId}-product`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise((resolved, reject) => {

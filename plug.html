@@ -11,7 +11,7 @@
       const otherTags = temp.querySelectorAll('style, div, link, section');
 
       // 3. Append the CSS and HTML first
-      otherTags.forEach(tag => document.body.appendChild(tag));
+      otherTags.forEach(tag => document.head.append(tag));
 
       // 4. Inject the Scripts using Blobs (This prevents "Cut Offs")
       scripts.forEach(oldScript => {
@@ -21,7 +21,7 @@
 
         const newScript = document.createElement('script');
         newScript.src = url;
-        document.body.appendChild(newScript);
+        document.head.append(newScript);
       });
 
       console.log("Injection complete. No more truncations!");

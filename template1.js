@@ -2122,7 +2122,7 @@ class CourseTemplate {
          // Finally after 4s we will remove the loader
          setTimeout(() => {
             document.querySelector(".template-loader").style.display = "none";
-         }, 2000);
+         }, 3000);
       },
 
       initLandingPage: async () => {
@@ -3142,7 +3142,7 @@ class CourseTemplate {
                })
                   .then((e) => e.json())
                   .then((e) => {
-                     resolved(previousCompletedPost || e);
+                     resolved(e);
                      sessionStorage.setItem(storageName, e);
                   });
             } else {

@@ -600,6 +600,7 @@
             const currentTemplate = this.templates.find(
                (tem) => tem.id === activeTemplateFromSavedTemplates?.id,
             );
+            console.log(activeTemplateFromSavedTemplates,currentTemplate);
             const script = document.createElement("script");
             script.src = (
                currentTemplate ? currentTemplate : this.templates[0]

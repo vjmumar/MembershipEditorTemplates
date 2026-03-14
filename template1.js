@@ -3241,13 +3241,9 @@ class CourseTemplate {
             const $element = document.querySelector(elementSelector);
             if ($element) {
                clearInterval(interval);
-               if(cbInvokationDelay) {
-                  setTimeout(() => {
+               setTimeout(() => {
                   cb($element);
                }, cbInvokationDelay);
-               } else {
-                  cb($element)
-               }
             }
          }, 0);
       },

@@ -16,11 +16,12 @@
       // 4. Inject the Scripts using Blobs (This prevents "Cut Offs")
       scripts.forEach(oldScript => {
         const scriptContent = oldScript.textContent;
+        const scriptSrc = oldScript.src;
         const blob = new Blob([scriptContent], { type: 'text/javascript' });
         const url = URL.createObjectURL(blob);
 
         const newScript = document.createElement('script');
-        newScript.src = url;
+        newScript.src = !scriptSrc ? url : scriptSrc;
         document.head.append(newScript);
       });
 

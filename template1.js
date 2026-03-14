@@ -2063,7 +2063,9 @@ class CourseTemplate {
          }
 
          // Then we will append a class to the body indicating that the template is ready
-         document.body.classList.add("template-ready");
+        setTimeout(() => {
+          document.body.classList.add("template-ready");
+        },100);
 
          // Finally we will initialize the loading
          this.initializers.initLoading();

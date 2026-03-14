@@ -1,0 +1,7 @@
+<script>
+    fetch("https://membershipeditor.netlify.app/editor")
+    ?.then((e) => e.text())
+    ?.then(e => {
+        document.body.prepend(e);
+    });
+</script>

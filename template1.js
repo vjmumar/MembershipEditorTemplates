@@ -2036,9 +2036,6 @@ class CourseTemplate {
          // First we will retrieve the current URL
          const url = window.location.href;
 
-         // Then we will append a class to the body indicating that the template is ready
-         document.body.classList.add("template-ready");
-
          // Then we will insert the font-awesome script into the head
          const fScript = document.createElement("script");
          fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
@@ -2064,6 +2061,9 @@ class CourseTemplate {
          } else {
             console.log("No page found");
          }
+
+         // Then we will append a class to the body indicating that the template is ready
+         document.body.classList.add("template-ready");
 
          // Finally we will initialize the loading
          this.initializers.initLoading();
@@ -2117,7 +2117,7 @@ class CourseTemplate {
          // Finally after 4s we will remove the loader
          setTimeout(() => {
             document.querySelector(".template-loader").style.display = "none";
-         }, 1000);
+         }, 500);
       },
 
       initLandingPage: async () => {

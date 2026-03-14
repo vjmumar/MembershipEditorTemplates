@@ -2045,10 +2045,8 @@ class CourseTemplate {
          document.head.append(fScript);
 
          // Then we will check the URL against regex patterns to determine which page view to load
-         if (
-            /products\/[^/]+\/?(\?.*)?$/.test(url)
-         ) {
-            console.log("hello world")
+         if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
+            console.log("hello world");
             document.body.classList.add("page-dashboard");
             this.initializers.initLandingPage();
          } else if (
@@ -2133,11 +2131,8 @@ class CourseTemplate {
             async ($container) => {
                // First we will retrieve the templates and fetch all necessary user and product data
                const userData = await this.data.fetchUser();
-               console.log(userData);
                const userProductProgress = await this.data.fetchUserProductProgress();
-               console.log(userProductProgress);
                const completedPosts = await this.data.fetchCompletedPosts();
-               console.log(completedPosts);
 
                // Then we will process the categories data
                const categories = await (async () => {
@@ -2958,13 +2953,16 @@ class CourseTemplate {
    // This object holds data related methods
    data = {
       fetchProduct: async () => {
-         let previousProduct = null;
+         const locationId = location.href.split(".")[0].replace("https://", "");
+         const productId = location.href
+            .split("/products/")[1]
+            .split("?")[0]
+            .split("/")[0];
+         const storageName = `${productId}-completed-post`;
+         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+
+         if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise((resolved, reject) => {
-            const locationId = location.href.split(".")[0].replace("https://", "");
-            const productId = location.href
-               .split("/products/")[1]
-               .split("?")[0]
-               .split("/")[0];
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
             const acatToken = $cookies.get("acat") || $cookies.get("cat");
             if (acatToken) {
@@ -2981,10 +2979,8 @@ class CourseTemplate {
                })
                   .then((e) => e.json())
                   .then((e) => {
-                     resolved(previousProduct || e);
-                     if (e) {
-                        previousProduct = e;
-                     }
+                     resolved(e);
+                     sessionStorage.setItem(storageName, e);
                   });
             } else {
                console.log("No Token Found!");
@@ -2992,12 +2988,16 @@ class CourseTemplate {
          });
       },
       fetchCategory: async (catId = "") => {
+         const locationId = location.href.split(".")[0].replace("https://", "");
+         const productId = location.href
+            .split("/products/")[1]
+            .split("?")[0]
+            .split("/")[0];
+         const storageName = `${productId}-category`;
+         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+
+         if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise((resolved, reject) => {
-            const locationId = location.href.split(".")[0].replace("https://", "");
-            const productId = location.href
-               .split("/products/")[1]
-               .split("?")[0]
-               .split("/")[0];
             const categoryId =
                catId ||
                location.href.split("/categories/")[1].split("?")[0].split("/")[0];
@@ -3036,6 +3036,7 @@ class CourseTemplate {
                      // 4. Resolve the promise with the fully structured 'e' object,
                      //    which now contains posts and its aggregated subcategories.
                      resolved(e);
+                     sessionStorage.setItem(storageName, e);
                   });
             } else {
                console.log("No Token Found!");
@@ -3043,13 +3044,16 @@ class CourseTemplate {
          });
       },
       fetchCategories: async () => {
-         var previousCategories = null;
+         const locationId = location.href.split(".")[0].replace("https://", "");
+         const productId = location.href
+            .split("/products/")[1]
+            .split("?")[0]
+            .split("/")[0];
+         const storageName = `${productId}-categories`;
+         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+
+         if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise((resolved, reject) => {
-            const locationId = location.href.split(".")[0].replace("https://", "");
-            const productId = location.href
-               .split("/products/")[1]
-               .split("?")[0]
-               .split("/")[0];
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-purchase/categories?product_id=${productId}`;
             const acatToken = $cookies.get("acat") || $cookies.get("cat");
             if (acatToken) {
@@ -3066,10 +3070,8 @@ class CourseTemplate {
                })
                   .then((e) => e.json())
                   .then((e) => {
-                     resolved(previousCategories || e.categories);
-                     if (e.categories) {
-                        previousCategories = e.categories;
-                     }
+                     resolved(e.categories);
+                     sessionStorage.setItem(storageName, e.categories);
                   });
             } else {
                console.log("No Token Found!");
@@ -3077,8 +3079,15 @@ class CourseTemplate {
          });
       },
       fetchPost: async (pId = "") => {
+         const locationId = location.href.split(".")[0].replace("https://", "");
+         const productId = location.href
+            .split("/products/")[1]
+            .split("?")[0]
+            .split("/")[0];
+         const storageName = `${productId}-post`;
+         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+         if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise((resolved, reject) => {
-            const locationId = location.href.split(".")[0].replace("https://", "");
             const postId =
                pId || location.href.split("/posts/")[1].split("?")[0].split("/")[0];
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/posts/${postId}`;
@@ -3098,6 +3107,7 @@ class CourseTemplate {
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e);
+                     sessionStorage.setItem(storageName, e);
                   });
             } else {
                console.log("No Token Found!");
@@ -3105,13 +3115,16 @@ class CourseTemplate {
          });
       },
       fetchCompletedPosts: async (pId = "") => {
-         var previousCompletedPost = null;
+         const locationId = location.href.split(".")[0].replace("https://", "");
+         const productId = location.href
+            .split("/products/")[1]
+            .split("?")[0]
+            .split("/")[0];
+         const storageName = `${productId}-completed-post`;
+         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+
+         if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
-            const locationId = location.href.split(".")[0].replace("https://", "");
-            const productId = location.href
-               .split("/products/")[1]
-               .split("?")[0]
-               .split("/")[0];
             const acatToken = $cookies.get("acat") || $cookies.get("cat");
             if (acatToken) {
                const token = JSON.parse(window.atob(acatToken))?.tokenId;
@@ -3130,9 +3143,7 @@ class CourseTemplate {
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(previousCompletedPost || e);
-                     if (previousCompletedPost) {
-                        previousCompletedPost = e;
-                     }
+                     sessionStorage.setItem(storageName, e);
                   });
             } else {
                console.log("No Token Found!");

@@ -2031,6 +2031,7 @@ class CourseTemplate {
       this.initializers.init();
    }
 
+   // This method holds initializer related method
    initializers = {
       init: async () => {
          // First we will retrieve the current URL
@@ -2043,6 +2044,8 @@ class CourseTemplate {
 
          // Then we will append a class to the body indicating that the template is ready
          document.body.classList.add("template-ready");
+
+         // Then we will show the loader
          this.initializers.initLoading(true);
 
          // Then we will check the URL against regex patterns to determine which page view to load
@@ -2066,7 +2069,7 @@ class CourseTemplate {
             console.log("No page found");
          }
 
-         // Finally we will initialize the loading
+         // Finally we will hide the loader
          setTimeout(() => {
             this.initializers.initLoading(false);
          }, 1000);
@@ -2136,443 +2139,423 @@ class CourseTemplate {
       },
 
       initLandingPage: async () => {
-         await this.utils.waitForElement(
-            ".product-container",
-            async ($container) => {
-               // First we will retrieve the necessary data
-               const [userData, userProductProgress, completedPosts, productCategories] =
-                  await Promise.allSettled([
-                     this.data.fetchUser(),
-                     this.data.fetchUserProductProgress(),
-                     this.data.fetchCompletedPosts(),
-                     this.data.fetchCategories(),
-                  ]).then((res) => res.map((e) => e.value));
+         // First we will wait for the product container
+         const $container = await this.utils.waitForElement(".product-container", 0);
 
-               // Then we will process the categories data
-               const categories = productCategories
-                  .filter((cat) => !cat?.parentCategory)
-                  ?.map((cat) => ({
-                     thumbnail:
-                        cat?.posterImage ||
-                        "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
-                     title: cat.title,
-                     url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
-                  }));
+         // Then we will retrieve the necessary data
+         const [userData, userProductProgress, completedPosts, productCategories] =
+            await Promise.allSettled([
+               this.data.fetchUser(),
+               this.data.fetchUserProductProgress(),
+               this.data.fetchCompletedPosts(),
+               this.data.fetchCategories(),
+            ]).then((res) => res.map((e) => e.value));
 
-               // Then we will generate the link and text for the banner button
-               const bannerButtonLinkAndText = (() => {
-                  // First, we initialize the default button variables
-                  let text = "Let's Start";
-                  let nextPost = null;
+         // Then we will process the categories data
+         const categories = productCategories
+            .filter((cat) => !cat?.parentCategory)
+            ?.map((cat) => ({
+               thumbnail:
+                  cat?.posterImage ||
+                  "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
+               title: cat.title,
+               url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
+            }));
 
-                  // Then we will fetch the course categories to organize them into a sorted, flat array of posts.
-                  const allPosts = (() => {
-                     // First we will retrieve all of the categories
-                     let allCategories = productCategories;
+         // Then we will generate the link and text for the banner button
+         const bannerButtonLinkAndText = (() => {
+            // First, we initialize the default button variables
+            let text = "Let's Start";
+            let nextPost = null;
 
-                     // Then we will sort categories by sequence number
-                     allCategories = allCategories.sort((a, b) =>
-                        a.sequenceNo > b.sequenceNo ? 1 : -1,
-                     );
+            // Then we will fetch the course categories to organize them into a sorted, flat array of posts.
+            const allPosts = (() => {
+               // First we will retrieve all of the categories
+               let allCategories = productCategories;
 
-                     // Then we will nest sub-categories and sort internal posts
-                     allCategories.forEach((e) => {
-                        if (e.parentCategory) {
-                           e.posts = e.posts.sort((a, b) =>
-                              a.sequenceNo > b.sequenceNo ? 1 : -1,
-                           );
-                           allCategories.forEach((ca) => {
-                              if (ca.id === e.parentCategory) {
-                                 allCategories = allCategories.filter(
-                                    (fCa) => fCa.id !== e.id,
-                                 );
-                                 ca.posts.push(e);
-                                 ca.posts = ca.posts.sort((a, b) =>
-                                    a.sequenceNo > b.sequenceNo ? 1 : -1,
-                                 );
-                              }
-                           });
-                        }
-                     });
-
-                     // Then we will flatten the hierarchy into a single searchable list of posts with indexed positions
-                     let index = 0;
-                     const allPost = allCategories?.reduce((a, c) => {
-                        c?.posts?.forEach((post) => {
-                           index++;
-                           if (post?.posts) {
-                              post?.posts.forEach((subPost) => {
-                                 subPost.index = index;
-                                 a.push(subPost);
-                              });
-                           } else {
-                              post.index = index;
-                              a.push(post);
-                           }
-                        });
-                        return a;
-                     }, []);
-
-                     // Finally we will return all of the post
-                     return allPost;
-                  })();
-
-                  // Then, we check the user's progress to determine if we should show "Resume Course" and find the next post in the sequence, or simply start from the beginning.
-                  if (userProductProgress?.completedPosts >= 1) {
-                     const lastCompletedPost = allPosts.find(
-                        (e) => e.id === completedPosts?.[0]?.postId,
-                     );
-                     text = "Resume Course";
-                     nextPost = allPosts[lastCompletedPost?.index || 0 + 1];
-                  } else {
-                     nextPost = allPosts[0];
-                  }
-
-                  // Finally, we return the button object containing the display text and the constructed URL path for the next lesson.
-                  return {
-                     text,
-                     link: `/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`,
-                  };
-               })();
-
-               // Finally we will inject the Dashboard HTML and initialize the navigation components
-               $container.innerHTML = `
-                    <div class='template-container'>
-                        <div class="dashboard">
-                                ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", bannerButtonLinkAndText.text, bannerButtonLinkAndText.link)}
-                                <div class="dashboard__wrapper">
-                                    ${this.widgets.communityToggle()}
-                                    ${this.widgets.heroBanner()}
-                                    <div class="dashboard__categories">
-                                        <p class="dashboard__categories__title">Categories</p>
-                                        ${this.widgets.categoryGrid(categories)}      
-                                    </div>  
-                                </div>
-                        </div>
-                    </div>
-                    `;
-               this.initializers.initStyles();
-               this.initializers.initNavBar($container);
-               this.initializers.initSidebar($container);
-               document.body.classList.add("page-dashboard");
-            },
-            0,
-         );
-      },
-
-      initCategoryPostPage: async () => {
-         this.utils.waitForElement(
-            "#app-container",
-            async ($container) => {
-               // First we will fetch the category data and prepare the breadcrumbs
-               const breadCrumbs = (() => {
-                  const $el = document.querySelector(
-                     "#product-breadcrumbs, #breadcrumb-container",
-                  );
-                  $el?.querySelectorAll("a").forEach((e) => {
-                     e.href = `/courses${e.getAttribute("href")}`;
-                  });
-                  return $el?.innerHTML;
-               })();
-               const category = await this.data.fetchCategory();
-
-               // Then we will helper function to map posts to our data structure
-               const generatePosts = (posts = []) => {
-                  return posts?.map((post) => ({
-                     thumbnail:
-                        post?.posterImage ||
-                        "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/site/24410/products/4YTC9RNTS7KLyCz4UWmw_pexels-alexy-almond-3758056.jpg",
-                     title: post.title,
-                     url: `/courses/products/${post?.productId}/categories/${post?.categoryId}/posts/${post?.id}`,
-                  }));
-               };
-
-               // Then we will build the HTML for subcategories if they exist
-               const subCategoriesHTML = category?.category?.subCategories?.reduce(
-                  (a, c) => {
-                     const posts = generatePosts(c.posts);
-                     a += `
-                            <div class="template-category-post__sub-categories__item">
-                                <p class="template-category-post__sub-categories__item__title">${c.title}</p>
-                                <div class="template-category-post__sub-categories__item__posts">
-                                    ${this.widgets.postGrid(posts)}      
-                                </div>  
-                            </div>
-                        `;
-                     return a;
-                  },
-                  "",
-               );
-
-               // Finally we will render the Category Page HTML
-               $container.innerHTML = `
-                    <p class="template-category-post-title">${category?.category?.title}</p>
-                    <div class='template-container'>
-                        <div class="template-category-post">
-                            <div class="template-category-post__breadcrumbs">${breadCrumbs}</div>
-                            <div class="template-category-post__wrapper">
-                                <div class="template-category-post__posts">
-                                    ${this.widgets.postGrid(generatePosts(category?.category?.posts))}      
-                                </div>  
-                                ${subCategoriesHTML}
-                            </div>
-                        </div>
-                    </div>
-                    `;
-               this.initializers.initStyles();
-               this.initializers.initNavBar($container);
-               this.initializers.initSidebar($container);
-               document.body.classList.add("page-category-posts");
-            },
-            100,
-         );
-      },
-
-      initCategoriesPage: async () => {
-         this.utils.waitForElement(
-            "#app-container",
-            async ($container) => {
-               // First we will fetch all categories and filter out subcategories
-               const categories = await (async () => {
-                  const data = await this.data.fetchCategories();
-                  return data
-                     .filter((cat) => !cat?.parentCategory)
-                     ?.map((cat) => ({
-                        thumbnail:
-                           cat?.posterImage ||
-                           "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/site/24410/products/4YTC9RNTS7KLyCz4UWmw_pexels-alexy-almond-3758056.jpg",
-                        title: cat.title,
-                        url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
-                     }));
-               })();
-
-               // Finally we will render the Categories List Page
-               $container.innerHTML = `
-                    <p class="template-categories-title">Categories</p>
-                    <div class='template-container'>
-                        <div class="template-categories__list">
-                            <div class="template-categories__wrapper">
-                                ${this.widgets.categoryGrid(categories)}      
-                            </div>
-                        </div>
-                    </div>
-                    `;
-               this.initializers.initStyles();
-               this.initializers.initNavBar($container);
-               this.initializers.initSidebar($container);
-               document.body.classList.add("page-categories");
-            },
-            100,
-         );
-      },
-
-      initPostPage: async () => {
-         this.utils.waitForElement(
-            "#app-container",
-            async ($container) => {
-               //First we will fetch all necessary data for the lesson (Post, Category, Completions)
-               const [completedPosts, category, currentPost] = await Promise.allSettled([
-                  this.data.fetchCompletedPosts(),
-                  this.data.fetchCategory(),
-                  this.data.fetchPost(),
-               ]).then((res) => res.map((e) => e.value));
-               const allPosts = category.category.posts.sort((a, b) =>
+               // Then we will sort categories by sequence number
+               allCategories = allCategories.sort((a, b) =>
                   a.sequenceNo > b.sequenceNo ? 1 : -1,
                );
 
-               // Then we will create the bread crumbs
-               const breadCrumbs = (() => {
-                  const $el = document.querySelector(
-                     "#product-breadcrumbs, #breadcrumb-container",
-                  );
-                  $el?.querySelectorAll("a").forEach((e) => {
-                     e.href = `/courses${e.getAttribute("href")}`;
-                  });
-                  return $el.innerHTML;
-               })();
-
-               // Then we will scrape and prepare the existing DOM elements (Video, Audio, Comments)
-               const videoContainer = (() => {
-                  const videoContainer = document.querySelector(
-                     ".video-player-container",
-                  );
-                  const embedContainer = document.querySelector(".embedded-media-player");
-                  return videoContainer || embedContainer || "";
-               })();
-               const audioContainer = (() => {
-                  const audioContainer = document.querySelector(
-                     ".audio-player-container",
-                  );
-                  return audioContainer || "";
-               })();
-               const commentContainer = (() => {
-                  const $commentElement = Array.from(
-                     document.querySelectorAll("div"),
-                  ).filter((e) => e.innerText === "Comments");
-                  return $commentElement?.length ? $commentElement[0]?.parentElement : "";
-               })();
-
-               // Then we will build the header HTML including navigation arrows and completion buttons
-               const headerHTML = (() => {
-                  const leftArrowHTML = (() => {
-                     const currentPostIndex = allPosts.findIndex(
-                        (p) => p.sequenceNo === currentPost.sequenceNo,
+               // Then we will nest sub-categories and sort internal posts
+               allCategories.forEach((e) => {
+                  if (e.parentCategory) {
+                     e.posts = e.posts.sort((a, b) =>
+                        a.sequenceNo > b.sequenceNo ? 1 : -1,
                      );
-                     const canGoToPrevious = currentPostIndex && allPosts.length !== 1;
-                     if (canGoToPrevious) {
-                        const previousPost = allPosts[currentPostIndex - 1];
-                        return `<a class="template-post-page-header__arrow prev" href="${`/courses/products/${previousPost?.productId}/categories/${previousPost?.categoryId}/posts/${previousPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
-                     }
-                     return "";
-                  })();
-                  const rightArrowHTML = (() => {
-                     const currentPostIndex = allPosts.findIndex(
-                        (p) => p.sequenceNo === currentPost.sequenceNo,
-                     );
-                     const lastPostIndexOfCategory = allPosts.findIndex(
-                        (p) => p.sequenceNo === allPosts.slice(-1)[0].sequenceNo,
-                     );
-                     const canGoToNextPost =
-                        allPosts.length !== 1 &&
-                        currentPostIndex !== lastPostIndexOfCategory;
-                     if (canGoToNextPost) {
-                        const nextPost = allPosts[currentPostIndex + 1];
-                        return `<a class="template-post-page-header__arrow next" href="${`/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
-                     }
-                     return "";
-                  })();
-                  const downloadsHTML = (() => {
-                     if (currentPost?.post_materials?.length) {
-                        return this.widgets.downloadSelect(currentPost?.post_materials);
-                     }
-                     return "";
-                  })();
-
-                  // Then we will create the Mark as Complete button
-                  const markAsCompleteButton = (() => {
-                     const locationId = location.href
-                        .split(".")[0]
-                        .replace("https://", "");
-                     const productId = location.href
-                        .split("/products/")[1]
-                        .split("?")[0]
-                        .split("/")[0];
-                     const acatToken = $cookies.get("acat") || $cookies.get("cat");
-                     const token = JSON.parse(window.atob(acatToken))?.tokenId;
-                     window.addEventListener("click", async (e) => {
-                        if (
-                           e.target.classList.contains(
-                              "template-post-page-header__mark-as-complete",
-                           )
-                        ) {
-                           const isCompleted =
-                              e.target.getAttribute("data-is-completed") === "true";
-                           if (!isCompleted) {
-                              const req = await fetch(
-                                 `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion`,
-                                 {
-                                    method: "POST",
-                                    headers: {
-                                       "accept": "application/json, text/plain, */*",
-                                       "accept-language": "en-US,en;q=0.6",
-                                       "authorization": `Bearer ${token}`,
-                                       "content-type": "application/json",
-                                       "channel": "APP",
-                                    },
-                                    body: JSON.stringify({
-                                       percentage: 100,
-                                       postId: currentPost.id,
-                                       productId: productId,
-                                    }),
-                                 },
-                              );
-                              const reqData = await req.json();
-                              e.target.innerText = "Lesson Done";
-                              e.target.setAttribute("data-is-completed", "true");
-                              e.target.getAttribute("data-uncomplete-id", reqData?.id);
-                           } else {
-                              const unCompleteId =
-                                 e.target.getAttribute("data-uncomplete-id");
-                              await fetch(
-                                 `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion/${unCompleteId}`,
-                                 {
-                                    headers: {
-                                       "accept": "application/json, text/plain, */*",
-                                       "accept-language": "en-US,en;q=0.6",
-                                       "authorization": `Bearer ${token}`,
-                                       "channel": "APP",
-                                    },
-                                    method: "DELETE",
-                                 },
-                              );
-                              e.target.innerText = "Complete This Lesson";
-                              e.target.setAttribute("data-is-completed", "false");
-                           }
+                     allCategories.forEach((ca) => {
+                        if (ca.id === e.parentCategory) {
+                           allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
+                           ca.posts.push(e);
+                           ca.posts = ca.posts.sort((a, b) =>
+                              a.sequenceNo > b.sequenceNo ? 1 : -1,
+                           );
                         }
                      });
-                     const postInsideCompletedPost = completedPosts.find(
-                        (e) => e.postId === currentPost.id,
-                     );
-                     if (!postInsideCompletedPost) {
-                        return `<button class="template-post-page-header__mark-as-complete" data-is-completed='false'>Complete This Lesson</button>`;
+                  }
+               });
+
+               // Then we will flatten the hierarchy into a single searchable list of posts with indexed positions
+               let index = 0;
+               const allPost = allCategories?.reduce((a, c) => {
+                  c?.posts?.forEach((post) => {
+                     index++;
+                     if (post?.posts) {
+                        post?.posts.forEach((subPost) => {
+                           subPost.index = index;
+                           a.push(subPost);
+                        });
                      } else {
-                        return `<button class="template-post-page-header__mark-as-complete" data-is-completed='true' data-uncomplete-id='${postInsideCompletedPost?.id}'>Lesson Done</button>`;
+                        post.index = index;
+                        a.push(post);
                      }
-                  })();
+                  });
+                  return a;
+               }, []);
 
-                  // Finallly we will create the header template
-                  return `
-                            <div class="template-post-page-header">
-                                ${downloadsHTML}  
-                                ${markAsCompleteButton}
-                                ${leftArrowHTML}
-                                ${rightArrowHTML}  
-                            </div>
-                        `;
-               })();
+               // Finally we will return all of the post
+               return allPost;
+            })();
 
-               // Then we will render the page and re-attach the scraped elements (video, audio, comments)
-               $container.innerHTML = `
-                        ${headerHTML}
-                        <div class='template-container'>
-                            <div class="template-post-page">
-                                <div class="template-post-page__breadcrumbs">${breadCrumbs}</div>
-                                <div class="template-post-page__wrapper">
-                                    <p class="template-post-page__title">${currentPost?.title || ""}</p>
-                                    <div class="template-post-page__video"></div>    
-                                    <div class="template-post-page__audio"></div>
-                                    <div class="template-post-page__description">${currentPost?.description || ""}</div>  
-                                    <div class="template-post-page__comments"></div>  
-                                </div>
-                            </div>
-                        </div>
-                    `;
-               this.initializers.initStyles();
-               this.initializers.initNavBar($container);
-               this.initializers.initSidebar($container);
-               document.body.classList.add("page-post");
+            // Then, we check the user's progress to determine if we should show "Resume Course" and find the next post in the sequence, or simply start from the beginning.
+            if (userProductProgress?.completedPosts >= 1) {
+               const lastCompletedPost = allPosts.find(
+                  (e) => e.id === completedPosts?.[0]?.postId,
+               );
+               text = "Resume Course";
+               nextPost = allPosts[lastCompletedPost?.index || 0 + 1];
+            } else {
+               nextPost = allPosts[0];
+            }
 
-               // Finally we will append all container conditionally
-               if (videoContainer) {
-                  document
-                     .querySelector(".template-post-page__video")
-                     ?.append(videoContainer);
-               }
+            // Finally, we return the button object containing the display text and the constructed URL path for the next lesson.
+            return {
+               text,
+               link: `/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`,
+            };
+         })();
 
-               if (audioContainer) {
-                  document
-                     .querySelector(".template-post-page__audio")
-                     ?.append(audioContainer);
-               }
+         // Then we will inject the Dashboard HTML and initialize the navigation components
+         $container.innerHTML = `
+         <div class='template-container'>
+             <div class="dashboard">
+                     ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", bannerButtonLinkAndText.text, bannerButtonLinkAndText.link)}
+                     <div class="dashboard__wrapper">
+                         ${this.widgets.communityToggle()}
+                         ${this.widgets.heroBanner()}
+                         <div class="dashboard__categories">
+                             <p class="dashboard__categories__title">Categories</p>
+                             ${this.widgets.categoryGrid(categories)}      
+                         </div>  
+                     </div>
+             </div>
+         </div>
+         `;
 
-               if (commentContainer) {
-                  document
-                     .querySelector(".template-post-page__comments")
-                     ?.append(commentContainer);
-               }
-            },
-            100,
+         // Finally we will invoke the necessary initializers
+         this.initializers.initStyles();
+         this.initializers.initNavBar($container);
+         this.initializers.initSidebar($container);
+         document.body.classList.add("page-dashboard");
+      },
+
+      initCategoryPostPage: async () => {
+         // First we will wait for the product container
+         const $container = await this.utils.waitForElement("#app-container", 100);
+
+         // Then we will fetch the category data and prepare the breadcrumbs
+         const breadCrumbs = (() => {
+            const $el = document.querySelector(
+               "#product-breadcrumbs, #breadcrumb-container",
+            );
+            $el?.querySelectorAll("a").forEach((e) => {
+               e.href = `/courses${e.getAttribute("href")}`;
+            });
+            return $el?.innerHTML;
+         })();
+         const category = await this.data.fetchCategory();
+
+         // Then we will helper function to map posts to our data structure
+         const generatePosts = (posts = []) => {
+            return posts?.map((post) => ({
+               thumbnail:
+                  post?.posterImage ||
+                  "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/site/24410/products/4YTC9RNTS7KLyCz4UWmw_pexels-alexy-almond-3758056.jpg",
+               title: post.title,
+               url: `/courses/products/${post?.productId}/categories/${post?.categoryId}/posts/${post?.id}`,
+            }));
+         };
+
+         // Then we will build the HTML for subcategories if they exist
+         const subCategoriesHTML = category?.category?.subCategories?.reduce((a, c) => {
+            const posts = generatePosts(c.posts);
+            a += `
+            <div class="template-category-post__sub-categories__item">
+                <p class="template-category-post__sub-categories__item__title">${c.title}</p>
+                <div class="template-category-post__sub-categories__item__posts">
+                    ${this.widgets.postGrid(posts)}      
+                </div>  
+            </div>
+            `;
+            return a;
+         }, "");
+
+         // Then we will render the Category Page HTML
+         $container.innerHTML = `
+         <p class="template-category-post-title">${category?.category?.title}</p>
+         <div class='template-container'>
+             <div class="template-category-post">
+                 <div class="template-category-post__breadcrumbs">${breadCrumbs}</div>
+                 <div class="template-category-post__wrapper">
+                     <div class="template-category-post__posts">
+                         ${this.widgets.postGrid(generatePosts(category?.category?.posts))}      
+                     </div>  
+                     ${subCategoriesHTML}
+                 </div>
+             </div>
+         </div>
+         `;
+
+         // Finally we will invoke the necessary initializers
+         this.initializers.initStyles();
+         this.initializers.initNavBar($container);
+         this.initializers.initSidebar($container);
+         document.body.classList.add("page-category-posts");
+      },
+
+      initCategoriesPage: async () => {
+         // First we will wait for the product container
+         const $container = await this.utils.waitForElement("#app-container", 100);
+
+         // Then we will fetch all categories and filter out subcategories
+         const categories = await (async () => {
+            const data = await this.data.fetchCategories();
+            return data
+               .filter((cat) => !cat?.parentCategory)
+               ?.map((cat) => ({
+                  thumbnail:
+                     cat?.posterImage ||
+                     "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/site/24410/products/4YTC9RNTS7KLyCz4UWmw_pexels-alexy-almond-3758056.jpg",
+                  title: cat.title,
+                  url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
+               }));
+         })();
+
+         // Then we will render the Categories List Page
+         $container.innerHTML = `
+          <p class="template-categories-title">Categories</p>
+          <div class='template-container'>
+              <div class="template-categories__list">
+                  <div class="template-categories__wrapper">
+                      ${this.widgets.categoryGrid(categories)}      
+                  </div>
+              </div>
+          </div>
+         `;
+
+         // Finally we will invoke the necessary initializers
+         this.initializers.initStyles();
+         this.initializers.initNavBar($container);
+         this.initializers.initSidebar($container);
+         document.body.classList.add("page-categories");
+      },
+
+      initPostPage: async () => {
+         // First we will wait for the product container
+         const $container = await this.utils.waitForElement("#app-container", 100);
+
+         // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
+         const [completedPosts, category, currentPost] = await Promise.allSettled([
+            this.data.fetchCompletedPosts(),
+            this.data.fetchCategory(),
+            this.data.fetchPost(),
+         ]).then((res) => res.map((e) => e.value));
+
+         // Then we will retrieve and sort the posts inside the category
+         const allPosts = category.category.posts.sort((a, b) =>
+            a.sequenceNo > b.sequenceNo ? 1 : -1,
          );
+
+         // Then we will create the bread crumbs
+         const breadCrumbs = (() => {
+            const $el = document.querySelector(
+               "#product-breadcrumbs, #breadcrumb-container",
+            );
+            $el?.querySelectorAll("a").forEach((e) => {
+               e.href = `/courses${e.getAttribute("href")}`;
+            });
+            return $el.innerHTML;
+         })();
+
+         // Then we will scrape and prepare the existing DOM elements (Video, Audio, Comments)
+         const videoContainer = (() => {
+            const videoContainer = document.querySelector(".video-player-container");
+            const embedContainer = document.querySelector(".embedded-media-player");
+            return videoContainer || embedContainer || "";
+         })();
+         const audioContainer = (() => {
+            const audioContainer = document.querySelector(".audio-player-container");
+            return audioContainer || "";
+         })();
+         const commentContainer = (() => {
+            const $commentElement = Array.from(document.querySelectorAll("div")).filter(
+               (e) => e.innerText === "Comments",
+            );
+            return $commentElement?.length ? $commentElement[0]?.parentElement : "";
+         })();
+
+         // Then we will build the header HTML including navigation arrows and completion buttons
+         const headerHTML = (() => {
+            // First we will create the post widgets
+            const leftArrowHTML = (() => {
+               const currentPostIndex = allPosts.findIndex(
+                  (p) => p.sequenceNo === currentPost.sequenceNo,
+               );
+               const canGoToPrevious = currentPostIndex && allPosts.length !== 1;
+               if (canGoToPrevious) {
+                  const previousPost = allPosts[currentPostIndex - 1];
+                  return `<a class="template-post-page-header__arrow prev" href="${`/courses/products/${previousPost?.productId}/categories/${previousPost?.categoryId}/posts/${previousPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
+               }
+               return "";
+            })();
+            const rightArrowHTML = (() => {
+               const currentPostIndex = allPosts.findIndex(
+                  (p) => p.sequenceNo === currentPost.sequenceNo,
+               );
+               const lastPostIndexOfCategory = allPosts.findIndex(
+                  (p) => p.sequenceNo === allPosts.slice(-1)[0].sequenceNo,
+               );
+               const canGoToNextPost =
+                  allPosts.length !== 1 && currentPostIndex !== lastPostIndexOfCategory;
+               if (canGoToNextPost) {
+                  const nextPost = allPosts[currentPostIndex + 1];
+                  return `<a class="template-post-page-header__arrow next" href="${`/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
+               }
+               return "";
+            })();
+            const downloadsHTML = (() => {
+               if (currentPost?.post_materials?.length) {
+                  return this.widgets.downloadSelect(currentPost?.post_materials);
+               }
+               return "";
+            })();
+            const markAsCompleteButton = (() => {
+               const locationId = location.href.split(".")[0].replace("https://", "");
+               const productId = location.href
+                  .split("/products/")[1]
+                  .split("?")[0]
+                  .split("/")[0];
+               const acatToken = $cookies.get("acat") || $cookies.get("cat");
+               const token = JSON.parse(window.atob(acatToken))?.tokenId;
+               window.addEventListener("click", async (e) => {
+                  if (
+                     e.target.classList.contains(
+                        "template-post-page-header__mark-as-complete",
+                     )
+                  ) {
+                     const isCompleted =
+                        e.target.getAttribute("data-is-completed") === "true";
+                     if (!isCompleted) {
+                        const req = await fetch(
+                           `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion`,
+                           {
+                              method: "POST",
+                              headers: {
+                                 "accept": "application/json, text/plain, */*",
+                                 "accept-language": "en-US,en;q=0.6",
+                                 "authorization": `Bearer ${token}`,
+                                 "content-type": "application/json",
+                                 "channel": "APP",
+                              },
+                              body: JSON.stringify({
+                                 percentage: 100,
+                                 postId: currentPost.id,
+                                 productId: productId,
+                              }),
+                           },
+                        );
+                        const reqData = await req.json();
+                        e.target.innerText = "Lesson Done";
+                        e.target.setAttribute("data-is-completed", "true");
+                        e.target.getAttribute("data-uncomplete-id", reqData?.id);
+                     } else {
+                        const unCompleteId = e.target.getAttribute("data-uncomplete-id");
+                        await fetch(
+                           `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion/${unCompleteId}`,
+                           {
+                              headers: {
+                                 "accept": "application/json, text/plain, */*",
+                                 "accept-language": "en-US,en;q=0.6",
+                                 "authorization": `Bearer ${token}`,
+                                 "channel": "APP",
+                              },
+                              method: "DELETE",
+                           },
+                        );
+                        e.target.innerText = "Complete This Lesson";
+                        e.target.setAttribute("data-is-completed", "false");
+                     }
+                  }
+               });
+               const postInsideCompletedPost = completedPosts.find(
+                  (e) => e.postId === currentPost.id,
+               );
+               if (!postInsideCompletedPost) {
+                  return `<button class="template-post-page-header__mark-as-complete" data-is-completed='false'>Complete This Lesson</button>`;
+               } else {
+                  return `<button class="template-post-page-header__mark-as-complete" data-is-completed='true' data-uncomplete-id='${postInsideCompletedPost?.id}'>Lesson Done</button>`;
+               }
+            })();
+
+            // Finallly we will create the header template
+            return `
+            <div class="template-post-page-header">
+                ${downloadsHTML}  
+                ${markAsCompleteButton}
+                ${leftArrowHTML}
+                ${rightArrowHTML}  
+            </div>
+            `;
+         })();
+
+         // Then we will render the page and re-attach the scraped elements (video, audio, comments)
+         $container.innerHTML = `
+         ${headerHTML}
+         <div class='template-container'>
+             <div class="template-post-page">
+                 <div class="template-post-page__breadcrumbs">${breadCrumbs}</div>
+                 <div class="template-post-page__wrapper">
+                     <p class="template-post-page__title">${currentPost?.title || ""}</p>
+                     <div class="template-post-page__video"></div>    
+                     <div class="template-post-page__audio"></div>
+                     <div class="template-post-page__description">${currentPost?.description || ""}</div>  
+                     <div class="template-post-page__comments"></div>  
+                 </div>
+             </div>
+         </div>
+         `;
+
+         // Then we will invoke the necessary initializers
+         this.initializers.initStyles();
+         this.initializers.initNavBar($container);
+         this.initializers.initSidebar($container);
+         document.body.classList.add("page-post");
+
+         // Finally we will append all container conditionally
+         if (videoContainer) {
+            document.querySelector(".template-post-page__video")?.append(videoContainer);
+         }
+
+         if (audioContainer) {
+            document.querySelector(".template-post-page__audio")?.append(audioContainer);
+         }
+
+         if (commentContainer) {
+            document
+               .querySelector(".template-post-page__comments")
+               ?.append(commentContainer);
+         }
       },
 
       initNavBar: async ($container = null) => {
@@ -3270,19 +3253,14 @@ class CourseTemplate {
 
    // Utils module
    utils = {
-      waitForElement: (
-         elementSelector = "",
-         cb = (element) => null,
-         cbInvokationDelay = 1000,
-      ) => {
+      waitForElement: (elementSelector = "", cbInvokationDelay = 1000) => {
          return new Promise((res) => {
             const interval = setInterval(() => {
                const $element = document.querySelector(elementSelector);
                if ($element) {
                   clearInterval(interval);
                   setTimeout(() => {
-                     cb($element);
-                     res(true);
+                     res($element);
                   }, cbInvokationDelay);
                }
             }, 0);

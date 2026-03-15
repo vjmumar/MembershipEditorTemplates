@@ -2082,8 +2082,7 @@ class CourseTemplate {
                             width: 100vw; 
                             height: 100vh;
                             background-color: #ffffff;
-                            z-index: 2147483647; /* Maximum Z-Index */
-                            display: flex;
+                            z-index: 2147483647;
                             align-items: center;
                             justify-content: center;
                             transition: opacity 0.5s ease-out, visibility 0.5s;
@@ -2119,7 +2118,9 @@ class CourseTemplate {
          }
 
          // Finally we will conditionally show/hide the loader
-         document.querySelector(".template-loader").style.display = !shouldShow ? "none" : "flex";
+         setTimeout(() => {
+            document.querySelector(".template-loader").style.display = !shouldShow ? "none" : "flex";
+         },0;)
       },
 
       initLandingPage: async () => {

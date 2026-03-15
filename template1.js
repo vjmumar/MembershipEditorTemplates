@@ -2146,6 +2146,7 @@ class CourseTemplate {
                      this.data.fetchUserProductProgress(),
                      this.data.fetchCompletedPosts(),
                   ]);
+               console.log(userData, userProductProgress, completedPosts);
 
                // Then we will process the categories data
                const categories = await (async () => {

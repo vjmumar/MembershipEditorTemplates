@@ -2129,6 +2129,7 @@ class CourseTemplate {
 
          // Finally we will conditionally show/hide the loader
          setTimeout(() => {
+            console.log(shouldShow)
             document.querySelector(".template-loader").classList[shouldShow ? "add" : "remove"]("active");
          },0);
       },

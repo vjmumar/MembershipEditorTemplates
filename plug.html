@@ -1,4 +1,21 @@
 <script>
+    const isProduct = location.href.includes('/courses/products/');
+    if (isProduct) {
+        document.head.insertAdjacentHTML('beforeend', `
+            <style>
+                body:not(.template-ready) {
+                    opacity: 0 !important;
+                }
+            </style>
+        `);
+    }
+    setTimeout(() => {
+        if (!window.CourseTemplate) {
+            document.body.classList.add("template-ready");
+        }
+    }, 8000);
+</script>
+<script>
   fetch("https://membershipeditor.netlify.app/editor")
     .then(res => res.text())
     .then(htmlString => {

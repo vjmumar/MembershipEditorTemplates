@@ -2028,53 +2028,225 @@ window.templateCustomizationSchema = {
 
 class CourseTemplate {
    constructor() {
-      this.initializers.init();
+      this.init();
    }
 
-   // This method holds initializer related method
-   initializers = {
-      init: async () => {
-         // First we will retrieve the current URL
-         const url = window.location.href;
+   init = async () => {
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+      this?.[isMobile ? "mobileInitializers" : "desktopInitializers"]?.init();
+   };
 
-         // Then we will insert the font-awesome script into the head
-         const fScript = document.createElement("script");
-         fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
-         document.head.append(fScript);
+   globalInitializers = {
+      initNavBar: async ($container = null) => {
+         // First we will fetch the necessary data
+         const [userData, product] = await Promise.allSettled([
+            this.data.fetchUser(),
+            this.data.fetchProduct(),
+         ]).then((res) => res.map((e) => e.value));
 
-         // Then we will append a class to the body indicating that the template is ready
-         document.body.classList.add("template-ready");
+         // Then we will create the default variables
+         const logo =
+            "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png";
+         const defaultLinks = [
+            { text: "Home", url: "/" },
+            { text: "What's New", url: "/whats-new" },
+            { text: "Favorites", url: "/favorites" },
+            { text: "Announcements", url: "/announcements" },
+            { text: "Pilates", url: "/pilates" },
+            { text: "Contact", url: "/contact" },
+         ];
 
-         // Then we will show the loader
-         this.initializers.initLoading(true);
+         // Then we will generate the nav links HTML
+         const linksHTML = defaultLinks.reduce((a, c) => {
+            a += `<a href="${c.url}" class="template-navbar__link">${c.text}</a>`;
+            return a;
+         }, "");
 
-         // Then we will check the URL against regex patterns to determine which page view to load
-         if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
-            await this.initializers.initLandingPage();
-         } else if (
-            /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
-               url,
-            )
-         ) {
-            await this.initializers.initCategoryPostPage();
-         } else if (/products\/[0-9a-fA-F-]{36}\/categories\/?(\?.*)?$/.test(url)) {
-            await this.initializers.initCategoriesPage();
-         } else if (
-            /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/posts\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
-               url,
-            )
-         ) {
-            await this.initializers.initPostPage();
-         } else {
-            console.log("No page found");
-         }
-
-         // Finally we will hide the loader
-         setTimeout(() => {
-            this.initializers.initLoading(false);
-         }, 1000);
+         // Finally we will render the Navbar
+         const html = `
+                    <header class="template-navbar-wrapper" id="custom-navbar">
+                        <a href="/courses/products/${product.id}" class="template-navbar__logo-link"><img src="${logo}" /></a>
+                        <!-- Center: Navigation Links -->
+                        <div class="template-navbar__content">
+                            <i class="fa-solid fa-xmark template-navbar__content__close" onclick="this.parentElement.classList.remove('active')"></i>
+                            <nav class="template-navbar__content__nav-links">${linksHTML}</nav>
+                            <div class="template-navbar__content__actions">
+                                <!-- User Avatar -->
+                                <a href="/account?activeTab=Profile" class="template-navbar__content__avatar" id="navbar-avatar">
+                                    <!-- Placeholder image, ideally replaced with user's actual avatar -->
+                                    <img 
+                                        src="${userData?.avatar || "https://i0.wp.com/s3.amazonaws.com/kajabi-storefronts-production/static_assets/default_avatar.jpg?ssl=1"}" 
+                                        alt="User Avatar" 
+                                        class="template-navbar__content__avatar-img"
+                                    />
+                                </a>
+                            </div>    
+                        </div>
+                        <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
+                    </header>
+                `;
+         ($container || document.querySelector(".product-container")).insertAdjacentHTML(
+            "afterbegin",
+            html,
+         );
       },
+      initSidebar: async ($container = null) => {
+         // First we will fetch all necessary data
+         const [product, categories] = await Promise.allSettled([
+            this.data.fetchProduct(),
+            this.data.fetchCategories(),
+         ]).then((res) => res.map((e) => e.value));
 
+         // Then we will organize subcategories under their parents
+         const allCategories = categories.sort((a, b) =>
+            a.sequenceNo > b.sequenceNo ? 1 : -1,
+         );
+         allCategories.forEach((e) => {
+            if (e.parentCategory) {
+               e.posts = e.posts.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
+               allCategories.forEach((ca) => {
+                  if (ca.id === e.parentCategory) {
+                     allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
+                     ca.posts.push(e);
+                     ca.posts = ca.posts.sort((a, b) =>
+                        a.sequenceNo > b.sequenceNo ? 1 : -1,
+                     );
+                  }
+               });
+            }
+         });
+
+         // Then we will generate the HTML for the sidebar navigation
+         const sideBarCategories = allCategories.reduce((a, c, i) => {
+            const postsHTML = c?.posts.reduce((cPA, cP) => {
+               if (!cP?.posts) {
+                  cPA += `
+                            <a href="${`/courses/products/${cP?.productId}/categories/${cP?.categoryId}/posts/${cP?.id}`}" class="template-sidebar__category__item__post">
+                                <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#748493" fill-rule="nonzero">
+                                            <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
+                                            <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
+                                            <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
+                                        </g>
+                                        <rect class="color-stroke" id="Rectangle" stroke="#748493" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
+                                    </g>
+                                </svg>
+                                <p class="template-sidebar__category__item__post__text">${cP.title}</p>
+                            </a>
+                        `;
+               } else {
+                  const posts = cP.posts.reduce((cPPA, cPP) => {
+                     cPPA += `
+                                    <a href="${`/courses/products/${cPP?.productId}/categories/${cPP?.categoryId}/posts/${cPP?.id}`}" class="template-sidebar__category__item__post">
+                                        <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#748493" fill-rule="nonzero">
+                                                    <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
+                                                    <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
+                                                    <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
+                                                </g>
+                                                <rect class="color-stroke" id="Rectangle" stroke="#748493" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
+                                            </g>
+                                        </svg>
+                                        <p class="template-sidebar__category__item__post__text">${cPP.title}</p>
+                                    </a>
+                                `;
+                     return cPPA;
+                  }, "");
+                  cPA += `
+                            <div class="template-sidebar__category__item__sub-folder">
+                                <div class="template-sidebar__category__item__sub-folder__title">
+                                    <p class="template-sidebar__category__item__sub-folder__title__text">${cP.title}</p>
+                                    <a href="/courses/products/${cP?.productId}/categories/${cP?.id}" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
+                                </div>
+                                <div class="template-sidebar-category__item__sub-folder__posts">
+                                    ${posts}    
+                                </div>
+                            </div>
+                            `;
+               }
+               return cPA;
+            }, "");
+            a += `
+                    <div class="template-sidebar__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
+                        <div class="template-sidebar__category__item__title">
+                            <div class="template-sidebar__category__item__title__content">
+                                <i class="fas fa-angle-right template-sidebar__category__item__title__content__icon"></i>
+                                <p class="template-sidebar__category__item__title__content__title">${c.title}</p>
+                            </div>
+                            <a href="/courses/products/${c?.productId}/categories/${c?.id}" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></a>
+                        </div>
+                        <div class="template-sidebar__category__item__content">
+                            ${postsHTML}     
+                        </div>       
+                    </div>
+                    `;
+            return a;
+         }, "");
+         const html = `
+                    <div class="template-sidebar">
+                        <div class="template-sidebar__content">
+                            <a href="/library" class="template-sidebar__back-button">
+                                <i class="fa-solid fa-angle-left template-sidebar__back-button__icon"></i>
+                                <p class="template-sidebar__back-button__text">Library</p>    
+                            </a>
+                            <a href="/courses/products/${product.id}">
+                                <img class="template-sidebar__logo" src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png">    
+                            </a>
+                            <p class='template-sidebar__titles'>Modules</p>
+                            <div class="template-sidebar__category">
+                                ${sideBarCategories}    
+                            </div>    
+                            <a class="template-sidebar__image" href="#">
+                                <img src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/690ed3310269a35386dd56dd.png" />    
+                            </a>
+                        </div>
+                        <div class="template-sidebar__toggler">
+                            <i class="fa-solid fa-arrow-right-arrow-left open"></i>
+                            <i class="fa-solid fa-x close"></i>    
+                        </div>
+                    </div>
+                `;
+
+         // Finally we will inject the sidebar and attach event listeners for interactivity
+         ($container || document.querySelector(".product-container")).insertAdjacentHTML(
+            "beforebegin",
+            html,
+         );
+         setTimeout(() => {
+            document.body.addEventListener("click", (e) => {
+               if (
+                  e.target.closest(".template-sidebar__category__item__title__content")
+               ) {
+                  const $categoryItem = e.target.closest(
+                     ".template-sidebar__category__item",
+                  );
+                  const isActive = $categoryItem.classList.contains("active");
+                  $categoryItem.classList?.[isActive ? "remove" : "add"]("active");
+               }
+
+               if (
+                  e.target.closest(".template-sidebar__category__item__sub-folder__title")
+               ) {
+                  const $subFolder = e.target.closest(
+                     ".template-sidebar__category__item__sub-folder",
+                  );
+                  const isActive = $subFolder.classList.contains("active");
+                  $subFolder.classList?.[isActive ? "remove" : "add"]("active");
+               }
+
+               if (e.target.closest(".template-sidebar__toggler")) {
+                  const isSidebarActive = document
+                     .querySelector(".template-sidebar")
+                     .classList.contains("active");
+                  document
+                     .querySelector(".template-sidebar")
+                     .classList[isSidebarActive ? "remove" : "add"]("active");
+               }
+            });
+         }, 500);
+      },
       initLoading: (shouldShow = true) => {
          // First we will generate the css
          const css = `
@@ -2136,6 +2308,55 @@ class CourseTemplate {
                .querySelector(".template-loader")
                .classList[shouldShow ? "add" : "remove"]("active");
          }, 0);
+      },
+      initStyles: () => {
+         // !Note: Use https://unminify.com/ to uncompress the styles, and use https://www.textfixer.com/html/compress-html-compression.php to compress again
+         const styles = `<style id="template-global-styles">@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&display=swap");*{font-family:"Quicksand",sans-serif;}@media (max-width:1024px){html{overflow:unset !important;}}</style ><style id="template-widget-styles"> .template-welcome{background:#f7eae7;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;color:#333;font-family:"Poppins",sans-serif;box-shadow:0 2px 4px rgba(0,0,0,0.05);}.template-welcome__left{display:flex;flex-direction:column;gap:5px;}.template-welcome__greeting{font-size:20px;font-weight:600;line-height:24px;margin:0;color:black;}.template-welcome__progress{font-size:10px;line-height:15px;color:black;font-weight:600;letter-spacing:1px;margin:0;display:flex;align-items:center;gap:5px;}.template-welcome__progress-icon{color:black;font-size:16px;}.template-welcome__button{background:#4e3737;color:white;padding:5px 40px;border-radius:4px;text-decoration:none;font-weight:600;font-size:18px;line-height:27px;box-shadow:0 5px 10px 0 rgba(0,0,0,0.2);cursor:pointer;border:none;}.template-hero{display:grid;grid-template-columns:1fr 1fr;gap:30px;width:100%;align-items:stretch;margin:0 auto;}.template-hero__left{display:flex;flex-direction:column;height:100%;padding:20px;background-color:white;}.template-hero__title{font-size:42px;font-weight:900;line-height:58.8px;color:#e1c4ba;margin-bottom:9px;}.template-hero__subtitle{font-size:18px;font-weight:500;list-style:27px;color:#34495e;margin-bottom:25px;display:block;}.template-hero__paragraph{font-size:16px;line-height:1.6;margin-bottom:15px;}.template-hero__right{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);}.template-hero__right iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}.template-categories{padding-top:40px;}.template-categories__title{font-size:32px;font-weight:700;color:#333;margin-bottom:25px;}.template-categories__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}.template-categories__card{background-color:#f7eae7;box-sizing:border-box;box-shadow:0 10px 12px 0 rgba(0,0,0,0.1);display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:100%;border-radius:4px;overflow:hidden;transition:transform 500ms;}.template-categories__card:hover{transform:scale(1.06);}.template-categories__thumbnail{width:100%;height:260px;object-fit:cover;display:block;border-radius:4px 4px 0px 0px;}.template-categories__info{background-color:#f7eae7;color:#2c3e50;font-size:18px;line-height:1.3;flex-grow:1;width:100%;text-align:center;display:flex;justify-content:center;align-items:center;padding:10px 20px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;margin-bottom:0px;border-radius:0px 0px 4px 4px;}.template-categories__title-text{}.template-post{padding-top:40px;}.template-post__title{font-size:32px;font-weight:700;color:#333;margin-bottom:25px;}.template-post__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}.template-post__card{background-color:#f7eae7;box-sizing:border-box;box-shadow:0 10px 12px 0 rgba(0,0,0,0.1);display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:100%;border-radius:4px;overflow:hidden;transition:transform 500ms;}.template-post__card:hover{transform:scale(1.06);}.template-post__thumbnail{width:100%;height:260px;object-fit:cover;display:block;border-radius:4px 4px 0px 0px;}.template-post__info{background-color:#f7eae7;flex-grow:1;width:100%;text-align:center;display:flex;justify-content:center;align-items:center;padding:10px 20px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;margin-bottom:0px;border-radius:0px 0px 4px 4px;font-size:16px;line-height:20px;color:#2c3e50;font-weight:700;}.template-community-container{padding-top:0px;padding-bottom:15px;}.template-community-toggle{display:flex;justify-content:flex-end;width:100%;}.template-community-toggle__button{background:#e1c4ba;box-shadow:0 3px 15px 0 rgba(0,0,0,0.15);padding:6.75px 13.5px;font-size:18px;border-radius:0.25rem;color:#000;width:fit-content;}.template-community-embed{transition:max-height 0.5s ease-out,padding 0.5s ease-out;background:#ffffff;border:1px solid #eee;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-top:10px;display:none;padding:20px;}.template-community-container.active .template-community-embed{display:block;}.template-community-embed iframe,.template-community-embed form{width:100%;height:100%;min-height:350px;border:none;}.template-downloads{position:relative;width:100%;max-width:300px;font-family:"Inter",sans-serif;}.template-downloads__button{--download-text-color:#2b3c4d;--download-dropdown-bg:white;--download-dropdown-border-color:#e5e7eb;--download-dropdown-box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);--download-dropdown-item-icon-color:#9ca3af;--download-dropdown-item-text-color:#374151;display:flex;justify-content:flex-start;align-items:center;width:100%;cursor:pointer;font-size:16px;padding:8px 10px;border-radius:4px;border:1px solid #2b3c4d;color:var(--download-text-color);font-weight:700;position:relative;opacity:0.5;transition:opacity 0.3s,background-color 0.3s,border-color 0.3s;background-color:transparent;box-shadow:none;}.template-downloads.active .template-downloads__button{opacity:1 !important;}.template-downloads__button:hover,.template-downloads--active .template-downloads__button{opacity:1;}.template-downloads__button i{color:var(--download-text-color);font-family:var(--_fa-family) !important;}.template-downloads__label{margin-left:0.5rem;flex-grow:1;text-align:left;}.template-downloads__icon-arrow{transition:transform 0.2s;margin-left:auto;}.template-downloads--active .template-downloads__icon-arrow{transform:rotate(180deg);}.template-downloads__menu{position:absolute;top:calc(100% + 5px);left:0;right:0;background-color:var(--download-dropdown-bg);border:1px solid var(--download-dropdown-border-color);border-radius:0.5rem;z-index:20;list-style:none;padding:0;margin:0;overflow:hidden;box-shadow:var(--download-dropdown-box-shadow);max-height:0;opacity:0;visibility:hidden;transform:translateY(-10px);transition:max-height 0.3s ease-out,opacity 0.3s ease-out,transform 0.3s ease-out;}.template-downloads.active .template-downloads__menu{max-height:200px;opacity:1;visibility:visible;transform:translateY(0);}.template-downloads__item{padding:0;}.template-downloads__item a{display:flex;align-items:center;padding:0.5rem 1rem;color:var(--download-dropdown-item-text-color);text-decoration:none;transition:background-color 0.15s;}.template-downloads__item a i{margin-right:0.75rem;font-family:var(--_fa-family) !important;color:var(--download-driodown-item-icon-color) !important;}@media (max-width:1024px){.template-categories{padding-top:20px;}.template-categories__grid{grid-template-columns:1fr;}.template-categories__thumbnail{height:200px;}.template-categories__title-text{font-size:14px;}.template-post{padding-top:20px;}.template-post__thumbnail{height:200px;}.template-post__title{font-size:14px;}.template-post__grid{grid-template-columns:1fr;}}</style ><style id="template-styles"> .template-sidebar{position:fixed;height:100vh;left:-290px;z-index:999999;transition-duration:0.5s;}.template-sidebar.active{left:0;transition-duration:0.5s;}.template-sidebar__content{width:290px;top:0;max-width:290px;background:#f7eae7;box-shadow:2px 0 5px 0 rgba(0,0,0,0.05);overflow-y:auto;height:100vh;align-self:flex-start;}.template-sidebar__back-button{display:flex;align-items:center;gap:7px;padding:25px 30px 0px;color:black;}.template-sidebar__back-button__icon{padding-bottom:1px;}.template-sidebar__back-button__text{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:600;}.template-sidebar__logo{margin:auto;padding-inline:30px;padding-block:30px;min-width:252px;}.template-sidebar__titles{font-size:16px;color:#34495e;font-weight:700;padding:5px 7px 5px 10px;cursor:pointer;background-color:transparent;border-bottom:solid white;border-top:solid white;line-height:22.4px;}.template-sidebar__category{}.template-sidebar__category__item{}.template-sidebar__category__item__title{color:#34495e;font-weight:400;margin-top:0px;margin-bottom:0px;padding:5px 10px;cursor:pointer;background-color:#e1c4ba4d;border-bottom:solid white;display:flex;align-items:flex-start;justify-content:space-between;cursor:pointer;border-bottom-style:solid;}.template-sidebar__category__item__title__content{display:flex;align-items:flex-start;}.template-sidebar__category__item__title__content__icon{font-size:16px;transition-duration:0.5s;}.template-sidebar__category__item.active .template-sidebar__category__item__title__content__icon{transform:rotate(90deg);transition-duration:0.5s;}.template-sidebar__category__item__title__content__title{font-size:16px;font-weight:600;line-height:22.4px;margin-left:10px;color:#34495e;}.template-sidebar__category__item__title__link i{font-size:16px;padding-top:3px;}.template-sidebar__category__item.active .template-sidebar__category__item__content{display:block;}.template-sidebar__category__item__content{display:none;}.template-sidebar__category__item__post{display:flex;gap:10px;align-items:flex-start;cursor:pointer;margin:5px 20px 5px 25px;}.template-sidebar__category__item__post__icon{width:15px;height:15px;color:black;padding-top:3px;}.template-sidebar__category__item__post__text{color:rgba(52,73,94,0.8);display:block;font-size:15px;line-height:21px;padding-bottom:3px;}.template-sidebar__category__item__sub-folder{margin-block:5px;}.template-sidebar__category__item__sub-folder__title{display:flex;align-items:center;cursor:pointer;width:100%;justify-content:space-between;padding-left:20px;padding-right:10px;}.template-sidebar__category__item__sub-folder__title__icon{font-weight:900;font-size:16px;}.template-sidebar__category__item__sub-folder__title__text{font-size:15px;line-height:21px;color:#34495e;font-weight:700;padding:4px 12px 0px 0px;}.template-sidebar__category__item__sub-folder.active .template-sidebar-category__item__sub-folder__posts{display:block;}.template-sidebar-category__item__sub-folder__posts{padding-left:2px;display:none;}.template-sidebar__image{display:block;border:0.8px solid #97b1b1;border-radius:0px;box-shadow:0 5px 10px 0 rgb(0 0 0 / 5%);background:#ecf0f1;padding:20px;}.template-sidebar__image img{border-radius:8px;}.template-sidebar__toggler{padding-inline:6px;background-color:#e1c4ba;position:absolute;top:0;right:-40px;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;transition:all 0.2s ease-in-out;width:40px;height:100vh;}.template-sidebar__toggler:hover{transition:all 0.2s ease-in-out;}.template-sidebar__toggler i{color:white;font-size:18px;font-family:var(--_fa-family) !important;}.template-sidebar__toggler i.close{display:none;}.template-sidebar.active .template-sidebar__toggler .close{display:block;}.template-sidebar.active .template-sidebar__toggler .open{display:none;}.template-navbar-wrapper{background-image:url(https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2160086492/settings_images/3a2e6eb-114a-16ac-8c6a-3e48adacfe5d_Square_Image_Block_Template_4.jpg);background-size:cover;position:relative;display:flex;align-items:center;justify-content:space-between;padding-block:30px;padding-inline:15px;}.template-navbar-wrapper *{z-index:1;position:relative;}.template-navbar-wrapper::before{content:"";position:absolute;width:100%;height:100%;background-color:#ffffffbf;left:0;top:0;z-index:0;}.template-navbar__logo-link img{margin-left:50px;max-height:100px;}.template-navbar__content{display:flex;align-items:center;gap:18px;}.template-navbar__content__close{display:none;}.template-navbar__content__nav-links{display:flex;align-items:center;gap:20px;}.template-navbar__content__nav-links a{font-size:18px;line-height:100px;font-weight:400;}.template-navbar__content__avatar-img{height:40px;margin-right:20px;border-radius:50%;}.template-navbar__burgermenu{display:none;}.page-dashboard .product-container{width:100%;max-width:calc(100% - 35px);margin-left:auto;min-height:100vh;}.dashboard__wrapper{padding:50px 75px;min-height:100vh;position:relative;background-attachment:fixed;background-position:center;background-size:cover;background-image:url(https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2160127427/settings_images/1d2d445-3de6-711-008c-2a0de02bfc5e_Copy_of_Hero_Background_Image_Template_2880_x_1600px_1_.png);--dashboard-overlay-bg:white;--dashboard-overlay-opacity:0.8;}.dashboard__wrapper::before{content:"";position:absolute;width:100%;height:100%;background-color:var(--dashboard-overlay-bg);opacity:var(--dashboard-overlay-opacity);left:0;top:0;z-index:0;}.dashboard__wrapper *{z-index:1;position:relative;}.dashboard__categories{margin-top:30px;}.dashboard__categories__title{padding:20px 40px 0px;color:#2c3e50;font-size:31.5px;line-height:44.1px;font-weight:600;}.page-category-posts #app-container{width:100%;max-width:calc(100% - 40px);margin-left:auto;}.template-category-post-title{background:#f7eae7;box-shadow:0 5px 10px 0 rgba(0,0,0,0.05);padding:20px 50px;font-size:30px;line-height:42px;font-weight:700;text-align:center;color:#2b3c4d;}.template-category-post{background-color:#e8f0f1;padding:50px;min-height:100vh;position:relative;background-attachment:fixed;background-position:center;background-size:cover;background-image:url(https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2160127427/settings_images/1d2d445-3de6-711-008c-2a0de02bfc5e_Copy_of_Hero_Background_Image_Template_2880_x_1600px_1_.png);--category-post-overlay-bg:white;--category-post-overlay-opacity:0.8;}.template-category-post *{z-index:1;position:relative;}.template-category-post::before{content:"";position:absolute;width:100%;height:100%;background-color:var(--category-post-overlay-bg);opacity:var(--category-post-overlay-opacity);left:0;top:0;z-index:0;}.template-category-post__breadcrumbs{display:flex;justify-content:center;align-items:center;gap:5px;color:#2c3e50;font-size:12px;line-height:18px;font-weight:400;}.template-category-post__sub-categories__item{margin-top:40px;}.template-category-post__sub-categories__item__title{font-size:30px;font-weight:700;}.template-category-post__sub-categories__item .template-post{padding-top:20px;}.page-categories #app-container{width:100%;max-width:calc(100% - 40px);margin-left:auto;}.template-categories-title{background:#f7eae7;box-shadow:0 5px 10px 0 rgba(0,0,0,0.05);padding:20px 50px;font-size:30px;line-height:42px;font-weight:700;text-align:center;color:#2b3c4d;}.template-categories__list{background-color:#e8f0f1;padding:50px;min-height:100vh;position:relative;background-attachment:fixed;background-position:center;background-size:cover;background-image:url(https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2160127427/settings_images/1d2d445-3de6-711-008c-2a0de02bfc5e_Copy_of_Hero_Background_Image_Template_2880_x_1600px_1_.png);--categories-overlay-bg:white;--categories-overlay-opacity:0.8;}.template-categories__list *{z-index:1;position:relative;}.template-categories__list::before{content:"";position:absolute;width:100%;height:100%;background-color:#ecf2f2e6;left:0;top:0;z-index:0;background-color:var(--categories-overlay-bg);opacity:var(--categories-overlay-opacity);}.template-categories__sub-categories__item{margin-top:40px;}.template-categories__sub-categories__item__title{font-size:33px;font-weight:700;}.template-categories__sub-categories__item .template-post{padding-top:20px;}.page-post #app-container{width:100%;max-width:calc(100% - 35px);margin-left:auto;}.template-post-page-header{background:#f7eae7;box-shadow:0 5px 10px 0 rgba(0,0,0,0.05);padding:10px 50px;display:flex;align-items:center;justify-content:center;gap:10px;}.template-post-page-header__mark-as-complete{font-size:16px;padding:8px 10px;border-radius:4px;border:1px solid #2b3c4d;color:#2b3c4d;font-weight:700;opacity:0.5;cursor:pointer;transition-duration:0.3s;}.template-post-page-header__mark-as-complete:hover{transition-duration:0.3s;opacity:1;}.template-post-page-header__arrow{font-size:32px;opacity:0.5;color:#2b3c4d !important;transition-duration:0.3s;display:flex;align-items:center;}.template-post-page-header__arrow.prev{rotate:180deg;}.template-post-page-header__arrow:hover{opacity:1 !important;transition-duration:0.3s;text-decoration:none;}.template-post-page{background-color:#e1c4ba3b;padding:50px;min-height:100vh;position:relative;}.template-post-page__breadcrumbs{display:flex;justify-content:center;align-items:center;gap:5px;color:#2c3e50;font-size:12px;line-height:18px;font-weight:400;}.template-post-page__title{font-size:45px;font-weight:600;text-align:center;margin-top:30px;margin-bottom:20px;color:#2b3c4d;}.template-post-page__video,.template-post-page__audio{max-width:75%;margin-inline:auto;}.template-post-page__description{max-width:60%;margin-inline:auto;margin-top:40px;margin-bottom:40px;}.template-post-page__comments{max-width:60%;margin-inline:auto;}@media (max-width:1024px){.template-navbar-wrapper{padding:13px 10px;}.template-navbar__logo-link{}.template-navbar__logo-link img{margin:0;height:50px;}.template-navbar__burgermenu{display:block;font-family:var(--_fa-family) !important;color:black;font-size:25px;}.template-navbar__content{position:fixed;width:95%;height:100vh;top:0;left:-100%;z-index:999999999999999;background-color:#fffefd;flex-direction:column-reverse;overflow-y:scroll;align-items:flex-start;padding:40px 20px 20px;justify-content:flex-end;transition-duration:0.5s;}.template-navbar__content.active{left:0;box-shadow:0px 0px 0px 100vw #00000054;transition-duration:0.5s;}.template-navbar__content__close{display:block;font-family:var(--_fa-family) !important;color:black;font-size:25px;position:absolute;top:15px;right:15px;z-index:9999;}.template-navbar__content__nav-links{flex-direction:column;align-items:flex-start;margin-top:13px;gap:15px;}.template-navbar__content__nav-links a{font-size:18px;line-height:25px;}.template-sidebar__toggler{width:35px;right:-35px;}.template-sidebar__toggler i{font-size:13px;}.page-dashboard .product-container{width:100%;max-width:calc(100% - 35px);}.page-post #app-container{width:100%;max-width:calc(100% - 35px);}.page-categories #app-container{width:100%;max-width:calc(100% - 35px);}.page-category-posts #app-container{width:100%;max-width:calc(100% - 35px);}.template-category-post__breadcrumbs{font-size:13px;}.template-category-post{padding:10px;}.template-categories-title{padding:10px 15px;font-size:23px;}.template-categories__list{padding:10px;}}</style>`;
+         document.body.insertAdjacentHTML("afterbegin", styles);
+      },
+   };
+
+   desktopInitializers = {
+      init: async () => {
+         // First we will retrieve the current URL
+         const url = window.location.href;
+
+         // Then we will insert the font-awesome script into the head
+         const fScript = document.createElement("script");
+         fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
+         document.head.append(fScript);
+
+         // Then we will append a class to the body indicating that the template is ready
+         document.body.classList.add("template-ready");
+
+         // Then we will show the loader
+         this.globalInitializers.initLoading(true);
+
+         // Then we will check the URL against regex patterns to determine which page view to load
+         if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
+            await this.desktopInitializers.initLandingPage();
+         } else if (
+            /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
+               url,
+            )
+         ) {
+            await this.desktopInitializers.initCategoryPostPage();
+         } else if (/products\/[0-9a-fA-F-]{36}\/categories\/?(\?.*)?$/.test(url)) {
+            await this.desktopInitializers.initCategoriesPage();
+         } else if (
+            /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/posts\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
+               url,
+            )
+         ) {
+            await this.desktopInitializers.initPostPage();
+         } else {
+            console.log("No page found");
+         }
+
+         // Finally we will hide the loader
+         setTimeout(() => {
+            this.globalInitializers.initLoading(false);
+         }, 1000);
       },
 
       initLandingPage: async () => {
@@ -2254,9 +2475,9 @@ class CourseTemplate {
          `;
 
          // Finally we will invoke the necessary initializers
-         this.initializers.initStyles();
-         this.initializers.initNavBar($container);
-         this.initializers.initSidebar($container);
+         this.globalInitializers.initStyles();
+         this.globalInitializers.initNavBar($container);
+         this.globalInitializers.initSidebar($container);
          document.body.classList.add("page-dashboard");
       },
 
@@ -2319,9 +2540,9 @@ class CourseTemplate {
          `;
 
          // Finally we will invoke the necessary initializers
-         this.initializers.initStyles();
-         this.initializers.initNavBar($container);
-         this.initializers.initSidebar($container);
+         this.globalInitializers.initStyles();
+         this.globalInitializers.initNavBar($container);
+         this.globalInitializers.initSidebar($container);
          document.body.classList.add("page-category-posts");
       },
 
@@ -2356,9 +2577,9 @@ class CourseTemplate {
          `;
 
          // Finally we will invoke the necessary initializers
-         this.initializers.initStyles();
-         this.initializers.initNavBar($container);
-         this.initializers.initSidebar($container);
+         this.globalInitializers.initStyles();
+         this.globalInitializers.initNavBar($container);
+         this.globalInitializers.initSidebar($container);
          document.body.classList.add("page-categories");
       },
 
@@ -2538,9 +2759,9 @@ class CourseTemplate {
          `;
 
          // Then we will invoke the necessary initializers
-         this.initializers.initStyles();
-         this.initializers.initNavBar($container);
-         this.initializers.initSidebar($container);
+         this.globalInitializers.initStyles();
+         this.globalInitializers.initNavBar($container);
+         this.globalInitializers.initSidebar($container);
          document.body.classList.add("page-post");
 
          // Finally we will append all container conditionally
@@ -2558,225 +2779,9 @@ class CourseTemplate {
                ?.append(commentContainer);
          }
       },
-
-      initNavBar: async ($container = null) => {
-         // First we will fetch the necessary data
-         const [userData, product] = await Promise.allSettled([
-            this.data.fetchUser(),
-            this.data.fetchProduct(),
-         ]).then((res) => res.map((e) => e.value));
-
-         // Then we will create the default variables
-         const logo =
-            "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png";
-         const defaultLinks = [
-            { text: "Home", url: "/" },
-            { text: "What's New", url: "/whats-new" },
-            { text: "Favorites", url: "/favorites" },
-            { text: "Announcements", url: "/announcements" },
-            { text: "Pilates", url: "/pilates" },
-            { text: "Contact", url: "/contact" },
-         ];
-
-         // Then we will generate the nav links HTML
-         const linksHTML = defaultLinks.reduce((a, c) => {
-            a += `<a href="${c.url}" class="template-navbar__link">${c.text}</a>`;
-            return a;
-         }, "");
-
-         // Finally we will render the Navbar
-         const html = `
-                    <header class="template-navbar-wrapper" id="custom-navbar">
-                        <a href="/courses/products/${product.id}" class="template-navbar__logo-link"><img src="${logo}" /></a>
-                        <!-- Center: Navigation Links -->
-                        <div class="template-navbar__content">
-                            <i class="fa-solid fa-xmark template-navbar__content__close" onclick="this.parentElement.classList.remove('active')"></i>
-                            <nav class="template-navbar__content__nav-links">${linksHTML}</nav>
-                            <div class="template-navbar__content__actions">
-                                <!-- User Avatar -->
-                                <a href="/account?activeTab=Profile" class="template-navbar__content__avatar" id="navbar-avatar">
-                                    <!-- Placeholder image, ideally replaced with user's actual avatar -->
-                                    <img 
-                                        src="${userData?.avatar || "https://i0.wp.com/s3.amazonaws.com/kajabi-storefronts-production/static_assets/default_avatar.jpg?ssl=1"}" 
-                                        alt="User Avatar" 
-                                        class="template-navbar__content__avatar-img"
-                                    />
-                                </a>
-                            </div>    
-                        </div>
-                        <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
-                    </header>
-                `;
-         ($container || document.querySelector(".product-container")).insertAdjacentHTML(
-            "afterbegin",
-            html,
-         );
-      },
-
-      initSidebar: async ($container = null) => {
-         // First we will fetch all necessary data
-         const [product, categories] = await Promise.allSettled([
-            this.data.fetchProduct(),
-            this.data.fetchCategories(),
-         ]).then((res) => res.map((e) => e.value));
-
-         // Then we will organize subcategories under their parents
-         const allCategories = categories.sort((a, b) =>
-            a.sequenceNo > b.sequenceNo ? 1 : -1,
-         );
-         allCategories.forEach((e) => {
-            if (e.parentCategory) {
-               e.posts = e.posts.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
-               allCategories.forEach((ca) => {
-                  if (ca.id === e.parentCategory) {
-                     allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
-                     ca.posts.push(e);
-                     ca.posts = ca.posts.sort((a, b) =>
-                        a.sequenceNo > b.sequenceNo ? 1 : -1,
-                     );
-                  }
-               });
-            }
-         });
-
-         // Then we will generate the HTML for the sidebar navigation
-         const sideBarCategories = allCategories.reduce((a, c, i) => {
-            const postsHTML = c?.posts.reduce((cPA, cP) => {
-               if (!cP?.posts) {
-                  cPA += `
-                            <a href="${`/courses/products/${cP?.productId}/categories/${cP?.categoryId}/posts/${cP?.id}`}" class="template-sidebar__category__item__post">
-                                <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#748493" fill-rule="nonzero">
-                                            <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
-                                            <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
-                                            <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
-                                        </g>
-                                        <rect class="color-stroke" id="Rectangle" stroke="#748493" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
-                                    </g>
-                                </svg>
-                                <p class="template-sidebar__category__item__post__text">${cP.title}</p>
-                            </a>
-                        `;
-               } else {
-                  const posts = cP.posts.reduce((cPPA, cPP) => {
-                     cPPA += `
-                                    <a href="${`/courses/products/${cPP?.productId}/categories/${cPP?.categoryId}/posts/${cPP?.id}`}" class="template-sidebar__category__item__post">
-                                        <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                            <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#748493" fill-rule="nonzero">
-                                                    <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
-                                                    <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
-                                                    <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
-                                                </g>
-                                                <rect class="color-stroke" id="Rectangle" stroke="#748493" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
-                                            </g>
-                                        </svg>
-                                        <p class="template-sidebar__category__item__post__text">${cPP.title}</p>
-                                    </a>
-                                `;
-                     return cPPA;
-                  }, "");
-                  cPA += `
-                            <div class="template-sidebar__category__item__sub-folder">
-                                <div class="template-sidebar__category__item__sub-folder__title">
-                                    <p class="template-sidebar__category__item__sub-folder__title__text">${cP.title}</p>
-                                    <a href="/courses/products/${cP?.productId}/categories/${cP?.id}" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
-                                </div>
-                                <div class="template-sidebar-category__item__sub-folder__posts">
-                                    ${posts}    
-                                </div>
-                            </div>
-                            `;
-               }
-               return cPA;
-            }, "");
-            a += `
-                    <div class="template-sidebar__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
-                        <div class="template-sidebar__category__item__title">
-                            <div class="template-sidebar__category__item__title__content">
-                                <i class="fas fa-angle-right template-sidebar__category__item__title__content__icon"></i>
-                                <p class="template-sidebar__category__item__title__content__title">${c.title}</p>
-                            </div>
-                            <a href="/courses/products/${c?.productId}/categories/${c?.id}" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></a>
-                        </div>
-                        <div class="template-sidebar__category__item__content">
-                            ${postsHTML}     
-                        </div>       
-                    </div>
-                    `;
-            return a;
-         }, "");
-         const html = `
-                    <div class="template-sidebar">
-                        <div class="template-sidebar__content">
-                            <a href="/library" class="template-sidebar__back-button">
-                                <i class="fa-solid fa-angle-left template-sidebar__back-button__icon"></i>
-                                <p class="template-sidebar__back-button__text">Library</p>    
-                            </a>
-                            <a href="/courses/products/${product.id}">
-                                <img class="template-sidebar__logo" src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png">    
-                            </a>
-                            <p class='template-sidebar__titles'>Modules</p>
-                            <div class="template-sidebar__category">
-                                ${sideBarCategories}    
-                            </div>    
-                            <a class="template-sidebar__image" href="#">
-                                <img src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/690ed3310269a35386dd56dd.png" />    
-                            </a>
-                        </div>
-                        <div class="template-sidebar__toggler">
-                            <i class="fa-solid fa-arrow-right-arrow-left open"></i>
-                            <i class="fa-solid fa-x close"></i>    
-                        </div>
-                    </div>
-                `;
-
-         // Finally we will inject the sidebar and attach event listeners for interactivity
-         ($container || document.querySelector(".product-container")).insertAdjacentHTML(
-            "beforebegin",
-            html,
-         );
-         setTimeout(() => {
-            document.body.addEventListener("click", (e) => {
-               if (
-                  e.target.closest(".template-sidebar__category__item__title__content")
-               ) {
-                  const $categoryItem = e.target.closest(
-                     ".template-sidebar__category__item",
-                  );
-                  const isActive = $categoryItem.classList.contains("active");
-                  $categoryItem.classList?.[isActive ? "remove" : "add"]("active");
-               }
-
-               if (
-                  e.target.closest(".template-sidebar__category__item__sub-folder__title")
-               ) {
-                  const $subFolder = e.target.closest(
-                     ".template-sidebar__category__item__sub-folder",
-                  );
-                  const isActive = $subFolder.classList.contains("active");
-                  $subFolder.classList?.[isActive ? "remove" : "add"]("active");
-               }
-
-               if (e.target.closest(".template-sidebar__toggler")) {
-                  const isSidebarActive = document
-                     .querySelector(".template-sidebar")
-                     .classList.contains("active");
-                  document
-                     .querySelector(".template-sidebar")
-                     .classList[isSidebarActive ? "remove" : "add"]("active");
-               }
-            });
-         }, 500);
-      },
-
-      initStyles: () => {
-         // !Note: Use https://unminify.com/ to uncompress the styles, and use https://www.textfixer.com/html/compress-html-compression.php to compress again
-         const styles = `<style id="template-global-styles">@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&display=swap");*{font-family:"Quicksand",sans-serif;}@media (max-width:1024px){html{overflow:unset !important;}}</style ><style id="template-widget-styles"> .template-welcome{background:#f7eae7;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;color:#333;font-family:"Poppins",sans-serif;box-shadow:0 2px 4px rgba(0,0,0,0.05);}.template-welcome__left{display:flex;flex-direction:column;gap:5px;}.template-welcome__greeting{font-size:20px;font-weight:600;line-height:24px;margin:0;color:black;}.template-welcome__progress{font-size:10px;line-height:15px;color:black;font-weight:600;letter-spacing:1px;margin:0;display:flex;align-items:center;gap:5px;}.template-welcome__progress-icon{color:black;font-size:16px;}.template-welcome__button{background:#4e3737;color:white;padding:5px 40px;border-radius:4px;text-decoration:none;font-weight:600;font-size:18px;line-height:27px;box-shadow:0 5px 10px 0 rgba(0,0,0,0.2);cursor:pointer;border:none;}.template-hero{display:grid;grid-template-columns:1fr 1fr;gap:30px;width:100%;align-items:stretch;margin:0 auto;}.template-hero__left{display:flex;flex-direction:column;height:100%;padding:20px;background-color:white;}.template-hero__title{font-size:42px;font-weight:900;line-height:58.8px;color:#e1c4ba;margin-bottom:9px;}.template-hero__subtitle{font-size:18px;font-weight:500;list-style:27px;color:#34495e;margin-bottom:25px;display:block;}.template-hero__paragraph{font-size:16px;line-height:1.6;margin-bottom:15px;}.template-hero__right{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);}.template-hero__right iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}.template-categories{padding-top:40px;}.template-categories__title{font-size:32px;font-weight:700;color:#333;margin-bottom:25px;}.template-categories__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}.template-categories__card{background-color:#f7eae7;box-sizing:border-box;box-shadow:0 10px 12px 0 rgba(0,0,0,0.1);display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:100%;border-radius:4px;overflow:hidden;transition:transform 500ms;}.template-categories__card:hover{transform:scale(1.06);}.template-categories__thumbnail{width:100%;height:260px;object-fit:cover;display:block;border-radius:4px 4px 0px 0px;}.template-categories__info{background-color:#f7eae7;color:#2c3e50;font-size:18px;line-height:1.3;flex-grow:1;width:100%;text-align:center;display:flex;justify-content:center;align-items:center;padding:10px 20px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;margin-bottom:0px;border-radius:0px 0px 4px 4px;}.template-categories__title-text{}.template-post{padding-top:40px;}.template-post__title{font-size:32px;font-weight:700;color:#333;margin-bottom:25px;}.template-post__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}.template-post__card{background-color:#f7eae7;box-sizing:border-box;box-shadow:0 10px 12px 0 rgba(0,0,0,0.1);display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:100%;border-radius:4px;overflow:hidden;transition:transform 500ms;}.template-post__card:hover{transform:scale(1.06);}.template-post__thumbnail{width:100%;height:260px;object-fit:cover;display:block;border-radius:4px 4px 0px 0px;}.template-post__info{background-color:#f7eae7;flex-grow:1;width:100%;text-align:center;display:flex;justify-content:center;align-items:center;padding:10px 20px;box-sizing:border-box;word-wrap:break-word;overflow-wrap:break-word;margin-bottom:0px;border-radius:0px 0px 4px 4px;font-size:16px;line-height:20px;color:#2c3e50;font-weight:700;}.template-community-container{padding-top:0px;padding-bottom:15px;}.template-community-toggle{display:flex;justify-content:flex-end;width:100%;}.template-community-toggle__button{background:#e1c4ba;box-shadow:0 3px 15px 0 rgba(0,0,0,0.15);padding:6.75px 13.5px;font-size:18px;border-radius:0.25rem;color:#000;width:fit-content;}.template-community-embed{transition:max-height 0.5s ease-out,padding 0.5s ease-out;background:#ffffff;border:1px solid #eee;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-top:10px;display:none;padding:20px;}.template-community-container.active .template-community-embed{display:block;}.template-community-embed iframe,.template-community-embed form{width:100%;height:100%;min-height:350px;border:none;}.template-downloads{position:relative;width:100%;max-width:300px;font-family:"Inter",sans-serif;}.template-downloads__button{--download-text-color:#2b3c4d;--download-dropdown-bg:white;--download-dropdown-border-color:#e5e7eb;--download-dropdown-box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);--download-dropdown-item-icon-color:#9ca3af;--download-dropdown-item-text-color:#374151;display:flex;justify-content:flex-start;align-items:center;width:100%;cursor:pointer;font-size:16px;padding:8px 10px;border-radius:4px;border:1px solid #2b3c4d;color:var(--download-text-color);font-weight:700;position:relative;opacity:0.5;transition:opacity 0.3s,background-color 0.3s,border-color 0.3s;background-color:transparent;box-shadow:none;}.template-downloads.active .template-downloads__button{opacity:1 !important;}.template-downloads__button:hover,.template-downloads--active .template-downloads__button{opacity:1;}.template-downloads__button i{color:var(--download-text-color);font-family:var(--_fa-family) !important;}.template-downloads__label{margin-left:0.5rem;flex-grow:1;text-align:left;}.template-downloads__icon-arrow{transition:transform 0.2s;margin-left:auto;}.template-downloads--active .template-downloads__icon-arrow{transform:rotate(180deg);}.template-downloads__menu{position:absolute;top:calc(100% + 5px);left:0;right:0;background-color:var(--download-dropdown-bg);border:1px solid var(--download-dropdown-border-color);border-radius:0.5rem;z-index:20;list-style:none;padding:0;margin:0;overflow:hidden;box-shadow:var(--download-dropdown-box-shadow);max-height:0;opacity:0;visibility:hidden;transform:translateY(-10px);transition:max-height 0.3s ease-out,opacity 0.3s ease-out,transform 0.3s ease-out;}.template-downloads.active .template-downloads__menu{max-height:200px;opacity:1;visibility:visible;transform:translateY(0);}.template-downloads__item{padding:0;}.template-downloads__item a{display:flex;align-items:center;padding:0.5rem 1rem;color:var(--download-dropdown-item-text-color);text-decoration:none;transition:background-color 0.15s;}.template-downloads__item a i{margin-right:0.75rem;font-family:var(--_fa-family) !important;color:var(--download-driodown-item-icon-color) !important;}@media (max-width:1024px){.template-categories{padding-top:20px;}.template-categories__grid{grid-template-columns:1fr;}.template-categories__thumbnail{height:200px;}.template-categories__title-text{font-size:14px;}.template-post{padding-top:20px;}.template-post__thumbnail{height:200px;}.template-post__title{font-size:14px;}.template-post__grid{grid-template-columns:1fr;}}</style ><style id="template-styles"> .template-sidebar{position:fixed;height:100vh;left:-290px;z-index:999999;transition-duration:0.5s;}.template-sidebar.active{left:0;transition-duration:0.5s;}.template-sidebar__content{width:290px;top:0;max-width:290px;background:#f7eae7;box-shadow:2px 0 5px 0 rgba(0,0,0,0.05);overflow-y:auto;height:100vh;align-self:flex-start;}.template-sidebar__back-button{display:flex;align-items:center;gap:7px;padding:25px 30px 0px;color:black;}.template-sidebar__back-button__icon{padding-bottom:1px;}.template-sidebar__back-button__text{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:600;}.template-sidebar__logo{margin:auto;padding-inline:30px;padding-block:30px;min-width:252px;}.template-sidebar__titles{font-size:16px;color:#34495e;font-weight:700;padding:5px 7px 5px 10px;cursor:pointer;background-color:transparent;border-bottom:solid white;border-top:solid white;line-height:22.4px;}.template-sidebar__category{}.template-sidebar__category__item{}.template-sidebar__category__item__title{color:#34495e;font-weight:400;margin-top:0px;margin-bottom:0px;padding:5px 10px;cursor:pointer;background-color:#e1c4ba4d;border-bottom:solid white;display:flex;align-items:flex-start;justify-content:space-between;cursor:pointer;border-bottom-style:solid;}.template-sidebar__category__item__title__content{display:flex;align-items:flex-start;}.template-sidebar__category__item__title__content__icon{font-size:16px;transition-duration:0.5s;}.template-sidebar__category__item.active .template-sidebar__category__item__title__content__icon{transform:rotate(90deg);transition-duration:0.5s;}.template-sidebar__category__item__title__content__title{font-size:16px;font-weight:600;line-height:22.4px;margin-left:10px;color:#34495e;}.template-sidebar__category__item__title__link i{font-size:16px;padding-top:3px;}.template-sidebar__category__item.active .template-sidebar__category__item__content{display:block;}.template-sidebar__category__item__content{display:none;}.template-sidebar__category__item__post{display:flex;gap:10px;align-items:flex-start;cursor:pointer;margin:5px 20px 5px 25px;}.template-sidebar__category__item__post__icon{width:15px;height:15px;color:black;padding-top:3px;}.template-sidebar__category__item__post__text{color:rgba(52,73,94,0.8);display:block;font-size:15px;line-height:21px;padding-bottom:3px;}.template-sidebar__category__item__sub-folder{margin-block:5px;}.template-sidebar__category__item__sub-folder__title{display:flex;align-items:center;cursor:pointer;width:100%;justify-content:space-between;padding-left:20px;padding-right:10px;}.template-sidebar__category__item__sub-folder__title__icon{font-weight:900;font-size:16px;}.template-sidebar__category__item__sub-folder__title__text{font-size:15px;line-height:21px;color:#34495e;font-weight:700;padding:4px 12px 0px 0px;}.template-sidebar__category__item__sub-folder.active .template-sidebar-category__item__sub-folder__posts{display:block;}.template-sidebar-category__item__sub-folder__posts{padding-left:2px;display:none;}.template-sidebar__image{display:block;border:0.8px solid #97b1b1;border-radius:0px;box-shadow:0 5px 10px 0 rgb(0 0 0 / 5%);background:#ecf0f1;padding:20px;}.template-sidebar__image img{border-radius:8px;}.template-sidebar__toggler{padding-inline:6px;background-color:#e1c4ba;position:absolute;top:0;right:-40px;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;transition:all 0.2s ease-in-out;width:40px;height:100vh;}.template-sidebar__toggler:hover{transition:all 0.2s ease-in-out;}.template-sidebar__toggler i{color:white;font-size:18px;font-family:var(--_fa-family) !important;}.template-sidebar__toggler i.close{display:none;}.template-sidebar.active .template-sidebar__toggler .close{display:block;}.template-sidebar.active .template-sidebar__toggler .open{display:none;}.template-navbar-wrapper{background-image:url(https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2160086492/settings_images/3a2e6eb-114a-16ac-8c6a-3e48adacfe5d_Square_Image_Block_Template_4.jpg);background-size:cover;position:relative;display:flex;align-items:center;justify-content:space-between;padding-block:30px;padding-inline:15px;}.template-navbar-wrapper *{z-index:1;position:relative;}.template-navbar-wrapper::before{content:"";position:absolute;width:100%;height:100%;background-color:#ffffffbf;left:0;top:0;z-index:0;}.template-navbar__logo-link img{margin-left:50px;max-height:100px;}.template-navbar__content{display:flex;align-items:center;gap:18px;}.template-navbar__content__close{display:none;}.template-navbar__content__nav-links{display:flex;align-items:center;gap:20px;}.template-navbar__content__nav-links a{font-size:18px;line-height:100px;font-weight:400;}.template-navbar__content__avatar-img{height:40px;margin-right:20px;border-radius:50%;}.template-navbar__burgermenu{display:none;}.page-dashboard .product-container{width:100%;max-width:calc(100% - 35px);margin-left:auto;min-height:100vh;}.dashboard__wrapper{padding:50px 75px;min-height:100vh;position:relative;background-attachment:fixed;background-position:center;background-size:cover;background-image:url(https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2160127427/settings_images/1d2d445-3de6-711-008c-2a0de02bfc5e_Copy_of_Hero_Background_Image_Template_2880_x_1600px_1_.png);--dashboard-overlay-bg:white;--dashboard-overlay-opacity:0.8;}.dashboard__wrapper::before{content:"";position:absolute;width:100%;height:100%;background-color:var(--dashboard-overlay-bg);opacity:var(--dashboard-overlay-opacity);left:0;top:0;z-index:0;}.dashboard__wrapper *{z-index:1;position:relative;}.dashboard__categories{margin-top:30px;}.dashboard__categories__title{padding:20px 40px 0px;color:#2c3e50;font-size:31.5px;line-height:44.1px;font-weight:600;}.page-category-posts #app-container{width:100%;max-width:calc(100% - 40px);margin-left:auto;}.template-category-post-title{background:#f7eae7;box-shadow:0 5px 10px 0 rgba(0,0,0,0.05);padding:20px 50px;font-size:30px;line-height:42px;font-weight:700;text-align:center;color:#2b3c4d;}.template-category-post{background-color:#e8f0f1;padding:50px;min-height:100vh;position:relative;background-attachment:fixed;background-position:center;background-size:cover;background-image:url(https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2160127427/settings_images/1d2d445-3de6-711-008c-2a0de02bfc5e_Copy_of_Hero_Background_Image_Template_2880_x_1600px_1_.png);--category-post-overlay-bg:white;--category-post-overlay-opacity:0.8;}.template-category-post *{z-index:1;position:relative;}.template-category-post::before{content:"";position:absolute;width:100%;height:100%;background-color:var(--category-post-overlay-bg);opacity:var(--category-post-overlay-opacity);left:0;top:0;z-index:0;}.template-category-post__breadcrumbs{display:flex;justify-content:center;align-items:center;gap:5px;color:#2c3e50;font-size:12px;line-height:18px;font-weight:400;}.template-category-post__sub-categories__item{margin-top:40px;}.template-category-post__sub-categories__item__title{font-size:30px;font-weight:700;}.template-category-post__sub-categories__item .template-post{padding-top:20px;}.page-categories #app-container{width:100%;max-width:calc(100% - 40px);margin-left:auto;}.template-categories-title{background:#f7eae7;box-shadow:0 5px 10px 0 rgba(0,0,0,0.05);padding:20px 50px;font-size:30px;line-height:42px;font-weight:700;text-align:center;color:#2b3c4d;}.template-categories__list{background-color:#e8f0f1;padding:50px;min-height:100vh;position:relative;background-attachment:fixed;background-position:center;background-size:cover;background-image:url(https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2160127427/settings_images/1d2d445-3de6-711-008c-2a0de02bfc5e_Copy_of_Hero_Background_Image_Template_2880_x_1600px_1_.png);--categories-overlay-bg:white;--categories-overlay-opacity:0.8;}.template-categories__list *{z-index:1;position:relative;}.template-categories__list::before{content:"";position:absolute;width:100%;height:100%;background-color:#ecf2f2e6;left:0;top:0;z-index:0;background-color:var(--categories-overlay-bg);opacity:var(--categories-overlay-opacity);}.template-categories__sub-categories__item{margin-top:40px;}.template-categories__sub-categories__item__title{font-size:33px;font-weight:700;}.template-categories__sub-categories__item .template-post{padding-top:20px;}.page-post #app-container{width:100%;max-width:calc(100% - 35px);margin-left:auto;}.template-post-page-header{background:#f7eae7;box-shadow:0 5px 10px 0 rgba(0,0,0,0.05);padding:10px 50px;display:flex;align-items:center;justify-content:center;gap:10px;}.template-post-page-header__mark-as-complete{font-size:16px;padding:8px 10px;border-radius:4px;border:1px solid #2b3c4d;color:#2b3c4d;font-weight:700;opacity:0.5;cursor:pointer;transition-duration:0.3s;}.template-post-page-header__mark-as-complete:hover{transition-duration:0.3s;opacity:1;}.template-post-page-header__arrow{font-size:32px;opacity:0.5;color:#2b3c4d !important;transition-duration:0.3s;display:flex;align-items:center;}.template-post-page-header__arrow.prev{rotate:180deg;}.template-post-page-header__arrow:hover{opacity:1 !important;transition-duration:0.3s;text-decoration:none;}.template-post-page{background-color:#e1c4ba3b;padding:50px;min-height:100vh;position:relative;}.template-post-page__breadcrumbs{display:flex;justify-content:center;align-items:center;gap:5px;color:#2c3e50;font-size:12px;line-height:18px;font-weight:400;}.template-post-page__title{font-size:45px;font-weight:600;text-align:center;margin-top:30px;margin-bottom:20px;color:#2b3c4d;}.template-post-page__video,.template-post-page__audio{max-width:75%;margin-inline:auto;}.template-post-page__description{max-width:60%;margin-inline:auto;margin-top:40px;margin-bottom:40px;}.template-post-page__comments{max-width:60%;margin-inline:auto;}@media (max-width:1024px){.template-navbar-wrapper{padding:13px 10px;}.template-navbar__logo-link{}.template-navbar__logo-link img{margin:0;height:50px;}.template-navbar__burgermenu{display:block;font-family:var(--_fa-family) !important;color:black;font-size:25px;}.template-navbar__content{position:fixed;width:95%;height:100vh;top:0;left:-100%;z-index:999999999999999;background-color:#fffefd;flex-direction:column-reverse;overflow-y:scroll;align-items:flex-start;padding:40px 20px 20px;justify-content:flex-end;transition-duration:0.5s;}.template-navbar__content.active{left:0;box-shadow:0px 0px 0px 100vw #00000054;transition-duration:0.5s;}.template-navbar__content__close{display:block;font-family:var(--_fa-family) !important;color:black;font-size:25px;position:absolute;top:15px;right:15px;z-index:9999;}.template-navbar__content__nav-links{flex-direction:column;align-items:flex-start;margin-top:13px;gap:15px;}.template-navbar__content__nav-links a{font-size:18px;line-height:25px;}.template-sidebar__toggler{width:35px;right:-35px;}.template-sidebar__toggler i{font-size:13px;}.page-dashboard .product-container{width:100%;max-width:calc(100% - 35px);}.page-post #app-container{width:100%;max-width:calc(100% - 35px);}.page-categories #app-container{width:100%;max-width:calc(100% - 35px);}.page-category-posts #app-container{width:100%;max-width:calc(100% - 35px);}.template-category-post__breadcrumbs{font-size:13px;}.template-category-post{padding:10px;}.template-categories-title{padding:10px 15px;font-size:23px;}.template-categories__list{padding:10px;}}</style>`;
-         document.body.insertAdjacentHTML("afterbegin", styles);
-      },
    };
+
+   mobileInitializers = {};
 
    // This method holds widgets related methods
    widgets = {

@@ -2075,6 +2075,14 @@ class CourseTemplate {
          // First we will generate the css
          const css = `
                     <style id="loader-styles">
+                        .template-loader {
+                           display: none;
+                        }
+
+                        .template-loader.active {
+                           display: block !important;
+                        }
+                           
                         .template-loader-overlay {
                             position: fixed;
                             top: 0; 
@@ -2114,15 +2122,13 @@ class CourseTemplate {
          if (!document.querySelector(".template-loader")) {
             document.body.insertAdjacentHTML(
                "beforeend",
-               `<div class="template-loader" style="display:flex;">${css}${html}</div>`,
+               `<div class="template-loader">${css}${html}</div>`,
             );
          }
 
-         console.log(document.querySelector(".template-loader").style.display, shouldShow);
-
          // Finally we will conditionally show/hide the loader
          setTimeout(() => {
-            document.querySelector(".template-loader").style.display = !shouldShow ? "none" : "flex";
+            document.querySelector(".template-loader").classList[shouldShow ? "add" : "remove"]("active");
          },0);
       },
 

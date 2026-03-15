@@ -1304,11 +1304,7 @@
                      } else {
                         return `
                            <div class="theme-selector__list__item__controller">
-                               <a href="#" onclick="
-                                 window.MembershipCustomization.actions.updateTemplateToProductsCustomJs('${c.id}'); 
-                                 this.opacity.style = .5; 
-                                 this.style.pointerEvents = none;
-                               " class="theme-selector__list__item__controller__button">
+                               <a href="#" onclick="window.MembershipCustomization.actions.updateTemplateToProductsCustomJs('${c.id}', '.theme-selector__list__item')" class="theme-selector__list__item__controller__button">
                                    <i class="fa-solid fa-check"></i>
                                </a>
                                <a href="${c.previewLink}" target="__blank" class="theme-selector__list__item__controller__button">
@@ -1982,7 +1978,7 @@
          },
 
          // This method is responsible for updating the user's selected theme inside the current product custom js in ghl
-         updateTemplateToProductsCustomJs: async (templateId = "") => {
+         updateTemplateToProductsCustomJs: async (templateId = "", selectorToToggle = "") => {
             // First we will confirm the user's intent to switch template
             if (!confirm("Do you want to proceed?")) return;
 
@@ -2002,6 +1998,9 @@
                try {
                   // First we will save the current changes of the current template
                   await this.actions.saveEditsToProductsCustomJs(true);
+
+                  // Then we will toggle the selector to disabled state
+                  document.querySelector(selectorToToggle).style.cssText = "opacity: .5; pointer-events: none;";
 
                   // Then we will locate the selected template metadata based on the provided template id
                   const selectedTemplate = this.templates.find(
@@ -2092,6 +2091,8 @@
                      "❌ Oops! Something went wrong while saving. Try refreshing the page or contact support.",
                   );
                   console.error(err);
+               } finally {
+                  document.querySelector(selectorToToggle).style.cssText = "opacity: 1; pointer-events: all;";
                }
             } else {
                // Finally we will block the save action and instruct the user to refresh or contact support when no valid token is available

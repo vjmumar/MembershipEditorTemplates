@@ -2079,6 +2079,7 @@ class CourseTemplate {
                             position: fixed;
                             top: 0; 
                             left: 0; 
+                            display: flex;
                             width: 100vw; 
                             height: 100vh;
                             background-color: #ffffff;
@@ -2116,6 +2117,8 @@ class CourseTemplate {
                `<div class="template-loader">${css}${html}</div>`,
             );
          }
+
+         console.log(document.querySelector(".template-loader")
 
          // Finally we will conditionally show/hide the loader
          setTimeout(() => {

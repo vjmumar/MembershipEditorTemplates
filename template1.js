@@ -2068,7 +2068,9 @@ class CourseTemplate {
          document.body.classList.add("template-ready");
 
          // Finally we will initialize the loading
-         this.initializers.initLoading(false);
+         setTimeout(() => {
+               this.initializers.initLoading(false);
+         },1000)
       },
 
       initLoading: (shouldShow = true) => {

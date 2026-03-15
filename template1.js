@@ -2269,6 +2269,7 @@ class CourseTemplate {
             const $el = document.querySelector(
                "#product-breadcrumbs, #breadcrumb-container",
             );
+            console.log($el);
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;
             });

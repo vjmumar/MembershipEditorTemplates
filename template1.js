@@ -2069,7 +2069,7 @@ class CourseTemplate {
          // Finally we will initialize the loading
          setTimeout(() => {
             this.initializers.initLoading(false);
-         }, 500);
+         }, 1000);
       },
 
       initLoading: (shouldShow = true) => {
@@ -2140,9 +2140,12 @@ class CourseTemplate {
             ".product-container",
             async ($container) => {
                // First we will retrieve the templates and fetch all necessary user and product data
-               const userData = await this.data.fetchUser();
-               const userProductProgress = await this.data.fetchUserProductProgress();
-               const completedPosts = await this.data.fetchCompletedPosts();
+               const [userData, userProductProgress, completedPosts] =
+                  await Promise.allSettled([
+                     this.data.fetchUser(),
+                     this.data.fetchUserProductProgress(),
+                     this.data.fetchCompletedPosts(),
+                  ]);
 
                // Then we will process the categories data
                const categories = await (async () => {

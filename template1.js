@@ -2041,6 +2041,8 @@ class CourseTemplate {
          fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
          document.head.append(fScript);
 
+         // Then we will append a class to the body indicating that the template is ready
+         document.body.classList.add("template-ready");
          this.initializers.initLoading(true);
 
          // Then we will check the URL against regex patterns to determine which page view to load
@@ -2063,9 +2065,6 @@ class CourseTemplate {
          } else {
             console.log("No page found");
          }
-
-         // Then we will append a class to the body indicating that the template is ready
-         document.body.classList.add("template-ready");
 
          // Finally we will initialize the loading
          setTimeout(() => {

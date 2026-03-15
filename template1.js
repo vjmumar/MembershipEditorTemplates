@@ -2033,7 +2033,7 @@ class CourseTemplate {
 
    // This method initialize the script
    init = async () => {
-      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+      var isMobile = window.matchMedia("(max-width: 768px)").matches;
       console.log(isMobile);
       this?.[isMobile ? "mobileInitializers" : "desktopInitializers"]?.init();
    };

@@ -2041,6 +2041,8 @@ class CourseTemplate {
          fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
          document.head.append(fScript);
 
+                  this.initializers.initLoading(true);
+
          // Then we will check the URL against regex patterns to determine which page view to load
          if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
             await this.initializers.initLandingPage();
@@ -2066,10 +2068,10 @@ class CourseTemplate {
          document.body.classList.add("template-ready");
 
          // Finally we will initialize the loading
-         this.initializers.initLoading();
+         this.initializers.initLoading(false);
       },
 
-      initLoading: () => {
+      initLoading: (shouldShow = true) => {
          // First we will generate the css
          const css = `
                     <style id="loader-styles">
@@ -2109,15 +2111,15 @@ class CourseTemplate {
                 `;
 
          // Then we will inject the css and js
-         document.body.insertAdjacentHTML(
-            "beforeend",
-            `<div class="template-loader">${css}${html}</div>`,
-         );
+         if (!document.querySelector(".template-loader")) {
+            document.body.insertAdjacentHTML(
+               "beforeend",
+               `<div class="template-loader">${css}${html}</div>`,
+            );
+         }
 
-         // Finally after 4s we will remove the loader
-         setTimeout(() => {
-            document.querySelector(".template-loader").style.display = "none";
-         }, 1000);
+         // Finally we will conditionally show/hide the loader
+         document.querySelector(".template-loader").style.display = shouldShow ? "none" : "flex";
       },
 
       initLandingPage: async () => {

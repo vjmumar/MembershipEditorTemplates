@@ -2069,7 +2069,7 @@ class CourseTemplate {
          // Finally we will initialize the loading
          setTimeout(() => {
             this.initializers.initLoading(false);
-         }, 1000);
+         }, 1300);
       },
 
       initLoading: (shouldShow = true) => {
@@ -2140,18 +2140,17 @@ class CourseTemplate {
             ".product-container",
             async ($container) => {
                // First we will retrieve the templates and fetch all necessary user and product data
-               const [userData, userProductProgress, completedPosts] =
+               const [userData, userProductProgress, completedPosts, productCategories] =
                   await Promise.allSettled([
                      this.data.fetchUser(),
                      this.data.fetchUserProductProgress(),
                      this.data.fetchCompletedPosts(),
+                     this.data.fetchCategories(),
                   ]).then((res) => res.map((e) => e.value));
-               console.log(userData, userProductProgress, completedPosts);
 
                // Then we will process the categories data
                const categories = await (async () => {
-                  const data = await this.data.fetchCategories();
-                  return data
+                  return productCategories
                      .filter((cat) => !cat?.parentCategory)
                      ?.map((cat) => ({
                         thumbnail:
@@ -2171,7 +2170,7 @@ class CourseTemplate {
                   // Then we will fetch the course categories to organize them into a sorted, flat array of posts.
                   const allPosts = await (async () => {
                      // First we will retrieve all of the categories
-                     let allCategories = await this.data.fetchCategories();
+                     let allCategories = productCategories;
 
                      // Then we will sort categories by sequence number
                      allCategories = allCategories.sort((a, b) =>
@@ -2259,7 +2258,7 @@ class CourseTemplate {
                this.initializers.initSidebar($container);
                document.body.classList.add("page-dashboard");
             },
-            100,
+            0,
          );
       },
 

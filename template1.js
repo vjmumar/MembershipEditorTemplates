@@ -2041,7 +2041,7 @@ class CourseTemplate {
          fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
          document.head.append(fScript);
 
-                  this.initializers.initLoading(true);
+         this.initializers.initLoading(true);
 
          // Then we will check the URL against regex patterns to determine which page view to load
          if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
@@ -2119,7 +2119,7 @@ class CourseTemplate {
          }
 
          // Finally we will conditionally show/hide the loader
-         document.querySelector(".template-loader").style.display = shouldShow ? "none" : "flex";
+         document.querySelector(".template-loader").style.display = !shouldShow ? "none" : "flex";
       },
 
       initLandingPage: async () => {

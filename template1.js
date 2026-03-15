@@ -2033,8 +2033,7 @@ class CourseTemplate {
 
    // This method initialize the script
    init = async () => {
-      var isMobile = window.matchMedia("(max-width: 768px)").matches;
-      console.log(isMobile);
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
       this?.[isMobile ? "mobileInitializers" : "desktopInitializers"]?.init();
    };
 
@@ -2833,7 +2832,6 @@ class CourseTemplate {
           <div class='template-container'>
               <div class="template-categories__list">
                   <div class="template-categories__wrapper">
-                      ${this.desktopWidgets.categoryGrid(categories)}      
                   </div>
               </div>
           </div>

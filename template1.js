@@ -2118,7 +2118,7 @@ class CourseTemplate {
             );
          }
 
-         console.log(document.querySelector(".template-loader")
+         console.log(document.querySelector(".template-loader"));
 
          // Finally we will conditionally show/hide the loader
          setTimeout(() => {

@@ -2114,11 +2114,11 @@ class CourseTemplate {
          if (!document.querySelector(".template-loader")) {
             document.body.insertAdjacentHTML(
                "beforeend",
-               `<div class="template-loader">${css}${html}</div>`,
+               `<div class="template-loader" style="display:flex;">${css}${html}</div>`,
             );
          }
 
-         console.log(document.querySelector(".template-loader"));
+         console.log(document.querySelector(".template-loader"), shouldShow);
 
          // Finally we will conditionally show/hide the loader
          setTimeout(() => {

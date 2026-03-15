@@ -2069,7 +2069,7 @@ class CourseTemplate {
          // Finally we will initialize the loading
          setTimeout(() => {
             this.initializers.initLoading(false);
-         }, 1300);
+         }, 1000);
       },
 
       initLoading: (shouldShow = true) => {

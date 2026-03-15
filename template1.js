@@ -2464,13 +2464,13 @@ class CourseTemplate {
          $container.innerHTML = `
          <div class='template-container'>
              <div class="dashboard">
-                     ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", bannerButtonLinkAndText.text, bannerButtonLinkAndText.link)}
+                     ${this.desktopWidgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", bannerButtonLinkAndText.text, bannerButtonLinkAndText.link)}
                      <div class="dashboard__wrapper">
-                         ${this.widgets.communityToggle()}
-                         ${this.widgets.heroBanner()}
+                         ${this.desktopWidgets.communityToggle()}
+                         ${this.desktopWidgets.heroBanner()}
                          <div class="dashboard__categories">
                              <p class="dashboard__categories__title">Categories</p>
-                             ${this.widgets.categoryGrid(categories)}      
+                             ${this.desktopWidgets.categoryGrid(categories)}      
                          </div>  
                      </div>
              </div>
@@ -2519,7 +2519,7 @@ class CourseTemplate {
             <div class="template-category-post__sub-categories__item">
                 <p class="template-category-post__sub-categories__item__title">${c.title}</p>
                 <div class="template-category-post__sub-categories__item__posts">
-                    ${this.widgets.postGrid(posts)}      
+                    ${this.desktopWidgets.postGrid(posts)}      
                 </div>  
             </div>
             `;
@@ -2534,7 +2534,7 @@ class CourseTemplate {
                  <div class="template-category-post__breadcrumbs">${breadCrumbs}</div>
                  <div class="template-category-post__wrapper">
                      <div class="template-category-post__posts">
-                         ${this.widgets.postGrid(generatePosts(category?.category?.posts))}      
+                         ${this.desktopWidgets.postGrid(generatePosts(category?.category?.posts))}      
                      </div>  
                      ${subCategoriesHTML}
                  </div>
@@ -2573,7 +2573,7 @@ class CourseTemplate {
           <div class='template-container'>
               <div class="template-categories__list">
                   <div class="template-categories__wrapper">
-                      ${this.widgets.categoryGrid(categories)}      
+                      ${this.desktopWidgets.categoryGrid(categories)}      
                   </div>
               </div>
           </div>
@@ -2632,7 +2632,7 @@ class CourseTemplate {
 
          // Then we will build the header HTML including navigation arrows and completion buttons
          const headerHTML = (() => {
-            // First we will create the post widgets
+            // First we will create the post desktopWidgets
             const leftArrowHTML = (() => {
                const currentPostIndex = allPosts.findIndex(
                   (p) => p.sequenceNo === currentPost.sequenceNo,
@@ -2661,7 +2661,7 @@ class CourseTemplate {
             })();
             const downloadsHTML = (() => {
                if (currentPost?.post_materials?.length) {
-                  return this.widgets.downloadSelect(currentPost?.post_materials);
+                  return this.desktopWidgets.downloadSelect(currentPost?.post_materials);
                }
                return "";
             })();
@@ -2803,13 +2803,7 @@ class CourseTemplate {
 
          // Then we will check the URL against regex patterns to determine which page view to load
          if (/\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url)) {
-            await this.desktopInitializers.initLandingPage();
-         } else if (
-            /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
-               url,
-            )
-         ) {
-            await this.desktopInitializers.initCategoryPostPage();
+            await this.mobileInitializers.initLandingPage();
          }
 
          // Finally we will hide the loader
@@ -2817,10 +2811,41 @@ class CourseTemplate {
             this.globalInitializers.initLoading(false);
          }, 1000);
       },
+
+      initLandingPage: async () => {
+         // First we will wait for the product container
+         const $container = await this.utils.waitForElement("#app-container", 100);
+
+         // Then we will retrieve the necessary data
+         const [userData, userProductProgress, completedPosts, productCategories] =
+            await Promise.allSettled([
+               this.data.fetchUser(),
+               this.data.fetchUserProductProgress(),
+               this.data.fetchCompletedPosts(),
+               this.data.fetchCategories(),
+            ]).then((res) => res.map((e) => e.value));
+         console.log(userData, userProductProgress, completedPosts, productCategories);
+
+         // Then we will render the Categories List Page
+         $container.innerHTML = `
+          <p class="template-categories-title">Categories</p>
+          <div class='template-container'>
+              <div class="template-categories__list">
+                  <div class="template-categories__wrapper">
+                      ${this.desktopWidgets.categoryGrid(categories)}      
+                  </div>
+              </div>
+          </div>
+         `;
+
+         // Finally we will invoke the necessary initializers
+         this.globalInitializers.initStyles();
+         document.body.classList.add("page-landing");
+      },
    };
 
-   // This object holds UI component templates (HTML builders)
-   widgets = {
+   // This object holds UI component templates for desktop
+   desktopWidgets = {
       welcomeBanner: (
          name = "User",
          progress = "No progress available",
@@ -3010,6 +3035,9 @@ class CourseTemplate {
             `;
       },
    };
+
+   // This object holds UI component templates for mobiles
+   mobileWidgets = {};
 
    // This object holds data fetching and state management logic
    data = {

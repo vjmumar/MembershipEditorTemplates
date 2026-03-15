@@ -2139,7 +2139,7 @@ class CourseTemplate {
          await this.utils.waitForElement(
             ".product-container",
             async ($container) => {
-               // First we will retrieve the templates and fetch all necessary user and product data
+               // First we will retrieve the necessary data
                const [userData, userProductProgress, completedPosts, productCategories] =
                   await Promise.allSettled([
                      this.data.fetchUser(),
@@ -2149,26 +2149,24 @@ class CourseTemplate {
                   ]).then((res) => res.map((e) => e.value));
 
                // Then we will process the categories data
-               const categories = await (async () => {
-                  return productCategories
-                     .filter((cat) => !cat?.parentCategory)
-                     ?.map((cat) => ({
-                        thumbnail:
-                           cat?.posterImage ||
-                           "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
-                        title: cat.title,
-                        url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
-                     }));
-               })();
+               const categories = productCategories
+                  .filter((cat) => !cat?.parentCategory)
+                  ?.map((cat) => ({
+                     thumbnail:
+                        cat?.posterImage ||
+                        "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
+                     title: cat.title,
+                     url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
+                  }));
 
                // Then we will generate the link and text for the banner button
-               const bannerButtonLinkAndText = await (async () => {
+               const bannerButtonLinkAndText = (() => {
                   // First, we initialize the default button variables
                   let text = "Let's Start";
                   let nextPost = null;
 
                   // Then we will fetch the course categories to organize them into a sorted, flat array of posts.
-                  const allPosts = await (async () => {
+                  const allPosts = (() => {
                      // First we will retrieve all of the categories
                      let allCategories = productCategories;
 
@@ -2373,9 +2371,11 @@ class CourseTemplate {
             "#app-container",
             async ($container) => {
                //First we will fetch all necessary data for the lesson (Post, Category, Completions)
-               const completedPosts = await this.data.fetchCompletedPosts();
-               const category = await this.data.fetchCategory();
-               const currentPost = await this.data.fetchPost();
+               const [completedPosts, category, currentPost] = await Promise.allSettled([
+                  this.data.fetchCompletedPosts(),
+                  this.data.fetchCategory(),
+                  this.data.fetchPost(),
+               ]).then((res) => res.map((e) => e.value));
                const allPosts = category.category.posts.sort((a, b) =>
                   a.sequenceNo > b.sequenceNo ? 1 : -1,
                );
@@ -2576,9 +2576,13 @@ class CourseTemplate {
       },
 
       initNavBar: async ($container = null) => {
-         // First we will fetch the product details
-         const userData = await this.data.fetchUser();
-         const product = await this.data.fetchProduct();
+         // First we will fetch the necessary data
+         const [userData, product] = await Promise.allSettled([
+            this.data.fetchUser(),
+            this.data.fetchProduct(),
+         ]).then((res) => res.map((e) => e.value));
+
+         // Then we will create the default variables
          const logo =
             "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png";
          const defaultLinks = [
@@ -2626,20 +2630,22 @@ class CourseTemplate {
       },
 
       initSidebar: async ($container = null) => {
-         // First we will retrieve the product details
-         const product = await this.data.fetchProduct();
-
-         // Then we will retrieve the categories and sort them by sequence number
-         let categories = await this.data.fetchCategories();
-         categories = categories.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
+         // First we will fetch all necessary data
+         const [product, categories] = await Promise.allSettled([
+            this.data.fetchProduct(),
+            this.data.fetchCategories(),
+         ]).then((res) => res.map((e) => e.value));
 
          // Then we will organize subcategories under their parents
-         categories.forEach((e) => {
+         const allCategories = categories.sort((a, b) =>
+            a.sequenceNo > b.sequenceNo ? 1 : -1,
+         );
+         allCategories.forEach((e) => {
             if (e.parentCategory) {
                e.posts = e.posts.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
-               categories.forEach((ca) => {
+               allCategories.forEach((ca) => {
                   if (ca.id === e.parentCategory) {
-                     categories = categories.filter((fCa) => fCa.id !== e.id);
+                     allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
                      ca.posts.push(e);
                      ca.posts = ca.posts.sort((a, b) =>
                         a.sequenceNo > b.sequenceNo ? 1 : -1,
@@ -2650,7 +2656,7 @@ class CourseTemplate {
          });
 
          // Then we will generate the HTML for the sidebar navigation
-         const sideBarCategories = categories.reduce((a, c, i) => {
+         const sideBarCategories = allCategories.reduce((a, c, i) => {
             const postsHTML = c?.posts.reduce((cPA, cP) => {
                if (!cP?.posts) {
                   cPA += `

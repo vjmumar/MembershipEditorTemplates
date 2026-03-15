@@ -2135,7 +2135,7 @@ class CourseTemplate {
       },
 
       initLandingPage: async () => {
-         this.utils.waitForElement(
+         await this.utils.waitForElement(
             ".product-container",
             async ($container) => {
                // First we will retrieve the templates and fetch all necessary user and product data

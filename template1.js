@@ -2070,7 +2070,7 @@ class CourseTemplate {
          // Finally we will initialize the loading
          setTimeout(() => {
                this.initializers.initLoading(false);
-         },2000)
+         },1500)
       },
 
       initLoading: (shouldShow = true) => {
@@ -2130,7 +2130,6 @@ class CourseTemplate {
 
          // Finally we will conditionally show/hide the loader
          setTimeout(() => {
-            console.log(shouldShow)
             document.querySelector(".template-loader").classList[shouldShow ? "add" : "remove"]("active");
          },0);
       },

@@ -2120,10 +2120,9 @@ class CourseTemplate {
 
          // Then we will inject the css and js
          if (!document.querySelector(".template-loader")) {
-            console.log("lol");
             document.body.insertAdjacentHTML(
                "beforeend",
-               `<div class="template-loader">${css}${html}</div>`,
+               `<div class="template-loader active">${css}${html}</div>`,
             );
          }
 

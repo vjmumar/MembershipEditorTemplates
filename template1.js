@@ -3273,7 +3273,7 @@ class CourseTemplate {
                   clearInterval(interval);
                   setTimeout(() => {
                      cb($element);
-                     // res(true);
+                     res(true);
                   }, cbInvokationDelay);
                }
             }, 0);

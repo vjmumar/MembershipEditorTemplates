@@ -2120,7 +2120,7 @@ class CourseTemplate {
          // Finally we will conditionally show/hide the loader
          setTimeout(() => {
             document.querySelector(".template-loader").style.display = !shouldShow ? "none" : "flex";
-         },0;)
+         },0);
       },
 
       initLandingPage: async () => {

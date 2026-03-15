@@ -2031,11 +2031,13 @@ class CourseTemplate {
       this.init();
    }
 
+   // This method initialize the script
    init = async () => {
       const isMobile = window.matchMedia("(max-width: 768px)").matches;
       this?.[isMobile ? "mobileInitializers" : "desktopInitializers"]?.init();
    };
 
+   // This object holds global related initializers
    globalInitializers = {
       initNavBar: async ($container = null) => {
          // First we will fetch the necessary data
@@ -2316,6 +2318,7 @@ class CourseTemplate {
       },
    };
 
+   // This object holds desktop related initializers
    desktopInitializers = {
       init: async () => {
          // First we will retrieve the current URL
@@ -2781,9 +2784,42 @@ class CourseTemplate {
       },
    };
 
-   mobileInitializers = {};
+   // This object holds mobile related initializers
+   mobileInitializers = {
+      init: async () => {
+         // First we will retrieve the current URL
+         const url = window.location.href;
 
-   // This method holds widgets related methods
+         // Then we will insert the font-awesome script into the head
+         const fScript = document.createElement("script");
+         fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
+         document.head.append(fScript);
+
+         // Then we will append a class to the body indicating that the template is ready
+         document.body.classList.add("template-ready");
+
+         // Then we will show the loader
+         this.globalInitializers.initLoading(true);
+
+         // Then we will check the URL against regex patterns to determine which page view to load
+         if (/\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url)) {
+            await this.desktopInitializers.initLandingPage();
+         } else if (
+            /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
+               url,
+            )
+         ) {
+            await this.desktopInitializers.initCategoryPostPage();
+         }
+
+         // Finally we will hide the loader
+         setTimeout(() => {
+            this.globalInitializers.initLoading(false);
+         }, 1000);
+      },
+   };
+
+   // This object holds UI component templates (HTML builders)
    widgets = {
       welcomeBanner: (
          name = "User",
@@ -2975,7 +3011,7 @@ class CourseTemplate {
       },
    };
 
-   // This object holds data related methods
+   // This object holds data fetching and state management logic
    data = {
       fetchProduct: async () => {
          const locationId = location.href.split(".")[0].replace("https://", "");
@@ -3257,7 +3293,7 @@ class CourseTemplate {
       },
    };
 
-   // Utils module
+   // This object holds utility methods
    utils = {
       waitForElement: (elementSelector = "", cbInvokationDelay = 1000) => {
          return new Promise((res) => {

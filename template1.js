@@ -11,6 +11,14 @@ window.templateCustomizationSchema = {
                key: "loading-overlay-container",
                cssCustomizations: [
                   {
+                     name: "Display",
+                     property: "display",
+                     type: "select",
+                     options: ["flex", "none"],
+                     important: true,
+                     value: "flex",
+                  },
+                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",

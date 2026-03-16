@@ -983,6 +983,38 @@
                            this.actions.updateTemplateCustomizations(...updateArgs);
                         },
                      );
+                  } else if (c.type === "select") {
+                     return this?.widgets?.input(
+                        templateItem.key,
+                        c.property,
+                        c?.value,
+                        c.type,
+                        c?.placeholder,
+                        (updatedValue) => {
+                           const updateArgs = (() => {
+                              if (isGlobal && globalName) {
+                                 return [
+                                    {},
+                                    {
+                                       name: globalName,
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              } else {
+                                 return [
+                                    {
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              }
+                           })();
+                           this.actions.updateTemplateCustomizations(...updateArgs);
+                        },
+                     );
                   } else {
                      return this?.widgets?.input(
                         templateItem.key,
@@ -2308,14 +2340,14 @@
 
             // Finally return the actual HTML for the widget
             return `
-                       <div class="widget-multi-input" data-template-key="${templateKey}" data-property="${property}">
-                           <input type="number" placeholder="Top" data-side="top" value="${top.replace("px", "")}">
-                           <input type="number" placeholder="Right" data-side="right" value="${right.replace("px", "")}">
-                           <input type="number" placeholder="Bottom" data-side="bottom" value="${bottom.replace("px", "")}">
-                           <input type="number" placeholder="Left" data-side="left" value="${left.replace("px", "")}">
-                           <input type="number" placeholder="All" data-side="all" value="${all.replace("px", "")}">
-                       </div>
-                   `;
+               <div class="widget-multi-input" data-template-key="${templateKey}" data-property="${property}">
+                   <input type="number" placeholder="Top" data-side="top" value="${top.replace("px", "")}">
+                   <input type="number" placeholder="Right" data-side="right" value="${right.replace("px", "")}">
+                   <input type="number" placeholder="Bottom" data-side="bottom" value="${bottom.replace("px", "")}">
+                   <input type="number" placeholder="Left" data-side="left" value="${left.replace("px", "")}">
+                   <input type="number" placeholder="All" data-side="all" value="${all.replace("px", "")}">
+               </div>
+             `;
          },
          input: (
             templateKey,
@@ -2399,24 +2431,79 @@
             // Finally return the actual HTML for the widget
             return isTextArea
                ? `
-                           <textarea
-                           data-template-key=${templateKey}
-                           data-template-property=${property}
-                           id="${templateKey}${property}"
-                           class="editor-customizer-form__item__input rich-text">${value}</textarea>
-                       `
+                      <textarea
+                      data-template-key=${templateKey}
+                      data-template-property=${property}
+                      id="${templateKey}${property}"
+                      class="editor-customizer-form__item__input rich-text">${value}</textarea>
+                  `
                : `
-                       <input
-                               class="editor-customizer-form__item__input"
-                               data-template-key=${templateKey}
-                               data-template-property=${property}
-                               type="${type === "color" ? "text" : type || "text"}"
-                               value="${value}"
-                               ${type === "color" ? `data-jscolor='{"alphaChannel":true,"format":"hexa"}'` : ""}
-                               placeholder="${placeholder}"
-                           />
-                       `;
+                     <input
+                     class="editor-customizer-form__item__input"
+                     data-template-key=${templateKey}
+                     data-template-property=${property}
+                     type="${type === "color" ? "text" : type || "text"}"
+                     value="${value}"
+                     ${type === "color" ? `data-jscolor='{"alphaChannel":true,"format":"hexa"}'` : ""}
+                     placeholder="${placeholder}"
+                     />
+                  `;
          },
+
+         select: (
+            templateKey,
+            property,
+            value = "",
+            type = "text",
+            placeholder = "",
+            options = [],
+            onChange = () => {},
+         ) => {
+            // First we will create a listener for ANY input change inside the widget
+            const listenerId = `${templateKey}-${property}`;
+            const listenerFunction = (e) => {
+               const $targetElement = e.target;
+               if (
+                  $targetElement.classList.contains(`editor-customizer-form__item__input`)
+               ) {
+                  const widgetTemplateKey =
+                     $targetElement.getAttribute("data-template-key");
+                  const widgetProperty = $targetElement.getAttribute(
+                     "data-template-property",
+                  );
+                  if (widgetTemplateKey === templateKey && widgetProperty === property) {
+                     onChange?.(e.target.value);
+                  }
+               }
+            };
+
+            // Then we will manage the event listeners using a global registry to prevent duplication
+            if (!window._input) {
+               window._input = {};
+            }
+            if (listenerId in window?._input) {
+               window.removeEventListener("input", window._input[listenerId]);
+            }
+            window.addEventListener("input", listenerFunction);
+            window._input[listenerId] = listenerFunction;
+
+            // Finally return the actual HTML for the widget
+            const optionsHTML = options.reduce((a,c) => {
+               const isSelected = c === value;
+               a += `<option value="${c}" ${isSelected ? "selected" : ""}>${c}</option>`;
+               return a
+            },"");
+            return `
+               <select
+                 data-template-key=${templateKey}
+                 data-template-property=${property}
+                 id="${templateKey}${property}"
+                 class="editor-customizer-form__item__input select"
+               >
+                  ${optionsHTML}   
+               </select>
+            `;
+         }
       };
 
       // Utils module

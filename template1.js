@@ -3393,30 +3393,7 @@ class CourseTemplate {
                     `;
             return a;
          }, "");
-         const html = `
-                    <div class="template-sidebar">
-                        <div class="template-sidebar__content">
-                            <a href="/library" class="template-sidebar__back-button">
-                                <i class="fa-solid fa-angle-left template-sidebar__back-button__icon"></i>
-                                <p class="template-sidebar__back-button__text">Library</p>    
-                            </a>
-                            <a href="/courses/products/">
-                                <img class="template-sidebar__logo" src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png">    
-                            </a>
-                            <p class='template-sidebar__titles'>Modules</p>
-                            <div class="template-sidebar__category">
-                                ${sideBarCategories}    
-                            </div>    
-                            <a class="template-sidebar__image" href="#">
-                                <img src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/690ed3310269a35386dd56dd.png" />    
-                            </a>
-                        </div>
-                        <div class="template-sidebar__toggler">
-                            <i class="fa-solid fa-arrow-right-arrow-left open"></i>
-                            <i class="fa-solid fa-x close"></i>    
-                        </div>
-                    </div>
-                `;
+         const html = sideBarCategories;
 
          // Finally we will inject the sidebar and attach event listeners for interactivity
          setTimeout(() => {

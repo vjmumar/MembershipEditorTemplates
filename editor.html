@@ -1994,7 +1994,8 @@
                      `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
                      `${productId}.txt`,
                   );
-                  if (fileData.url) {
+                  console.log(fileData);
+                  if (!fileData.url) {
                      throw "error";
                      return;
                   }

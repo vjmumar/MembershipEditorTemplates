@@ -715,27 +715,30 @@
 
          // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution
          initSyncConfig: () => {
+            const isDesktop = window.matchMedia("(min-width: 768px)").matches;
             // First we will retrieve the current URL
             const url = window.location.href;
 
             // Finally we will iterate through the template pages to find the current view and process it
-            this.activeTemplate.pages.forEach((page) => {
-               // First we will create a new RegExp instance using the regex pattern from the current page configuration
-               const urlRegex = new RegExp(page?.urlRegex);
+            this.activeTemplate?.[isDesktop ? "pages" : "mobilePages"]?.forEach(
+               (page) => {
+                  // First we will create a new RegExp instance using the regex pattern from the current page configuration
+                  const urlRegex = new RegExp(page?.urlRegex);
 
-               // Finally we will check if the current URL matches the regex pattern; if it does, we will proceed to process it
-               if (urlRegex?.test(url)) {
-                  // First we will update the active page state with the specific editor configuration that matches the current URL
-                  this.activePageOnTemplate = page.editor;
+                  // Finally we will check if the current URL matches the regex pattern; if it does, we will proceed to process it
+                  if (urlRegex?.test(url)) {
+                     // First we will update the active page state with the specific editor configuration that matches the current URL
+                     this.activePageOnTemplate = page.editor;
 
-                  // Finally we will invoke all synchronizers to apply the configuration customizations
-                  this.actions.syncTemplateCssCustomizations();
-                  this.actions.syncTemplateElementsCustomization();
-                  setTimeout(() => {
-                     this.actions.syncTemplateFeatureCustomizations(null, null, true);
-                  }, 5500);
-               }
-            });
+                     // Finally we will invoke all synchronizers to apply the configuration customizations
+                     this.actions.syncTemplateCssCustomizations();
+                     this.actions.syncTemplateElementsCustomization();
+                     setTimeout(() => {
+                        this.actions.syncTemplateFeatureCustomizations(null, null, true);
+                     }, 5500);
+                  }
+               },
+            );
          },
 
          // This method is responsible for showing the floating widget that toggles the page into editing
@@ -805,6 +808,7 @@
 
          // This method will wait until the #app container exists before initializing the editor
          initShowEditor: () => {
+            const isDesktop = window.matchMedia("(min-width: 768px)").matches;
             // First we will retrieve the editor styles from the DOM
             const editorStyle = document.querySelector("#editor").outerHTML;
 
@@ -823,19 +827,21 @@
                   const url = window.location.href;
 
                   // Finally we will iterate through the template pages to find the current view and initialize the editor logic
-                  this.activeTemplate.pages.forEach((page) => {
-                     const urlRegex = new RegExp(page?.urlRegex);
-                     if (urlRegex?.test(url)) {
-                        // First we will inject the editor styles into the document head to ensure they persist even if the app container is cleared during rendering
-                        document.head.insertAdjacentHTML("beforeend", editorStyle);
+                  this.activeTemplate?.[isDesktop ? "pages" : "mobilePages"]?.forEach(
+                     (page) => {
+                        const urlRegex = new RegExp(page?.urlRegex);
+                        if (urlRegex?.test(url)) {
+                           // First we will inject the editor styles into the document head to ensure they persist even if the app container is cleared during rendering
+                           document.head.insertAdjacentHTML("beforeend", editorStyle);
 
-                        // Then we will update the active page state with the specific editor configuration that matches the current URL
-                        this.activePageOnTemplate = page.editor;
+                           // Then we will update the active page state with the specific editor configuration that matches the current URL
+                           this.activePageOnTemplate = page.editor;
 
-                        // Finally we will invoke the main editor initializer to render the sidebar and attach the necessary event listeners to the page
-                        this.initializers.initializeEditor();
-                     }
-                  });
+                           // Finally we will invoke the main editor initializer to render the sidebar and attach the necessary event listeners to the page
+                           this.initializers.initializeEditor();
+                        }
+                     },
+                  );
                }
             }, 0);
          },
@@ -2081,6 +2087,7 @@
                         id: selectedTemplate.id,
                         isActive: true,
                         pages: [],
+                        mobilePages: [],
                         global: [],
                      });
                   } else {
@@ -2272,17 +2279,8 @@
             const mobileWindow = window.open(
                location.href,
                "Mobile_Editor",
-               "width=480,height=800,scrollbars=yes,resizable=yes",
+               "width=600,height=800,scrollbars=yes,resizable=yes",
             );
-            mobileWindow.onload = () => {
-               setTimeout(() => {
-                  mobileWindow.resizeTo(
-                     window.screen.availWidth,
-                     window.screen.availHeight,
-                  );
-                  mobileWindow.focus();
-               }, 3000);
-            };
 
             // Then we will remove the sidebar
             document.querySelector(".editor-customizer-sidebar").remove();

@@ -2203,6 +2203,10 @@
                   },
                );
                const registerJSON = await registerResponse.json();
+               if (registerResponse.status !== 200) {
+                  alert("Something went wrong!");
+                  return;
+               }
                await fetch(registerJSON.url, {
                   method: "PUT",
                   headers: {

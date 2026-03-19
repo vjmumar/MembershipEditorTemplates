@@ -2261,15 +2261,19 @@
          // This method launches a 600px wide window to force GHL's internal engine to initialize the mobile DOM structure
          launchMobileCustomizer: async () => {
             // First we will ask the user to confirm their decision to open the mobile customizer
-            const userAgrees =
-               confirm(`Opening the mobile customizer will create a data conflict with this window. We strongly advise you to save your desktop changes now before proceeding.\nOnce the mobile editor is open, this page will be locked, and you must reload this page after you are finished to see your mobile updates."
-               `);
+            const isConfirm = confirm(
+               `Opening the mobile customizer will create a data conflict with this window.\nWe strongly advise you to save your desktop changes now before proceeding.\nOnce the mobile editor is open, this page will be locked, and you must reload this page after you are finished to see your mobile updates.`,
+            );
 
             // Then we will check the user's decision and if they did not agree then we will not proceed
-            if (!userAgrees) return;
+            if (!isConfirm) return;
 
             // Then we will open a new window
-            window.open(location.href, "GHL Mobile Editor", "width=600px,scrollbars=yes");
+            window.open(
+               location.href,
+               "Mobile_Editor",
+               "width=480,height=800,scrollbars=yes,resizable=yes",
+            );
 
             // Then we will remove the sidebar
             document.querySelector(".editor-customizer-sidebar").remove();

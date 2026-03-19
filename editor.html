@@ -1316,7 +1316,7 @@
 
                // Finally we will push the current global item into accumulator
                a += `
-                       <div class="global-contents-item" style="display: ${c.showOnMobileEditor && !this.isDesktop ? "block" : "none"}">
+                       <div class="global-contents-item" style="display: ${this.isDesktop || (!this.isDesktop && c.showOnMobileEditor) ? "block" : "none"}">
                            <div class="global-contents-item__toggler" onClick="this.parentElement.classList.toggle('active')">
                                <p>${c.name}</p>
                                <i class="fa-solid fa-angle-right"></i>

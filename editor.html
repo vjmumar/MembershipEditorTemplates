@@ -592,6 +592,7 @@
          ];
          this.activeTemplate = null;
          this.activePageOnTemplate = null;
+         this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
          (async () => {
             // First we will retrieve the saved template changes from media and append it
@@ -715,12 +716,11 @@
 
          // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution
          initSyncConfig: () => {
-            const isDesktop = window.matchMedia("(min-width: 768px)").matches;
             // First we will retrieve the current URL
             const url = window.location.href;
 
             // Finally we will iterate through the template pages to find the current view and process it
-            this.activeTemplate?.[isDesktop ? "pages" : "mobilePages"]?.forEach(
+            this.activeTemplate?.[this.isDesktop ? "pages" : "mobilePages"]?.forEach(
                (page) => {
                   // First we will create a new RegExp instance using the regex pattern from the current page configuration
                   const urlRegex = new RegExp(page?.urlRegex);
@@ -808,7 +808,6 @@
 
          // This method will wait until the #app container exists before initializing the editor
          initShowEditor: () => {
-            const isDesktop = window.matchMedia("(min-width: 768px)").matches;
             // First we will retrieve the editor styles from the DOM
             const editorStyle = document.querySelector("#editor").outerHTML;
 
@@ -827,21 +826,21 @@
                   const url = window.location.href;
 
                   // Finally we will iterate through the template pages to find the current view and initialize the editor logic
-                  this.activeTemplate?.[isDesktop ? "pages" : "mobilePages"]?.forEach(
-                     (page) => {
-                        const urlRegex = new RegExp(page?.urlRegex);
-                        if (urlRegex?.test(url)) {
-                           // First we will inject the editor styles into the document head to ensure they persist even if the app container is cleared during rendering
-                           document.head.insertAdjacentHTML("beforeend", editorStyle);
+                  this.activeTemplate?.[
+                     this.isDesktop ? "pages" : "mobilePages"
+                  ]?.forEach((page) => {
+                     const urlRegex = new RegExp(page?.urlRegex);
+                     if (urlRegex?.test(url)) {
+                        // First we will inject the editor styles into the document head to ensure they persist even if the app container is cleared during rendering
+                        document.head.insertAdjacentHTML("beforeend", editorStyle);
 
-                           // Then we will update the active page state with the specific editor configuration that matches the current URL
-                           this.activePageOnTemplate = page.editor;
+                        // Then we will update the active page state with the specific editor configuration that matches the current URL
+                        this.activePageOnTemplate = page.editor;
 
-                           // Finally we will invoke the main editor initializer to render the sidebar and attach the necessary event listeners to the page
-                           this.initializers.initializeEditor();
-                        }
-                     },
-                  );
+                        // Finally we will invoke the main editor initializer to render the sidebar and attach the necessary event listeners to the page
+                        this.initializers.initializeEditor();
+                     }
+                  });
                }
             }, 0);
          },
@@ -1323,11 +1322,10 @@
             }, "");
 
             // Finally we will render the fully generated global contents into the sidebar content area
-            const isDesktop = window.matchMedia("(min-width: 768px)").matches;
             $sidebarContent.innerHTML = `
                    <div class="global-contents">
                        <div class="global-contents__header">
-                           ${!isDesktop ? "<div></div>" : `<i onclick="window.MembershipCustomization.actions.launchMobileCustomizer()" class="fa-solid fa-mobile-screen global-contents__header__mobile-switch"></i>`}
+                           ${!this.isDesktop ? "<div></div>" : `<i onclick="window.MembershipCustomization.actions.launchMobileCustomizer()" class="fa-solid fa-mobile-screen global-contents__header__mobile-switch"></i>`}
                            <p class="global-contents__header__text">Global</p>
                            <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipCustomization.initializers.initializeThemeSelector()"></i>
                        </div>
@@ -2283,7 +2281,7 @@
             );
 
             // Then we will remove the sidebar
-            // document.querySelector(".editor-customizer-sidebar").remove();
+            document.querySelector(".editor-customizer-sidebar").remove();
 
             // Finally we will insert a warning message to the current body
             document.body.insertAdjacentHTML(

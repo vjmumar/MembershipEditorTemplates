@@ -3338,8 +3338,8 @@ class CourseTemplate {
             const postsHTML = c?.posts.reduce((cPA, cP) => {
                if (!cP?.posts) {
                   cPA += `
-                            <a href="${`/courses/products/${cP?.productId}/categories/${cP?.categoryId}/posts/${cP?.id}`}" class="template-sidebar__category__item__post">
-                                <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <div class="template-cwd__category__item__post">
+                                <svg class="template-cwd__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                         <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#748493" fill-rule="nonzero">
                                             <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
@@ -3349,14 +3349,14 @@ class CourseTemplate {
                                         <rect class="color-stroke" id="Rectangle" stroke="#748493" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
                                     </g>
                                 </svg>
-                                <p class="template-sidebar__category__item__post__text">${cP.title}</p>
-                            </a>
+                                <p class="template-cwd__category__item__post__text">${cP.title}</p>
+                            </div>
                         `;
                } else {
                   const posts = cP.posts.reduce((cPPA, cPP) => {
                      cPPA += `
-                                    <a href="${`/courses/products/${cPP?.productId}/categories/${cPP?.categoryId}/posts/${cPP?.id}`}" class="template-sidebar__category__item__post">
-                                        <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <div class="template-cwd__category__item__post">
+                                        <svg class="template-cwd__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                             <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                 <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#748493" fill-rule="nonzero">
                                                     <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
@@ -3366,18 +3366,18 @@ class CourseTemplate {
                                                 <rect class="color-stroke" id="Rectangle" stroke="#748493" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
                                             </g>
                                         </svg>
-                                        <p class="template-sidebar__category__item__post__text">${cPP.title}</p>
-                                    </a>
+                                        <p class="template-cwd__category__item__post__text">${cPP.title}</p>
+                                    </div>
                                 `;
                      return cPPA;
                   }, "");
                   cPA += `
-                            <div class="template-sidebar__category__item__sub-folder">
-                                <div class="template-sidebar__category__item__sub-folder__title">
-                                    <p class="template-sidebar__category__item__sub-folder__title__text">${cP.title}</p>
-                                    <a href="/courses/products/${cP?.productId}/categories/${cP?.id}" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
+                            <div class="template-cwd__category__item__sub-folder">
+                                <div class="template-cwd__category__item__sub-folder__title">
+                                    <p class="template-cwd__category__item__sub-folder__title__text">${cP.title}</p>
+                                    <a href="/courses/products/${cP?.productId}/categories/${cP?.id}" class="template-cwd__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
                                 </div>
-                                <div class="template-sidebar-category__item__sub-folder__posts">
+                                <div class="template-cwd-category__item__sub-folder__posts">
                                     ${posts}    
                                 </div>
                             </div>
@@ -3386,16 +3386,15 @@ class CourseTemplate {
                return cPA;
             }, "");
             a += `
-                    <div class="template-sidebar__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
-                        <div class="template-sidebar__category__item__title">
-                            <div class="template-sidebar__category__item__title__content">
+                    <div class="template-cwd__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
+                        <div class="template-cwd__category__item__title">
+                            <div class="template-cwd__category__item__title__content">
                                 <img src="${c?.posterImage}" />
-                                <i class="fas fa-angle-right template-sidebar__category__item__title__content__icon"></i>
-                                <p class="template-sidebar__category__item__title__content__title">${c.title}</p>
+                                <i class="fas fa-angle-right template-cwd__category__item__title__content__icon"></i>
+                                <p class="template-cwd__category__item__title__content__title">${c.title}</p>
                             </div>
-                            <a href="/courses/products/${c?.productId}/categories/${c?.id}" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></a>
                         </div>
-                        <div class="template-sidebar__category__item__content">
+                        <div class="template-cwd__category__item__content">
                             ${postsHTML}     
                         </div>       
                     </div>
@@ -3408,40 +3407,6 @@ class CourseTemplate {
                <div class="template-cwd__content">${categoriesHTML}</div>
             </div>
          `;
-
-         // Finally we will inject the sidebar and attach event listeners for interactivity
-         setTimeout(() => {
-            document.body.addEventListener("click", (e) => {
-               if (
-                  e.target.closest(".template-sidebar__category__item__title__content")
-               ) {
-                  const $categoryItem = e.target.closest(
-                     ".template-sidebar__category__item",
-                  );
-                  const isActive = $categoryItem.classList.contains("active");
-                  $categoryItem.classList?.[isActive ? "remove" : "add"]("active");
-               }
-
-               if (
-                  e.target.closest(".template-sidebar__category__item__sub-folder__title")
-               ) {
-                  const $subFolder = e.target.closest(
-                     ".template-sidebar__category__item__sub-folder",
-                  );
-                  const isActive = $subFolder.classList.contains("active");
-                  $subFolder.classList?.[isActive ? "remove" : "add"]("active");
-               }
-
-               if (e.target.closest(".template-sidebar__toggler")) {
-                  const isSidebarActive = document
-                     .querySelector(".template-sidebar")
-                     .classList.contains("active");
-                  document
-                     .querySelector(".template-sidebar")
-                     .classList[isSidebarActive ? "remove" : "add"]("active");
-               }
-            });
-         }, 500);
 
          return html;
       },

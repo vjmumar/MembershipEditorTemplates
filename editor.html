@@ -2269,11 +2269,17 @@
             if (!isConfirm) return;
 
             // Then we will open a new window
-            window.open(
+            const mobileWindow = window.open(
                location.href,
                "Mobile_Editor",
                "width=480,height=800,scrollbars=yes,resizable=yes",
             );
+            mobileWindow.onload = () => {
+               setTimeout(() => {
+                  mobileWin.resizeTo(1200, 900);
+                  mobileWin.focus();
+               }, 1000);
+            };
 
             // Then we will remove the sidebar
             document.querySelector(".editor-customizer-sidebar").remove();

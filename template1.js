@@ -2826,18 +2826,30 @@ class CourseTemplate {
          const $container = await this.utils.waitForElement("#app-container", 100);
 
          // Then we will retrieve the necessary data
-         const [userData, userProductProgress, completedPosts, productCategories] =
-            await Promise.allSettled([
-               this.data.fetchUser(),
-               this.data.fetchUserProductProgress(),
-               this.data.fetchCompletedPosts(),
-               this.data.fetchCategories(),
-            ]).then((res) => res.map((e) => e.value));
-         console.log(userData, userProductProgress, completedPosts, productCategories);
+         const [
+            userData,
+            userProductProgress,
+            completedPosts,
+            productCategories,
+            product,
+         ] = await Promise.allSettled([
+            this.data.fetchUser(),
+            this.data.fetchUserProductProgress(),
+            this.data.fetchCompletedPosts(),
+            this.data.fetchCategories(),
+            this.data.fetchProduct(),
+         ]).then((res) => res.map((e) => e.value));
+         console.log(
+            userData,
+            userProductProgress,
+            completedPosts,
+            productCategories,
+            product,
+         );
 
          // Then we will render the Categories List Page
          $container.innerHTML = `
-          ${this.mobileWidgets.banner}
+          ${this.mobileWidgets.banner("asd")}
           <div class='template-container'>
               <div class="template-categories__list">
                   <div class="template-categories__wrapper">

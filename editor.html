@@ -1321,7 +1321,7 @@
             $sidebarContent.innerHTML = `
                    <div class="global-contents">
                        <div class="global-contents__header">
-                           ${isDesktop ? "<div></div>" : `<i onclick="window.MembershipCustomization.actions.launchMobileCustomizer()" class="fa-solid fa-mobile-screen global-contents__header__mobile-switch"></i>`}
+                           ${!isDesktop ? "<div></div>" : `<i onclick="window.MembershipCustomization.actions.launchMobileCustomizer()" class="fa-solid fa-mobile-screen global-contents__header__mobile-switch"></i>`}
                            <p class="global-contents__header__text">Global</p>
                            <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipCustomization.initializers.initializeThemeSelector()"></i>
                        </div>
@@ -2261,12 +2261,9 @@
          // This method launches a 600px wide window to force GHL's internal engine to initialize the mobile DOM structure
          launchMobileCustomizer: async () => {
             // First we will ask the user to confirm their decision to open the mobile customizer
-            const userAgrees = confirm(
-               `
-               Opening the mobile customizer will create a data conflict with this window. We strongly advise you to save your desktop changes now before proceeding.
-               Once the mobile editor is open, this page will be locked, and you must reload this page after you are finished to see your mobile updates."
-               `,
-            );
+            const userAgrees =
+               confirm(`Opening the mobile customizer will create a data conflict with this window. We strongly advise you to save your desktop changes now before proceeding.\nOnce the mobile editor is open, this page will be locked, and you must reload this page after you are finished to see your mobile updates."
+               `);
 
             // Then we will check the user's decision and if they did not agree then we will not proceed
             if (!userAgrees) return;
@@ -2281,32 +2278,18 @@
             document.body.insertAdjacentHTML(
                "beforeend",
                `
-            <div id="ghl-mobile-lockout" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: rgba(255, 255, 255, 0.9) !important; z-index: 99999999 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-family: sans-serif !important; backdrop-filter: blur(5px) !important;">
-                <div style="max-width: 450px; width: 90%; background: #ffffff; padding: 40px; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center; border: 1px solid #e2e8f0;">
-                    <div style="font-size: 40px; margin-bottom: 15px;">⚠️</div>
-                    <h2 style="margin: 0 0 15px 0; color: #1a202c; font-size: 22px; font-weight: 700;">Mobile Customizer Active</h2>
-                    
-                    <p style="color: #4a5568; line-height: 1.5; font-size: 15px; margin-bottom: 20px;">
-                        Opening the mobile customizer will create a data conflict. We advise you to <b>save your desktop changes</b> before proceeding.
-                    </p>
-                 
-                    <div style="background: #fff5f5; border-radius: 8px; padding: 15px; text-align: left; border-left: 4px solid #f56565; margin-bottom: 25px;">
-                        <p style="margin: 0; color: #c53030; font-size: 14px; line-height: 1.4;">
-                            Once you are done making changes in the mobile window, <b>reload this page</b> to sync your progress.
+               <div style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: rgba(255, 255, 255, 0.85) !important; z-index: 99999999 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-family: sans-serif !important; text-align: center !important;">
+                   <div style="max-width: 420px; padding: 20px;">
+                       <h2 style="margin: 0 0 12px 0; color: #000; font-size: 24px; font-weight: 600;">Mobile Editor Active</h2>
+                       <p style="color: #333; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
+                           This page is locked because editing both versions at once causes data conflicts. 
+                           <b>Save your mobile changes first</b>, then reload this page to return.
                         </p>
-                    </div>
-                 
-                    <button 
-                        onclick="window.location.reload();" 
-                        style="width: 100%; background: #3182ce; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 16px; transition: background 0.2s;">
-                        Reload Page to Return
-                    </button>
-                    
-                    <p style="margin-top: 15px; font-size: 11px; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.5px;">
-                        Unsaved desktop changes will be lost
-                    </p>
-                </div>
-            </div>
+                       <button onclick="window.location.reload();" style="background: #000; color: #fff; border: none; padding: 14px 35px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 15px; transition: opacity 0.2s;">
+                           Reload Page
+                       </button>
+                   </div>
+               </div>
             `,
             );
          },

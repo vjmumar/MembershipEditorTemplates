@@ -3100,7 +3100,13 @@ class CourseTemplate {
           ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", bannerButtonLinkAndText.text, bannerButtonLinkAndText.link, "")}
           <div class='template-container'>
                ${this.widgets.communityToggle()}
-               ${this.widgets.heroBanner()}
+               ${this.widgets.heroBanner(
+                  "Welcome to Template",
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                  "",
+                  "",
+                  "margin-bottom: 10px",
+               )}
                ${this.widgets.categoryWithPostsDropdown(productCategories)}
           </div>
          `;
@@ -3143,6 +3149,7 @@ class CourseTemplate {
          subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
          paragraphHTML = "",
          embedHTML = "",
+         additionalInlineStyling = "",
       ) => {
          const defaultEmbed = `<iframe width="560" height="315" src="https://www.youtube.com/embed/-KtdCRntB5I?si=ZMcV0CeJScDXSxwS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
          const defaultParagraph = `
@@ -3152,7 +3159,7 @@ class CourseTemplate {
                     </p>
                 `;
          const html = `
-                    <div class="template-hero">
+                    <div class="template-hero" ${additionalInlineStyling ? `style='${additionalInlineStyling}'` : ""}>
                         <!-- Left Column: Text Content -->
                         <div class="template-hero__left">
                             <h1 class="template-hero__title" id="hero-title">${title}</h1>

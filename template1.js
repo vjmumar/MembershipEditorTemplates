@@ -2891,14 +2891,96 @@ class CourseTemplate {
             product,
          );
 
+         // Then we will process the categories data
+         const categories = productCategories
+            .filter((cat) => !cat?.parentCategory)
+            ?.map((cat) => ({
+               thumbnail:
+                  cat?.posterImage ||
+                  "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
+               title: cat.title,
+               url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
+            }));
+
+         // Then we will generate the link and text for the banner button
+         const bannerButtonLinkAndText = (() => {
+            // First, we initialize the default button variables
+            let text = "Let's Start";
+            let nextPost = null;
+
+            // Then we will fetch the course categories to organize them into a sorted, flat array of posts.
+            const allPosts = (() => {
+               // First we will retrieve all of the categories
+               let allCategories = productCategories;
+
+               // Then we will sort categories by sequence number
+               allCategories = allCategories.sort((a, b) =>
+                  a.sequenceNo > b.sequenceNo ? 1 : -1,
+               );
+
+               // Then we will nest sub-categories and sort internal posts
+               allCategories.forEach((e) => {
+                  if (e.parentCategory) {
+                     e.posts = e.posts.sort((a, b) =>
+                        a.sequenceNo > b.sequenceNo ? 1 : -1,
+                     );
+                     allCategories.forEach((ca) => {
+                        if (ca.id === e.parentCategory) {
+                           allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
+                           ca.posts.push(e);
+                           ca.posts = ca.posts.sort((a, b) =>
+                              a.sequenceNo > b.sequenceNo ? 1 : -1,
+                           );
+                        }
+                     });
+                  }
+               });
+
+               // Then we will flatten the hierarchy into a single searchable list of posts with indexed positions
+               let index = 0;
+               const allPost = allCategories?.reduce((a, c) => {
+                  c?.posts?.forEach((post) => {
+                     index++;
+                     if (post?.posts) {
+                        post?.posts.forEach((subPost) => {
+                           subPost.index = index;
+                           a.push(subPost);
+                        });
+                     } else {
+                        post.index = index;
+                        a.push(post);
+                     }
+                  });
+                  return a;
+               }, []);
+
+               // Finally we will return all of the post
+               return allPost;
+            })();
+
+            // Then, we check the user's progress to determine if we should show "Resume Course" and find the next post in the sequence, or simply start from the beginning.
+            if (userProductProgress?.completedPosts >= 1) {
+               const lastCompletedPost = allPosts.find(
+                  (e) => e.id === completedPosts?.[0]?.postId,
+               );
+               text = "Resume Course";
+               nextPost = allPosts[lastCompletedPost?.index || 0 + 1];
+            } else {
+               nextPost = allPosts[0];
+            }
+
+            // Finally, we return the button object containing the display text and the constructed URL path for the next lesson.
+            return {
+               text,
+               link: `/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`,
+            };
+         })();
+
          // Then we will render the Categories List Page
          $container.innerHTML = `
-          ${this.mobileWidgets.banner(product?.posterImage)}
+          <img class="template-hero" src="${product?.posterImage}" />
           <div class='template-container'>
-              <div class="template-categories__list">
-                  <div class="template-categories__wrapper">
-                  </div>
-              </div>
+               ${this.desktopWidgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", bannerButtonLinkAndText.text, bannerButtonLinkAndText.link)}
           </div>
          `;
 
@@ -3102,8 +3184,25 @@ class CourseTemplate {
 
    // This object holds UI component templates for mobiles
    mobileWidgets = {
-      banner: (image = "") => {
-         return `<img src="${image}" class="template-hero" />`;
+      welcomeBanner: (
+         name = "User",
+         progress = "No progress available",
+         buttonText = "Let's Start",
+         buttonLink = "#",
+      ) => {
+         const html = `
+                    <div class="template-welcome">
+                        <div class="template-welcome__left">
+                            <p class="template-welcome__greeting">Welcome back, ${name}</p>
+                            <p class="template-welcome__progress">
+                                <i class="fa-solid fa-desktop template-welcome__progress-icon"></i>
+                                <span>${progress}% COMPLETE</span>
+                            </p>
+                        </div>
+                        <a href="${buttonLink}" class="template-welcome__button">${buttonText}</a>    
+                    </div>
+                `;
+         return html;
       },
    };
 

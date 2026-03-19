@@ -238,6 +238,12 @@
       z-index: 9999;
    }
 
+   .global-contents__header__mobile-switch {
+      font-size: 20px;
+      color: black;
+      cursor: pointer;
+   }
+
    .global-contents__header__text {
       font-weight: 700;
       font-size: 14px;
@@ -1311,10 +1317,12 @@
             }, "");
 
             // Finally we will render the fully generated global contents into the sidebar content area
+            const isDesktop = window.matchMedia("(min-width: 768px)").matches;
             $sidebarContent.innerHTML = `
                    <div class="global-contents">
                        <div class="global-contents__header">
                            <div></div>
+                           ${isDesktop ? "<div></div>" : `<i onclick="window.MembershipCustomization.actions.launchMobileCustomizer()" class="fa-solid fa-mobile-screen global-contents__header__mobile-switch"></i>`}
                            <p class="global-contents__header__text">Global</p>
                            <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipCustomization.initializers.initializeThemeSelector()"></i>
                        </div>

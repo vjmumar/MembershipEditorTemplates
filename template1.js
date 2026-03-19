@@ -3107,7 +3107,7 @@ class CourseTemplate {
                   "",
                   "margin-bottom: 15px",
                )}
-               ${this.widgets.categoryWithPostsDropdown(productCategories)}
+               ${this.widgets.categoryWithPostsDropdown("", productCategories)}
           </div>
          `;
 

@@ -25,7 +25,8 @@
    .editor-customizer-sidebar input[type="text"],
    .editor-customizer-sidebar input[type="number"],
    .editor-customizer-sidebar input[type="color"],
-   .editor-customizer-sidebar input[type="checkbox"] {
+   .editor-customizer-sidebar input[type="checkbox"],
+   .editor-customizer-sidebar select {
       font-size: 14px;
       padding: 6px 10px;
       border: 1px solid #ccc;
@@ -590,7 +591,7 @@
                   document.body.append(script);
                   return e;
                });
-               
+
             /**
              * Then, we determine the currently active template by searching through the saved configurations array,
              * then we dynamically load its corresponding script, falling back to the first available template if no
@@ -2011,7 +2012,10 @@
          },
 
          // This method is responsible for updating the user's selected theme inside the current product custom js in ghl
-         updateTemplateToProductsCustomJs: async (templateId = "", selectorToToggle = "") => {
+         updateTemplateToProductsCustomJs: async (
+            templateId = "",
+            selectorToToggle = "",
+         ) => {
             // First we will confirm the user's intent to switch template
             if (!confirm("Do you want to proceed?")) return;
 
@@ -2033,7 +2037,8 @@
                   await this.actions.saveEditsToProductsCustomJs(true);
 
                   // Then we will toggle the selector to disabled state
-                  document.querySelector(selectorToToggle).style.cssText = "opacity: .5; pointer-events: none;";
+                  document.querySelector(selectorToToggle).style.cssText =
+                     "opacity: .5; pointer-events: none;";
 
                   // Then we will locate the selected template metadata based on the provided template id
                   const selectedTemplate = this.templates.find(
@@ -2125,7 +2130,8 @@
                   );
                   console.error(err);
                } finally {
-                  document.querySelector(selectorToToggle).style.cssText = "opacity: 1; pointer-events: all;";
+                  document.querySelector(selectorToToggle).style.cssText =
+                     "opacity: 1; pointer-events: all;";
                }
             } else {
                // Finally we will block the save action and instruct the user to refresh or contact support when no valid token is available
@@ -2204,24 +2210,24 @@
                      "token-id": this.token,
                   },
                   body: JSON.stringify({
-                  altId: String(window.savedTemplatesFileInfo?.altId),
-                  altType: window.savedTemplatesFileInfo?.altType,
-                  mode: "public",
-                  status: "trashed",
-                  filesToBeDeleted: [
-                     {
-                        _id: String(window.savedTemplatesFileInfo?.id),
-                        altId: String(window.savedTemplatesFileInfo?.altId),
-                        altType: window.savedTemplatesFileInfo?.altType,
-                        parentId: "",
-                        name: window.savedTemplatesFileInfo?.name,
-                        url: window.savedTemplatesFileInfo?.url,
-                        size: window.savedTemplatesFileInfo?.size,
-                        contentType: "text/plain",
-                        isPrivate: false,
-                     },
-                  ],
-               }),
+                     altId: String(window.savedTemplatesFileInfo?.altId),
+                     altType: window.savedTemplatesFileInfo?.altType,
+                     mode: "public",
+                     status: "trashed",
+                     filesToBeDeleted: [
+                        {
+                           _id: String(window.savedTemplatesFileInfo?.id),
+                           altId: String(window.savedTemplatesFileInfo?.altId),
+                           altType: window.savedTemplatesFileInfo?.altType,
+                           parentId: "",
+                           name: window.savedTemplatesFileInfo?.name,
+                           url: window.savedTemplatesFileInfo?.url,
+                           size: window.savedTemplatesFileInfo?.size,
+                           contentType: "text/plain",
+                           isPrivate: false,
+                        },
+                     ],
+                  }),
                });
 
                // Finally return the new file information
@@ -2489,11 +2495,11 @@
             window._input[listenerId] = listenerFunction;
 
             // Finally return the actual HTML for the widget
-            const optionsHTML = options.reduce((a,c) => {
+            const optionsHTML = options.reduce((a, c) => {
                const isSelected = c === value;
-               a += `<option value="${c}" ${isSelected ? "selected" : ""}>${c}</option>`;
-               return a
-            },"");
+               a += `<option value="${c}" ${isSelected ? "selected" : ""}>${c?.toUpperCase()}</option>`;
+               return a;
+            }, "");
             return `
                <select
                  data-template-key=${templateKey}
@@ -2501,10 +2507,10 @@
                  id="${templateKey}${property}"
                  class="editor-customizer-form__item__input select"
                >
-                  ${optionsHTML}   
+                  ${optionsHTML}
                </select>
             `;
-         }
+         },
       };
 
       // Utils module

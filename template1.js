@@ -2032,6 +2032,7 @@ window.templateCustomizationSchema = {
          ],
       },
    ],
+   mobilePages: [],
 };
 
 class CourseTemplate {
@@ -2836,7 +2837,7 @@ class CourseTemplate {
 
          // Then we will render the Categories List Page
          $container.innerHTML = `
-          <p class="template-categories-title">Categories</p>
+          ${this.mobileWidgets.banner}
           <div class='template-container'>
               <div class="template-categories__list">
                   <div class="template-categories__wrapper">
@@ -2846,7 +2847,7 @@ class CourseTemplate {
          `;
 
          // Finally we will invoke the necessary initializers
-         this.globalInitializers.initStyles();
+         // this.globalInitializers.initStyles();
          document.body.classList.add("page-landing");
       },
    };
@@ -3044,7 +3045,11 @@ class CourseTemplate {
    };
 
    // This object holds UI component templates for mobiles
-   mobileWidgets = {};
+   mobileWidgets = {
+      banner: (image = "") => {
+         return `<img src="${image}" class="template-hero" />`;
+      },
+   };
 
    // This object holds data fetching and state management logic
    data = {

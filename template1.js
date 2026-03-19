@@ -3020,17 +3020,6 @@ class CourseTemplate {
             product,
          );
 
-         // Then we will process the categories data
-         const categories = productCategories
-            .filter((cat) => !cat?.parentCategory)
-            ?.map((cat) => ({
-               thumbnail:
-                  cat?.posterImage ||
-                  "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
-               title: cat.title,
-               url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
-            }));
-
          // Then we will generate the link and text for the banner button
          const bannerButtonLinkAndText = (() => {
             // First, we initialize the default button variables
@@ -3111,6 +3100,7 @@ class CourseTemplate {
           ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", bannerButtonLinkAndText.text, bannerButtonLinkAndText.link, "")}
           <div class='template-container'>
                ${this.widgets.communityToggle()}
+               ${this.widgets.categoryWithPostsDropdown(productCategories)}
           </div>
          `;
 
@@ -3314,6 +3304,157 @@ class CourseTemplate {
                     </button>
                 </div>
             `;
+      },
+      categoryWithPostsDropdown: (categories = []) => {
+         // Then we will organize subcategories under their parents
+         let allCategories = categories.sort((a, b) =>
+            a.sequenceNo > b.sequenceNo ? 1 : -1,
+         );
+         allCategories.forEach((e) => {
+            if (e.parentCategory) {
+               e.posts = e.posts.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
+               allCategories.forEach((ca) => {
+                  if (ca.id === e.parentCategory) {
+                     allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
+                     ca.posts.push(e);
+                     ca.posts = ca.posts.sort((a, b) =>
+                        a.sequenceNo > b.sequenceNo ? 1 : -1,
+                     );
+                  }
+               });
+            }
+         });
+
+         // Then we will generate the HTML for the sidebar navigation
+         const sideBarCategories = allCategories.reduce((a, c, i) => {
+            const postsHTML = c?.posts.reduce((cPA, cP) => {
+               if (!cP?.posts) {
+                  cPA += `
+                            <a href="${`/courses/products/${cP?.productId}/categories/${cP?.categoryId}/posts/${cP?.id}`}" class="template-sidebar__category__item__post">
+                                <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#748493" fill-rule="nonzero">
+                                            <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
+                                            <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
+                                            <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
+                                        </g>
+                                        <rect class="color-stroke" id="Rectangle" stroke="#748493" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
+                                    </g>
+                                </svg>
+                                <p class="template-sidebar__category__item__post__text">${cP.title}</p>
+                            </a>
+                        `;
+               } else {
+                  const posts = cP.posts.reduce((cPPA, cPP) => {
+                     cPPA += `
+                                    <a href="${`/courses/products/${cPP?.productId}/categories/${cPP?.categoryId}/posts/${cPP?.id}`}" class="template-sidebar__category__item__post">
+                                        <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#748493" fill-rule="nonzero">
+                                                    <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
+                                                    <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
+                                                    <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
+                                                </g>
+                                                <rect class="color-stroke" id="Rectangle" stroke="#748493" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
+                                            </g>
+                                        </svg>
+                                        <p class="template-sidebar__category__item__post__text">${cPP.title}</p>
+                                    </a>
+                                `;
+                     return cPPA;
+                  }, "");
+                  cPA += `
+                            <div class="template-sidebar__category__item__sub-folder">
+                                <div class="template-sidebar__category__item__sub-folder__title">
+                                    <p class="template-sidebar__category__item__sub-folder__title__text">${cP.title}</p>
+                                    <a href="/courses/products/${cP?.productId}/categories/${cP?.id}" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
+                                </div>
+                                <div class="template-sidebar-category__item__sub-folder__posts">
+                                    ${posts}    
+                                </div>
+                            </div>
+                            `;
+               }
+               return cPA;
+            }, "");
+            a += `
+                    <div class="template-sidebar__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
+                        <div class="template-sidebar__category__item__title">
+                            <div class="template-sidebar__category__item__title__content">
+                                <i class="fas fa-angle-right template-sidebar__category__item__title__content__icon"></i>
+                                <p class="template-sidebar__category__item__title__content__title">${c.title}</p>
+                            </div>
+                            <a href="/courses/products/${c?.productId}/categories/${c?.id}" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></a>
+                        </div>
+                        <div class="template-sidebar__category__item__content">
+                            ${postsHTML}     
+                        </div>       
+                    </div>
+                    `;
+            return a;
+         }, "");
+         const html = `
+                    <div class="template-sidebar">
+                        <div class="template-sidebar__content">
+                            <a href="/library" class="template-sidebar__back-button">
+                                <i class="fa-solid fa-angle-left template-sidebar__back-button__icon"></i>
+                                <p class="template-sidebar__back-button__text">Library</p>    
+                            </a>
+                            <a href="/courses/products/${product.id}">
+                                <img class="template-sidebar__logo" src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png">    
+                            </a>
+                            <p class='template-sidebar__titles'>Modules</p>
+                            <div class="template-sidebar__category">
+                                ${sideBarCategories}    
+                            </div>    
+                            <a class="template-sidebar__image" href="#">
+                                <img src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/690ed3310269a35386dd56dd.png" />    
+                            </a>
+                        </div>
+                        <div class="template-sidebar__toggler">
+                            <i class="fa-solid fa-arrow-right-arrow-left open"></i>
+                            <i class="fa-solid fa-x close"></i>    
+                        </div>
+                    </div>
+                `;
+
+         // Finally we will inject the sidebar and attach event listeners for interactivity
+         ($container || document.querySelector(".product-container")).insertAdjacentHTML(
+            "beforebegin",
+            html,
+         );
+         setTimeout(() => {
+            document.body.addEventListener("click", (e) => {
+               if (
+                  e.target.closest(".template-sidebar__category__item__title__content")
+               ) {
+                  const $categoryItem = e.target.closest(
+                     ".template-sidebar__category__item",
+                  );
+                  const isActive = $categoryItem.classList.contains("active");
+                  $categoryItem.classList?.[isActive ? "remove" : "add"]("active");
+               }
+
+               if (
+                  e.target.closest(".template-sidebar__category__item__sub-folder__title")
+               ) {
+                  const $subFolder = e.target.closest(
+                     ".template-sidebar__category__item__sub-folder",
+                  );
+                  const isActive = $subFolder.classList.contains("active");
+                  $subFolder.classList?.[isActive ? "remove" : "add"]("active");
+               }
+
+               if (e.target.closest(".template-sidebar__toggler")) {
+                  const isSidebarActive = document
+                     .querySelector(".template-sidebar")
+                     .classList.contains("active");
+                  document
+                     .querySelector(".template-sidebar")
+                     .classList[isSidebarActive ? "remove" : "add"]("active");
+               }
+            });
+         }, 500);
       },
    };
 

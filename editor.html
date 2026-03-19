@@ -599,7 +599,7 @@
          ];
          this.activeTemplate = null;
          this.activePageOnTemplate = null;
-         this.token = "pit-1641fe4a-7d50-4759-a9a9-4aa34d339a7e";
+         this.token = "pit-460ffd0b-8059-419d-8e7a-7f914d5eb609";
          this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
          (async () => {
@@ -1994,7 +1994,6 @@
                      `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
                      `${productId}.txt`,
                   );
-                  console.log(fileData);
                   if (!fileData.url) {
                      throw "error";
                      return;

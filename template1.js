@@ -3419,10 +3419,6 @@ class CourseTemplate {
                 `;
 
          // Finally we will inject the sidebar and attach event listeners for interactivity
-         ($container || document.querySelector(".product-container")).insertAdjacentHTML(
-            "beforebegin",
-            html,
-         );
          setTimeout(() => {
             document.body.addEventListener("click", (e) => {
                if (
@@ -3455,6 +3451,8 @@ class CourseTemplate {
                }
             });
          }, 500);
+
+         return html;
       },
    };
 

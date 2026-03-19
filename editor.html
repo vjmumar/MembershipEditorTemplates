@@ -599,6 +599,7 @@
          ];
          this.activeTemplate = null;
          this.activePageOnTemplate = null;
+         this.token = "pit-1641fe4a-7d50-4759-a9a9-4aa34d339a7e";
          this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
          (async () => {
@@ -695,8 +696,8 @@
             };
 
             // Finally we will retrieve the authentication token by parsing the product data from the cookies
-            const productData = JSON.parse(window.atob($cookies.get("acat")));
-            this.token = productData?.tokenId;
+            // const productData = JSON.parse(window.atob($cookies.get("acat")));
+            // this.token = productData?.tokenId;
          })();
       }
 

@@ -3120,7 +3120,7 @@ class CourseTemplate {
 
          // Finally we will invoke the necessary initializers
          this.mobileInitializers.initStyles();
-         document.body.classList.add("page-landing");
+         document.body.classList.add("page-dashboard");
       },
    };
 

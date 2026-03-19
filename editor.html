@@ -527,6 +527,12 @@
    .widget-multi-input input[data-side="bottom"] {
       grid-area: 3 / 2 / 4 / 3;
    }
+
+   @media (max-width: 700px) {
+      i {
+         font-family: var(--_fa-family) !important;
+      }
+   }
 </style>
 <!-- CSS for features -->
 <link
@@ -2243,6 +2249,59 @@
                isError = true;
                alert("Something went wrong, please reload or try again.");
             }
+         },
+
+         // This method launches a 600px wide window to force GHL's internal engine to initialize the mobile DOM structure
+         launchMobileCustomizer: async () => {
+            // First we will ask the user to confirm their decision to open the mobile customizer
+            const userAgrees = confirm(
+               `
+               Opening the mobile customizer will create a data conflict with this window. We strongly advise you to save your desktop changes now before proceeding.
+               Once the mobile editor is open, this page will be locked, and you must reload this page after you are finished to see your mobile updates."
+               `,
+            );
+
+            // Then we will check the user's decision and if they did not agree then we will not proceed
+            if (!userAgrees) return;
+
+            // Then we will open a new window
+            window.open(location.href, "GHL Mobile Editor", "width=600px,scrollbars=yes");
+
+            // Then we will remove the sidebar
+            document.querySelector(".editor-customizer-sidebar").remove();
+
+            // Finally we will insert a warning message to the current body
+            document.body.insertAdjacentHTML(
+               "beforeend",
+               `
+            <div id="ghl-mobile-lockout" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: rgba(255, 255, 255, 0.9) !important; z-index: 99999999 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-family: sans-serif !important; backdrop-filter: blur(5px) !important;">
+                <div style="max-width: 450px; width: 90%; background: #ffffff; padding: 40px; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 40px; margin-bottom: 15px;">⚠️</div>
+                    <h2 style="margin: 0 0 15px 0; color: #1a202c; font-size: 22px; font-weight: 700;">Mobile Customizer Active</h2>
+                    
+                    <p style="color: #4a5568; line-height: 1.5; font-size: 15px; margin-bottom: 20px;">
+                        Opening the mobile customizer will create a data conflict. We advise you to <b>save your desktop changes</b> before proceeding.
+                    </p>
+                 
+                    <div style="background: #fff5f5; border-radius: 8px; padding: 15px; text-align: left; border-left: 4px solid #f56565; margin-bottom: 25px;">
+                        <p style="margin: 0; color: #c53030; font-size: 14px; line-height: 1.4;">
+                            Once you are done making changes in the mobile window, <b>reload this page</b> to sync your progress.
+                        </p>
+                    </div>
+                 
+                    <button 
+                        onclick="window.location.reload();" 
+                        style="width: 100%; background: #3182ce; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 16px; transition: background 0.2s;">
+                        Reload Page to Return
+                    </button>
+                    
+                    <p style="margin-top: 15px; font-size: 11px; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Unsaved desktop changes will be lost
+                    </p>
+                </div>
+            </div>
+            `,
+            );
          },
       };
 

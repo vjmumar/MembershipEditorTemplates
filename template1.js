@@ -2849,7 +2849,7 @@ class CourseTemplate {
 
          // Then we will render the Categories List Page
          $container.innerHTML = `
-          ${this.mobileWidgets.banner("asd")}
+          ${this.mobileWidgets.banner(product?.posterImage)}
           <div class='template-container'>
               <div class="template-categories__list">
                   <div class="template-categories__wrapper">

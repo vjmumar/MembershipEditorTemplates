@@ -1994,7 +1994,10 @@
                      `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
                      `${productId}.txt`,
                   );
-
+                  if (fileData.url) {
+                     throw "error";
+                     return;
+                  }
                   window.savedTemplatesFileInfo = fileData;
 
                   /**
@@ -2203,10 +2206,6 @@
                   },
                );
                const registerJSON = await registerResponse.json();
-               if (registerResponse.status !== 200) {
-                  alert("Something went wrong!");
-                  return;
-               }
                await fetch(registerJSON.url, {
                   method: "PUT",
                   headers: {
@@ -2309,7 +2308,7 @@
                    <div style="max-width: 420px; padding: 20px;">
                        <h2 style="margin: 0 0 12px 0; color: #000; font-size: 24px; font-weight: 600;">Mobile Editor Active</h2>
                        <p style="color: #333; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
-                           This page is locked because editing both versions at once causes data conflicts. 
+                           This page is locked because editing both versions at once causes data conflicts.
                            <b>Save your mobile changes first</b>, then reload this page to return.
                         </p>
                        <button onclick="window.location.reload();" style="background: #000; color: #fff; border: none; padding: 14px 35px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 15px; transition: opacity 0.2s;">

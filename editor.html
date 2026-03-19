@@ -2276,9 +2276,12 @@
             );
             mobileWindow.onload = () => {
                setTimeout(() => {
-                  mobileWindow.resizeTo(1200, 900);
+                  mobileWindow.resizeTo(
+                     window.screen.availWidth,
+                     window.screen.availHeight,
+                  );
                   mobileWindow.focus();
-               }, 1000);
+               }, 3000);
             };
 
             // Then we will remove the sidebar

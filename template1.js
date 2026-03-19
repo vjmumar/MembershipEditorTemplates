@@ -3400,7 +3400,7 @@ class CourseTemplate {
                                 <i class="fa-solid fa-angle-left template-sidebar__back-button__icon"></i>
                                 <p class="template-sidebar__back-button__text">Library</p>    
                             </a>
-                            <a href="/courses/products/${product.id}">
+                            <a href="/courses/products/">
                                 <img class="template-sidebar__logo" src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png">    
                             </a>
                             <p class='template-sidebar__titles'>Modules</p>

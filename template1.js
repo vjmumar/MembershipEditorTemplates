@@ -2109,7 +2109,7 @@ class CourseTemplate {
          ]).then((res) => res.map((e) => e.value));
 
          // Then we will organize subcategories under their parents
-         const allCategories = categories.sort((a, b) =>
+         let allCategories = categories.sort((a, b) =>
             a.sequenceNo > b.sequenceNo ? 1 : -1,
          );
          allCategories.forEach((e) => {
@@ -2859,7 +2859,7 @@ class CourseTemplate {
          `;
 
          // Finally we will invoke the necessary initializers
-         // this.globalInitializers.initStyles();
+         this.globalInitializers.initStyles();
          document.body.classList.add("page-landing");
       },
    };

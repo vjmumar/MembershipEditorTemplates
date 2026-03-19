@@ -3334,7 +3334,7 @@ class CourseTemplate {
          });
 
          // Then we will generate the HTML for the sidebar navigation
-         const categories = allCategories.reduce((a, c, i) => {
+         const categoriesHTML = allCategories.reduce((a, c) => {
             const postsHTML = c?.posts.reduce((cPA, cP) => {
                if (!cP?.posts) {
                   cPA += `
@@ -3404,7 +3404,8 @@ class CourseTemplate {
          }, "");
          const html = `
             <div class="template-cwd">
-               <p class="template-cwd__title"><p>
+               <p class="template-cwd__title">${title}<p>
+               <div class="template-cwd__content">${categoriesHTML}</div>
             </div>
          `;
 

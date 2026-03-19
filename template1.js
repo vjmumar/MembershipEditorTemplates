@@ -3105,7 +3105,7 @@ class CourseTemplate {
                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                   "",
                   "",
-                  "margin-bottom: 10px",
+                  "margin-bottom: 15px",
                )}
                ${this.widgets.categoryWithPostsDropdown(productCategories)}
           </div>
@@ -3313,7 +3313,7 @@ class CourseTemplate {
                 </div>
             `;
       },
-      categoryWithPostsDropdown: (categories = []) => {
+      categoryWithPostsDropdown: (title = "Syllabus", categories = []) => {
          // Then we will organize subcategories under their parents
          let allCategories = categories.sort((a, b) =>
             a.sequenceNo > b.sequenceNo ? 1 : -1,
@@ -3334,7 +3334,7 @@ class CourseTemplate {
          });
 
          // Then we will generate the HTML for the sidebar navigation
-         const sideBarCategories = allCategories.reduce((a, c, i) => {
+         const categories = allCategories.reduce((a, c, i) => {
             const postsHTML = c?.posts.reduce((cPA, cP) => {
                if (!cP?.posts) {
                   cPA += `
@@ -3389,6 +3389,7 @@ class CourseTemplate {
                     <div class="template-sidebar__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
                         <div class="template-sidebar__category__item__title">
                             <div class="template-sidebar__category__item__title__content">
+                                <img src="${c?.posterImage}" />
                                 <i class="fas fa-angle-right template-sidebar__category__item__title__content__icon"></i>
                                 <p class="template-sidebar__category__item__title__content__title">${c.title}</p>
                             </div>
@@ -3401,7 +3402,11 @@ class CourseTemplate {
                     `;
             return a;
          }, "");
-         const html = sideBarCategories;
+         const html = `
+            <div class="template-cwd">
+               <p class="template-cwd__title"><p>
+            </div>
+         `;
 
          // Finally we will inject the sidebar and attach event listeners for interactivity
          setTimeout(() => {

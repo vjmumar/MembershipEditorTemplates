@@ -699,6 +699,7 @@
             const isEdit =
                new URLSearchParams(window.location.search).get("membershipeditor") ===
                "true";
+            console.log(isEdit);
 
             // Then if we are in preview mode, we will determine which interface to show
             if (isPreview) {

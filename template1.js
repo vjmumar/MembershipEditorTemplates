@@ -2861,7 +2861,7 @@ class CourseTemplate {
 
       initStyles: () => {
          // !Note: Use https://unminify.com/ to uncompress the styles, and use https://www.textfixer.com/html/compress-html-compression.php to compress again
-         const styles = ``;
+         const styles = `<style id="template-widget-styles">.template-welcome{background:#f7eae7;padding:12px 30px;display:flex;align-items:center;justify-content:space-between;color:#333;font-family:"Poppins",sans-serif;box-shadow:0 2px 4px rgba(0,0,0,0.05);}.template-welcome__left{display:flex;flex-direction:column;gap:5px;}.template-welcome__greeting{font-size:20px;font-weight:600;line-height:24px;margin:0;color:black;}.template-welcome__progress{font-size:10px;line-height:15px;color:black;font-weight:600;letter-spacing:1px;margin:0;display:flex;align-items:center;gap:5px;}.template-welcome__progress-icon{color:black;font-size:16px;}.template-welcome__button{background:#4e3737;color:white;padding:5px 40px;border-radius:4px;text-decoration:none;font-weight:600;font-size:18px;line-height:27px;box-shadow:0 5px 10px 0 rgba(0,0,0,0.2);cursor:pointer;border:none;}</style><style id="template-styles">.page-dashboard .template-hero{height:280px;width:100%;object-fit:cover;}</style>`;
          document.body.insertAdjacentHTML("afterbegin", styles);
       },
 

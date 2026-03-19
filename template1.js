@@ -3096,10 +3096,11 @@ class CourseTemplate {
 
          // Then we will render the Categories List Page
          $container.innerHTML = `
-          <img class="template-hero" src="${product?.posterImage}" />
+          <img class="template-hero__image" src="${product?.posterImage}" />
           ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", bannerButtonLinkAndText.text, bannerButtonLinkAndText.link, "")}
           <div class='template-container'>
                ${this.widgets.communityToggle()}
+               ${this.widgets.heroBanner()}
                ${this.widgets.categoryWithPostsDropdown(productCategories)}
           </div>
          `;

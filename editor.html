@@ -699,7 +699,6 @@
             const isEdit =
                new URLSearchParams(window.location.search).get("membershipeditor") ===
                "true";
-            console.log(isEdit);
 
             // Then if we are in preview mode, we will determine which interface to show
             if (isPreview) {
@@ -831,6 +830,7 @@
                      this.isDesktop ? "pages" : "mobilePages"
                   ]?.forEach((page) => {
                      const urlRegex = new RegExp(page?.urlRegex);
+                     console.log(urlRegex, page);
                      if (urlRegex?.test(url)) {
                         // First we will inject the editor styles into the document head to ensure they persist even if the app container is cleared during rendering
                         document.head.insertAdjacentHTML("beforeend", editorStyle);

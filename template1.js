@@ -2032,7 +2032,35 @@ window.templateCustomizationSchema = {
          ],
       },
    ],
-   mobilePages: [],
+   mobilePages: [
+      {
+         name: "Main",
+         urlRegex: "\\/courses\\/products\\/[a-zA-Z0-9-]{36}(?:\\/.*)?(?:\\?.*)?$",
+         editor: [
+            {
+               elementSelector: ".template-hero",
+               label: "Hero",
+               key: "template-container",
+               cssCustomizations: [
+                  {
+                     name: "Box Shadow",
+                     property: "box-shadow",
+                     type: "text",
+                     placeholder: "5px 10px #888888",
+                     value: "",
+                  },
+                  {
+                     name: "Mininum Height",
+                     property: "min-height",
+                     type: "text",
+                     placeholder: "E.g: 400px",
+                     value: "",
+                  },
+               ],
+            },
+         ],
+      },
+   ],
 };
 
 class CourseTemplate {

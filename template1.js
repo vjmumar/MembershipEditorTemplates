@@ -3722,10 +3722,10 @@ class CourseTemplate {
                      headers: {
                         "accept": "application/json, text/plain, */*",
                         "accept-language": "en-US,en;q=0.5",
-                        "token-id": token,
+                        "authorization": `Bearer ${token}`,
                      },
                      body: JSON.stringify({
-                        productId: productId,
+                        product_id: productId,
                         categories: categoryIds,
                      }),
                      method: "POST",

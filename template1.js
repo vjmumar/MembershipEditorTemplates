@@ -3347,21 +3347,27 @@ class CourseTemplate {
                         `;
                } else {
                   const posts = cP.posts.reduce((cPPA, cPP) => {
+                     const image = cPP?.posterImage
+                        ? `https://cdn.courses.apisystem.tech${cPP.posterImage}`
+                        : fallbackImage;
                      cPPA += `
                                     <div class="template-cwd__category__item__post">
-                                        <img src="${`https://cdn.courses.apisystem.tech${cPP?.posterImage}` || fallbackImage}" class="template-cwd__category__item__post__icon" />
+                                        <img src="${image}" class="template-cwd__category__item__post__icon" />
                                         <p class="template-cwd__category__item__post__text">${cPP.title}</p>
                                     </div>
                                 `;
                      return cPPA;
                   }, "");
+                  const image = cPP?.posterImage
+                     ? `https://cdn.courses.apisystem.tech${cP.posterImage}`
+                     : fallbackImage;
                   cPA += `
                             <div class="template-cwd__category__item__sub-folder">
                                  <div class="template-cwd__category__item__sub-folder">
                                     <div class="template-cwd__category__item__sub-folder__content">
-                                       <img class="template-cwd__category__item__sub-folder__content__image" src="${`https://cdn.courses.apisystem.tech${cP?.posterImage}` || fallbackImage}" />
+                                       <img class="template-cwd__category__item__sub-folder__content__image" src="${image}" />
                                        <div class="template-cwd__category__item__sub-folder__content__details">
-                                          <p class="template-cwd__category__item__sub-folder__content__details__title">${cP?.title}</p>
+                                          <p class="template-cwd__category__item__sub-folder__content__details__title">${cP.title}</p>
                                           <p class="template-cwd__category__item__sub-folder__content__details__posts">${cP?.posts?.length} Lessons</p>
                                        </div>
                                     </div>

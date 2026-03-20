@@ -3372,8 +3372,8 @@ class CourseTemplate {
                                  <div class="template-cwd__category__item__sub-folder__title">
                                        <img class="template-cwd__category__item__sub-folder__title__image" src="${image}" />
                                        <div class="template-cwd__category__item__sub-folder__title__details">
-                                          <p class="template-cwd__category__item__sub-folder__title__details__title">${cP.title}</p>
-                                          <p class="template-cwd__category__item__sub-folder__title__details__posts">${cP?.posts?.length} Lessons</p>
+                                          <p class="template-cwd__category__item__sub-folder__title__details__name">${cP.title}</p>
+                                          <p class="template-cwd__category__item__sub-folder__title__details__title">Category</p>
                                        </div>
                                 </div>
                                 <div class="template-cwd-category__item__sub-folder__posts">

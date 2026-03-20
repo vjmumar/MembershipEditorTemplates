@@ -3426,24 +3426,13 @@ class CourseTemplate {
                   $categoryItem.classList?.[isActive ? "remove" : "add"]("active");
                }
 
-               // if (
-               //    e.target.closest(".template-sidebar__category__item__sub-folder__title")
-               // ) {
-               //    const $subFolder = e.target.closest(
-               //       ".template-sidebar__category__item__sub-folder",
-               //    );
-               //    const isActive = $subFolder.classList.contains("active");
-               //    $subFolder.classList?.[isActive ? "remove" : "add"]("active");
-               // }
-
-               // if (e.target.closest(".template-sidebar__toggler")) {
-               //    const isSidebarActive = document
-               //       .querySelector(".template-sidebar")
-               //       .classList.contains("active");
-               //    document
-               //       .querySelector(".template-sidebar")
-               //       .classList[isSidebarActive ? "remove" : "add"]("active");
-               // }
+               if (e.target.closest(".template-cwd__category__item__sub-folder__title")) {
+                  const $subFolder = e.target.closest(
+                     ".template-cwd__category__item__sub-folder",
+                  );
+                  const isActive = $subFolder.classList.contains("active");
+                  $subFolder.classList?.[isActive ? "remove" : "add"]("active");
+               }
             });
          }, 500);
 

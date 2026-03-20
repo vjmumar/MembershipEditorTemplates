@@ -3005,12 +3005,14 @@ class CourseTemplate {
             completedPosts,
             productCategories,
             product,
+            categoryProgress,
          ] = await Promise.allSettled([
             this.data.fetchUser(),
             this.data.fetchUserProductProgress(),
             this.data.fetchCompletedPosts(),
             this.data.fetchCategories(),
             this.data.fetchProduct(),
+            this.data.fetchCategoryProgress(),
          ]).then((res) => res.map((e) => e.value));
          console.log(
             userData,
@@ -3018,6 +3020,7 @@ class CourseTemplate {
             completedPosts,
             productCategories,
             product,
+            categoryProgress,
          );
 
          // Then we will generate the link and text for the banner button
@@ -3319,7 +3322,6 @@ class CourseTemplate {
          completedPosts = [],
          completedCategories = [],
       ) => {
-         console.log(completedCategories);
          // First we will create the necessary variables
          let fallbackImage =
             "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png";
@@ -3692,6 +3694,47 @@ class CourseTemplate {
                         (e.completedPosts / e.totalPosts) *
                         100
                      ).toFixed(0);
+                     resolved(e);
+                     sessionStorage.setItem(storageName, JSON.stringify(e));
+                  });
+            } else {
+               console.log("No Token Found!");
+            }
+         });
+      },
+      fetchCategoryProgress: async (categoryIds = []) => {
+         const locationId = location.href.split(".")[0].replace("https://", "");
+         const productId = location.href
+            .split("/products/")[1]
+            .split("?")[0]
+            .split("/")[0];
+         const storageName = `${productId}-category-progress`;
+         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+         if (Object.keys(previousData).length > 0) return previousData;
+         return await new Promise(async (resolved, reject) => {
+            const acatToken = $cookies.get("cat") || $cookies.get("acat");
+            if (acatToken) {
+               const token = JSON.parse(window.atob(acatToken))?.tokenId;
+               const contactId = JSON.parse(window.atob(acatToken))?.contactId;
+               fetch(
+                  `https://services.leadconnectorhq.com/membership/locations/${locationId}/categories/get-progress`,
+                  {
+                     headers: {
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.5",
+                        "token-id": token,
+                     },
+                     body: JSON.stringify({
+                        productId: productId,
+                        categories: categoryIds,
+                     }),
+                     method: "POST",
+                     mode: "cors",
+                     credentials: "omit",
+                  },
+               )
+                  .then((e) => e.json())
+                  .then((e) => {
                      resolved(e);
                      sessionStorage.setItem(storageName, JSON.stringify(e));
                   });

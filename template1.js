@@ -3370,11 +3370,14 @@ class CourseTemplate {
                   cPA += `
                             <div class="template-cwd__category__item__sub-folder">
                                  <div class="template-cwd__category__item__sub-folder__title">
+                                    <div>
                                        <img class="template-cwd__category__item__sub-folder__title__image" src="${image}" />
                                        <div class="template-cwd__category__item__sub-folder__title__details">
                                           <p class="template-cwd__category__item__sub-folder__title__details__name">${cP.title}</p>
                                           <p class="template-cwd__category__item__sub-folder__title__details__title">Category</p>
                                        </div>
+                                    </div>
+                                    <i class="fas fa-angle-right template-cwd__category__item__title__content__icon"></i>
                                 </div>
                                 <div class="template-cwd-category__item__sub-folder__posts">
                                     ${posts}    

@@ -3319,6 +3319,7 @@ class CourseTemplate {
          completedPosts = [],
          completedCategories = [],
       ) => {
+         console.log(completedCategories);
          // First we will create the necessary variables
          let fallbackImage =
             "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png";

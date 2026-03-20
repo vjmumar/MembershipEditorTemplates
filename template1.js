@@ -2682,7 +2682,7 @@ class CourseTemplate {
             return posts?.map((post) => ({
                thumbnail:
                   post?.posterImage ||
-                  "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/site/24410/products/4YTC9RNTS7KLyCz4UWmw_pexels-alexy-almond-3758056.jpg",
+                  "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
                title: post.title,
                url: `/courses/products/${post?.productId}/categories/${post?.categoryId}/posts/${post?.id}`,
             }));
@@ -2737,7 +2737,7 @@ class CourseTemplate {
                ?.map((cat) => ({
                   thumbnail:
                      cat?.posterImage ||
-                     "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/site/24410/products/4YTC9RNTS7KLyCz4UWmw_pexels-alexy-almond-3758056.jpg",
+                     "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
                   title: cat.title,
                   url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
                }));
@@ -3315,6 +3315,8 @@ class CourseTemplate {
       },
       categoryWithPostsDropdown: (title = "Syllabus", categories = []) => {
          // Then we will organize subcategories under their parents
+         let fallbackImage =
+            "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png";
          let allCategories = categories.sort((a, b) =>
             a.sequenceNo > b.sequenceNo ? 1 : -1,
          );
@@ -3339,16 +3341,7 @@ class CourseTemplate {
                if (!cP?.posts) {
                   cPA += `
                             <div class="template-cwd__category__item__post">
-                                <svg class="template-cwd__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#748493" fill-rule="nonzero">
-                                            <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
-                                            <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
-                                            <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
-                                        </g>
-                                        <rect class="color-stroke" id="Rectangle" stroke="#748493" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
-                                    </g>
-                                </svg>
+                                <img class="template-cwd__category__item__sub-folder__content__image" src="${cP?.posterImage || fallbackImage}" />
                                 <p class="template-cwd__category__item__post__text">${cP.title}</p>
                             </div>
                         `;
@@ -3356,7 +3349,7 @@ class CourseTemplate {
                   const posts = cP.posts.reduce((cPPA, cPP) => {
                      cPPA += `
                                     <div class="template-cwd__category__item__post">
-                                        <img src="${cPP.posterImage}" class="template-cwd__category__item__post__icon" />
+                                        <img src="${cPP?.posterImage || fallbackImage}" class="template-cwd__category__item__post__icon" />
                                         <p class="template-cwd__category__item__post__text">${cPP.title}</p>
                                     </div>
                                 `;
@@ -3366,7 +3359,7 @@ class CourseTemplate {
                             <div class="template-cwd__category__item__sub-folder">
                                  <div class="template-cwd__category__item__sub-folder">
                                     <div class="template-cwd__category__item__sub-folder__content">
-                                       <img class="template-cwd__category__item__sub-folder__content__image" src="${cP?.posterImage}" />
+                                       <img class="template-cwd__category__item__sub-folder__content__image" src="${cP?.posterImage || fallbackImage}" />
                                        <div class="template-cwd__category__item__sub-folder__content__details">
                                           <p class="template-cwd__category__item__sub-folder__content__details__title">${cP.title}</p>
                                           <p class="template-cwd__category__item__sub-folder__content__details__posts">${cP?.posts?.length} Lessons</p>
@@ -3387,7 +3380,7 @@ class CourseTemplate {
                         <div class="template-cwd__category__item__title">
                             <div class="template-cwd__category__item__title__content">
                                 <div class="template-cwd__category__item__title__content__info">
-                                    <img class="template-cwd__category__item__title__content__info__image" src="${c?.posterImage}" />
+                                    <img class="template-cwd__category__item__title__content__info__image" src="${c?.posterImage || fallbackImage}" />
                                     <div class="template-cwd__category__item__title__content__info__details">
                                        <p class="template-cwd__category__item__title__content__info__details__title">${c.title}</p>
                                        <p class="template-cwd__category__item__title__content__info__details__posts">${c?.posts?.length} Lessons</p>
@@ -3409,7 +3402,6 @@ class CourseTemplate {
                <div class="template-cwd__content">${categoriesHTML}</div>
             </div>
          `;
-
          return html;
       },
    };

@@ -3336,7 +3336,7 @@ class CourseTemplate {
          });
 
          // Then we will generate the HTML for the sidebar navigation
-         const categoriesHTML = allCategories.reduce((a, c) => {
+         const categoriesHTML = allCategories.reduce((a, c, i) => {
             const postsHTML = c?.posts.reduce((cPA, cP) => {
                const image = cP?.posterImage
                   ? `https://cdn.courses.apisystem.tech${cP.posterImage}`
@@ -3388,7 +3388,7 @@ class CourseTemplate {
                return cPA;
             }, "");
             a += `
-                    <div class="template-cwd__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
+                    <div class="template-cwd__category__item ${!i ? "active" : ""}" data-category-id="${c.id}" data-category-location="${c.locationId}">
                         <div class="template-cwd__category__item__title">
                               <div class="template-cwd__category__item__title__content">
                                  <img class="template-cwd__category__item__title__content__image" src="${c?.posterImage || fallbackImage}" />

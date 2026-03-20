@@ -3715,6 +3715,21 @@ class CourseTemplate {
                const contactId = JSON.parse(window.atob(acatToken))?.contactId;
                const refreshToken = await fetch(
                   `https://services.leadconnectorhq.com/clientclub/auth/refresh-token`,
+                  {
+                     headers: {
+                        "accept": "application/json, text/plain, */*",
+                        "channel": "APP",
+                        "accept-language": "en-US,en;q=0.5",
+                        "source": "PORTAL_USER",
+                        "token-id": token,
+                     },
+                     referrer: `https://${locationId}.app.clientclub.net/`,
+                     referrerPolicy: "strict-origin-when-cross-origin",
+                     body: null,
+                     method: "GET",
+                     mode: "cors",
+                     credentials: "omit",
+                  },
                ).then((e) => e.json());
                fetch(
                   `https://services.leadconnectorhq.com/clientclub/${locationId}/users/${cId || contactId || refreshToken.contactId}`,

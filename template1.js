@@ -3377,7 +3377,7 @@ class CourseTemplate {
                                           <p class="template-cwd__category__item__sub-folder__title__details__title">Category</p>
                                        </div>
                                     </div>
-                                    <i class="fas fa-angle-right template-cwd__category__item__title__content__icon"></i>
+                                    <i class="fas fa-angle-right template-cwd__category__item__sub-folder__title__icon"></i>
                                 </div>
                                 <div class="template-cwd-category__item__sub-folder__posts">
                                     ${posts}    

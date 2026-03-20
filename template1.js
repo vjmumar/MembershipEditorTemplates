@@ -3345,7 +3345,10 @@ class CourseTemplate {
                   cPA += `
                             <div class="template-cwd__category__item__post">
                                 <img class="template-cwd__category__item__sub-folder__content__image" src="${image}" />
-                                <p class="template-cwd__category__item__post__text">${cP.title}</p>
+                                 <div>
+                                   <p class="template-cwd__category__item__post__text">${cP.title}</p>
+                                   <p class="template-cwd__category__item__post__title">Lesson</p>
+                                 </div>
                             </div>
                         `;
                } else {

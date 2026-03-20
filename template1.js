@@ -3420,7 +3420,7 @@ class CourseTemplate {
          // Then we will create the click listener for the dropdowns
          setTimeout(() => {
             document.body.addEventListener("click", (e) => {
-               if (e.target.closest(".template-cwd__category__item")) {
+               if (e.target.closest(".template-cwd__category__item__title")) {
                   const $categoryItem = e.target.closest(".template-cwd__category__item");
                   const isActive = $categoryItem.classList.contains("active");
                   $categoryItem.classList?.[isActive ? "remove" : "add"]("active");

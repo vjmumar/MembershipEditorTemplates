@@ -3369,7 +3369,7 @@ class CourseTemplate {
                                        <img class="template-cwd__category__item__sub-folder__content__image" src="${cP?.posterImage}" />
                                        <div class="template-cwd__category__item__sub-folder__content__details">
                                           <p class="template-cwd__category__item__sub-folder__content__details__title">${cP.title}</p>
-                                          <p class="template-cwd__category__item__sub-folder__content__details__posts">${cP?.post?.length} Lessons</p>
+                                          <p class="template-cwd__category__item__sub-folder__content__details__posts">${cP?.posts?.length} Lessons</p>
                                        </div>
                                     </div>
                                     <i class="fa-regular fa-circle-right template-cwd__category__item__sub-folder__title__icon"></i>
@@ -3390,7 +3390,7 @@ class CourseTemplate {
                                     <img class="template-cwd__category__item__title__content__info__image" src="${c?.posterImage}" />
                                     <div class="template-cwd__category__item__title__content__info__details">
                                        <p class="template-cwd__category__item__title__content__info__details__title">${c.title}</p>
-                                       <p class="template-cwd__category__item__title__content__info__details__posts">${c.post.length} Lessons</p>
+                                       <p class="template-cwd__category__item__title__content__info__details__posts">${c?.posts?.length} Lessons</p>
                                     </div>
                                 </div>
                                 <i class="fas fa-angle-right template-cwd__category__item__title__content__icon"></i>

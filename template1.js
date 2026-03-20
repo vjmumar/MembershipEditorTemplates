@@ -3314,9 +3314,11 @@ class CourseTemplate {
             `;
       },
       categoryWithPostsDropdown: (title = "Syllabus", categories = []) => {
-         // Then we will organize subcategories under their parents
+         // First we will create the necessary variables
          let fallbackImage =
             "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png";
+
+         // Then we will organize subcategories under their parents
          let allCategories = categories.sort((a, b) =>
             a.sequenceNo > b.sequenceNo ? 1 : -1,
          );
@@ -3335,8 +3337,8 @@ class CourseTemplate {
             }
          });
 
-         // Then we will generate the HTML for the sidebar navigation
-         const categoriesHTML = allCategories.reduce((a, c, i) => {
+         // Then we will generate the categories html
+         const categoriesHTML = allCategories.reduce((a, c) => {
             const postsHTML = c?.posts.reduce((cPA, cP) => {
                const image = cP?.posterImage
                   ? `https://cdn.courses.apisystem.tech${cP.posterImage}`
@@ -3388,7 +3390,7 @@ class CourseTemplate {
                return cPA;
             }, "");
             a += `
-                    <div class="template-cwd__category__item ${!i ? "active" : ""}" data-category-id="${c.id}" data-category-location="${c.locationId}">
+                    <div class="template-cwd__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
                         <div class="template-cwd__category__item__title">
                               <div class="template-cwd__category__item__title__content">
                                  <img class="template-cwd__category__item__title__content__image" src="${c?.posterImage || fallbackImage}" />
@@ -3406,12 +3408,46 @@ class CourseTemplate {
                     `;
             return a;
          }, "");
+
+         // Then we will create full html structure
          const html = `
             <div class="template-cwd">
-               <p class="template-cwd__title">${title}<p>
+               <p class="template-cwd__title" style="display: ${title ? "block" : "none"}">${title}<p>
                <div class="template-cwd__content">${categoriesHTML}</div>
             </div>
          `;
+
+         // Then we will create the click listener for the dropdowns
+         setTimeout(() => {
+            document.body.addEventListener("click", (e) => {
+               if (e.target.closest(".template-cwd__category__item")) {
+                  const $categoryItem = e.target.closest(".template-cwd__category__item");
+                  const isActive = $categoryItem.classList.contains("active");
+                  $categoryItem.classList?.[isActive ? "remove" : "add"]("active");
+               }
+
+               // if (
+               //    e.target.closest(".template-sidebar__category__item__sub-folder__title")
+               // ) {
+               //    const $subFolder = e.target.closest(
+               //       ".template-sidebar__category__item__sub-folder",
+               //    );
+               //    const isActive = $subFolder.classList.contains("active");
+               //    $subFolder.classList?.[isActive ? "remove" : "add"]("active");
+               // }
+
+               // if (e.target.closest(".template-sidebar__toggler")) {
+               //    const isSidebarActive = document
+               //       .querySelector(".template-sidebar")
+               //       .classList.contains("active");
+               //    document
+               //       .querySelector(".template-sidebar")
+               //       .classList[isSidebarActive ? "remove" : "add"]("active");
+               // }
+            });
+         }, 500);
+
+         // Finally we will return the html
          return html;
       },
    };

@@ -3319,7 +3319,6 @@ class CourseTemplate {
          completedPosts = [],
          completedCategories = [],
       ) => {
-         console.log(completedPosts, completedCategories, "llol");
          // First we will create the necessary variables
          let fallbackImage =
             "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png";
@@ -3671,9 +3670,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat") || $cookies.get("cat");
             if (acatToken) {
                const token = JSON.parse(window.atob(acatToken))?.tokenId;
-               const contactId =
-                  JSON.parse(window.atob(acatToken))?.contactId ||
-                  JSON.parse(window.atob(acatToken))?.userId;
+               const contactId = JSON.parse(window.atob(acatToken))?.contactId;
                fetch(
                   `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/user-activity/${cId || contactId}`,
                   {
@@ -3716,8 +3713,11 @@ class CourseTemplate {
             if (acatToken) {
                const token = JSON.parse(window.atob(acatToken))?.tokenId;
                const contactId = JSON.parse(window.atob(acatToken))?.contactId;
+               const refreshToken = await fetch(
+                  `https://services.leadconnectorhq.com/clientclub/auth/refresh-token`,
+               ).then((e) => e.json());
                fetch(
-                  `https://services.leadconnectorhq.com/clientclub/${locationId}/users/${cId || contactId}`,
+                  `https://services.leadconnectorhq.com/clientclub/${locationId}/users/${cId || contactId || refreshToken.contactId}`,
                   {
                      headers: {
                         "accept": "application/json, text/plain, */*",

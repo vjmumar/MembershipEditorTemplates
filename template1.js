@@ -3338,10 +3338,13 @@ class CourseTemplate {
          // Then we will generate the HTML for the sidebar navigation
          const categoriesHTML = allCategories.reduce((a, c) => {
             const postsHTML = c?.posts.reduce((cPA, cP) => {
+               const image = cP?.posterImage
+                  ? `https://cdn.courses.apisystem.tech${cP.posterImage}`
+                  : fallbackImage;
                if (!cP?.posts) {
                   cPA += `
                             <div class="template-cwd__category__item__post">
-                                <img class="template-cwd__category__item__sub-folder__content__image" src="${cP?.posterImage || fallbackImage}" />
+                                <img class="template-cwd__category__item__sub-folder__content__image" src="${image}" />
                                 <p class="template-cwd__category__item__post__text">${cP.title}</p>
                             </div>
                         `;
@@ -3358,9 +3361,6 @@ class CourseTemplate {
                                 `;
                      return cPPA;
                   }, "");
-                  const image = cP?.posterImage
-                     ? `https://cdn.courses.apisystem.tech${cP.posterImage}`
-                     : fallbackImage;
                   cPA += `
                             <div class="template-cwd__category__item__sub-folder">
                                  <div class="template-cwd__category__item__sub-folder">

@@ -3356,7 +3356,10 @@ class CourseTemplate {
                      cPPA += `
                                     <div class="template-cwd__category__item__post">
                                         <img src="${image}" class="template-cwd__category__item__post__icon" />
-                                        <p class="template-cwd__category__item__post__text">${cPP.title}</p>
+                                        <div>
+                                          <p class="template-cwd__category__item__post__text">${cPP.title}</p>
+                                          <p class="template-cwd__category__item__post__title">Lesson</p>
+                                        </div>
                                     </div>
                                 `;
                      return cPPA;
@@ -3389,7 +3392,7 @@ class CourseTemplate {
                                  <div class="template-cwd__category__item__title__content__details">
                                     <p class="template-cwd__category__item__title__content__details__title">${c.title}</p>
                                     <p class="template-cwd__category__item__title__content__details__posts">${c?.posts?.length} Lessons</p>
-                              </div>
+                                 </div>
                               </div>
                               <i class="fas fa-angle-right template-cwd__category__item__title__content__icon"></i>
                         </div>

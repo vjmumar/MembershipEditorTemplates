@@ -3358,7 +3358,7 @@ class CourseTemplate {
                                 `;
                      return cPPA;
                   }, "");
-                  const image = cPP?.posterImage
+                  const image = cP?.posterImage
                      ? `https://cdn.courses.apisystem.tech${cP.posterImage}`
                      : fallbackImage;
                   cPA += `

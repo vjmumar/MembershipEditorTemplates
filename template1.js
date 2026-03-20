@@ -3111,7 +3111,7 @@ class CourseTemplate {
                   "",
                   "margin-bottom: 15px",
                )}
-               ${this.widgets.categoryWithPostsDropdown("Course Curriculum", productCategories, completedPosts || [], userProductProgress || [])}
+               ${this.widgets.categoryWithPostsDropdown("Course Curriculum", productCategories, completedPosts || [], categoryProgress || [])}
           </div>
          `;
 
@@ -3321,7 +3321,7 @@ class CourseTemplate {
          title = "Syllabus",
          categories = [],
          completedPosts = [],
-         completedCategories = [],
+         categoryProgress = [],
       ) => {
          // First we will create the necessary variables
          let fallbackImage =
@@ -3329,10 +3329,10 @@ class CourseTemplate {
 
          // Then we will add a boolean to each category if it is completed
          categories.forEach((category) => {
-            const categoryProgress = completedCategories?.find(
-               (e) => e.id === category.id,
+            const currentCategoryProgress = categoryProgress?.find(
+               (e) => e.categoryId === category.id,
             );
-            category.isCompleted = categoryProgress?.progress === 100;
+            category.isCompleted = currentCategoryProgress?.progress === 100;
          });
 
          categories.forEach((category) => {
@@ -3709,7 +3709,7 @@ class CourseTemplate {
             }
          });
       },
-      fetchCategoryProgress: async (categoryIds = []) => {
+      fetchCategoryProgress: async () => {
          const productId = location.href
             .split("/products/")[1]
             .split("?")[0]

@@ -3723,7 +3723,7 @@ class CourseTemplate {
             if (acatToken || acatToken) {
                const token = JSON.parse(window.atob(acatToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
-               const locationId = JSON.parse(window.atob(acatToken))?.locationId
+               const locationId = JSON.parse(window.atob(acatToken))?.locationId;
                fetch(
                   `https://services.leadconnectorhq.com/membership/locations/${locationId}/categories/get-progress`,
                   {
@@ -3742,8 +3742,6 @@ class CourseTemplate {
                         ],
                      }),
                      method: "POST",
-                     mode: "cors",
-                     credentials: "omit",
                   },
                )
                   .then((e) => e.json())

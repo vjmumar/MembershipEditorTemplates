@@ -3726,7 +3726,12 @@ class CourseTemplate {
                      },
                      body: JSON.stringify({
                         product_id: productId,
-                        categories: categoryIds,
+                        categories: [
+                           "3efd261e-ab3a-4424-b72b-ef4ac799366d",
+                           "c0426cd9-eb68-44d2-ade8-033053c2d47d",
+                           "9d9126da-c2e3-4ffd-b4b5-a278f5e799c2",
+                           "c22f7ee8-c82b-4fdf-ae9e-1971f2082d3c",
+                        ],
                      }),
                      method: "POST",
                      mode: "cors",

@@ -3710,7 +3710,6 @@ class CourseTemplate {
          });
       },
       fetchCategoryProgress: async (categoryIds = []) => {
-         const locationId = location.href.split(".")[0].replace("https://", "");
          const productId = location.href
             .split("/products/")[1]
             .split("?")[0]
@@ -3724,6 +3723,7 @@ class CourseTemplate {
             if (acatToken || acatToken) {
                const token = JSON.parse(window.atob(acatToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
+               const locationId = JSON.parse(window.atob(acatToken))?.locationId
                fetch(
                   `https://services.leadconnectorhq.com/membership/locations/${locationId}/categories/get-progress`,
                   {

@@ -3384,14 +3384,12 @@ class CourseTemplate {
             a += `
                     <div class="template-cwd__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
                         <div class="template-cwd__category__item__title">
-                            <div class="template-cwd__category__item__title__content">
-                                <div class="template-cwd__category__item__title__content__info">
-                                    <img class="template-cwd__category__item__title__content__info__image" src="${c?.posterImage || fallbackImage}" />
-                                    <div class="template-cwd__category__item__title__content__info__details">
-                                       <p class="template-cwd__category__item__title__content__info__details__title">${c.title}</p>
-                                       <p class="template-cwd__category__item__title__content__info__details__posts">${c?.posts?.length} Lessons</p>
-                                    </div>
-                                </div>
+                                 <div class="template-cwd__category__item__title__content">
+                                    <img class="template-cwd__category__item__title__content__image" src="${c?.posterImage || fallbackImage}" />
+                                    <div class="template-cwd__category__item__title__content__details">
+                                       <p class="template-cwd__category__item__title__content__details__title">${c.title}</p>
+                                       <p class="template-cwd__category__item__title__content__details__posts">${c?.posts?.length} Lessons</p>
+                                 </div>
                                 <i class="fas fa-angle-right template-cwd__category__item__title__content__icon"></i>
                             </div>
                         </div>

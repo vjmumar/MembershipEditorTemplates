@@ -3107,7 +3107,7 @@ class CourseTemplate {
                   "",
                   "margin-bottom: 15px",
                )}
-               ${this.widgets.categoryWithPostsDropdown("Course Curriculum", productCategories)}
+               ${this.widgets.categoryWithPostsDropdown("Course Curriculum", productCategories, completedPosts, userProductProgress)}
           </div>
          `;
 
@@ -3313,10 +3313,32 @@ class CourseTemplate {
                 </div>
             `;
       },
-      categoryWithPostsDropdown: (title = "Syllabus", categories = []) => {
+      categoryWithPostsDropdown: (
+         title = "Syllabus",
+         categories = [],
+         completedPosts = [],
+         completedCategories = [],
+      ) => {
          // First we will create the necessary variables
          let fallbackImage =
             "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png";
+
+         // Then we will add a boolean to each category if it is completed
+         categories.forEach((category) => {
+            const categoryProgress = completedCategories?.find(
+               (e) => e.id === category.id,
+            );
+            category.isCompleted = categoryProgress?.progress === 100;
+         });
+
+         categories.forEach((category) => {
+            category.posts.forEach((post) => {
+               const isCompleted = completedPosts.some((e) => e.id === post.id);
+               post.isCompleted = isCompleted;
+            })
+         });
+
+         console.log(categories)
 
          // Then we will organize subcategories under their parents
          let allCategories = categories.sort((a, b) =>

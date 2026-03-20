@@ -3107,7 +3107,7 @@ class CourseTemplate {
                   "",
                   "margin-bottom: 15px",
                )}
-               ${this.widgets.categoryWithPostsDropdown("Course Curriculum", productCategories, completedPosts, userProductProgress)}
+               ${this.widgets.categoryWithPostsDropdown("Course Curriculum", productCategories, completedPosts || [], userProductProgress || [])}
           </div>
          `;
 
@@ -3319,7 +3319,7 @@ class CourseTemplate {
          completedPosts = [],
          completedCategories = [],
       ) => {
-         console.log(completedPosts, completedCategories, "vj");
+         console.log(completedPosts, completedCategories, "llol");
          // First we will create the necessary variables
          let fallbackImage =
             "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png";
@@ -3338,8 +3338,6 @@ class CourseTemplate {
                post.isCompleted = isCompleted;
             });
          });
-
-         console.log(categories);
 
          // Then we will organize subcategories under their parents
          let allCategories = categories.sort((a, b) =>

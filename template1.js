@@ -3731,6 +3731,7 @@ class CourseTemplate {
                         "accept": "application/json, text/plain, */*",
                         "accept-language": "en-US,en;q=0.5",
                         "authorization": `Bearer ${token}`,
+                        "Referer": location.origin,
                      },
                      body: JSON.stringify({
                         product_id: productId,

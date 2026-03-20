@@ -3675,7 +3675,7 @@ class CourseTemplate {
                const token = JSON.parse(window.atob(acatToken))?.tokenId;
                const contactId = JSON.parse(window.atob(acatToken))?.contactId;
                fetch(
-                  `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${cId || contactId}`,
+                  `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/user-activity/${cId || contactId}`,
                   {
                      headers: {
                         "accept": "application/json, text/plain, */*",
@@ -3690,7 +3690,6 @@ class CourseTemplate {
                )
                   .then((e) => e.json())
                   .then((e) => {
-                     console.log(e, "vj");
                      e.progressPercentage = (
                         (e.completedPosts / e.totalPosts) *
                         100

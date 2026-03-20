@@ -3356,16 +3356,7 @@ class CourseTemplate {
                   const posts = cP.posts.reduce((cPPA, cPP) => {
                      cPPA += `
                                     <div class="template-cwd__category__item__post">
-                                        <svg class="template-cwd__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                            <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#748493" fill-rule="nonzero">
-                                                    <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
-                                                    <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
-                                                    <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
-                                                </g>
-                                                <rect class="color-stroke" id="Rectangle" stroke="#748493" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
-                                            </g>
-                                        </svg>
+                                        <img src="${cPP.posterImage}" class="template-cwd__category__item__post__icon" />
                                         <p class="template-cwd__category__item__post__text">${cPP.title}</p>
                                     </div>
                                 `;
@@ -3373,9 +3364,15 @@ class CourseTemplate {
                   }, "");
                   cPA += `
                             <div class="template-cwd__category__item__sub-folder">
-                                <div class="template-cwd__category__item__sub-folder__title">
-                                    <p class="template-cwd__category__item__sub-folder__title__text">${cP.title}</p>
-                                    <a href="/courses/products/${cP?.productId}/categories/${cP?.id}" class="template-cwd__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
+                                 <div class="template-cwd__category__item__sub-folder">
+                                    <div class="template-cwd__category__item__sub-folder__content">
+                                       <img class="template-cwd__category__item__sub-folder__content__image" src="${cP?.posterImage}" />
+                                       <div class="template-cwd__category__item__sub-folder__content__details">
+                                          <p class="template-cwd__category__item__sub-folder__content__details__title">${cP.title}</p>
+                                          <p class="template-cwd__category__item__sub-folder__content__details__posts">${cP?.post?.length} Lessons</p>
+                                       </div>
+                                    </div>
+                                    <i class="fa-regular fa-circle-right template-cwd__category__item__sub-folder__title__icon"></i>
                                 </div>
                                 <div class="template-cwd-category__item__sub-folder__posts">
                                     ${posts}    
@@ -3389,9 +3386,14 @@ class CourseTemplate {
                     <div class="template-cwd__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
                         <div class="template-cwd__category__item__title">
                             <div class="template-cwd__category__item__title__content">
-                                <img src="${c?.posterImage}" />
+                                <div class="template-cwd__category__item__title__content__info">
+                                    <img class="template-cwd__category__item__title__content__info__image" src="${c?.posterImage}" />
+                                    <div class="template-cwd__category__item__title__content__info__details">
+                                       <p class="template-cwd__category__item__title__content__info__details__title">${c.title}</p>
+                                       <p class="template-cwd__category__item__title__content__info__details__posts">${c.post.length} Lessons</p>
+                                    </div>
+                                </div>
                                 <i class="fas fa-angle-right template-cwd__category__item__title__content__icon"></i>
-                                <p class="template-cwd__category__item__title__content__title">${c.title}</p>
                             </div>
                         </div>
                         <div class="template-cwd__category__item__content">

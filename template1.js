@@ -3342,6 +3342,8 @@ class CourseTemplate {
             });
          });
 
+         console.log(categories)
+
          // Then we will organize subcategories under their parents
          let allCategories = categories.sort((a, b) =>
             a.sequenceNo > b.sequenceNo ? 1 : -1,

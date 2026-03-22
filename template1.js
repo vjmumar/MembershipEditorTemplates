@@ -3712,6 +3712,7 @@ class CourseTemplate {
                      //    100
                      // ).toFixed(0);
                      resolved(e);
+                     console.log("test", e)
                   });
             } else {
                console.log("No Token Found!");

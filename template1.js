@@ -3337,12 +3337,10 @@ class CourseTemplate {
 
          categories.forEach((category) => {
             category.posts.forEach((post) => {
-               const isCompleted = completedPosts.some((e) => e.id === post.id);
+               const isCompleted = completedPosts.some((e) => e.id === post.postId);
                post.isCompleted = isCompleted;
             });
          });
-
-         console.log(categories,"vj")
 
          // Then we will organize subcategories under their parents
          let allCategories = categories.sort((a, b) =>

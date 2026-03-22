@@ -3687,6 +3687,7 @@ class CourseTemplate {
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
+            console.log(acatToken, catToken);
             if (acatToken || catToken) {
                const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
@@ -3706,14 +3707,12 @@ class CourseTemplate {
                )
                   .then((e) => e.json())
                   .then((e) => {
-                     console.log(e, "vj");
                      e.progressPercentage = (
                         (e.completedPosts / e.totalPosts) *
                         100
                      ).toFixed(0);
                      resolved(e);
-                  })
-                  .catch((e) => console.log(e, "vj"));
+                  });
             } else {
                console.log("No Token Found!");
             }

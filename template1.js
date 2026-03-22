@@ -3679,6 +3679,7 @@ class CourseTemplate {
          });
       },
       fetchUserProductProgress: async (cId = "") => {
+         console.log("asdasdasdsa");
          const locationId = location.href.split(".")[0].replace("https://", "");
          const productId = location.href
             .split("/products/")[1]
@@ -3712,7 +3713,7 @@ class CourseTemplate {
                      //    100
                      // ).toFixed(0);
                      resolved(e);
-                     console.log("test", e)
+                     console.log("test", e);
                   });
             } else {
                console.log("No Token Found!");

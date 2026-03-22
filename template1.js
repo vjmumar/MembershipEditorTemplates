@@ -3679,19 +3679,15 @@ class CourseTemplate {
          });
       },
       fetchUserProductProgress: async (cId = "") => {
-         console.log("asdasdasdsa");
-         const locationId = location.href.split(".")[0].replace("https://", "");
-         const productId = location.href
-            .split("/products/")[1]
-            .split("?")[0]
-            .split("/")[0];
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
                const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
+               const locationId = JSON.parse(
+                  window.atob(acatToken || catToken),
+               )?.locationId;
                fetch(
                   `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/user-activity/${cId || contactId}`,
                   {

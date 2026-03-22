@@ -3427,7 +3427,7 @@ class CourseTemplate {
                                  <div class="template-cwd__category__item__title__content__details">
                                     <p class="template-cwd__category__item__title__content__details__title">${c.title}</p>
                                     <div style="display: flex; align-items: center; gap: 5px;">
-                                       <i class="template-cwd__category__item__title__content__details__completed ${!cP.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                       <i class="template-cwd__category__item__title__content__details__completed ${!c.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
                                        <p class="template-cwd__category__item__title__content__details__posts">${c?.posts?.length} Lessons</p>
                                     </div>
                                  </div>

@@ -3687,7 +3687,7 @@ class CourseTemplate {
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
                const token = JSON.parse(window.atob(acatToken))?.tokenId;
-               const contactId = JSON.parse(window.atob(acatToken))?.contactId;
+               const contactId = JSON.parse(window.atob(catToken))?.contactId;
                fetch(
                   `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/user-activity/${cId || contactId}`,
                   {

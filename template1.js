@@ -3018,6 +3018,7 @@ class CourseTemplate {
          console.log(
             userData,
             userProductProgress,
+            "test",
             completedPosts,
             productCategories,
             product,

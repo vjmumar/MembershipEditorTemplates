@@ -3375,7 +3375,7 @@ class CourseTemplate {
                                    <p class="template-cwd__category__item__post__text">${cP.title}</p>
                                    <div style="display: flex; align-items: center; gap: 10px;">
                                        <p class="template-cwd__category__item__post__title">Lesson</p>
-                                       <i class="template-cwd__category__item__post__icon ${cP.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                       <i class="template-cwd__category__item__post__icon ${!cP.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
                                     </div>
                                  </div>
                             </div>
@@ -3392,7 +3392,7 @@ class CourseTemplate {
                                           <p class="template-cwd__category__item__post__text">${cPP.title}</p>
                                           <div style="display: flex; align-items: center; gap: 10px;">
                                              <p class="template-cwd__category__item__post__title">Lesson</p>
-                                             <i class="template-cwd__category__item__post__icon ${cPP.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                             <i class="template-cwd__category__item__post__icon ${!cPP.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
                                           </div>
                                         </div>
                                     </div>

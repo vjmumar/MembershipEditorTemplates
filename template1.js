@@ -3338,6 +3338,7 @@ class CourseTemplate {
          categories.forEach((category) => {
             category.posts.forEach((post) => {
                const isCompleted = completedPosts.some((e) => e.id === post.id);
+               console.log(completedPosts,post)
                if (isCompleted) {
                   console.log(post, isCompleted);
                }

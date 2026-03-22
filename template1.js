@@ -3342,8 +3342,6 @@ class CourseTemplate {
             });
          });
 
-         console.log(categories);
-
          // Then we will organize subcategories under their parents
          let allCategories = categories.sort((a, b) =>
             a.sequenceNo > b.sequenceNo ? 1 : -1,
@@ -3389,7 +3387,10 @@ class CourseTemplate {
                                         <img src="${image}" class="template-cwd__category__item__post__icon" />
                                         <div>
                                           <p class="template-cwd__category__item__post__text">${cPP.title}</p>
-                                          <p class="template-cwd__category__item__post__title">Lesson</p>
+                                          <div style="display: flex; align-items: center; gap: 10px;">
+                                             <p class="template-cwd__category__item__post__title">Lesson</p>
+                                             <i class="template-cwd__category__item__post__icon ${cPP.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                          </div>
                                         </div>
                                     </div>
                                 `;

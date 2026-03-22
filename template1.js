@@ -3342,7 +3342,7 @@ class CourseTemplate {
             });
          });
 
-         console.log(categories)
+         console.log(categories,"vj")
 
          // Then we will organize subcategories under their parents
          let allCategories = categories.sort((a, b) =>

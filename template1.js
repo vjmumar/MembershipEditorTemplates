@@ -3681,9 +3681,7 @@ class CourseTemplate {
             .split("/products/")[1]
             .split("?")[0]
             .split("/")[0];
-         const storageName = `${productId}-user-progress`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
@@ -3711,7 +3709,6 @@ class CourseTemplate {
                         100
                      ).toFixed(0);
                      resolved(e);
-                     sessionStorage.setItem(storageName, JSON.stringify(e));
                   });
             } else {
                console.log("No Token Found!");
@@ -3724,8 +3721,6 @@ class CourseTemplate {
             .split("?")[0]
             .split("/")[0];
          const storageName = `${productId}-category-progress`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
@@ -3752,7 +3747,6 @@ class CourseTemplate {
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e);
-                     sessionStorage.setItem(storageName, JSON.stringify(e));
                   });
             } else {
                console.log("No Token Found!");

@@ -3688,7 +3688,6 @@ class CourseTemplate {
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
-            console.log(acatToken, catToken);
             if (acatToken || catToken) {
                const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
@@ -3760,7 +3759,6 @@ class CourseTemplate {
          });
       },
       fetchUser: async (cId = "") => {
-         const locationId = location.href.split(".")[0].replace("https://", "");
          const productId = location.href
             .split("/products/")[1]
             .split("?")[0]
@@ -3771,6 +3769,7 @@ class CourseTemplate {
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
+            const locationId = JSON.parse(window.atob(acatToken || catToken))?.locationId;
             if (acatToken || catToken) {
                const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;

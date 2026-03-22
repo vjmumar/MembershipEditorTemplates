@@ -3527,7 +3527,7 @@ class CourseTemplate {
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-purchase/categories/${categoryId}?product_id=${productId}&visibility=published&published_posts=true`;
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
-            if (acatToken || acatToken) {
+            if (acatToken || catToken) {
                const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                fetch(url, {
                   headers: {
@@ -3651,7 +3651,7 @@ class CourseTemplate {
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
-            if (acatToken || acatToken) {
+            if (acatToken || catToken) {
                const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                const userId = acatToken
                   ? JSON.parse(window.atob(acatToken))?.externalUserId
@@ -3726,7 +3726,7 @@ class CourseTemplate {
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
-            if (acatToken || acatToken) {
+            if (acatToken || catToken) {
                const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
                const locationId = JSON.parse(

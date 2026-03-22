@@ -3705,12 +3705,11 @@ class CourseTemplate {
                )
                   .then((e) => e.json())
                   .then((e) => {
-                     // e.progressPercentage = (
-                     //    (e.completedPosts / e.totalPosts) *
-                     //    100
-                     // ).toFixed(0);
+                     e.progressPercentage = (
+                        (e.completedPosts / e.totalPosts) *
+                        100
+                     ).toFixed(0);
                      resolved(e);
-                     console.log("test", e);
                   });
             } else {
                console.log("No Token Found!");

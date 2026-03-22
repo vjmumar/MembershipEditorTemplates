@@ -3706,13 +3706,14 @@ class CourseTemplate {
                )
                   .then((e) => e.json())
                   .then((e) => {
-                     console.log(e);
+                     console.log(e, "vj");
                      e.progressPercentage = (
                         (e.completedPosts / e.totalPosts) *
                         100
                      ).toFixed(0);
                      resolved(e);
-                  });
+                  })
+                  .catch((e) => console.log(e, "vj"));
             } else {
                console.log("No Token Found!");
             }

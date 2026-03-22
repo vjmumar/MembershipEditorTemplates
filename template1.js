@@ -2849,9 +2849,7 @@ class CourseTemplate {
                   .split("/")[0];
                const acatToken = $cookies.get("acat");
                const catToken = $cookies.get("cat");
-               const token =
-                  JSON.parse(window.atob(acatToken))?.tokenId ||
-                  JSON.parse(window.atob(catToken))?.tokenId;
+               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                window.addEventListener("click", async (e) => {
                   if (
                      e.target.classList.contains(
@@ -3492,9 +3490,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
-               const token =
-                  JSON.parse(window.atob(acatToken))?.tokenId ||
-                  JSON.parse(window.atob(catToken))?.tokenId;
+               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                fetch(url, {
                   headers: {
                      "accept": "application/json, text/plain, */*",
@@ -3532,9 +3528,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || acatToken) {
-               const token =
-                  JSON.parse(window.atob(acatToken))?.tokenId ||
-                  JSON.parse(window.atob(catToken))?.tokenId;
+               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                fetch(url, {
                   headers: {
                      "accept": "application/json, text/plain, */*",
@@ -3587,9 +3581,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
-               const token =
-                  JSON.parse(window.atob(acatToken))?.tokenId ||
-                  JSON.parse(window.atob(catToken))?.tokenId;
+               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                fetch(url, {
                   headers: {
                      "accept": "application/json, text/plain, */*",
@@ -3626,9 +3618,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
-               const token =
-                  JSON.parse(window.atob(acatToken))?.tokenId ||
-                  JSON.parse(window.atob(catToken))?.tokenId;
+               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                fetch(url, {
                   headers: {
                      "accept": "application/json, text/plain, */*",
@@ -3662,9 +3652,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || acatToken) {
-               const token =
-                  JSON.parse(window.atob(acatToken))?.tokenId ||
-                  JSON.parse(window.atob(catToken))?.tokenId;
+               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                const userId = JSON.parse(window.atob(acatToken))?.externalUserId;
                const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`;
                fetch(url, {
@@ -3698,9 +3686,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
-               const token =
-                  JSON.parse(window.atob(acatToken))?.tokenId ||
-                  JSON.parse(window.atob(catToken))?.tokenId;
+               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
                fetch(
                   `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/user-activity/${cId || contactId}`,
@@ -3739,9 +3725,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || acatToken) {
-               const token =
-                  JSON.parse(window.atob(acatToken))?.tokenId ||
-                  JSON.parse(window.atob(catToken))?.tokenId;
+               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
                const locationId = JSON.parse(window.atob(acatToken))?.locationId;
                fetch(
@@ -3782,9 +3766,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
-               const token =
-                  JSON.parse(window.atob(acatToken))?.tokenId ||
-                  JSON.parse(window.atob(catToken))?.tokenId;
+               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
                fetch(
                   `https://services.leadconnectorhq.com/clientclub/${locationId}/users/${cId || contactId}`,

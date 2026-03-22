@@ -3695,6 +3695,7 @@ class CourseTemplate {
                         "accept": "application/json, text/plain, */*",
                         "accept-language": "en-US,en;q=0.5",
                         "token-id": token,
+                        "content-type": "application/json",
                      },
                      body: null,
                      method: "POST",
@@ -3721,7 +3722,6 @@ class CourseTemplate {
             .split("/products/")[1]
             .split("?")[0]
             .split("/")[0];
-         const storageName = `${productId}-category-progress`;
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");

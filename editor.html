@@ -696,7 +696,7 @@
             };
 
             // Finally we will retrieve the authentication token by parsing the product data from the cookies
-            const productData = JSON.parse(window.atob($cookies.get("acat")));
+            const productData = JSON.parse(window.atob($cookies.get("acat") || $cookies.get("cat")));
             this.token = productData?.tokenId;
          })();
       }

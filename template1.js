@@ -3653,7 +3653,9 @@ class CourseTemplate {
             const catToken = $cookies.get("cat");
             if (acatToken || acatToken) {
                const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
-               const userId = acatToken ? JSON.parse(window.atob(acatToken))?.externalUserId : JSON.parse(window.atob(catToken))?.userId;
+               const userId = acatToken
+                  ? JSON.parse(window.atob(acatToken))?.externalUserId
+                  : JSON.parse(window.atob(catToken))?.userId;
                const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`;
                fetch(url, {
                   headers: {
@@ -3727,7 +3729,9 @@ class CourseTemplate {
             if (acatToken || acatToken) {
                const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
-               const locationId = JSON.parse(window.atob(acatToken))?.locationId;
+               const locationId = JSON.parse(
+                  window.atob(acatToken || catToken),
+               )?.locationId;
                fetch(
                   `https://services.leadconnectorhq.com/membership/locations/${locationId}/categories/get-progress`,
                   {

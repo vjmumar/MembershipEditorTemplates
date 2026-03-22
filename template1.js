@@ -3706,6 +3706,7 @@ class CourseTemplate {
                )
                   .then((e) => e.json())
                   .then((e) => {
+                     console.log(e);
                      e.progressPercentage = (
                         (e.completedPosts / e.totalPosts) *
                         100

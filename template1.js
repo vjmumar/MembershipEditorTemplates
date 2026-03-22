@@ -3683,7 +3683,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
-               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
+               const token = JSON.parse(window.atob(catToken || acatToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
                const locationId = JSON.parse(
                   window.atob(acatToken || catToken),

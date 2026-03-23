@@ -2844,8 +2844,8 @@ class CourseTemplate {
                const productId = this.utils.getAuth()?.productId;
                const locationId = this.utils.getAuth()?.locationId;
                const token = this.utils.getAuth()?.tokenId;
-               const contactId = utils.getAuth()?.contactId;
-               const userId = utils.getAuth()?.externalUserId;
+               const contactId = this.utils.getAuth()?.contactId;
+               const userId = this.utils.getAuth()?.externalUserId;
                window.addEventListener("click", async (e) => {
                   if (
                      e.target.classList.contains(
@@ -3197,8 +3197,8 @@ class CourseTemplate {
                const productId = this.utils.getAuth()?.productId;
                const locationId = this.utils.getAuth()?.locationId;
                const token = this.utils.getAuth()?.tokenId;
-               const contactId = utils.getAuth()?.contactId;
-               const userId = utils.getAuth()?.externalUserId;
+               const contactId = this.utils.getAuth()?.contactId;
+               const userId = this.utils.getAuth()?.externalUserId;
                window.addEventListener("click", async (e) => {
                   if (
                      e.target.classList.contains(

@@ -3925,7 +3925,7 @@ class CourseTemplate {
          const token = this.utils.getAuth()?.tokenId;
          const contactId = this.utils.getAuth()?.contactId;
          const userId = this.utils.getAuth()?.externalUserId;
-         let = null;
+         let req = null;
          try {
             if (isComplete) {
                req = await fetch(

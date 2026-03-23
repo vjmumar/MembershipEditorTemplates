@@ -3679,10 +3679,10 @@ class CourseTemplate {
          });
       },
       fetchUserProductProgress: async (cId = "") => {
-         const storageName = `${productId}-product-progress`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         console.log(Object.keys(previousData).length);
-         if (Object.keys(previousData).length > 0) return previousData;
+         // const storageName = `${productId}-product-progress`;
+         // const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+         // console.log(Object.keys(previousData).length);
+         // if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");

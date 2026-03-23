@@ -3673,8 +3673,8 @@ class CourseTemplate {
          const productId = this.utils.getAuth()?.productId;
          const locationId = this.utils.getAuth()?.locationId;
          const token = this.utils.getAuth()?.tokenId;
-         const contactId = utils.getAuth()?.contactId;
-         const userId = utils.getAuth()?.externalUserId;
+         const contactId = this.utils.getAuth()?.contactId;
+         const userId = this.utils.getAuth()?.externalUserId;
          const storageName = `${productId}-product`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;
@@ -3702,12 +3702,11 @@ class CourseTemplate {
          });
       },
       fetchCategory: async (catId = "") => {
-        try {
-          const productId = this.utils.getAuth()?.productId;
+         const productId = this.utils.getAuth()?.productId;
          const locationId = this.utils.getAuth()?.locationId;
          const token = this.utils.getAuth()?.tokenId;
-         const contactId = utils.getAuth()?.contactId;
-         const userId = utils.getAuth()?.externalUserId;
+         const contactId = this.utils.getAuth()?.contactId;
+         const userId = this.utils.getAuth()?.externalUserId;
          const storageName = `${productId}-category`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;
@@ -3754,16 +3753,13 @@ class CourseTemplate {
                console.log("No Token Found!");
             }
          });
-        } catch (err) {
-         console.log(err)
-        }
       },
       fetchCategories: async () => {
          const productId = this.utils.getAuth()?.productId;
          const locationId = this.utils.getAuth()?.locationId;
          const token = this.utils.getAuth()?.tokenId;
-         const contactId = utils.getAuth()?.contactId;
-         const userId = utils.getAuth()?.externalUserId;
+         const contactId = this.utils.getAuth()?.contactId;
+         const userId = this.utils.getAuth()?.externalUserId;
          const storageName = `${productId}-categories`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;
@@ -3794,8 +3790,8 @@ class CourseTemplate {
          const productId = this.utils.getAuth()?.productId;
          const locationId = this.utils.getAuth()?.locationId;
          const token = this.utils.getAuth()?.tokenId;
-         const contactId = utils.getAuth()?.contactId;
-         const userId = utils.getAuth()?.externalUserId;
+         const contactId = this.utils.getAuth()?.contactId;
+         const userId = this.utils.getAuth()?.externalUserId;
          const storageName = `${productId}-post`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;
@@ -3828,8 +3824,8 @@ class CourseTemplate {
          const productId = this.utils.getAuth()?.productId;
          const locationId = this.utils.getAuth()?.locationId;
          const token = this.utils.getAuth()?.tokenId;
-         const contactId = utils.getAuth()?.contactId;
-         const userId = utils.getAuth()?.externalUserId;
+         const contactId = this.utils.getAuth()?.contactId;
+         const userId = this.utils.getAuth()?.externalUserId;
          const storageName = `${productId}-completed-post`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;

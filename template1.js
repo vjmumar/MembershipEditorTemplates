@@ -2785,7 +2785,7 @@ class CourseTemplate {
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;
             });
-            return $el.innerHTML;
+            return $el?.innerHTML;
          })();
 
          // Then we will scrape and prepare the existing DOM elements (Video, Audio, Comments)

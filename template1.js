@@ -3730,6 +3730,7 @@ class CourseTemplate {
                const locationId = JSON.parse(
                   window.atob(acatToken || catToken),
                )?.locationId;
+               const categoryIds = await this.data.fetchCategories();
                fetch(
                   `https://services.leadconnectorhq.com/membership/locations/${locationId}/categories/get-progress`,
                   {
@@ -3741,7 +3742,7 @@ class CourseTemplate {
                      },
                      body: JSON.stringify({
                         product_id: productId,
-                        // categories: [],
+                        categoryIds: categoryIds.map((e) => e.id),
                      }),
                      method: "POST",
                   },

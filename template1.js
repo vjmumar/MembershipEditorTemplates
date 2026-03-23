@@ -3478,7 +3478,7 @@ class CourseTemplate {
                   const categoryId = $targetItem.getAttribute("data-category-id");
                   const postId = $targetItem.getAttribute("data-post-id");
                   const productId = $targetItem.getAttribute("data-product-id");
-                  const url = `${location.origin}/courses/products/${productId}/categories/${categoryId}/posts/${postId}?source=courses`;
+                  const url = `${location.origin}/courses/products/${productId}/categories/${categoryId}/posts/${postId}`;
                   setTimeout(() => {
                      window.history.pushState({}, "", url);
                      window.dispatchEvent(new PopStateEvent("popstate"));

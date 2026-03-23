@@ -2849,7 +2849,7 @@ class CourseTemplate {
                   .split("/")[0];
                const acatToken = $cookies.get("acat");
                const catToken = $cookies.get("cat");
-               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
+               const token = JSON.parse(window.atob(catToken || acatToken))?.tokenId;
                window.addEventListener("click", async (e) => {
                   if (
                      e.target.classList.contains(
@@ -3491,7 +3491,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
-               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
+               const token = JSON.parse(window.atob(catToken || acatToken))?.tokenId;
                fetch(url, {
                   headers: {
                      "accept": "application/json, text/plain, */*",
@@ -3529,7 +3529,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
-               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
+               const token = JSON.parse(window.atob(catToken || acatToken))?.tokenId;
                fetch(url, {
                   headers: {
                      "accept": "application/json, text/plain, */*",
@@ -3582,7 +3582,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
-               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
+               const token = JSON.parse(window.atob(catToken || acatToken))?.tokenId;
                fetch(url, {
                   headers: {
                      "accept": "application/json, text/plain, */*",
@@ -3619,7 +3619,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
-               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
+               const token = JSON.parse(window.atob(catToken || acatToken))?.tokenId;
                fetch(url, {
                   headers: {
                      "accept": "application/json, text/plain, */*",
@@ -3641,7 +3641,6 @@ class CourseTemplate {
          });
       },
       fetchCompletedPosts: async (pId = "") => {
-         const locationId = location.href.split(".")[0].replace("https://", "");
          const productId = location.href
             .split("/products/")[1]
             .split("?")[0]
@@ -3652,8 +3651,9 @@ class CourseTemplate {
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
+            const locationId = JSON.parse(window.atob(acatToken || catToken))?.locationId;
             if (acatToken || catToken) {
-               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
+               const token = JSON.parse(window.atob(catToken || acatToken))?.tokenId;
                const userId = acatToken
                   ? JSON.parse(window.atob(acatToken))?.externalUserId
                   : JSON.parse(window.atob(catToken))?.userId;
@@ -3725,7 +3725,7 @@ class CourseTemplate {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
             if (acatToken || catToken) {
-               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
+               const token = JSON.parse(window.atob(catToken || acatToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
                const locationId = JSON.parse(
                   window.atob(acatToken || catToken),
@@ -3768,7 +3768,7 @@ class CourseTemplate {
             const catToken = $cookies.get("cat");
             const locationId = JSON.parse(window.atob(acatToken || catToken))?.locationId;
             if (acatToken || catToken) {
-               const token = JSON.parse(window.atob(acatToken || catToken))?.tokenId;
+               const token = JSON.parse(window.atob(catToken || acatToken))?.tokenId;
                const contactId = JSON.parse(window.atob(catToken))?.contactId;
                fetch(
                   `https://services.leadconnectorhq.com/clientclub/${locationId}/users/${cId || contactId}`,

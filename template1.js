@@ -2662,14 +2662,13 @@ class CourseTemplate {
 
       initCategoryPostPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 100);
+         const $container = await this.utils.waitForElement("#app-container", 300);
 
          // Then we will fetch the category data and prepare the breadcrumbs
          const breadCrumbs = (() => {
             const $el = document.querySelector(
                "#product-breadcrumbs, #breadcrumb-container",
             );
-            console.log($el);
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;
             });
@@ -2764,7 +2763,7 @@ class CourseTemplate {
 
       initPostPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 100);
+         const $container = await this.utils.waitForElement("#app-container", 300);
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [completedPosts, category, currentPost] = await Promise.allSettled([
@@ -2772,8 +2771,6 @@ class CourseTemplate {
             this.data.fetchCategory(),
             this.data.fetchPost(),
          ]).then((res) => res.map((e) => e.value));
-
-         console.log(currentPost);
 
          // Then we will retrieve and sort the posts inside the category
          const allPosts = category.category.posts.sort((a, b) =>

@@ -2669,7 +2669,6 @@ class CourseTemplate {
             const $el = document.querySelector(
                "#product-breadcrumbs, #breadcrumb-container",
             );
-            console.log($el);
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;
             });
@@ -2981,6 +2980,12 @@ class CourseTemplate {
          // Then we will check the URL against regex patterns to determine which page view to load
          if (/\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url)) {
             await this.mobileInitializers.initLandingPage();
+         } else if (
+            /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
+               url,
+            )
+         ) {
+            await this.desktopInitializers.initCategoryPostPage();
          }
 
          // Finally we will hide the loader
@@ -3368,7 +3373,6 @@ class CourseTemplate {
                const image = cP?.posterImage
                   ? `https://cdn.courses.apisystem.tech${cP.posterImage}`
                   : fallbackImage;
-               console.log(cP);
                if (!cP?.posts) {
                   cPA += `
                             <a class="template-cwd__category__item__post" href="/courses/products/${cP.productId}/categories/${cP.categoryId}/posts/${cP.id}?source=courses">

@@ -3368,6 +3368,7 @@ class CourseTemplate {
                const image = cP?.posterImage
                   ? `https://cdn.courses.apisystem.tech${cP.posterImage}`
                   : fallbackImage;
+               console.log(cP);
                if (!cP?.posts) {
                   cPA += `
                             <div class="template-cwd__category__item__post" data-category-id="${cP.categoryId}" data-product-id="${cP.productId}" data-post-id="${cP.id}">
@@ -3457,8 +3458,6 @@ class CourseTemplate {
          // Then we will create the click listener for the dropdowns and post navigation
          setTimeout(() => {
             document.body.addEventListener("click", (e) => {
-               e.preventDefault();
-               e.stopPropagation();
                if (e.target.closest(".template-cwd__category__item__title")) {
                   const $categoryItem = e.target.closest(".template-cwd__category__item");
                   const isActive = $categoryItem.classList.contains("active");
@@ -3473,22 +3472,23 @@ class CourseTemplate {
                   $subFolder.classList?.[isActive ? "remove" : "add"]("active");
                }
 
-               // if (e.target.closest(".template-cwd__category__item__post")) {
-               //    const $targetItem = e.target.closest(
-               //       ".template-cwd__category__item__post",
-               //    );
-               //    const categoryId = $targetItem.getAttribute("data-category-id");
-               //    const postId = $targetItem.getAttribute("data-post-id");
-               //    const productId = $targetItem.getAttribute("data-product-id");
-               //    const url = `${location.origin}/courses/products/${productId}/categories/${categoryId}/posts/${postId}?source=courses`;
-               //    window.history.replaceState({ ghl: true }, "", url);
-               //    setTimeout(() => {
-               //       const popEvent = new PopStateEvent("popstate", {
-               //          state: { ghl: true },
-               //       });
-               //       window.dispatchEvent(popEvent);
-               //    }, 500);
-               // }
+               if (e.target.closest(".template-cwd__category__item__post")) {
+                  const $targetItem = e.target.closest(
+                     ".template-cwd__category__item__post",
+                  );
+                  const categoryId = $targetItem.getAttribute("data-category-id");
+                  const postId = $targetItem.getAttribute("data-post-id");
+                  const productId = $targetItem.getAttribute("data-product-id");
+                  const url = `/courses/products/${productId}/categories/${categoryId}/posts/${postId}?source=courses`;
+                  location.href = url;
+                  // window.history.replaceState({ ghl: true }, "", url);
+                  // setTimeout(() => {
+                  //    const popEvent = new PopStateEvent("popstate", {
+                  //       state: { ghl: true },
+                  //    });
+                  //    window.dispatchEvent(popEvent);
+                  // }, 500);
+               }
             });
          }, 500);
 

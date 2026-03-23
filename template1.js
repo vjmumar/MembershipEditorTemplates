@@ -3712,7 +3712,7 @@ class CourseTemplate {
                         (e.completedPosts / e.totalPosts) *
                         100
                      ).toFixed(0);
-                     sessionStorage.setItem(storageName, JSON.stringify(e));
+                     sessionStorage.setItem(storageName, JSON.stringify(e || "{}"));
                      resolved(e);
                   });
             } else {

@@ -3988,7 +3988,14 @@ class CourseTemplate {
       getAuth: () => {
          const acatToken = $cookies.get("acat");
          const catToken = $cookies.get("cat");
-         return JSON.parse(window.atob(catToken || acatToken) || "{}");
+         const data = JSON.parse(window.atob(catToken || acatToken) || "{}");
+
+         if (!("productId" in data)) {
+            const url = location.href?.split("/products/")[1].split("/")[0];
+            data.productId = url;
+         }
+
+         return data;
       },
    };
 }

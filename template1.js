@@ -3556,7 +3556,8 @@ class CourseTemplate {
          const userId = this.utils.getAuth()?.externalUserId;
          const storageName = `${productId}-product`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0) return previousData;
+         if (Object.keys(previousData).length > 0 && previousData?.id === productId)
+            return previousData;
          return await new Promise((resolved, reject) => {
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
             if (token) {
@@ -3588,7 +3589,8 @@ class CourseTemplate {
          const userId = this.utils.getAuth()?.externalUserId;
          const storageName = `${productId}-category`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0) return previousData;
+         if (Object.keys(previousData).length > 0 && previousData?.category?.id === catId)
+            return previousData;
          return await new Promise((resolved, reject) => {
             const categoryId =
                catId ||

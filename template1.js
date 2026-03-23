@@ -3135,7 +3135,6 @@ class CourseTemplate {
                this.data.fetchCategory(),
                this.data.fetchPost(),
             ]).then((res) => res.map((e) => e.value));
-         console.log(category);
 
          // Then we will retrieve and sort the posts inside the category
          const allPosts = category.category.posts.sort((a, b) =>
@@ -3703,7 +3702,8 @@ class CourseTemplate {
          });
       },
       fetchCategory: async (catId = "") => {
-         const productId = this.utils.getAuth()?.productId;
+        try {
+          const productId = this.utils.getAuth()?.productId;
          const locationId = this.utils.getAuth()?.locationId;
          const token = this.utils.getAuth()?.tokenId;
          const contactId = utils.getAuth()?.contactId;
@@ -3754,6 +3754,9 @@ class CourseTemplate {
                console.log("No Token Found!");
             }
          });
+        } catch (err) {
+         console.log(err)
+        }
       },
       fetchCategories: async () => {
          const productId = this.utils.getAuth()?.productId;

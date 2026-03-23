@@ -3165,10 +3165,7 @@ class CourseTemplate {
                return `<a class="template-post-page-header__arrow next disabled" href="#"><i class="fas fa-arrow-circle-right"></i></a>`;
             })();
             const downloadsHTML = (() => {
-               if (currentPost?.post_materials?.length) {
-                  return this.widgets.downloadSelect(currentPost?.post_materials);
-               }
-               return "<div></div>";
+               return this.widgets.downloadSelect(currentPost?.post_materials || []);
             })();
             const markAsCompleteButton = (() => {
                window.addEventListener("click", async (e) => {

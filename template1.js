@@ -3802,11 +3802,10 @@ class CourseTemplate {
          });
       },
       fetchPost: async (pId = "") => {
-         const locationId = location.href.split(".")[0].replace("https://", "");
-         const productId = location.href
-            .split("/products/")[1]
-            .split("?")[0]
-            .split("/")[0];
+         const acatToken = $cookies.get("acat");
+         const catToken = $cookies.get("cat");
+         const locationId = JSON.parse(window.atob(acatToken || catToken))?.locationId;
+         const productId = JSON.parse(window.atob(acatToken || catToken))?.productId;
          const storageName = `${productId}-post`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;

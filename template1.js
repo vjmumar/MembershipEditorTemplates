@@ -2670,7 +2670,6 @@ class CourseTemplate {
                "#product-breadcrumbs, #breadcrumb-container",
                0,
             );
-            console.log($el);
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;
             });
@@ -2833,7 +2832,6 @@ class CourseTemplate {
                   allPosts.length !== 1 && currentPostIndex !== lastPostIndexOfCategory;
                if (canGoToNextPost) {
                   const nextPost = allPosts[currentPostIndex + 1];
-                  console.log(canGoToNextPost);
                   return `<a class="template-post-page-header__arrow next" href="${`/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
                }
                return "";

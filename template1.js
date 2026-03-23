@@ -3459,6 +3459,8 @@ class CourseTemplate {
             document.body.addEventListener(
                "click",
                (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   if (e.target.closest(".template-cwd__category__item__title")) {
                      const $categoryItem = e.target.closest(
                         ".template-cwd__category__item",
@@ -3484,7 +3486,7 @@ class CourseTemplate {
                      const categoryId = $targetItem.getAttribute("data-category-id");
                      const postId = $targetItem.getAttribute("data-post-id");
                      const productId = $targetItem.getAttribute("data-product-id");
-                     const url = `https://imyvhv2ppmpun9veacrz.app.clientclub.net/courses/products/cd93a438-2db0-45d3-8340-1eb2e8e3da4d/categories/c0426cd9-eb68-44d2-ade8-033053c2d47d/posts/b8905aad-b195-4162-bc8e-d5d544378dcf`;
+                     const url = `${location.origin}/courses/products/${productId}/categories/${categoryId}/posts/${postId}`;
                      window.history.replaceState({}, "", url);
                      setTimeout(() => {
                         window.dispatchEvent(new PopStateEvent("popstate"));

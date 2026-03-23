@@ -3993,7 +3993,7 @@ class CourseTemplate {
          const data = JSON.parse(window.atob(catToken || acatToken) || "{}");
 
          if (!("productId" in data)) {
-            const url = location.href?.split("/products/")[1].split("/")[0];
+            const url = location.href?.split("/products/")[1].split("/")[0].split("?")[0];
             data.productId = url;
          }
 

@@ -3343,8 +3343,6 @@ class CourseTemplate {
             });
          });
 
-         console.log(categories);
-
          // Then we will organize subcategories under their parents
          let allCategories = categories.sort((a, b) =>
             a.sequenceNo > b.sequenceNo ? 1 : -1,
@@ -3758,7 +3756,9 @@ class CourseTemplate {
                      },
                      body: JSON.stringify({
                         product_id: productId,
-                        categories: categoryIds.map((e) => e.id),
+                        categories: categoryIds
+                           .map((e) => e.id)
+                           .concat(["a98eec1f-6710-466f-877b-3f8d35c24dc2"]),
                      }),
                      method: "POST",
                   },

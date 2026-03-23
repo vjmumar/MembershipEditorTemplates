@@ -2950,6 +2950,7 @@ class CourseTemplate {
          // Finally we will invoke the necessary initializers
          this.mobileInitializers.initStyles();
          this.globalInitializers.initNavBar();
+         this.globalInitializers.initSidebar();
          document.body.classList.add("page-dashboard");
       },
 
@@ -3187,6 +3188,8 @@ class CourseTemplate {
                );
                text = "Resume Course";
                nextPost = allPosts[lastCompletedPost?.index || 0 + 1];
+            } else if (userProductProgress.progress === 100) {
+               text = "Course Completed";
             } else {
                nextPost = allPosts[0];
             }
@@ -3208,7 +3211,7 @@ class CourseTemplate {
                                 <span>${userProductProgress.progress}% COMPLETE</span>
                             </p>
                         </div>
-                        <a href="${bannerButtonLinkAndText.link}" class="template-welcome__button">${bannerButtonLinkAndText.text}</a>    
+                        <a href="${userProductProgress.progress === 100 ? "#" : bannerButtonLinkAndText.link}" class="template-welcome__button">${bannerButtonLinkAndText.text}</a>    
                     </div>
                 `;
 

@@ -2262,10 +2262,9 @@ class CourseTemplate {
                         <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
                     </header>
                 `;
-         ($container || document.querySelector(".product-container")).insertAdjacentHTML(
-            "afterbegin",
-            html,
-         );
+         (
+            $container || document.querySelector(".product-container, #app-container")
+         ).insertAdjacentHTML("afterbegin", html);
       },
       initSidebar: async ($container = null) => {
          // First we will fetch all necessary data

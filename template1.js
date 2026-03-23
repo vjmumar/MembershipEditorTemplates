@@ -3131,11 +3131,13 @@ class CourseTemplate {
          const $container = await this.utils.waitForElement("#app-container", 100);
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
-         const [completedPosts, category, currentPost] = await Promise.allSettled([
-            this.data.fetchCompletedPosts(),
-            this.data.fetchCategory(),
-            this.data.fetchPost(),
-         ]).then((res) => res.map((e) => e.value));
+         const [product, completedPosts, category, currentPost] =
+            await Promise.allSettled([
+               this.data.fetchProduct(),
+               this.data.fetchCompletedPosts(),
+               this.data.fetchCategory(),
+               this.data.fetchPost(),
+            ]).then((res) => res.map((e) => e.value));
 
          // Then we will retrieve and sort the posts inside the category
          const allPosts = category.category.posts.sort((a, b) =>
@@ -3280,7 +3282,7 @@ class CourseTemplate {
          <div class='template-container'>
              <div class="template-post-page">
                  <div class="template-post-page__breadcrumbs">
-                     <a href="/">Dashboard</a>
+                     <a href="/courses/products/${product.id}/categories?source=courses">Dashboard</a>
                      <span>/ <a href="#">${currentPost.title}</a></span>
                  </div>
                  <div class="template-post-page__wrapper">

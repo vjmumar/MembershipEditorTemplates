@@ -1,4 +1,4 @@
-=window.templateCustomizationSchema = {
+window.templateCustomizationSchema = {
    name: "Production",
    id: "template-3",
    global: [

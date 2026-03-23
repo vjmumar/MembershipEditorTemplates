@@ -2661,15 +2661,12 @@ class CourseTemplate {
       },
 
       initCategoryPostPage: async () => {
-         // First we will wait for the product container or the breadcrumbs
-         const $container = await this.utils.waitForElement(
-            "#product-breadcrumbs, #breadcrumb-container",
-            100,
-         );
+         // First we will wait for the product container
+         const $container = await this.utils.waitForElement("#app-container", 100);
 
          // Then we will fetch the category data and prepare the breadcrumbs
-         const breadCrumbs = (() => {
-            const $el = document.querySelector(
+         const breadCrumbs = await (async () => {
+            const $el = await this.utils.waitForElement(
                "#product-breadcrumbs, #breadcrumb-container",
             );
             $el?.querySelectorAll("a").forEach((e) => {
@@ -2765,11 +2762,8 @@ class CourseTemplate {
       },
 
       initPostPage: async () => {
-         // First we will wait for the product container or the breadcrumbs
-         const $container = await this.utils.waitForElement(
-            "#product-breadcrumbs, #breadcrumb-container",
-            300,
-         );
+         // First we will wait for the product container
+         const $container = await this.utils.waitForElement("#app-container", 100);
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [completedPosts, category, currentPost] = await Promise.allSettled([
@@ -2784,8 +2778,8 @@ class CourseTemplate {
          );
 
          // Then we will create the bread crumbs
-         const breadCrumbs = (() => {
-            const $el = document.querySelector(
+         const breadCrumbs = await (async () => {
+            const $el = await this.utils.waitForElement(
                "#product-breadcrumbs, #breadcrumb-container",
             );
             $el?.querySelectorAll("a").forEach((e) => {
@@ -3976,7 +3970,7 @@ class CourseTemplate {
 
    // This object holds utility methods
    utils = {
-      waitForElement: (elementSelector = "", cbInvokationDelay = 1000) => {
+      waitForElement: (elementSelector = "", resolveDelay = 1000) => {
          return new Promise((res) => {
             const interval = setInterval(() => {
                const $element = document.querySelector(elementSelector);
@@ -3984,7 +3978,7 @@ class CourseTemplate {
                   clearInterval(interval);
                   setTimeout(() => {
                      res($element);
-                  }, cbInvokationDelay);
+                  }, resolveDelay);
                }
             }, 0);
          });

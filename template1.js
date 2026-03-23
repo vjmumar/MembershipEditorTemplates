@@ -2981,11 +2981,11 @@ class CourseTemplate {
          if (/\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url)) {
             await this.mobileInitializers.initLandingPage();
          } else if (
-            /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
+            /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/posts\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
                url,
             )
          ) {
-            await this.desktopInitializers.initCategoryPostPage();
+            await this.desktopInitializers.initPostPage();
          }
 
          // Finally we will hide the loader

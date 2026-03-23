@@ -2226,7 +2226,7 @@ class CourseTemplate {
             "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png";
          const defaultLinks = [
             { text: "Home", url: "/" },
-            { text: "What's New", url: "/whats-new" },
+            { text: "Library", url: "/library-v2" },
             { text: "Favorites", url: "/favorites" },
             { text: "Announcements", url: "/announcements" },
             { text: "Pilates", url: "/pilates" },
@@ -2563,85 +2563,11 @@ class CourseTemplate {
                url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
             }));
 
-         // Then we will generate the link and text for the banner button
-         const bannerButtonLinkAndText = (() => {
-            // First, we initialize the default button variables
-            let text = "Let's Start";
-            let nextPost = null;
-
-            // Then we will fetch the course categories to organize them into a sorted, flat array of posts.
-            const allPosts = (() => {
-               // First we will retrieve all of the categories
-               let allCategories = productCategories;
-
-               // Then we will sort categories by sequence number
-               allCategories = allCategories?.sort((a, b) =>
-                  a.sequenceNo > b.sequenceNo ? 1 : -1,
-               );
-
-               // Then we will nest sub-categories and sort internal posts
-               allCategories.forEach((e) => {
-                  if (e.parentCategory) {
-                     e.posts = e.posts?.sort((a, b) =>
-                        a.sequenceNo > b.sequenceNo ? 1 : -1,
-                     );
-                     allCategories.forEach((ca) => {
-                        if (ca.id === e.parentCategory) {
-                           allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
-                           ca.posts.push(e);
-                           ca.posts = ca.posts.sort((a, b) =>
-                              a.sequenceNo > b.sequenceNo ? 1 : -1,
-                           );
-                        }
-                     });
-                  }
-               });
-
-               // Then we will flatten the hierarchy into a single searchable list of posts with indexed positions
-               let index = 0;
-               const allPost = allCategories?.reduce((a, c) => {
-                  c?.posts?.forEach((post) => {
-                     index++;
-                     if (post?.posts) {
-                        post?.posts.forEach((subPost) => {
-                           subPost.index = index;
-                           a.push(subPost);
-                        });
-                     } else {
-                        post.index = index;
-                        a.push(post);
-                     }
-                  });
-                  return a;
-               }, []);
-
-               // Finally we will return all of the post
-               return allPost;
-            })();
-
-            // Then, we check the user's progress to determine if we should show "Resume Course" and find the next post in the sequence, or simply start from the beginning.
-            if (userProductProgress?.completedPosts >= 1) {
-               const lastCompletedPost = allPosts.find(
-                  (e) => e.id === completedPosts?.[0]?.postId,
-               );
-               text = "Resume Course";
-               nextPost = allPosts[lastCompletedPost?.index || 0 + 1];
-            } else {
-               nextPost = allPosts[0];
-            }
-
-            // Finally, we return the button object containing the display text and the constructed URL path for the next lesson.
-            return {
-               text,
-               link: `/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`,
-            };
-         })();
-
          // Then we will inject the Dashboard HTML and initialize the navigation components
          $container.innerHTML = `
          <div class='template-container'>
              <div class="dashboard">
-                     ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", bannerButtonLinkAndText.text, bannerButtonLinkAndText.link)}
+                     ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", productCategories, "")}
                      <div class="dashboard__wrapper">
                          ${this.widgets.communityToggle()}
                          ${this.widgets.heroBanner()}
@@ -3006,84 +2932,10 @@ class CourseTemplate {
             categoryProgress,
          );
 
-         // Then we will generate the link and text for the banner button
-         const bannerButtonLinkAndText = (() => {
-            // First, we initialize the default button variables
-            let text = "Let's Start";
-            let nextPost = null;
-
-            // Then we will fetch the course categories to organize them into a sorted, flat array of posts.
-            const allPosts = (() => {
-               // First we will retrieve all of the categories
-               let allCategories = productCategories;
-
-               // Then we will sort categories by sequence number
-               allCategories = allCategories.sort((a, b) =>
-                  a.sequenceNo > b.sequenceNo ? 1 : -1,
-               );
-
-               // Then we will nest sub-categories and sort internal posts
-               allCategories.forEach((e) => {
-                  if (e.parentCategory) {
-                     e.posts = e.posts.sort((a, b) =>
-                        a.sequenceNo > b.sequenceNo ? 1 : -1,
-                     );
-                     allCategories.forEach((ca) => {
-                        if (ca.id === e.parentCategory) {
-                           allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
-                           ca.posts.push(e);
-                           ca.posts = ca.posts.sort((a, b) =>
-                              a.sequenceNo > b.sequenceNo ? 1 : -1,
-                           );
-                        }
-                     });
-                  }
-               });
-
-               // Then we will flatten the hierarchy into a single searchable list of posts with indexed positions
-               let index = 0;
-               const allPost = allCategories?.reduce((a, c) => {
-                  c?.posts?.forEach((post) => {
-                     index++;
-                     if (post?.posts) {
-                        post?.posts.forEach((subPost) => {
-                           subPost.index = index;
-                           a.push(subPost);
-                        });
-                     } else {
-                        post.index = index;
-                        a.push(post);
-                     }
-                  });
-                  return a;
-               }, []);
-
-               // Finally we will return all of the post
-               return allPost;
-            })();
-
-            // Then, we check the user's progress to determine if we should show "Resume Course" and find the next post in the sequence, or simply start from the beginning.
-            if (userProductProgress?.completedPosts >= 1) {
-               const lastCompletedPost = allPosts.find(
-                  (e) => e.id === completedPosts?.[0]?.postId,
-               );
-               text = "Resume Course";
-               nextPost = allPosts[lastCompletedPost?.index || 0 + 1];
-            } else {
-               nextPost = allPosts[0];
-            }
-
-            // Finally, we return the button object containing the display text and the constructed URL path for the next lesson.
-            return {
-               text,
-               link: `/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`,
-            };
-         })();
-
          // Then we will render the Categories List Page
          $container.innerHTML = `
           <img class="template-hero__image" src="${product?.posterImage}" />
-          ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", bannerButtonLinkAndText.text, bannerButtonLinkAndText.link, "")}
+          ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", productCategories, "")}
           <div class='template-container'>
                ${this.widgets.communityToggle()}
                ${this.widgets.heroBanner(
@@ -3099,6 +2951,7 @@ class CourseTemplate {
 
          // Finally we will invoke the necessary initializers
          this.mobileInitializers.initStyles();
+         this.globalInitializers.initNavBar();
          document.body.classList.add("page-dashboard");
       },
 
@@ -3240,6 +3093,7 @@ class CourseTemplate {
 
          // Then we will invoke the necessary initializers
          this.mobileInitializers.initStyles();
+         this.globalInitializers.initNavBar();
          document.body.classList.add("page-post");
 
          // Finally we will append all container conditionally
@@ -3268,10 +3122,84 @@ class CourseTemplate {
       welcomeBanner: (
          name = "User",
          progress = "No progress available",
-         buttonText = "Let's Start",
-         buttonLink = "#",
+         productCategories = [],
          additionalInlineStyling = "",
       ) => {
+         // First we will generate the link and text for the banner button
+         const bannerButtonLinkAndText = (() => {
+            // First, we initialize the default button variables
+            let text = "Let's Start";
+            let nextPost = null;
+
+            // Then we will fetch the course categories to organize them into a sorted, flat array of posts.
+            const allPosts = (() => {
+               // First we will retrieve all of the categories
+               let allCategories = productCategories;
+
+               // Then we will sort categories by sequence number
+               allCategories = allCategories.sort((a, b) =>
+                  a.sequenceNo > b.sequenceNo ? 1 : -1,
+               );
+
+               // Then we will nest sub-categories and sort internal posts
+               allCategories.forEach((e) => {
+                  if (e.parentCategory) {
+                     e.posts = e.posts.sort((a, b) =>
+                        a.sequenceNo > b.sequenceNo ? 1 : -1,
+                     );
+                     allCategories.forEach((ca) => {
+                        if (ca.id === e.parentCategory) {
+                           allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
+                           ca.posts.push(e);
+                           ca.posts = ca.posts.sort((a, b) =>
+                              a.sequenceNo > b.sequenceNo ? 1 : -1,
+                           );
+                        }
+                     });
+                  }
+               });
+
+               // Then we will flatten the hierarchy into a single searchable list of posts with indexed positions
+               let index = 0;
+               const allPost = allCategories?.reduce((a, c) => {
+                  c?.posts?.forEach((post) => {
+                     index++;
+                     if (post?.posts) {
+                        post?.posts.forEach((subPost) => {
+                           subPost.index = index;
+                           a.push(subPost);
+                        });
+                     } else {
+                        post.index = index;
+                        a.push(post);
+                     }
+                  });
+                  return a;
+               }, []);
+
+               // Finally we will return all of the post
+               return allPost;
+            })();
+
+            // Then, we check the user's progress to determine if we should show "Resume Course" and find the next post in the sequence, or simply start from the beginning.
+            if (userProductProgress?.completedPosts >= 1) {
+               const lastCompletedPost = allPosts.find(
+                  (e) => e.id === completedPosts?.[0]?.postId,
+               );
+               text = "Resume Course";
+               nextPost = allPosts[lastCompletedPost?.index || 0 + 1];
+            } else {
+               nextPost = allPosts[0];
+            }
+
+            // Finally, we return the button object containing the display text and the constructed URL path for the next lesson.
+            return {
+               text,
+               link: `/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`,
+            };
+         })();
+
+         // Then we will generate the html
          const html = `
                     <div class="template-welcome" ${additionalInlineStyling ? `style='${additionalInlineStyling}'` : ""}>
                         <div class="template-welcome__left">
@@ -3281,9 +3209,11 @@ class CourseTemplate {
                                 <span>${progress}% COMPLETE</span>
                             </p>
                         </div>
-                        <a href="${buttonLink}" class="template-welcome__button">${buttonText}</a>    
+                        <a href="${bannerButtonLinkAndText.link}" class="template-welcome__button">${bannerButtonLinkAndText.text}</a>    
                     </div>
                 `;
+
+         // Finally we will return the html
          return html;
       },
       heroBanner: (

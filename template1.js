@@ -3135,6 +3135,7 @@ class CourseTemplate {
                this.data.fetchCategory(),
                this.data.fetchPost(),
             ]).then((res) => res.map((e) => e.value));
+         console.log(category);
 
          // Then we will retrieve and sort the posts inside the category
          const allPosts = category.category.posts.sort((a, b) =>

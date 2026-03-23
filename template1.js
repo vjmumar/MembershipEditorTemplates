@@ -3456,35 +3456,44 @@ class CourseTemplate {
 
          // Then we will create the click listener for the dropdowns and post navigation
          setTimeout(() => {
-            document.body.addEventListener("click", (e) => {
-               if (e.target.closest(".template-cwd__category__item__title")) {
-                  const $categoryItem = e.target.closest(".template-cwd__category__item");
-                  const isActive = $categoryItem.classList.contains("active");
-                  $categoryItem.classList?.[isActive ? "remove" : "add"]("active");
-               }
+            document.body.addEventListener(
+               "click",
+               (e) => {
+                  if (e.target.closest(".template-cwd__category__item__title")) {
+                     const $categoryItem = e.target.closest(
+                        ".template-cwd__category__item",
+                     );
+                     const isActive = $categoryItem.classList.contains("active");
+                     $categoryItem.classList?.[isActive ? "remove" : "add"]("active");
+                  }
 
-               if (e.target.closest(".template-cwd__category__item__sub-folder__title")) {
-                  const $subFolder = e.target.closest(
-                     ".template-cwd__category__item__sub-folder",
-                  );
-                  const isActive = $subFolder.classList.contains("active");
-                  $subFolder.classList?.[isActive ? "remove" : "add"]("active");
-               }
+                  if (
+                     e.target.closest(".template-cwd__category__item__sub-folder__title")
+                  ) {
+                     const $subFolder = e.target.closest(
+                        ".template-cwd__category__item__sub-folder",
+                     );
+                     const isActive = $subFolder.classList.contains("active");
+                     $subFolder.classList?.[isActive ? "remove" : "add"]("active");
+                  }
 
-               if (e.target.closest(".template-cwd__category__item__post")) {
-                  // const $targetItem = e.target.closest(
-                  //    ".template-cwd__category__item__post",
-                  // );
-                  // const categoryId = $targetItem.getAttribute("data-category-id");
-                  // const postId = $targetItem.getAttribute("data-post-id");
-                  // const productId = $targetItem.getAttribute("data-product-id");
-                  // const url = `${location.origin}/courses/products/${productId}/categories/${categoryId}/posts/${postId}`;
-                  // setTimeout(() => {
-                  //    window.history.pushState({}, "", url);
-                  //    window.dispatchEvent(new PopStateEvent("popstate"));
-                  // }, 0);
-               }
-            });
+                  if (e.target.closest(".template-cwd__category__item__post")) {
+                     const $targetItem = e.target.closest(
+                        ".template-cwd__category__item__post",
+                     );
+                     const categoryId = $targetItem.getAttribute("data-category-id");
+                     const postId = $targetItem.getAttribute("data-post-id");
+                     const productId = $targetItem.getAttribute("data-product-id");
+                     const url = `${location.origin}/courses/products/${productId}/categories/${categoryId}/posts/${postId}`;
+                     console.log(url);
+                     setTimeout(() => {
+                        window.history.replaceState({}, "", url);
+                        window.dispatchEvent(new PopStateEvent("popstate"));
+                     }, 500);
+                  }
+               },
+               true,
+            );
          }, 500);
 
          // Finally we will return the html

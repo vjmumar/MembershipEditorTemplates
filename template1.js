@@ -62,7 +62,7 @@ window.templateCustomizationSchema = {
       },
       {
          name: "Navbar",
-         showOnMobileEditor: false,
+         showOnMobileEditor: true,
          customizations: [
             {
                elementSelector: ".template-navbar-wrapper",
@@ -2226,7 +2226,7 @@ class CourseTemplate {
             "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png";
          const defaultLinks = [
             { text: "Home", url: "/" },
-            { text: "Library", url: "/library-v2" },
+            { text: "Library", url: "/courses/library-v2" },
             { text: "Favorites", url: "/favorites" },
             { text: "Announcements", url: "/announcements" },
             { text: "Pilates", url: "/pilates" },

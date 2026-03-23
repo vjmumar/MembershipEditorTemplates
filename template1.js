@@ -2985,7 +2985,7 @@ class CourseTemplate {
                url,
             )
          ) {
-            await this.desktopInitializers.initPostPage();
+            await this.mobileInitializers.initPostPage();
          }
 
          // Finally we will hide the loader
@@ -3124,6 +3124,204 @@ class CourseTemplate {
          // Finally we will invoke the necessary initializers
          this.mobileInitializers.initStyles();
          document.body.classList.add("page-dashboard");
+      },
+
+      initPostPage: async () => {
+         // First we will wait for the product container
+         const $container = await this.utils.waitForElement("#app-container", 100);
+
+         // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
+         const [completedPosts, category, currentPost] = await Promise.allSettled([
+            this.data.fetchCompletedPosts(),
+            this.data.fetchCategory(),
+            this.data.fetchPost(),
+         ]).then((res) => res.map((e) => e.value));
+
+         // Then we will retrieve and sort the posts inside the category
+         const allPosts = category.category.posts.sort((a, b) =>
+            a.sequenceNo > b.sequenceNo ? 1 : -1,
+         );
+
+         // Then we will create the bread crumbs
+         const breadCrumbs = (() => {
+            const $el = document.querySelector(
+               "#product-breadcrumbs, #breadcrumb-container",
+            );
+            $el?.querySelectorAll("a").forEach((e) => {
+               e.href = `/courses${e.getAttribute("href")}`;
+            });
+            return $el?.innerHTML;
+         })();
+
+         // Then we will scrape and prepare the existing DOM elements (Video, Audio, Comments)
+         const videoContainer = (() => {
+            const videoContainer = document.querySelector(".video-player-container");
+            const embedContainer = document.querySelector(".embedded-media-player");
+            return videoContainer || embedContainer || "";
+         })();
+         const audioContainer = (() => {
+            const audioContainer = document.querySelector(".audio-player-container");
+            return audioContainer || "";
+         })();
+         const commentContainer = (() => {
+            const $commentElement = Array.from(document.querySelectorAll("div")).filter(
+               (e) => e.innerText === "Comments",
+            );
+            return $commentElement?.length ? $commentElement[0]?.parentElement : "";
+         })();
+
+         // Then we will build the header HTML including navigation arrows and completion buttons
+         const headerHTML = (() => {
+            // First we will create the post widgets
+            const leftArrowHTML = (() => {
+               const currentPostIndex = allPosts.findIndex(
+                  (p) => p.sequenceNo === currentPost.sequenceNo,
+               );
+               const canGoToPrevious = currentPostIndex && allPosts.length !== 1;
+               if (canGoToPrevious) {
+                  const previousPost = allPosts[currentPostIndex - 1];
+                  return `<a class="template-post-page-header__arrow prev" href="${`/courses/products/${previousPost?.productId}/categories/${previousPost?.categoryId}/posts/${previousPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
+               }
+               return "";
+            })();
+            const rightArrowHTML = (() => {
+               const currentPostIndex = allPosts.findIndex(
+                  (p) => p.sequenceNo === currentPost.sequenceNo,
+               );
+               const lastPostIndexOfCategory = allPosts.findIndex(
+                  (p) => p.sequenceNo === allPosts.slice(-1)[0].sequenceNo,
+               );
+               const canGoToNextPost =
+                  allPosts.length !== 1 && currentPostIndex !== lastPostIndexOfCategory;
+               if (canGoToNextPost) {
+                  const nextPost = allPosts[currentPostIndex + 1];
+                  return `<a class="template-post-page-header__arrow next" href="${`/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
+               }
+               return "";
+            })();
+            const downloadsHTML = (() => {
+               if (currentPost?.post_materials?.length) {
+                  return this.widgets.downloadSelect(currentPost?.post_materials);
+               }
+               return "";
+            })();
+            const markAsCompleteButton = (() => {
+               const locationId = location.href.split(".")[0].replace("https://", "");
+               const productId = location.href
+                  .split("/products/")[1]
+                  .split("?")[0]
+                  .split("/")[0];
+               const acatToken = $cookies.get("acat");
+               const catToken = $cookies.get("cat");
+               const token = JSON.parse(window.atob(catToken || acatToken))?.tokenId;
+               window.addEventListener("click", async (e) => {
+                  if (
+                     e.target.classList.contains(
+                        "template-post-page-header__mark-as-complete",
+                     )
+                  ) {
+                     const isCompleted =
+                        e.target.getAttribute("data-is-completed") === "true";
+                     if (!isCompleted) {
+                        const req = await fetch(
+                           `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion`,
+                           {
+                              method: "POST",
+                              headers: {
+                                 "accept": "application/json, text/plain, */*",
+                                 "accept-language": "en-US,en;q=0.6",
+                                 "authorization": `Bearer ${token}`,
+                                 "content-type": "application/json",
+                                 "channel": "APP",
+                              },
+                              body: JSON.stringify({
+                                 percentage: 100,
+                                 postId: currentPost.id,
+                                 productId: productId,
+                              }),
+                           },
+                        );
+                        const reqData = await req.json();
+                        e.target.innerText = "Lesson Done";
+                        e.target.setAttribute("data-is-completed", "true");
+                        e.target.getAttribute("data-uncomplete-id", reqData?.id);
+                     } else {
+                        const unCompleteId = e.target.getAttribute("data-uncomplete-id");
+                        await fetch(
+                           `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion/${unCompleteId}`,
+                           {
+                              headers: {
+                                 "accept": "application/json, text/plain, */*",
+                                 "accept-language": "en-US,en;q=0.6",
+                                 "authorization": `Bearer ${token}`,
+                                 "channel": "APP",
+                              },
+                              method: "DELETE",
+                           },
+                        );
+                        e.target.innerText = "Complete This Lesson";
+                        e.target.setAttribute("data-is-completed", "false");
+                     }
+                  }
+               });
+               const postInsideCompletedPost = completedPosts.find(
+                  (e) => e.postId === currentPost.id,
+               );
+               if (!postInsideCompletedPost) {
+                  return `<button class="template-post-page-header__mark-as-complete" data-is-completed='false'>Complete This Lesson</button>`;
+               } else {
+                  return `<button class="template-post-page-header__mark-as-complete" data-is-completed='true' data-uncomplete-id='${postInsideCompletedPost?.id}'>Lesson Done</button>`;
+               }
+            })();
+
+            // Finallly we will create the header template
+            return `
+            <div class="template-post-page-header">
+                ${downloadsHTML}  
+                ${markAsCompleteButton}
+                ${leftArrowHTML}
+                ${rightArrowHTML}  
+            </div>
+            `;
+         })();
+
+         // Then we will render the page and re-attach the scraped elements (video, audio, comments)
+         $container.innerHTML = `
+         ${headerHTML}
+         <div class='template-container'>
+             <div class="template-post-page">
+                 <div class="template-post-page__breadcrumbs">${breadCrumbs}</div>
+                 <div class="template-post-page__wrapper">
+                     <p class="template-post-page__title">${currentPost?.title || ""}</p>
+                     <div class="template-post-page__video"></div>    
+                     <div class="template-post-page__audio"></div>
+                     <div class="template-post-page__description">${currentPost?.description || ""}</div>  
+                     <div class="template-post-page__comments"></div>  
+                 </div>
+             </div>
+         </div>
+         `;
+
+         // Then we will invoke the necessary initializers
+         this.desktopInitializers.initStyles();
+         this.globalInitializers.initNavBar($container);
+         this.globalInitializers.initSidebar($container);
+         document.body.classList.add("page-post");
+
+         // Finally we will append all container conditionally
+         if (videoContainer) {
+            document.querySelector(".template-post-page__video")?.append(videoContainer);
+         }
+
+         if (audioContainer) {
+            document.querySelector(".template-post-page__audio")?.append(audioContainer);
+         }
+
+         if (commentContainer) {
+            document
+               .querySelector(".template-post-page__comments")
+               ?.append(commentContainer);
+         }
       },
    };
 

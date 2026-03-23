@@ -3837,3 +3837,4 @@ class CourseTemplate {
 }
 
 window.CourseTemplate = new CourseTemplate();
+"test"

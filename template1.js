@@ -3480,7 +3480,7 @@ class CourseTemplate {
                   const categoryId = $targetItem.getAttribute("data-category-id");
                   const postId = $targetItem.getAttribute("data-post-id");
                   const productId = $targetItem.getAttribute("data-product-id");
-                  const url = `${location.origin}/courses/products/${productId}/categories/${categoryId}/posts/${postId}`;
+                  const url = `${location.origin}/courses/products/${productId}/categories/${categoryId}/posts/${postId}?source=courses`;
                   window.history.replaceState({ ghl: true }, "", url);
                   setTimeout(() => {
                      const popEvent = new PopStateEvent("popstate", {

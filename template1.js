@@ -3962,6 +3962,7 @@ class CourseTemplate {
             const json = await req.json();
             return json;
          } catch (err) {
+            console.log(err);
             alert("Something went wrong!");
          }
       },

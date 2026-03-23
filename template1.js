@@ -2662,7 +2662,7 @@ class CourseTemplate {
 
       initCategoryPostPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 300);
+         const $container = await this.utils.waitForElement("#app-container", 1000);
 
          // Then we will fetch the category data and prepare the breadcrumbs
          const breadCrumbs = (() => {

@@ -2550,6 +2550,7 @@ class CourseTemplate {
                this.data.fetchCompletedPosts(),
                this.data.fetchCategories(),
             ]).then((res) => res.map((e) => e.value));
+         console.log(userData, userProductProgress, completedPosts, productCategories);
 
          // Then we will process the categories data
          const categories = productCategories

@@ -2574,14 +2574,14 @@ class CourseTemplate {
                let allCategories = productCategories;
 
                // Then we will sort categories by sequence number
-               allCategories = allCategories.sort((a, b) =>
+               allCategories = allCategories?.sort((a, b) =>
                   a.sequenceNo > b.sequenceNo ? 1 : -1,
                );
 
                // Then we will nest sub-categories and sort internal posts
                allCategories.forEach((e) => {
                   if (e.parentCategory) {
-                     e.posts = e.posts.sort((a, b) =>
+                     e.posts = e.posts?.sort((a, b) =>
                         a.sequenceNo > b.sequenceNo ? 1 : -1,
                      );
                      allCategories.forEach((ca) => {

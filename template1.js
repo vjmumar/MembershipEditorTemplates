@@ -3168,7 +3168,7 @@ class CourseTemplate {
                if (currentPost?.post_materials?.length) {
                   return this.widgets.downloadSelect(currentPost?.post_materials);
                }
-               return "";
+               return "<div></div>";
             })();
             const markAsCompleteButton = (() => {
                window.addEventListener("click", async (e) => {

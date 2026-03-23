@@ -2386,9 +2386,10 @@ class CourseTemplate {
                 `;
 
          // Finally we will inject the sidebar and attach event listeners for interactivity
-         (
-            $container || document.querySelector(".product-container, #app")
-         ).insertAdjacentHTML("beforebegin", html);
+         ($container || document.querySelector(".product-container")).insertAdjacentHTML(
+            "beforebegin",
+            html,
+         );
          setTimeout(() => {
             document.body.addEventListener("click", (e) => {
                if (
@@ -2949,7 +2950,6 @@ class CourseTemplate {
          // Finally we will invoke the necessary initializers
          this.mobileInitializers.initStyles();
          this.globalInitializers.initNavBar();
-         this.globalInitializers.initSidebar();
          document.body.classList.add("page-dashboard");
       },
 

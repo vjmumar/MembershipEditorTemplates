@@ -3837,43 +3837,45 @@ class CourseTemplate {
          });
       },
       fetchCategoryProgress: async () => {
-         const productId = this.utils.getAuth()?.productId;
-         const locationId = this.utils.getAuth()?.locationId;
-         const token = this.utils.getAuth()?.tokenId;
-         const contactId = utils.getAuth()?.contactId;
-         const storageName = `${productId}-category-progress`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0) return previousData;
-         return await new Promise(async (resolved, reject) => {
-            if (token) {
-               const categoryIds = await this.data.fetchCategories();
-               fetch(
-                  `https://services.leadconnectorhq.com/membership/locations/${locationId}/categories/get-progress`,
-                  {
-                     headers: {
-                        "accept": "application/json, text/plain, */*",
-                        "accept-language": "en-US,en;q=0.5",
-                        "authorization": `Bearer ${token}`,
-                        "content-type": "application/json",
+         try {
+            const productId = this.utils.getAuth()?.productId;
+            const locationId = this.utils.getAuth()?.locationId;
+            const token = this.utils.getAuth()?.tokenId;
+            const contactId = utils.getAuth()?.contactId;
+            const storageName = `${productId}-category-progress`;
+            const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+            if (Object.keys(previousData).length > 0) return previousData;
+            return await new Promise(async (resolved, reject) => {
+               if (token) {
+                  const categoryIds = await this.data.fetchCategories();
+                  fetch(
+                     `https://services.leadconnectorhq.com/membership/locations/${locationId}/categories/get-progress`,
+                     {
+                        headers: {
+                           "accept": "application/json, text/plain, */*",
+                           "accept-language": "en-US,en;q=0.5",
+                           "authorization": `Bearer ${token}`,
+                           "content-type": "application/json",
+                        },
+                        body: JSON.stringify({
+                           product_id: productId,
+                           categories: categoryIds.map((e) => e.id),
+                        }),
+                        method: "POST",
                      },
-                     body: JSON.stringify({
-                        product_id: productId,
-                        categories: categoryIds
-                           .map((e) => e.id)
-                           .concat(["a98eec1f-6710-466f-877b-3f8d35c24dc2"]),
-                     }),
-                     method: "POST",
-                  },
-               )
-                  .then((e) => e.json())
-                  .then((e) => {
-                     sessionStorage.setItem(storageName, JSON.stringify(e));
-                     resolved(e);
-                  });
-            } else {
-               console.log("No Token Found!");
-            }
-         });
+                  )
+                     .then((e) => e.json())
+                     .then((e) => {
+                        sessionStorage.setItem(storageName, JSON.stringify(e));
+                        resolved(e);
+                     });
+               } else {
+                  console.log("No Token Found!");
+               }
+            });
+         } catch (err) {
+            console.log(err);
+         }
       },
       fetchUser: async () => {
          const productId = this.utils.getAuth()?.productId;

@@ -3947,7 +3947,7 @@ class CourseTemplate {
                );
             } else {
                req = await fetch(
-                  `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion/${unCompleteId}`,
+                  `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion/${postId}`,
                   {
                      headers: {
                         "accept": "application/json, text/plain, */*",

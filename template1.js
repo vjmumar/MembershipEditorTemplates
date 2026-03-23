@@ -3472,17 +3472,17 @@ class CourseTemplate {
                }
 
                if (e.target.closest(".template-cwd__category__item__post")) {
-                  const $targetItem = e.target.closest(
-                     ".template-cwd__category__item__post",
-                  );
-                  const categoryId = $targetItem.getAttribute("data-category-id");
-                  const postId = $targetItem.getAttribute("data-post-id");
-                  const productId = $targetItem.getAttribute("data-product-id");
-                  const url = `${location.origin}/courses/products/${productId}/categories/${categoryId}/posts/${postId}`;
-                  setTimeout(() => {
-                     window.history.pushState({}, "", url);
-                     window.dispatchEvent(new PopStateEvent("popstate"));
-                  }, 0);
+                  // const $targetItem = e.target.closest(
+                  //    ".template-cwd__category__item__post",
+                  // );
+                  // const categoryId = $targetItem.getAttribute("data-category-id");
+                  // const postId = $targetItem.getAttribute("data-post-id");
+                  // const productId = $targetItem.getAttribute("data-product-id");
+                  // const url = `${location.origin}/courses/products/${productId}/categories/${categoryId}/posts/${postId}`;
+                  // setTimeout(() => {
+                  //    window.history.pushState({}, "", url);
+                  //    window.dispatchEvent(new PopStateEvent("popstate"));
+                  // }, 0);
                }
             });
          }, 500);

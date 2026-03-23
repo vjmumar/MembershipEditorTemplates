@@ -3654,9 +3654,9 @@ class CourseTemplate {
             const locationId = JSON.parse(window.atob(acatToken || catToken))?.locationId;
             if (acatToken || catToken) {
                const token = JSON.parse(window.atob(catToken || acatToken))?.tokenId;
-               const userId = acatToken
-                  ? JSON.parse(window.atob(acatToken))?.externalUserId
-                  : JSON.parse(window.atob(catToken))?.userId;
+               const userId = JSON.parse(
+                  window.atob(catToken || acatToken),
+               )?.externalUserId;
                const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`;
                fetch(url, {
                   headers: {

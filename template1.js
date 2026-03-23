@@ -3703,36 +3703,40 @@ class CourseTemplate {
          });
       },
       fetchCategories: async () => {
-         const productId = this.utils.getAuth()?.productId;
-         const locationId = this.utils.getAuth()?.locationId;
-         const token = this.utils.getAuth()?.tokenId;
-         const contactId = this.utils.getAuth()?.contactId;
-         const userId = this.utils.getAuth()?.externalUserId;
-         const storageName = `${productId}-categories`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0) return previousData;
-         return await new Promise((resolved, reject) => {
-            const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-purchase/categories?product_id=${productId}`;
-            if (token) {
-               fetch(url, {
-                  headers: {
-                     "accept": "application/json, text/plain, */*",
-                     "accept-language": "en-US,en;q=0.6",
-                     "authorization": `Bearer ${token}`,
-                     "channel": "APP",
-                  },
-                  body: null,
-                  method: "GET",
-               })
-                  .then((e) => e.json())
-                  .then((e) => {
-                     resolved(e.categories);
-                     sessionStorage.setItem(storageName, JSON.stringify(e.categories));
-                  });
-            } else {
-               console.log("No Token Found!");
-            }
-         });
+         try {
+            const productId = this.utils.getAuth()?.productId;
+            const locationId = this.utils.getAuth()?.locationId;
+            const token = this.utils.getAuth()?.tokenId;
+            const contactId = this.utils.getAuth()?.contactId;
+            const userId = this.utils.getAuth()?.externalUserId;
+            const storageName = `${productId}-categories`;
+            const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+            if (Object.keys(previousData).length > 0) return previousData;
+            return await new Promise((resolved, reject) => {
+               const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-purchase/categories?product_id=${productId}`;
+               if (token) {
+                  fetch(url, {
+                     headers: {
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.6",
+                        "authorization": `Bearer ${token}`,
+                        "channel": "APP",
+                     },
+                     body: null,
+                     method: "GET",
+                  })
+                     .then((e) => e.json())
+                     .then((e) => {
+                        resolved(e.categories);
+                        sessionStorage.setItem(storageName, JSON.stringify(e.categories));
+                     });
+               } else {
+                  console.log("No Token Found!");
+               }
+            });
+         } catch (err) {
+            console.log(err);
+         }
       },
       fetchPost: async (pId = "") => {
          const productId = this.utils.getAuth()?.productId;

@@ -2855,41 +2855,18 @@ class CourseTemplate {
                      const isCompleted =
                         e.target.getAttribute("data-is-completed") === "true";
                      if (!isCompleted) {
-                        const req = await fetch(
-                           `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion`,
-                           {
-                              method: "POST",
-                              headers: {
-                                 "accept": "application/json, text/plain, */*",
-                                 "accept-language": "en-US,en;q=0.6",
-                                 "authorization": `Bearer ${token}`,
-                                 "content-type": "application/json",
-                                 "channel": "APP",
-                              },
-                              body: JSON.stringify({
-                                 percentage: 100,
-                                 postId: currentPost.id,
-                                 productId: productId,
-                              }),
-                           },
+                        const reqData = await this.actions.markPostAsCompleteOrIncomplete(
+                           currentPost.id,
+                           true,
                         );
-                        const reqData = await req.json();
                         e.target.innerText = "Lesson Done";
                         e.target.setAttribute("data-is-completed", "true");
                         e.target.getAttribute("data-uncomplete-id", reqData?.id);
                      } else {
                         const unCompleteId = e.target.getAttribute("data-uncomplete-id");
-                        await fetch(
-                           `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion/${unCompleteId}`,
-                           {
-                              headers: {
-                                 "accept": "application/json, text/plain, */*",
-                                 "accept-language": "en-US,en;q=0.6",
-                                 "authorization": `Bearer ${token}`,
-                                 "channel": "APP",
-                              },
-                              method: "DELETE",
-                           },
+                        await this.actions.markPostAsCompleteOrIncomplete(
+                           currentPost.id,
+                           false,
                         );
                         e.target.innerText = "Complete This Lesson";
                         e.target.setAttribute("data-is-completed", "false");
@@ -2901,9 +2878,8 @@ class CourseTemplate {
                );
                if (!postInsideCompletedPost) {
                   return `<button class="template-post-page-header__mark-as-complete" data-is-completed='false'>Complete This Lesson</button>`;
-               } else {
-                  return `<button class="template-post-page-header__mark-as-complete" data-is-completed='true' data-uncomplete-id='${postInsideCompletedPost?.id}'>Lesson Done</button>`;
                }
+               return `<button class="template-post-page-header__mark-as-complete" data-is-completed='true' data-uncomplete-id='${postInsideCompletedPost?.id}'>Lesson Done</button>`;
             })();
 
             // Finallly we will create the header template
@@ -3170,7 +3146,7 @@ class CourseTemplate {
                   const previousPost = allPosts[currentPostIndex - 1];
                   return `<a class="template-post-page-header__arrow prev" href="${`/courses/products/${previousPost?.productId}/categories/${previousPost?.categoryId}/posts/${previousPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
                }
-               return "";
+               return `<a class="template-post-page-header__arrow prev disabled" href="#"><i class="fas fa-arrow-circle-right"></i></a>`;
             })();
             const rightArrowHTML = (() => {
                const currentPostIndex = allPosts.findIndex(
@@ -3185,7 +3161,7 @@ class CourseTemplate {
                   const nextPost = allPosts[currentPostIndex + 1];
                   return `<a class="template-post-page-header__arrow next" href="${`/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
                }
-               return "";
+               return `<a class="template-post-page-header__arrow next disabled" href="#"><i class="fas fa-arrow-circle-right"></i></a>`;
             })();
             const downloadsHTML = (() => {
                if (currentPost?.post_materials?.length) {
@@ -3194,11 +3170,6 @@ class CourseTemplate {
                return "";
             })();
             const markAsCompleteButton = (() => {
-               const productId = this.utils.getAuth()?.productId;
-               const locationId = this.utils.getAuth()?.locationId;
-               const token = this.utils.getAuth()?.tokenId;
-               const contactId = this.utils.getAuth()?.contactId;
-               const userId = this.utils.getAuth()?.externalUserId;
                window.addEventListener("click", async (e) => {
                   if (
                      e.target.classList.contains(
@@ -3208,41 +3179,18 @@ class CourseTemplate {
                      const isCompleted =
                         e.target.getAttribute("data-is-completed") === "true";
                      if (!isCompleted) {
-                        const req = await fetch(
-                           `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion`,
-                           {
-                              method: "POST",
-                              headers: {
-                                 "accept": "application/json, text/plain, */*",
-                                 "accept-language": "en-US,en;q=0.6",
-                                 "authorization": `Bearer ${token}`,
-                                 "content-type": "application/json",
-                                 "channel": "APP",
-                              },
-                              body: JSON.stringify({
-                                 percentage: 100,
-                                 postId: currentPost.id,
-                                 productId: productId,
-                              }),
-                           },
+                        const reqData = await this.actions.markPostAsCompleteOrIncomplete(
+                           currentPost.id,
+                           true,
                         );
-                        const reqData = await req.json();
                         e.target.innerText = "Lesson Done";
                         e.target.setAttribute("data-is-completed", "true");
                         e.target.getAttribute("data-uncomplete-id", reqData?.id);
                      } else {
                         const unCompleteId = e.target.getAttribute("data-uncomplete-id");
-                        await fetch(
-                           `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion/${unCompleteId}`,
-                           {
-                              headers: {
-                                 "accept": "application/json, text/plain, */*",
-                                 "accept-language": "en-US,en;q=0.6",
-                                 "authorization": `Bearer ${token}`,
-                                 "channel": "APP",
-                              },
-                              method: "DELETE",
-                           },
+                        await this.actions.markPostAsCompleteOrIncomplete(
+                           unCompleteId,
+                           false,
                         );
                         e.target.innerText = "Complete This Lesson";
                         e.target.setAttribute("data-is-completed", "false");
@@ -3254,9 +3202,8 @@ class CourseTemplate {
                );
                if (!postInsideCompletedPost) {
                   return `<button class="template-post-page-header__mark-as-complete" data-is-completed='false'>Complete This Lesson</button>`;
-               } else {
-                  return `<button class="template-post-page-header__mark-as-complete" data-is-completed='true' data-uncomplete-id='${postInsideCompletedPost?.id}'>Lesson Done</button>`;
                }
+               return `<button class="template-post-page-header__mark-as-complete" data-is-completed='true' data-uncomplete-id='${postInsideCompletedPost?.id}'>Lesson Done</button>`;
             })();
 
             // Finallly we will create the header template
@@ -3967,6 +3914,56 @@ class CourseTemplate {
                console.log("No Token Found!");
             }
          });
+      },
+   };
+
+   // This object holds actions methids
+   actions = {
+      markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {
+         const productId = this.utils.getAuth()?.productId;
+         const locationId = this.utils.getAuth()?.locationId;
+         const token = this.utils.getAuth()?.tokenId;
+         const contactId = this.utils.getAuth()?.contactId;
+         const userId = this.utils.getAuth()?.externalUserId;
+         try {
+            if (isComplete) {
+               req = await fetch(
+                  `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion`,
+                  {
+                     method: "POST",
+                     headers: {
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.6",
+                        "authorization": `Bearer ${token}`,
+                        "content-type": "application/json",
+                        "channel": "APP",
+                     },
+                     body: JSON.stringify({
+                        percentage: 100,
+                        postId: postId,
+                        productId: productId,
+                     }),
+                  },
+               );
+            } else {
+               req = await fetch(
+                  `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion/${unCompleteId}`,
+                  {
+                     headers: {
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.6",
+                        "authorization": `Bearer ${token}`,
+                        "channel": "APP",
+                     },
+                     method: "DELETE",
+                  },
+               );
+            }
+            const json = await req.json();
+            return json;
+         } catch (err) {
+            alert("Something went wrong!");
+         }
       },
    };
 

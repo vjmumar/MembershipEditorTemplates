@@ -2668,6 +2668,7 @@ class CourseTemplate {
          const breadCrumbs = await (async () => {
             const $el = await this.utils.waitForElement(
                "#product-breadcrumbs, #breadcrumb-container",
+               0,
             );
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;
@@ -2781,6 +2782,7 @@ class CourseTemplate {
          const breadCrumbs = await (async () => {
             const $el = await this.utils.waitForElement(
                "#product-breadcrumbs, #breadcrumb-container",
+               0,
             );
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;

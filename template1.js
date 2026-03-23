@@ -3740,7 +3740,6 @@ class CourseTemplate {
          const token = this.utils.getAuth()?.tokenId;
          const contactId = this.utils.getAuth()?.contactId;
          const userId = this.utils.getAuth()?.externalUserId;
-         const storageName = `${productId}-post`;
          return await new Promise((resolved, reject) => {
             const postId =
                pId || location.href.split("/posts/")[1].split("?")[0].split("/")[0];
@@ -3963,6 +3962,10 @@ class CourseTemplate {
          } catch (err) {
             console.log(err);
             alert("Something went wrong!");
+         } finally {
+            sessionStorage.removeItem(`${productId}-completed-post`);
+            sessionStorage.removeItem(`${productId}-product-progress`);
+            sessionStorage.removeItem(`${productId}-category-progress`);
          }
       },
    };

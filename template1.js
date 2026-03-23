@@ -3479,8 +3479,10 @@ class CourseTemplate {
                   const postId = $targetItem.getAttribute("data-post-id");
                   const productId = $targetItem.getAttribute("data-product-id");
                   const url = `${location.origin}/courses/products/${productId}/categories/${categoryId}/posts/${postId}?source=courses`;
-                  window.history.pushState({}, "", url);
-                  window.dispatchEvent(new PopStateEvent("popstate"));
+                  setTimeout(() => {
+                     window.history.pushState({}, "", url);
+                     window.dispatchEvent(new PopStateEvent("popstate"));
+                  }, 0);
                }
             });
          }, 500);

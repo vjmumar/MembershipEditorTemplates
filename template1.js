@@ -2661,8 +2661,11 @@ class CourseTemplate {
       },
 
       initCategoryPostPage: async () => {
-         // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 1000);
+         // First we will wait for the product container or the breadcrumbs
+         const $container = await this.utils.waitForElement(
+            "#product-breadcrumbs, #breadcrumb-container",
+            100,
+         );
 
          // Then we will fetch the category data and prepare the breadcrumbs
          const breadCrumbs = (() => {
@@ -2762,8 +2765,11 @@ class CourseTemplate {
       },
 
       initPostPage: async () => {
-         // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 300);
+         // First we will wait for the product container or the breadcrumbs
+         const $container = await this.utils.waitForElement(
+            "#product-breadcrumbs, #breadcrumb-container",
+            300,
+         );
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [completedPosts, category, currentPost] = await Promise.allSettled([

@@ -2567,7 +2567,7 @@ class CourseTemplate {
          $container.innerHTML = `
          <div class='template-container'>
              <div class="dashboard">
-                     ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", productCategories, "")}
+                     ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", productCategories, completedPosts, "")}
                      <div class="dashboard__wrapper">
                          ${this.widgets.communityToggle()}
                          ${this.widgets.heroBanner()}
@@ -2935,7 +2935,7 @@ class CourseTemplate {
          // Then we will render the Categories List Page
          $container.innerHTML = `
           <img class="template-hero__image" src="${product?.posterImage}" />
-          ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", productCategories, "")}
+          ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", productCategories, completedPosts, "")}
           <div class='template-container'>
                ${this.widgets.communityToggle()}
                ${this.widgets.heroBanner(
@@ -3123,6 +3123,7 @@ class CourseTemplate {
          name = "User",
          progress = "No progress available",
          productCategories = [],
+         completedPosts = [],
          additionalInlineStyling = "",
       ) => {
          // First we will generate the link and text for the banner button

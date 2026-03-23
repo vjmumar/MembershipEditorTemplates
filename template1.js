@@ -3371,7 +3371,7 @@ class CourseTemplate {
                console.log(cP);
                if (!cP?.posts) {
                   cPA += `
-                            <div class="template-cwd__category__item__post" data-category-id="${cP.categoryId}" data-product-id="${cP.productId}" data-post-id="${cP.id}">
+                            <a class="template-cwd__category__item__post" href="/courses/products/${cP.productId}/categories/${cP.categoryId}/posts/${cP.id}?source=courses">
                                 <img class="template-cwd__category__item__sub-folder__content__image" src="${image}" />
                                  <div>
                                    <p class="template-cwd__category__item__post__text">${cP.title}</p>
@@ -3380,7 +3380,7 @@ class CourseTemplate {
                                        <p class="template-cwd__category__item__post__title">Lesson</p>
                                     </div>
                                  </div>
-                            </div>
+                            </a>
                         `;
                } else {
                   const posts = cP.posts.reduce((cPPA, cPP) => {
@@ -3388,7 +3388,7 @@ class CourseTemplate {
                         ? `https://cdn.courses.apisystem.tech${cPP.posterImage}`
                         : fallbackImage;
                      cPPA += `
-                                    <div class="template-cwd__category__item__post" data-category-id="${cPP.categoryId}" data-product-id="${cPP.productId}" data-post-id="${cPP.id}">
+                                    <a href="/courses/products/${cPP.productId}/categories/${cPP.categoryId}/posts/${cPP.id}?source=courses" class="template-cwd__category__item__post">
                                         <img src="${image}" class="template-cwd__category__item__post__icon" />
                                         <div>
                                           <p class="template-cwd__category__item__post__text">${cPP.title}</p>
@@ -3397,7 +3397,7 @@ class CourseTemplate {
                                              <p class="template-cwd__category__item__post__title">Lesson</p>
                                           </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 `;
                      return cPPA;
                   }, "");
@@ -3470,24 +3470,6 @@ class CourseTemplate {
                   );
                   const isActive = $subFolder.classList.contains("active");
                   $subFolder.classList?.[isActive ? "remove" : "add"]("active");
-               }
-
-               if (e.target.closest(".template-cwd__category__item__post")) {
-                  const $targetItem = e.target.closest(
-                     ".template-cwd__category__item__post",
-                  );
-                  const categoryId = $targetItem.getAttribute("data-category-id");
-                  const postId = $targetItem.getAttribute("data-post-id");
-                  const productId = $targetItem.getAttribute("data-product-id");
-                  const url = `/courses/products/${productId}/categories/${categoryId}/posts/${postId}?source=courses`;
-                  location.href = url;
-                  // window.history.replaceState({ ghl: true }, "", url);
-                  // setTimeout(() => {
-                  //    const popEvent = new PopStateEvent("popstate", {
-                  //       state: { ghl: true },
-                  //    });
-                  //    window.dispatchEvent(popEvent);
-                  // }, 500);
                }
             });
          }, 500);

@@ -3679,6 +3679,9 @@ class CourseTemplate {
          });
       },
       fetchUserProductProgress: async (cId = "") => {
+         const storageName = `${productId}-product-progress`;
+         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+         if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
@@ -3709,6 +3712,7 @@ class CourseTemplate {
                         (e.completedPosts / e.totalPosts) *
                         100
                      ).toFixed(0);
+                     sessionStorage.setItem(storageName, JSON.stringify(e));
                      resolved(e);
                   });
             } else {
@@ -3721,6 +3725,9 @@ class CourseTemplate {
             .split("/products/")[1]
             .split("?")[0]
             .split("/")[0];
+         const storageName = `${productId}-category-progress`;
+         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+         if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
             const catToken = $cookies.get("cat");
@@ -3749,6 +3756,7 @@ class CourseTemplate {
                )
                   .then((e) => e.json())
                   .then((e) => {
+                     sessionStorage.setItem(storageName, JSON.stringify(e));
                      resolved(e);
                   });
             } else {

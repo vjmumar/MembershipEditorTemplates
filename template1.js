@@ -2772,7 +2772,7 @@ class CourseTemplate {
             this.data.fetchPost(),
          ]).then((res) => res.map((e) => e.value));
 
-         console.log(currentPost)
+         console.log(currentPost);
 
          // Then we will retrieve and sort the posts inside the category
          const allPosts = category.category.posts.sort((a, b) =>
@@ -3741,8 +3741,6 @@ class CourseTemplate {
          const contactId = this.utils.getAuth()?.contactId;
          const userId = this.utils.getAuth()?.externalUserId;
          const storageName = `${productId}-post`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise((resolved, reject) => {
             const postId =
                pId || location.href.split("/posts/")[1].split("?")[0].split("/")[0];
@@ -3761,7 +3759,6 @@ class CourseTemplate {
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e);
-                     sessionStorage.setItem(storageName, JSON.stringify(e));
                   });
             } else {
                console.log("No Token Found!");

@@ -3741,7 +3741,7 @@ class CourseTemplate {
                      },
                      body: JSON.stringify({
                         product_id: productId,
-                        categories: [],
+                        // categories: [],
                      }),
                      method: "POST",
                   },

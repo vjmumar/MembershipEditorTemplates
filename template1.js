@@ -3407,7 +3407,10 @@ class CourseTemplate {
                                        <img class="template-cwd__category__item__sub-folder__title__image" src="${image}" />
                                        <div class="template-cwd__category__item__sub-folder__title__details">
                                           <p class="template-cwd__category__item__sub-folder__title__details__name">${cP.title}</p>
-                                          <p class="template-cwd__category__item__sub-folder__title__details__title">Category</p>
+                                          <div style="display: flex; align-items: center; gap: 5px;">
+                                             <i class="template-cwd__category__item__post__completed ${!cP?.posts?.every((e) => e?.isCompleted) ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                             <p class="template-cwd__category__item__sub-folder__title__details__title">Category</p>
+                                          </div>
                                        </div>
                                     </div>
                                     <i class="fas fa-angle-right template-cwd__category__item__sub-folder__title__icon"></i>

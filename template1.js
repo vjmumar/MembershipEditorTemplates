@@ -3681,6 +3681,7 @@ class CourseTemplate {
       fetchUserProductProgress: async (cId = "") => {
          const storageName = `${productId}-product-progress`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+         console.log(Object.keys(previousData).length);
          if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             const acatToken = $cookies.get("acat");
@@ -3712,7 +3713,7 @@ class CourseTemplate {
                         (e.completedPosts / e.totalPosts) *
                         100
                      ).toFixed(0);
-                     sessionStorage.setItem(storageName, JSON.stringify(e || "{}"));
+                     // sessionStorage.setItem(storageName, JSON.stringify(e || "{}"));
                      resolved(e);
                   });
             } else {

@@ -2550,7 +2550,6 @@ class CourseTemplate {
                this.data.fetchCompletedPosts(),
                this.data.fetchCategories(),
             ]).then((res) => res.map((e) => e.value));
-         console.log(userData, userProductProgress, completedPosts, productCategories);
 
          // Then we will process the categories data
          const categories = productCategories
@@ -2567,7 +2566,7 @@ class CourseTemplate {
          $container.innerHTML = `
          <div class='template-container'>
              <div class="dashboard">
-                     ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", productCategories, completedPosts, "")}
+                     ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
                      <div class="dashboard__wrapper">
                          ${this.widgets.communityToggle()}
                          ${this.widgets.heroBanner()}
@@ -2935,7 +2934,7 @@ class CourseTemplate {
          // Then we will render the Categories List Page
          $container.innerHTML = `
           <img class="template-hero__image" src="${product?.posterImage}" />
-          ${this.widgets.welcomeBanner(userData?.email, userProductProgress?.progressPercentage || "", productCategories, completedPosts, "")}
+          ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
           <div class='template-container'>
                ${this.widgets.communityToggle()}
                ${this.widgets.heroBanner(
@@ -3121,7 +3120,7 @@ class CourseTemplate {
       },
       welcomeBanner: (
          name = "User",
-         progress = "No progress available",
+         userProductProgress,
          productCategories = [],
          completedPosts = [],
          additionalInlineStyling = "",
@@ -3207,7 +3206,7 @@ class CourseTemplate {
                             <p class="template-welcome__greeting">Welcome back, ${name}</p>
                             <p class="template-welcome__progress">
                                 <i class="fa-solid fa-desktop template-welcome__progress-icon"></i>
-                                <span>${progress}% COMPLETE</span>
+                                <span>${userProductProgress.progress}% COMPLETE</span>
                             </p>
                         </div>
                         <a href="${bannerButtonLinkAndText.link}" class="template-welcome__button">${bannerButtonLinkAndText.text}</a>    

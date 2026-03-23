@@ -608,14 +608,16 @@
 
          (async () => {
             // First we will retrieve the saved template changes from media and append it
-            await fetch(window?.savedTemplatesFileInfo?.url)
-               ?.then((e) => e.text())
-               ?.then((e) => {
-                  const script = document.createElement("script");
-                  script.innerHTML = e;
-                  document.body.append(script);
-                  return e;
-               });
+            if (window?.savedTemplatesFileInfo?.url) {
+               await fetch(window?.savedTemplatesFileInfo?.url)
+                  ?.then((e) => e.text())
+                  ?.then((e) => {
+                     const script = document.createElement("script");
+                     script.innerHTML = e;
+                     document.body.append(script);
+                     return e;
+                  });
+            }
 
             /**
              * Then, we determine the currently active template by searching through the saved configurations array,
@@ -700,7 +702,9 @@
             };
 
             // Finally we will retrieve the authentication token by parsing the product data from the cookies
-            const productData = JSON.parse(window.atob($cookies.get("acat") || $cookies.get("cat")));
+            const productData = JSON.parse(
+               window.atob($cookies.get("acat") || $cookies.get("cat")),
+            );
             this.token = productData?.tokenId;
          })();
       }

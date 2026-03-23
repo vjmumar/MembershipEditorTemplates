@@ -3370,7 +3370,7 @@ class CourseTemplate {
                   : fallbackImage;
                if (!cP?.posts) {
                   cPA += `
-                            <div class="template-cwd__category__item__post">
+                            <div class="template-cwd__category__item__post" data-category-id="${cPA.categoryId}" data-post-id="${cPA.id}">
                                 <img class="template-cwd__category__item__sub-folder__content__image" src="${image}" />
                                  <div>
                                    <p class="template-cwd__category__item__post__text">${cP.title}</p>
@@ -3387,7 +3387,7 @@ class CourseTemplate {
                         ? `https://cdn.courses.apisystem.tech${cPP.posterImage}`
                         : fallbackImage;
                      cPPA += `
-                                    <div class="template-cwd__category__item__post">
+                                    <div class="template-cwd__category__item__post" data-category-id="${cPP.categoryId}" data-post-id="${cPP.id}">
                                         <img src="${image}" class="template-cwd__category__item__post__icon" />
                                         <div>
                                           <p class="template-cwd__category__item__post__text">${cPP.title}</p>
@@ -3469,6 +3469,15 @@ class CourseTemplate {
                   );
                   const isActive = $subFolder.classList.contains("active");
                   $subFolder.classList?.[isActive ? "remove" : "add"]("active");
+               }
+
+               if (e.target.closest(".template-cwd__category__item__post")) {
+                  const $targetItem = e.target.closest(
+                     ".template-cwd__category__item__post",
+                  );
+                  const targetId = $targetItem.getAttribute("data-category-id");
+                  const postId = $targetItem.getAttribute("data-post-id");
+                  console.log(targetId, postId);
                }
             });
          }, 500);

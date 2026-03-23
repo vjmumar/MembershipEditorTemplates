@@ -3443,7 +3443,7 @@ class CourseTemplate {
             return a;
          }, "");
          return `
-                <div id="custom-download" class="template-downloads ${items?.length ? "disabled" : ""}">
+                <div id="custom-download" class="template-downloads ${!items?.length ? "disabled" : ""}">
                     <button id="dropdown-button" onclick="this.parentElement.classList.toggle('active')" class="template-downloads__button" aria-expanded="false" aria-controls="dropdown-menu">
                         <i class="fas fa-cloud-download-alt text-xl"></i>
                         <span id="button-label" class="template-downloads__label">Downloads</span>
@@ -3914,7 +3914,7 @@ class CourseTemplate {
       },
    };
 
-   // This object holds actions methids
+   // This object holds actions methods
    actions = {
       markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {
          const productId = this.utils.getAuth()?.productId;

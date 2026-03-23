@@ -3742,7 +3742,7 @@ class CourseTemplate {
                      },
                      body: JSON.stringify({
                         product_id: productId,
-                        categoryIds: categoryIds.map((e) => e.id),
+                        categories: categoryIds.map((e) => e.id),
                      }),
                      method: "POST",
                   },

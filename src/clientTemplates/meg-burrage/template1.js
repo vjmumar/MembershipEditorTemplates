@@ -2764,7 +2764,7 @@ class CourseTemplate {
             let x = Object.values(data)
                .flatMap((e) => e)
                .sort((a, b) => a.sequenceNo - b.sequenceNo);
-            console.log(x);
+            console.log(x, "test");
             // First we will create the post widgets
             const leftArrowHTML = (() => {
                const currentPostIndex = allPosts.findIndex(

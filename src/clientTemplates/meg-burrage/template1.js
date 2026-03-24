@@ -2692,18 +2692,13 @@ class CourseTemplate {
          const $container = await this.utils.waitForElement("#app-container", 100);
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
-         const [completedPosts, category, currentPost, categories] = await Promise.allSettled([
-            this.data.fetchCompletedPosts(),
-            this.data.fetchCategory(),
-            this.data.fetchPost(),
-            this.data.fetchCategories()
-         ]).then((res) => res.map((e) => e.value));
-         
-         console.log(categories)
-         // Then we will retrieve and sort the posts inside the category
-         const allPosts = category.category.posts.sort((a, b) =>
-            a.sequenceNo > b.sequenceNo ? 1 : -1,
-         );
+         const [completedPosts, category, currentPost, categories] =
+            await Promise.allSettled([
+               this.data.fetchCompletedPosts(),
+               this.data.fetchCategory(),
+               this.data.fetchPost(),
+               this.data.fetchCategories(),
+            ]).then((res) => res.map((e) => e.value));
 
          // Then we will create the bread crumbs
          const breadCrumbs = await (async () => {
@@ -2750,6 +2745,23 @@ class CourseTemplate {
 
          // Then we will build the header HTML including navigation arrows and completion buttons
          const headerHTML = (() => {
+            // Then we will retrieve and sort the posts inside the category
+            const allPosts = categories;
+            const data = {};
+            allPosts.forEach((e) => {
+               if (e.parentCategory) {
+                  e.posts = e.posts.sort((a, b) => a.sequenceNo > b.sequenceNo);
+                  data[e.parentCategory] = [...data[e.parentCategory], e].sort(
+                     (a, b) => a.sequenceNo > b.sequenceNo,
+                  );
+               } else {
+                  e.posts = e.posts.sort((a, b) => a.sequenceNo > b.sequenceNo);
+                  data[e.id] = [...(data[e.id] || []), e].sort(
+                     (a, b) => a.sequenceNo > b.sequenceNo,
+                  );
+               }
+            });
+            console.log(data)
             // First we will create the post widgets
             const leftArrowHTML = (() => {
                const currentPostIndex = allPosts.findIndex(

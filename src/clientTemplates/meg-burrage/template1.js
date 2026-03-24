@@ -2759,6 +2759,7 @@ class CourseTemplate {
                return "";
             })();
             const rightArrowHTML = (() => {
+               console.log(allPosts);
                const currentPostIndex = allPosts.findIndex(
                   (p) => p.sequenceNo === currentPost.sequenceNo,
                );

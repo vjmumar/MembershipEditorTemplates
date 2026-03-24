@@ -2751,7 +2751,7 @@ class CourseTemplate {
                ?.filter((e) => !e.parentCategory)
                ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
                ?.map((e) => {
-                  e = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
+                  e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
                   return e;
                });
             const subCategories = allPosts.filter((e) => e.parentCategory);

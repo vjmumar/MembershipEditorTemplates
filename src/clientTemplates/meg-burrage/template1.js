@@ -2692,13 +2692,12 @@ class CourseTemplate {
          const $container = await this.utils.waitForElement("#app-container", 100);
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
-         const [completedPosts, category, currentPost, categories] =
-            await Promise.allSettled([
-               this.data.fetchCompletedPosts(),
-               this.data.fetchCategory(),
-               this.data.fetchPost(),
-               this.data.fetchCategories(),
-            ]).then((res) => res.map((e) => e.value));
+         const [completedPosts, currentPost, categories] = await Promise.allSettled([
+            this.data.fetchCompletedPosts(),
+            this.data.fetchCategory(),
+            this.data.fetchPost(),
+            this.data.fetchCategories(),
+         ]).then((res) => res.map((e) => e.value));
 
          // Then we will create the bread crumbs
          const breadCrumbs = await (async () => {
@@ -2745,52 +2744,10 @@ class CourseTemplate {
 
          // Then we will build the header HTML including navigation arrows and completion buttons
          const headerHTML = (() => {
-            // Then we will retrieve and sort the posts inside the category
-            let allPosts = categories.sort((a, b) => a.sequenceNo - b.sequenceNo);
-            const allSequencedPost = allPosts
-               ?.filter((e) => !e.parentCategory)
-               ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
-               ?.map((e) => {
-                  const currentCategorySubFolders = allPosts
-                     ?.map((e) => {
-                        e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
-                        return e;
-                     })
-                     ?.filter((se) => se.parentCategory === e.id);
-                  e.posts.push(...currentCategorySubFolders);
-                  e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
-                  return e;
-               })
-               .flatMap((e) => e.posts)
-               .reduce((a, c) => {
-                  if (!c.parentCategory) {
-                     a.push(c);
-                  } else {
-                     const subCategoryPosts = c.posts.flatMap((e) => e);
-                     a.push(...subCategoryPosts);
-                  }
-                  return a;
-               }, []);
+            // First we will retrieve all post from category and subcategories
+            const allPosts = this.utils.getDeepSequencedPosts(categories);
 
-            console.log(allSequencedPost);
-            // const data = {};
-            // allPosts.forEach((e) => {
-            //    if (!data[e.id] && !e.parentCategory) {
-            //       data[e.id] = [];
-            //    }
-            //    if (e.parentCategory) {
-            //       e.posts = e.posts;
-            //       data[e.parentCategory] = [...data[e.parentCategory], e];
-            //    } else {
-            //       e.posts = e.posts.sort((a, b) => a.sequenceNo - b.sequenceNo);
-            //       data[e.id] = [...(data[e.id] || []), e];
-            //    }
-            // });
-            // console.log(data);
-            // let x = Object.values(data).flatMap((e) => e);
-            // // .sort((a, b) => a.sequenceNo - b.sequenceNo);
-            // console.log(x, "test");
-            // First we will create the post widgets
+            // Then we will create the post widgets
             const leftArrowHTML = (() => {
                const currentPostIndex = allPosts.findIndex(
                   (p) => p.sequenceNo === currentPost.sequenceNo,
@@ -4000,6 +3957,33 @@ class CourseTemplate {
          }
 
          return data;
+      },
+      getDeepSequencedPosts: (categories = []) => {
+         return categories
+            ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
+            ?.filter((e) => !e.parentCategory)
+            ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
+            ?.map((e) => {
+               const currentCategorySubFolders = allPosts
+                  ?.map((e) => {
+                     e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
+                     return e;
+                  })
+                  ?.filter((se) => se.parentCategory === e.id);
+               e.posts.push(...currentCategorySubFolders);
+               e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
+               return e;
+            })
+            ?.flatMap((e) => e.posts)
+            ?.reduce((a, c) => {
+               if (!c.parentCategory) {
+                  a.push(c);
+               } else {
+                  const subCategoryPosts = c.posts.flatMap((e) => e);
+                  a.push(...subCategoryPosts);
+               }
+               return a;
+            }, []);
       },
    };
 }

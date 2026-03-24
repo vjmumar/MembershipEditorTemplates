@@ -2749,16 +2749,15 @@ class CourseTemplate {
             let allPosts = categories.sort((a, b) => a.sequenceNo - b.sequenceNo);
             const data = {};
             allPosts.forEach((e) => {
+               if (!data[e.id]) {
+                  data[e.id] = [];
+               }
                if (e.parentCategory) {
-                  e.posts = e.posts.sort((a, b) => a.sequenceNo - b.sequenceNo);
-                  data[e.parentCategory] = [...data[e.parentCategory], e].sort(
-                     (a, b) => b.sequenceNo - a.sequenceNo,
-                  );
+                  e.posts = e.posts;
+                  data[e.parentCategory] = [...data[e.parentCategory], e];
                } else {
                   e.posts = e.posts.sort((a, b) => a.sequenceNo - b.sequenceNo);
-                  data[e.id] = [...(data[e.id] || []), e].sort(
-                     (a, b) => a.sequenceNo - b.sequenceNo,
-                  );
+                  data[e.id] = [...(data[e.id] || []), e];
                }
             });
             console.log(data);

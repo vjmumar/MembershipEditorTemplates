@@ -2215,7 +2215,7 @@ class CourseTemplate {
 
          // Then we will create the default variables
          const logo =
-            "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png";
+            "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png";
          const defaultLinks = [
             { text: "Home", url: "/" },
             { text: "Library", url: "/courses/library-v2" },
@@ -2359,7 +2359,7 @@ class CourseTemplate {
                                 <p class="template-sidebar__back-button__text">Library</p>    
                             </a>
                             <a href="/courses/products/${product.id}">
-                                <img class="template-sidebar__logo" src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png">    
+                                <img class="template-sidebar__logo" src="https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png">    
                             </a>
                             <p class='template-sidebar__titles'>Modules</p>
                             <div class="template-sidebar__category">
@@ -2457,7 +2457,7 @@ class CourseTemplate {
          // Then we will generate the html
          const html = `
                     <div class="template-loader-overlay">
-                        <img src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69590936edb8a22ebb632d26.png" class="template-loader-overlay__logo" alt="Loading..." />
+                        <img src="https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png" class="template-loader-overlay__logo" alt="Loading..." />
                     </div>
                 `;
 

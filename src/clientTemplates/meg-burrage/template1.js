@@ -3237,7 +3237,7 @@ class CourseTemplate {
                             <p class="template-welcome__greeting">Welcome back, ${name}</p>
                             <p class="template-welcome__progress">
                                 <i class="fa-solid fa-desktop template-welcome__progress-icon"></i>
-                                <span>${userProductProgress.progress}% COMPLETE</span>
+                                <span>${userProductProgress.progress || 0}% COMPLETE</span>
                             </p>
                         </div>
                         <a href="${userProductProgress.progress === 100 ? "#" : bannerButtonLinkAndText.link}" class="template-welcome__button">${bannerButtonLinkAndText.text}</a>    

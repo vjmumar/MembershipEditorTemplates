@@ -2766,7 +2766,7 @@ class CourseTemplate {
                   if (!c.parentCategory) {
                      a.push(c);
                   } else {
-                     const subCategoryPosts = c.flatMap((e) => e.posts);
+                     const subCategoryPosts = c.posts.flatMap((e) => e);
                      a.push(...subCategoryPosts);
                   }
                   return a;

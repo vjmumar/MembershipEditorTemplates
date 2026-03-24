@@ -3906,6 +3906,7 @@ class CourseTemplate {
                      res($element);
                   }, resolveDelay);
                }
+               console.log("waiting for ", elementSelector)
             }, 0);
          });
       },

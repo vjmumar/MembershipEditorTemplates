@@ -2745,15 +2745,13 @@ class CourseTemplate {
          const headerHTML = (() => {
             // First we will retrieve all post from category and subcategories
             const allPosts = this.utils.getDeepSequencedPosts(categories);
-            console.log(allPosts);
 
             // Then we will create the post widgets
             const leftArrowHTML = (() => {
-               const currentPostIndex = allPosts.findIndex(
-                  (p) => p.sequenceNo === currentPost.sequenceNo,
-               );
-               const canGoToPrevious = currentPostIndex && allPosts.length !== 1;
-               if (canGoToPrevious) {
+               const currentPostIndex = allPosts.find(
+                  (p) => p.id === currentPost.id,
+               )?.sequenceNo;
+               if (!currentPostIndex) {
                   const previousPost = allPosts[currentPostIndex - 1];
                   return `<a class="template-post-page-header__arrow prev" href="${`/courses/products/${previousPost?.productId}/categories/${previousPost?.categoryId}/posts/${previousPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
                }
@@ -2764,7 +2762,7 @@ class CourseTemplate {
                   (p) => p.id === currentPost.id,
                )?.sequenceNo;
                const lastPostIndex = allPosts.slice(-1)[0]?.sequenceNo;
-               const canGoToNextPost = currentPost !== lastPostIndex;
+               const canGoToNextPost = currentPostIndex !== lastPostIndex;
                if (canGoToNextPost) {
                   const nextPost = allPosts[currentPostIndex + 1];
                   return `<a class="template-post-page-header__arrow next" href="${`/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
@@ -2778,11 +2776,6 @@ class CourseTemplate {
                return "";
             })();
             const markAsCompleteButton = (() => {
-               const productId = this.utils.getAuth()?.productId;
-               const locationId = this.utils.getAuth()?.locationId;
-               const token = this.utils.getAuth()?.tokenId;
-               const contactId = this.utils.getAuth()?.contactId;
-               const userId = this.utils.getAuth()?.externalUserId;
                window.addEventListener("click", async (e) => {
                   if (
                      e.target.classList.contains(
@@ -2968,20 +2961,13 @@ class CourseTemplate {
          const $container = await this.utils.waitForElement("#app-container", 100);
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
-         const [product, completedPosts, category, currentPost] =
+         const [product, completedPosts, currentPost, categories] =
             await Promise.allSettled([
                this.data.fetchProduct(),
                this.data.fetchCompletedPosts(),
-               this.data.fetchCategory(),
                this.data.fetchPost(),
+               this.data.fetchCategories(),
             ]).then((res) => res.map((e) => e.value));
-
-         console.log(currentPost);
-
-         // Then we will retrieve and sort the posts inside the category
-         const allPosts = category.category.posts.sort((a, b) =>
-            a.sequenceNo > b.sequenceNo ? 1 : -1,
-         );
 
          // Then we will scrape and prepare the existing DOM elements (Video, Audio, Comments)
          const videoContainer = await (async () => {
@@ -3016,30 +3002,28 @@ class CourseTemplate {
 
          // Then we will build the header HTML including navigation arrows and completion buttons
          const headerHTML = (() => {
+            // First we will retrieve all post from category and subcategories
+            const allPosts = this.utils.getDeepSequencedPosts(categories);
+
             // First we will create the post widgets
             const leftArrowHTML = (() => {
-               const currentPostIndex = allPosts.findIndex(
-                  (p) => p.sequenceNo === currentPost.sequenceNo,
-               );
-               const canGoToPrevious = currentPostIndex && allPosts.length !== 1;
-               if (canGoToPrevious) {
+               const currentPostIndex = allPosts.find(
+                  (p) => p.id === currentPost.id,
+               )?.sequenceNo;
+               if (!currentPostIndex) {
                   const previousPost = allPosts[currentPostIndex - 1];
                   return `<a class="template-post-page-header__arrow prev" href="${`/courses/products/${previousPost?.productId}/categories/${previousPost?.categoryId}/posts/${previousPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
                }
                return `<a class="template-post-page-header__arrow prev disabled" href="#"><i class="fas fa-arrow-circle-right"></i></a>`;
             })();
             const rightArrowHTML = (() => {
-               const currentPostIndex = allPosts.findIndex(
-                  (p) => p.sequenceNo === currentPost.sequenceNo,
-               );
-               const lastPostIndexOfCategory = allPosts.findIndex(
-                  (p) => p.sequenceNo === allPosts.slice(-1)[0].sequenceNo,
-               );
-               const canGoToNextPost =
-                  allPosts.length !== 1 && currentPostIndex !== lastPostIndexOfCategory;
+               const currentPostIndex = allPosts.find(
+                  (p) => p.id === currentPost.id,
+               )?.sequenceNo;
+               const lastPostIndex = allPosts.slice(-1)[0]?.sequenceNo;
+               const canGoToNextPost = currentPostIndex !== lastPostIndex;
                if (canGoToNextPost) {
                   const nextPost = allPosts[currentPostIndex + 1];
-
                   return `<a class="template-post-page-header__arrow next" href="${`/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
                }
                return `<a class="template-post-page-header__arrow next disabled" href="#"><i class="fas fa-arrow-circle-right"></i></a>`;

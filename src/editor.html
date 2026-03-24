@@ -575,30 +575,23 @@
    class MembershipCustomization {
       constructor() {
          // First, we define the available templates along with their metadata such as IDs, preview images, and script sources
-         this.templates = [
-            {
-               id: "template-1",
-               imageUrl:
-                  "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69492d947614ce184f7e9b76.png",
-               title: "Template 2",
-               scriptLink: "https://membershipeditor.netlify.app/template2.js",
-               previewLink: "",
-            },
-            {
-               id: "template-3",
-               imageUrl: "https://dummyimage.com/700x400/000/fff&text=Dummy+Template",
-               title: "Production",
-               scriptLink: "https://membershipeditor.netlify.app/template1.js",
-               previewLink: "",
-            },
-         ];
+         this.templates = [];
          this.activeTemplate = null;
          this.activePageOnTemplate = null;
          this.token = "";
          this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
          (async () => {
-            // First we will retrieve the saved template changes from media and append it
+            // First we will retrieve the client's templates
+            await fetch(
+               `https://membershipeditor.netlify.app/src/clientTemplates/${window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID}/templates.json`,
+            )
+               ?.then((e) => e.json())
+               ?.then((e) => {
+                  this.templates = e;
+               });
+
+            // Then we will retrieve the saved template changes from media and append it
             if (window?.savedTemplatesFileInfo?.url) {
                await fetch(window?.savedTemplatesFileInfo?.url)
                   ?.then((e) => e.text())

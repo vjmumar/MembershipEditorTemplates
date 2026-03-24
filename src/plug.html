@@ -1,47 +1,16 @@
 <script>
-    const isProduct = location.href.includes('/courses/products/');
-    if (isProduct) {
-        document.head.insertAdjacentHTML('beforeend', `
-            <style>
-                body:not(.template-ready) {
-                    opacity: 0 !important;
-                }
-            </style>
-        `);
-    }
-    setTimeout(() => {
-        if (!window.CourseTemplate) {
-            document.body.classList.add("template-ready");
-        }
-    }, 8000);
-</script>
-<script>
-  fetch("https://membershipeditor.netlify.app/editor")
-    .then(res => res.text())
-    .then(htmlString => {
-      // 1. Create a dummy div to turn the string into real DOM nodes
-      const temp = document.createElement('div');
-      temp.innerHTML = htmlString;
-
-      // 2. Separate scripts from other tags (CSS/HTML)
-      const scripts = temp.querySelectorAll('script');
-      const otherTags = temp.querySelectorAll('style, div, link, section');
-
-      // 3. Append the CSS and HTML first
-      otherTags.forEach(tag => document.head.append(tag));
-
-      // 4. Inject the Scripts using Blobs (This prevents "Cut Offs")
-      scripts.forEach(oldScript => {
-        const scriptContent = oldScript.textContent;
-        const scriptSrc = oldScript.src;
-        const blob = new Blob([scriptContent], { type: 'text/javascript' });
-        const url = URL.createObjectURL(blob);
-
-        const newScript = document.createElement('script');
-        newScript.src = !scriptSrc ? url : scriptSrc;
-        document.head.append(newScript);
-      });
-
-      console.log("Injection complete. No more truncations!");
-    });
+window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID="meg-burrage";
+if(location.href.includes('/courses/products/')){
+  document.head.insertAdjacentHTML('beforeend',`<style>body:not(.template-ready){opacity:0!important}</style>`);
+  setTimeout(()=>document.body.classList.add("template-ready"),8000);
+}
+fetch("https://membershipeditor.netlify.app/src/editor").then(r=>r.text()).then(h=>{
+  let d=document.createElement('div');d.innerHTML=h;
+  d.querySelectorAll('style,link,div,section').forEach(e=>document.head.append(e));
+  d.querySelectorAll('script').forEach(s=>{
+    let sc=document.createElement('script');
+    sc.src=s.src||URL.createObjectURL(new Blob([s.textContent],{type:'text/javascript'}));
+    document.head.append(sc);
+  });
+});
 </script>

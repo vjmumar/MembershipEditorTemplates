@@ -2763,7 +2763,7 @@ class CourseTemplate {
                })
                .flatMap((e) => e.posts);
 
-            console.log(parentCategories);
+            console.log(allSequencedPost);
             // const data = {};
             // allPosts.forEach((e) => {
             //    if (!data[e.id] && !e.parentCategory) {

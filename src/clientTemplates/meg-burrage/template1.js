@@ -2748,8 +2748,12 @@ class CourseTemplate {
             // Then we will retrieve and sort the posts inside the category
             let allPosts = categories.sort((a, b) => a.sequenceNo - b.sequenceNo);
             const parentCategories = allPosts
-               .filter((e) => !e.parentCategory)
-               .sort((a, b) => a.sequenceNo - b.sequenceNo);
+               ?.filter((e) => !e.parentCategory)
+               ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
+               ?.map((e) => {
+                  e = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
+                  return e;
+               });
             const subCategories = allPosts.filter((e) => e.parentCategory);
             console.log(parentCategories, subCategories);
             // const data = {};

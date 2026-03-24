@@ -2747,14 +2747,23 @@ class CourseTemplate {
          const headerHTML = (() => {
             // Then we will retrieve and sort the posts inside the category
             let allPosts = categories.sort((a, b) => a.sequenceNo - b.sequenceNo);
+            const subCategories = allPosts
+               ?.filter((e) => e.parentCategory)
+               ?.map((e) => {
+                  e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
+                  return e;
+               });
             const parentCategories = allPosts
                ?.filter((e) => !e.parentCategory)
                ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
                ?.map((e) => {
-                  e.posts = e.posts?.sort((a, b) => b.sequenceNo - a.sequenceNo);
+                  e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
+                  e.subCategories = subCategories.filter(
+                     (se) => se.parentCategory === e.id,
+                  );
                   return e;
                });
-            const subCategories = allPosts.filter((e) => e.parentCategory);
+
             console.log(parentCategories, subCategories);
             // const data = {};
             // allPosts.forEach((e) => {

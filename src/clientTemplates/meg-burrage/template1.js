@@ -3959,6 +3959,7 @@ class CourseTemplate {
          return data;
       },
       getDeepSequencedPosts: (categories = []) => {
+         console.log(categories)
          return categories
             ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
             ?.filter((e) => !e.parentCategory)

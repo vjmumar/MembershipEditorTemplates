@@ -2697,7 +2697,6 @@ class CourseTemplate {
             this.data.fetchPost(),
             this.data.fetchCategories(),
          ]).then((res) => res.map((e) => e.value));
-         console.log(categories);
 
          // Then we will create the bread crumbs
          const breadCrumbs = await (async () => {
@@ -3964,7 +3963,7 @@ class CourseTemplate {
             ?.filter((e) => !e.parentCategory)
             ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
             ?.map((e) => {
-               const currentCategorySubFolders = allPosts
+               const currentCategorySubFolders = categories
                   ?.map((e) => {
                      e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
                      return e;

@@ -2761,7 +2761,7 @@ class CourseTemplate {
                   e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
                   return e;
                })
-               .flatmap((e) => e.posts);
+               .flatMap((e) => e.posts);
 
             console.log(parentCategories);
             // const data = {};

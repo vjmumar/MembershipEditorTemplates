@@ -2370,8 +2370,8 @@ class CourseTemplate {
                             </a>
                         </div>
                         <div class="template-sidebar__toggler">
-                            <i class="fa-solid fa-arrow-right-arrow-left open"></i>
-                            <i class="fa-solid fa-x close"></i>    
+                            <i class="fa-solid fa-angle-right open"></i>
+                            <i class="fa-solid fa-xmark close"></i>
                         </div>
                     </div>
                 `;
@@ -3906,7 +3906,7 @@ class CourseTemplate {
                      res($element);
                   }, resolveDelay);
                }
-               console.log("waiting for ", elementSelector)
+               console.log("waiting for ", elementSelector);
             }, 0);
          });
       },

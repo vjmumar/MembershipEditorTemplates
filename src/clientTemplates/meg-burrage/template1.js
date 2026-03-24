@@ -2751,7 +2751,7 @@ class CourseTemplate {
                const currentPostIndex = allPosts.find(
                   (p) => p.id === currentPost.id,
                )?.sequenceNo;
-               if (!currentPostIndex) {
+               if (currentPostIndex) {
                   const previousPost = allPosts[currentPostIndex - 1];
                   return `<a class="template-post-page-header__arrow prev" href="${`/courses/products/${previousPost?.productId}/categories/${previousPost?.categoryId}/posts/${previousPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
                }
@@ -3010,7 +3010,7 @@ class CourseTemplate {
                const currentPostIndex = allPosts.find(
                   (p) => p.id === currentPost.id,
                )?.sequenceNo;
-               if (!currentPostIndex) {
+               if (currentPostIndex) {
                   const previousPost = allPosts[currentPostIndex - 1];
                   return `<a class="template-post-page-header__arrow prev" href="${`/courses/products/${previousPost?.productId}/categories/${previousPost?.categoryId}/posts/${previousPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
                }

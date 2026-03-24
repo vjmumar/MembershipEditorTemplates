@@ -2692,13 +2692,14 @@ class CourseTemplate {
          const $container = await this.utils.waitForElement("#app-container", 100);
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
-         const [completedPosts, category, currentPost] = await Promise.allSettled([
+         const [completedPosts, category, currentPost, categories] = await Promise.allSettled([
             this.data.fetchCompletedPosts(),
             this.data.fetchCategory(),
             this.data.fetchPost(),
+            this.data.fetchCategories()
          ]).then((res) => res.map((e) => e.value));
-         console.log(category)
-
+         
+         console.log(categories)
          // Then we will retrieve and sort the posts inside the category
          const allPosts = category.category.posts.sort((a, b) =>
             a.sequenceNo > b.sequenceNo ? 1 : -1,

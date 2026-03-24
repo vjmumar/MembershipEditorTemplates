@@ -3840,13 +3840,14 @@ class CourseTemplate {
          const locationId = this.utils.getAuth()?.locationId;
          const token = this.utils.getAuth()?.tokenId;
          const contactId = this.utils.getAuth()?.contactId;
+         const userId = this.utils.getAuth()?.userId;
          const storageName = `${productId}-user`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             if (token) {
                fetch(
-                  `https://services.leadconnectorhq.com/clientclub/${locationId}/users/${contactId}`,
+                  `https://services.leadconnectorhq.com/clientclub/${locationId}/users/${contactId || userId}`,
                   {
                      headers: {
                         "accept": "application/json, text/plain, */*",

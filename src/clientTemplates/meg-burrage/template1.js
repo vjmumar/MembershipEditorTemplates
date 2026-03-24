@@ -2761,7 +2761,16 @@ class CourseTemplate {
                   e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
                   return e;
                })
-               .flatMap((e) => e.posts);
+               .flatMap((e) => e.posts)
+               .reduce((a, c) => {
+                  if (!c.parentCategory) {
+                     a.push(c);
+                  } else {
+                     const subCategoryPosts = c.flatMap((e) => e.posts);
+                     a.push(...subCategoryPosts);
+                  }
+                  return a;
+               }, []);
 
             console.log(allSequencedPost);
             // const data = {};

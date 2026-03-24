@@ -2757,13 +2757,12 @@ class CourseTemplate {
                } else {
                   e.posts = e.posts.sort((a, b) => a.sequenceNo - b.sequenceNo);
                   data[e.id] = [...(data[e.id] || []), e].sort(
-                     (a, b) => b.sequenceNo - a.sequenceNo,
+                     (a, b) => a.sequenceNo - b.sequenceNo,
                   );
                }
             });
-            let x = Object.values(data)
-               .flatMap((e) => e)
-               // .sort((a, b) => a.sequenceNo - b.sequenceNo);
+            let x = Object.values(data).flatMap((e) => e);
+            // .sort((a, b) => a.sequenceNo - b.sequenceNo);
             console.log(x, "test");
             // First we will create the post widgets
             const leftArrowHTML = (() => {

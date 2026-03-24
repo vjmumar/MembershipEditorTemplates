@@ -833,9 +833,6 @@
                   const url = window.location.href;
 
                   // Finally we will iterate through the template pages to find the current view and initialize the editor logic
-                  console.log(
-                     this.activeTemplate?.[this.isDesktop ? "pages" : "mobilePages"],
-                  );
                   this.activeTemplate?.[
                      this.isDesktop ? "pages" : "mobilePages"
                   ]?.forEach((page) => {
@@ -2280,7 +2277,7 @@
          launchMobileCustomizer: async () => {
             // First we will ask the user to confirm their decision to open the mobile customizer
             const isConfirm = confirm(
-               `Opening the mobile customizer will create a data conflict with this window.\nWe strongly advise you to save your desktop changes now before proceeding.\nOnce the mobile editor is open, this page will be locked, and you must reload this page after you are finished to see your mobile updates.`,
+               `Opening the mobile customizer will create a data conflict with this window.We strongly advise you to save your desktop changes now before proceeding.Once the mobile editor is open, this page will be locked, and you must reload this page after you are finished to see your mobile updates.`,
             );
 
             // Then we will check the user's decision and if they did not agree then we will not proceed

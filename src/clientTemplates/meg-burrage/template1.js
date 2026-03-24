@@ -2747,25 +2747,22 @@ class CourseTemplate {
          const headerHTML = (() => {
             // Then we will retrieve and sort the posts inside the category
             let allPosts = categories.sort((a, b) => a.sequenceNo - b.sequenceNo);
-            const subCategories = allPosts
-               ?.filter((e) => e.parentCategory)
-               ?.map((e) => {
-                  e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
-                  return e;
-               });
             const parentCategories = allPosts
                ?.filter((e) => !e.parentCategory)
                ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
                ?.map((e) => {
-                  const currentCategorySubFolders = subCategories.filter(
-                     (se) => se.parentCategory === e.id,
-                  );
+                  const currentCategorySubFolders = allPosts
+                     ?.map((e) => {
+                        e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
+                        return e;
+                     })
+                     ?.filter((se) => se.parentCategory === e.id);
                   e.posts.push(...currentCategorySubFolders);
                   e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
                   return e;
                });
 
-            console.log(parentCategories, subCategories);
+            console.log(parentCategories);
             // const data = {};
             // allPosts.forEach((e) => {
             //    if (!data[e.id] && !e.parentCategory) {

@@ -2764,12 +2764,9 @@ class CourseTemplate {
                   (p) => p.id === currentPost.id,
                )?.sequenceNo;
                const lastPostIndex = allPosts.slice(-1)[0]?.sequenceNo;
-               console.log(allPosts, lastPostIndex);
-               const canGoToNextPost =
-                  allPosts.length !== 1 && currentPostIndex !== lastPostIndexOfCategory;
+               const canGoToNextPost = currentPost !== lastPostIndex;
                if (canGoToNextPost) {
                   const nextPost = allPosts[currentPostIndex + 1];
-                  console.log(nextPost);
                   return `<a class="template-post-page-header__arrow next" href="${`/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
                }
                return "";

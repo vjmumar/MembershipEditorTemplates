@@ -2747,7 +2747,7 @@ class CourseTemplate {
          const headerHTML = (() => {
             // Then we will retrieve and sort the posts inside the category
             let allPosts = categories.sort((a, b) => a.sequenceNo - b.sequenceNo);
-            const parentCategories = allPosts
+            const allSequencedPost = allPosts
                ?.filter((e) => !e.parentCategory)
                ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
                ?.map((e) => {
@@ -2760,7 +2760,8 @@ class CourseTemplate {
                   e.posts.push(...currentCategorySubFolders);
                   e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
                   return e;
-               });
+               })
+               .flatmap((e) => e.posts);
 
             console.log(parentCategories);
             // const data = {};

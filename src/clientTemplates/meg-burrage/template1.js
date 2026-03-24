@@ -2757,10 +2757,11 @@ class CourseTemplate {
                ?.filter((e) => !e.parentCategory)
                ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
                ?.map((e) => {
-                  e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
-                  e.subCategories = subCategories.filter(
+                  const subCategories = subCategories.filter(
                      (se) => se.parentCategory === e.id,
                   );
+                  e.posts.push(...subCategories);
+                  e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
                   return e;
                });
 

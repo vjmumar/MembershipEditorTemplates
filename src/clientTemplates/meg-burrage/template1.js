@@ -2698,6 +2698,7 @@ class CourseTemplate {
             this.data.fetchPost(),
             this.data.fetchCategories(),
          ]).then((res) => res.map((e) => e.value));
+         console.log(categories);
 
          // Then we will create the bread crumbs
          const breadCrumbs = await (async () => {
@@ -3959,7 +3960,6 @@ class CourseTemplate {
          return data;
       },
       getDeepSequencedPosts: (categories = []) => {
-         console.log(categories)
          return categories
             ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
             ?.filter((e) => !e.parentCategory)

@@ -2694,7 +2694,6 @@ class CourseTemplate {
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [completedPosts, currentPost, categories] = await Promise.allSettled([
             this.data.fetchCompletedPosts(),
-            this.data.fetchCategory(),
             this.data.fetchPost(),
             this.data.fetchCategories(),
          ]).then((res) => res.map((e) => e.value));

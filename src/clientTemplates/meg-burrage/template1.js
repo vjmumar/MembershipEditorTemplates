@@ -3737,7 +3737,7 @@ class CourseTemplate {
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
-            if (userId) {
+            if (token) {
                const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`;
                fetch(url, {
                   headers: {

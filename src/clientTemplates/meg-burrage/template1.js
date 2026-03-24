@@ -2756,9 +2756,7 @@ class CourseTemplate {
                   );
                } else {
                   e.posts = e.posts.sort((a, b) => a.sequenceNo - b.sequenceNo);
-                  data[e.id] = [...(data[e.id] || []), e].sort(
-                     (a, b) => a.sequenceNo - b.sequenceNo,
-                  );
+                  data[e.id].prepend(e);
                }
             });
             let x = Object.values(data).flatMap((e) => e);

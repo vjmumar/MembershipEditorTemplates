@@ -2746,7 +2746,7 @@ class CourseTemplate {
          // Then we will build the header HTML including navigation arrows and completion buttons
          const headerHTML = (() => {
             // Then we will retrieve and sort the posts inside the category
-            let allPosts = categories;
+            let allPosts = categories.sort((a, b) => a.sequenceNo - b.sequenceNo);
             const data = {};
             allPosts.forEach((e) => {
                if (e.parentCategory) {

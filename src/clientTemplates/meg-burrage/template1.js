@@ -2761,7 +2761,7 @@ class CourseTemplate {
                   );
                }
             });
-            console.log(allPosts);
+            console.log(data);
             let x = Object.values(data).flatMap((e) => e);
             // .sort((a, b) => a.sequenceNo - b.sequenceNo);
             console.log(x, "test");

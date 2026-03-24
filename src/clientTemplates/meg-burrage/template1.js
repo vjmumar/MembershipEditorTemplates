@@ -2745,6 +2745,7 @@ class CourseTemplate {
          const headerHTML = (() => {
             // First we will retrieve all post from category and subcategories
             const allPosts = this.utils.getDeepSequencedPosts(categories);
+            console.log(allPosts);
 
             // Then we will create the post widgets
             const leftArrowHTML = (() => {

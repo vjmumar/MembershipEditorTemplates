@@ -2749,7 +2749,7 @@ class CourseTemplate {
             let allPosts = categories.sort((a, b) => a.sequenceNo - b.sequenceNo);
             const data = {};
             allPosts.forEach((e) => {
-               if (!data[e.id]) {
+               if (!data[e.id] && !e.parentId) {
                   data[e.id] = [];
                }
                if (e.parentCategory) {

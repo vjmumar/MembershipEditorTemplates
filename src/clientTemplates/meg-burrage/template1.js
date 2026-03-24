@@ -3768,7 +3768,7 @@ class CourseTemplate {
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
-            if (contactId) {
+            if (token) {
                fetch(
                   `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/user-activity/${cId || contactId}`,
                   {
@@ -3847,7 +3847,7 @@ class CourseTemplate {
          return await new Promise(async (resolved, reject) => {
             if (token) {
                fetch(
-                  `https://services.leadconnectorhq.com/clientclub/${locationId}/users/${contactId || userId}`,
+                  `https://services.leadconnectorhq.com/clientclub/${locationId}/users/${contactId}`,
                   {
                      headers: {
                         "accept": "application/json, text/plain, */*",

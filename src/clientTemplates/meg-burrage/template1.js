@@ -2746,22 +2746,24 @@ class CourseTemplate {
          // Then we will build the header HTML including navigation arrows and completion buttons
          const headerHTML = (() => {
             // Then we will retrieve and sort the posts inside the category
-            const allPosts = categories;
+            let allPosts = categories;
             const data = {};
             allPosts.forEach((e) => {
                if (e.parentCategory) {
-                  e.posts = e.posts.sort((a, b) => a.sequenceNo > b.sequenceNo);
+                  e.posts = e.posts.sort((a, b) => a.sequenceNo - b.sequenceNo);
                   data[e.parentCategory] = [...data[e.parentCategory], e].sort(
-                     (a, b) => a.sequenceNo > b.sequenceNo,
+                     (a, b) => a.sequenceNo - b.sequenceNo,
                   );
                } else {
-                  e.posts = e.posts.sort((a, b) => a.sequenceNo > b.sequenceNo);
+                  e.posts = e.posts.sort((a, b) => a.sequenceNo - b.sequenceNo);
                   data[e.id] = [...(data[e.id] || []), e].sort(
-                     (a, b) => a.sequenceNo > b.sequenceNo,
+                     (a, b) => a.sequenceNo - b.sequenceNo,
                   );
                }
             });
-            console.log(data)
+            allPosts = Object.values(data)
+               .flatMap((e) => e)
+               .sort((a, b) => a.sequenceNo - b.sequenceNo);
             // First we will create the post widgets
             const leftArrowHTML = (() => {
                const currentPostIndex = allPosts.findIndex(

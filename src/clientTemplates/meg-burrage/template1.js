@@ -2760,12 +2760,11 @@ class CourseTemplate {
                return "";
             })();
             const rightArrowHTML = (() => {
-               const currentPostIndex = allPosts.findIndex(
-                  (p) => p.sequenceNo === currentPost.sequenceNo,
-               );
-               const lastPostIndexOfCategory = allPosts.findIndex(
-                  (p) => p.sequenceNo === allPosts.slice(-1)[0].sequenceNo,
-               );
+               const currentPostIndex = allPosts.find(
+                  (p) => p.id === currentPost.id,
+               )?.sequenceNo;
+               const lastPostIndex = allPosts.slice(-1)[0]?.sequenceNo;
+               console.log(allPosts, lastPostIndex);
                const canGoToNextPost =
                   allPosts.length !== 1 && currentPostIndex !== lastPostIndexOfCategory;
                if (canGoToNextPost) {

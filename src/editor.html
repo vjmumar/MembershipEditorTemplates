@@ -690,10 +690,7 @@
             };
 
             // Finally we will retrieve the authentication token by parsing the product data from the cookies
-            const productData = JSON.parse(
-               window.atob($cookies.get("acat") || $cookies.get("cat")),
-            );
-            this.token = productData?.tokenId;
+            this.token = this.utils.getAuth().tokenId;
          })();
       }
 
@@ -1941,12 +1938,8 @@
          // This method is responsible for saving the user's edits inside the current product custom js in ghl
          saveEditsToProductsCustomJs: async (seamlessUpdate = false) => {
             // First we will retrieve the authentication token and extract the location and product IDs from the URL
-            const productData = JSON.parse(window.atob($cookies.get("acat")));
-            const locationId = productData?.locationId;
-            const productId = location.href
-               .split("/products/")[1]
-               .split("?")[0]
-               .split("/")[0];
+            const locationId = this.utils.getAuth()?.locationId;
+            const productId = this.utils.getAuth()?.productId;
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
 
             // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
@@ -2047,12 +2040,8 @@
             if (!confirm("Do you want to proceed?")) return;
 
             // First we will retrieve the authentication token and extract the location and product IDs from the URL
-            const productData = JSON.parse(window.atob($cookies.get("acat")));
-            const locationId = productData?.locationId;
-            const productId = location.href
-               .split("/products/")[1]
-               .split("?")[0]
-               .split("/")[0];
+            const locationId = this.utils.getAuth()?.locationId;
+            const productId = this.utils.getAuth().productId;
 
             // Then we will build the product service endpoint used to persist the selected template into the product custom JS
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
@@ -2169,10 +2158,9 @@
 
          // This function uploads image to ghl media
          uploadTextToGHL: async (textContent = "", fileName = "", parentFolder = "") => {
-            const productData = JSON.parse(window.atob($cookies.get("acat")));
+            const locationId = this.utils.getAuth()?.locationId;
             const blob = new Blob([textContent], { type: "text/plain" });
             const size = blob.size;
-            const locationId = productData?.locationId;
             let isError = false;
             try {
                // First we will upload the new configuration
@@ -2626,6 +2614,21 @@
                observer.disconnect();
                clearTimeout(timeout);
             };
+         },
+
+         // This helper method retrieves the auth information
+         getAuth: () => {
+            const acatToken = $cookies.get("acat");
+            const catToken = $cookies.get("cat");
+            const data = JSON.parse(window.atob(catToken || acatToken) || "{}");
+            if (!("productId" in data)) {
+               const url = location.href
+                  ?.split("/products/")[1]
+                  .split("/")[0]
+                  .split("?")[0];
+               data.productId = url;
+            }
+            return data;
          },
       };
    }

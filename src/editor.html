@@ -677,13 +677,10 @@
                   } else {
                      return window.templateCustomizationSchema;
                   }
-               })();
+               })()[this.isDesktop ? "pages" : "mobilePages"];
 
                // Then we will select the default page editor configuration from the active template
-               this.activePageOnTemplate =
-                  this.activeTemplate?.[
-                     this.isDesktop ? "pages" : "mobilePages"
-                  ][0]?.editor;
+               this.activePageOnTemplate = this.activeTemplate?.[0]?.editor;
 
                // Finally we will invoke the initialization sequence to start the application
                this.initializers.init();
@@ -727,25 +724,23 @@
             const url = window.location.href;
 
             // Finally we will iterate through the template pages to find the current view and process it
-            this.activeTemplate?.[this.isDesktop ? "pages" : "mobilePages"]?.forEach(
-               (page) => {
-                  // First we will create a new RegExp instance using the regex pattern from the current page configuration
-                  const urlRegex = new RegExp(page?.urlRegex);
+            this.activeTemplate?.forEach((page) => {
+               // First we will create a new RegExp instance using the regex pattern from the current page configuration
+               const urlRegex = new RegExp(page?.urlRegex);
 
-                  // Finally we will check if the current URL matches the regex pattern; if it does, we will proceed to process it
-                  if (urlRegex?.test(url)) {
-                     // First we will update the active page state with the specific editor configuration that matches the current URL
-                     this.activePageOnTemplate = page.editor;
+               // Finally we will check if the current URL matches the regex pattern; if it does, we will proceed to process it
+               if (urlRegex?.test(url)) {
+                  // First we will update the active page state with the specific editor configuration that matches the current URL
+                  this.activePageOnTemplate = page.editor;
 
-                     // Finally we will invoke all synchronizers to apply the configuration customizations
-                     this.actions.syncTemplateCssCustomizations();
-                     this.actions.syncTemplateElementsCustomization();
-                     setTimeout(() => {
-                        this.actions.syncTemplateFeatureCustomizations(null, null, true);
-                     }, 5500);
-                  }
-               },
-            );
+                  // Finally we will invoke all synchronizers to apply the configuration customizations
+                  this.actions.syncTemplateCssCustomizations();
+                  this.actions.syncTemplateElementsCustomization();
+                  setTimeout(() => {
+                     this.actions.syncTemplateFeatureCustomizations(null, null, true);
+                  }, 5500);
+               }
+            });
          },
 
          // This method is responsible for showing the floating widget that toggles the page into editing
@@ -833,9 +828,7 @@
                   const url = window.location.href;
 
                   // Finally we will iterate through the template pages to find the current view and initialize the editor logic
-                  this.activeTemplate?.[
-                     this.isDesktop ? "pages" : "mobilePages"
-                  ]?.forEach((page) => {
+                  this.activeTemplate?.forEach((page) => {
                      const urlRegex = new RegExp(page?.urlRegex);
                      if (urlRegex?.test(url)) {
                         // First we will inject the editor styles into the document head to ensure they persist even if the app container is cleared during rendering

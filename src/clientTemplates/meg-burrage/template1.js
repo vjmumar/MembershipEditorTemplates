@@ -2747,23 +2747,26 @@ class CourseTemplate {
          const headerHTML = (() => {
             // Then we will retrieve and sort the posts inside the category
             let allPosts = categories.sort((a, b) => a.sequenceNo - b.sequenceNo);
-            const data = {};
-            allPosts.forEach((e) => {
-               if (!data[e.id] && !e.parentCategory) {
-                  data[e.id] = [];
-               }
-               if (e.parentCategory) {
-                  e.posts = e.posts;
-                  data[e.parentCategory] = [...data[e.parentCategory], e];
-               } else {
-                  e.posts = e.posts.sort((a, b) => a.sequenceNo - b.sequenceNo);
-                  data[e.id] = [...(data[e.id] || []), e];
-               }
-            });
-            console.log(data);
-            let x = Object.values(data).flatMap((e) => e);
-            // .sort((a, b) => a.sequenceNo - b.sequenceNo);
-            console.log(x, "test");
+            const parentCategories = allPosts.filter((e) => !e.parentCategory);
+            const subCategories = allPosts.filter((e) => e.parentCategory);
+            console.log(parentCategories, subCategories);
+            // const data = {};
+            // allPosts.forEach((e) => {
+            //    if (!data[e.id] && !e.parentCategory) {
+            //       data[e.id] = [];
+            //    }
+            //    if (e.parentCategory) {
+            //       e.posts = e.posts;
+            //       data[e.parentCategory] = [...data[e.parentCategory], e];
+            //    } else {
+            //       e.posts = e.posts.sort((a, b) => a.sequenceNo - b.sequenceNo);
+            //       data[e.id] = [...(data[e.id] || []), e];
+            //    }
+            // });
+            // console.log(data);
+            // let x = Object.values(data).flatMap((e) => e);
+            // // .sort((a, b) => a.sequenceNo - b.sequenceNo);
+            // console.log(x, "test");
             // First we will create the post widgets
             const leftArrowHTML = (() => {
                const currentPostIndex = allPosts.findIndex(

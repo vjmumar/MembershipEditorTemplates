@@ -1019,6 +1019,7 @@
             const $appContainer = document.querySelector("#app-container");
             const url = new URL(location.href);
             url.searchParams.delete("previewEditor");
+            url.searchParams.append("previewEditor", "true");
             const cleanUrl = url.toString();
             $appContainer.remove();
             $app.insertAdjacentHTML(

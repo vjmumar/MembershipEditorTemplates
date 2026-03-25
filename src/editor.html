@@ -697,6 +697,7 @@
                         activeTemplateFromSavedTemplates?.name ===
                         window?.templateCustomizationSchema?.name
                      ) {
+                        console.log("bpro")
                         /**
                          * Merges the specific active template from the saved array into the Master Template Schema.
                          * We use _.mergeWith to ensure that if we fix a CSS selector or property
@@ -2097,7 +2098,6 @@
                   );
                   updatedActiveTemplatesConfig.push(this.activeTemplate);
 
-                  console.log(this.activeTemplate);
                   /**
                    * Then, we stringify the entire template configuration array and apply a replacer function
                    * to convert executable functions into strings, allowing them to be safely stored in the database.

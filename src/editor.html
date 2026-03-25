@@ -916,7 +916,7 @@
                         this.activePageOnTemplate = page.editor;
 
                         // Finally we will invoke the main editor initializer to render the sidebar and attach the necessary event listeners to the page
-                        this.initializers.initializeEditor();
+                        this.initializers.initializeEditor(isPreviewEditor);
                      }
                   });
                }

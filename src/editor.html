@@ -643,7 +643,6 @@
          this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
          this.$iframe = null;
-         this.$iframeDoc = null;
 
          (async () => {
             // First we will retrieve the client's templates
@@ -1051,20 +1050,9 @@
                   `<iframe src="${cleanUrl}" id="membership-editor-iframe-preview" style="width:100%; height:100vh; border:none; display:block;"></iframe>`,
                );
                setTimeout(() => {
-                  // Listen message Iframe
-                  // Testing
-                  window.addEventListener("message", (e) => {
-                     if (e.data?.type === "INITIALIZE_ELEMENT_EDITOR") {
-                        console.log(
-                           document.querySelector(".template-welcome__greeting"),
-                        );
-                        const { key, editableElementSnapshot } = e.data.payload;
-                        this.initializers.initializeElementEditor(
-                           key,
-                           editableElementSnapshot,
-                        );
-                     }
-                  });
+                  this.$iframe = document?.getElementById(
+                     "membership-editor-iframe-preview",
+                  );
                }, 100);
             }
          },
@@ -1076,10 +1064,7 @@
             isGlobal = false,
             globalName = "",
          ) => {
-            const element = document
-               ?.getElementById("membership-editor-iframe-preview")
-               .contentDocument.querySelector(selector);
-            console.log(element);
+            const element = this.$iframe.contentDocument.querySelector(selector);
 
             // First we will retrieve the sidebar and its content container
             const $sidebar = document.querySelector(".editor-customizer-sidebar");
@@ -1105,10 +1090,8 @@
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
                const input = (() => {
                   if (c.type === "multi") {
-                     const propertyValue = document
-                        ?.getElementById("membership-editor-iframe-preview")
-                        ?.contentDocument.querySelector(element)[c.property];
-                     console.log(propertyValue);
+                     const propertyValue =
+                        this.$iframe?.contentWindow.querySelector(element)[c.property];
                      return this?.widgets?.multiInput(
                         templateItem.key,
                         c?.property,
@@ -1179,9 +1162,8 @@
                         },
                      );
                   } else {
-                     const propertyValue = document
-                        ?.getElementById("membership-editor-iframe-preview")
-                        ?.contentDocument.querySelector(element)[c.property];
+                     const propertyValue =
+                        this.$iframe?.contentWindow.querySelector(element)[c.property];
                      return this?.widgets?.input(
                         templateItem.key,
                         c.property,

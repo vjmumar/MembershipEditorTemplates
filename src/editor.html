@@ -960,12 +960,10 @@
                   const editableElement = e.target.closest("[data-editable]");
                   if (editableElement) {
                      const key = editableElement.getAttribute("data-editor-key");
-                     // TESTING !!!!
-                     window.parent.MembershipCustomization.initializers.initializeElementEditor(
+                     this.parethis.initializers.initializeElementEditor(
                         key,
                         editableElement,
                      );
-                     // this.initializers.initializeElementEditor(key, editableElement);
                   }
                });
 
@@ -1074,11 +1072,13 @@
          // This method builds and renders the customization sidebar for a specific selected element
          initializeElementEditor: (
             key = "",
-            template = "",
-            element = null,
+            selector = "",
             isGlobal = false,
             globalName = "",
          ) => {
+            const element = this.$iframe.contentDocument.querySelector(selector);
+            console.log(element);
+
             // First we will retrieve the sidebar and its content container
             const $sidebar = document.querySelector(".editor-customizer-sidebar");
             const $sidebarContent = $sidebar.querySelector(
@@ -1098,8 +1098,6 @@
                   return this.activePageOnTemplate.find((item) => item.key === key);
                }
             })();
-
-            console.log(element);
 
             // Then we will generate the HTML for the CSS customization inputs
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {

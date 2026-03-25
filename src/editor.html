@@ -641,7 +641,9 @@
          this.activePageOnTemplate = null;
          this.token = "";
          this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
+
          this.$iframe = null;
+         this.$clickedElement = null;
 
          (async () => {
             // First we will retrieve the client's templates
@@ -921,7 +923,6 @@
 
          // This method will initialize all editor components and attach tooltips + sidebar
          initializeEditor: (isPreview = false) => {
-            console.log(isPreview);
             // First we will loop over all items from the activePageOnTemplate to prepare the DOM elements
             if (isPreview) {
                this.activePageOnTemplate.forEach((item) => {
@@ -960,6 +961,7 @@
                   if (editableElement) {
                      const key = editableElement.getAttribute("data-editor-key");
                      // TESTING !!!!
+                     this.$clickedElement = editableElement;
                      window.parent.postMessage(
                         {
                            type: "BM_ELEMENT_CLICKED",
@@ -1052,8 +1054,11 @@
                   );
                   window.addEventListener("message", (e) => {
                      if (e.data?.type === "BM_ELEMENT_CLICKED") {
-                        const { key, editableElement } = e.data.payload;
-                        this.initializers.initializeElementEditor(key, editableElement);
+                        const { key } = e.data.payload;
+                        this.initializers.initializeElementEditor(
+                           key,
+                           this.$clickedElement,
+                        );
                      }
                   });
                }, 100);
@@ -1091,7 +1096,9 @@
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
                const input = (() => {
                   if (c.type === "multi") {
-                     // const propertyValue = window.getComputedStyle(element)[c.property];
+                     const propertyValue = window.getComputedStyle(this.$clickedElement)[
+                        c.property
+                     ];
                      return this?.widgets?.multiInput(
                         templateItem.key,
                         c?.property,
@@ -1162,7 +1169,9 @@
                         },
                      );
                   } else {
-                     // const propertyValue = window.getComputedStyle(element)[c.property];
+                     const propertyValue = window.getComputedStyle(this.$clickedElement)[
+                        c.property
+                     ];
                      return this?.widgets?.input(
                         templateItem.key,
                         c.property,

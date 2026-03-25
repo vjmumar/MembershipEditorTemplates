@@ -961,12 +961,11 @@
                   if (editableElement) {
                      const key = editableElement.getAttribute("data-editor-key");
                      // TESTING !!!!
-                     const editableElementSnapshot =
-                        this.utils.getElementSnapshot(editableElement);
+                     const elementSelector = `[data-editor-key='${key}']`;
                      window.parent.postMessage(
                         {
-                           type: "BM_ELEMENT_CLICKED",
-                           payload: { key, editableElementSnapshot },
+                           type: "INITIALIZE_ELEMENT_EDITOR",
+                           payload: { key, elementSelector },
                         },
                         "*",
                      );
@@ -1064,12 +1063,12 @@
                      "membership-editor-iframe-preview",
                   );
                   window.addEventListener("message", (e) => {
-                     if (e.data?.type === "BM_ELEMENT_CLICKED") {
-                        const { key, editableElementSnapshot } = e.data.payload;
-                        this.initializers.initializeElementEditor(
-                           key,
-                           editableElementSnapshot,
+                     if (e.data?.type === "INITIALIZE_ELEMENT_EDITOR") {
+                        const { key, elementSelector } = e.data.payload;
+                        const elementSnapshot = this.utils.getElementSnapshot(
+                           document.querySelector(elementSelector),
                         );
+                        this.initializers.initializeElementEditor(key, elementSnapshot);
                      }
                   });
                }, 100);
@@ -1481,7 +1480,7 @@
                const globalItemElements = c?.customizations?.reduce((ac, cc) => {
                   // We will generate a clickable global contents item which will open the element editor in global mode
                   ac += `
-                         <div class="global-contents-item__item" onclick="window.MembershipCustomization.initializers.initializeElementEditor('${cc.key}',window.MembershipCustomization.utils.getElementSnapshot(document.querySelector('${cc.elementSelector}')), true, '${c.name}');">
+                         <div class="global-contents-item__item" onclick="window.MembershipCustomization.initializers.initializeElementEditor('${cc.key}',window.parent.postMessage( { type: "INITIALIZE_ELEMENT_EDITOR", payload: { key: '${cc.key}', elementSelector: '${cc.elementSelector}' }, }, "*", );, true, '${c.name}');">
                              <p class="global-contents-item__item__title">
                                  ${cc.label}
                                  <i class="fa-solid fa-angle-right"></i>
@@ -2886,7 +2885,6 @@
 
          // This helper method retrieves the snapshot of an element
          getElementSnapshot: (el) => {
-            console.log(el);
             if (!el) return null;
             const attributes = {};
             if (el.hasAttributes()) {

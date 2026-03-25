@@ -1065,6 +1065,7 @@
             globalName = "",
          ) => {
             const element = this.$iframe.contentDocument.querySelector(selector);
+            console.log(element, this.$iframe.contentWindow);
 
             // First we will retrieve the sidebar and its content container
             const $sidebar = document.querySelector(".editor-customizer-sidebar");

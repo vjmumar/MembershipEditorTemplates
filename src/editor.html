@@ -1418,7 +1418,7 @@
                return `
                   <div class="advance-settings__customcss">
                      <p class="advance-settings__customcss__label">Custom Css</p>
-                     <textarea></textarea>   
+                     <textarea>${this.activeTemplate?.["customCss"]}</textarea>   
                   </div>
                `;
             })();
@@ -1428,7 +1428,7 @@
                return `
                   <div class="advance-settings__fonts">
                      <p class="advance-settings__fonts__label">Fonts</p>
-                     <textarea></textarea>  
+                     <textarea>${(this.activeTemplate?.["fonts"] || []).join(",")}</textarea>  
                      <p class="advance-settings__fonts__info">ⓘ Import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p> 
                   </div>
                `;

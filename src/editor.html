@@ -297,6 +297,24 @@
       rotate: 90deg;
    }
 
+   .global-contents__advance-settings {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #8080801f;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+   }
+
+   .global-contents__advance-settings p {
+      font-size: 15px;
+   }
+
+   .global-contents__advance-settings i {
+      font-size: 11px;
+   }
+
    .global-contents-item__wrapper {
       padding: 10px;
       border: 1px solid #8080801f;
@@ -1336,6 +1354,10 @@
                            <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipCustomization.initializers.initializeThemeSelector()"></i>
                        </div>
                        ${globalItemsHTML}
+                       <div class="global-contents__advance-settings" onClick="this.parentElement.classList.toggle('active')">
+                           <p>Advance Settings</p>
+                           <i class="fa-solid fa-angle-right"></i>
+                        </div>
                    </div>
                `;
          },

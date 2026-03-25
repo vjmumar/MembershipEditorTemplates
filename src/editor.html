@@ -973,6 +973,8 @@
                window.addEventListener("message", (e) => {
                   if (e.data?.type === "FROM_IFRAME") {
                      console.log("from iframe:", e.data.payload);
+                  } else if (e.data.type === "UPDATE_FROM_PARENT") {
+                     console.log(e.data.payload);
                   }
                });
             }
@@ -1040,6 +1042,7 @@
                );
                setTimeout(() => {
                   // Listen from Iframe
+                  // Testing
                   window.addEventListener("message", (e) => {
                      if (e.data?.type === "BM_ELEMENT_CLICKED") {
                         const { key, editableElement } = e.data.payload;
@@ -1181,7 +1184,15 @@
                                  ];
                               }
                            })();
-                           this.actions.updateTemplateCustomizations(...updateArgs);
+                           // this.actions.updateTemplateCustomizations(...updateArgs);
+                           // TESTING!!!!
+                           window.parent.postMessage(
+                              {
+                                 type: "UPDATE_FROM_PARENT",
+                                 payload: { updateArgs },
+                              },
+                              "*",
+                           );
                         },
                      );
                   }

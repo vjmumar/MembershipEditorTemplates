@@ -1228,10 +1228,11 @@
                      const value = (() => {
                         let elementValue = "";
                         if (c.type === "html") {
-                           const elementHTML = element?.innerHTML || "";
+                           const elementHTML = editableElementSnapshot?.innerHTML || "";
                            elementValue = elementHTML;
                         } else {
-                           const elementAttribute = element?.getAttribute(c?.target);
+                           const elementAttribute =
+                              editableElementSnapshot.attributes?.[c?.target];
                            elementValue = elementAttribute;
                         }
                         return c.value || elementValue;

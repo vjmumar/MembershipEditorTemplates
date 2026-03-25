@@ -979,8 +979,8 @@
                      const propertyValue = window.getComputedStyle(element)[c.property];
                      return this?.widgets?.multiInput(
                         templateItem.key,
-                        c.property || propertyValue,
-                        c?.value,
+                        c?.property,
+                        c?.value || propertyValue,
                         (updatedValue) => {
                            const updateArgs = (() => {
                               if (isGlobal && globalName) {

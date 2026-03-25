@@ -1,7 +1,7 @@
 window.templateCustomizationSchema = {
    name: "Production",
    id: "template-3",
-   customJs:
+   customCss:
       "@import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&display=swap');",
    fonts: ["Lavishly Yours", "Playfair Display", "Quicksand"],
    global: [

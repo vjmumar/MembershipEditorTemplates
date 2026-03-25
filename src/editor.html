@@ -983,7 +983,9 @@
                            ...e.data.payload.updateArgs,
                         );
                      } else if (e.data.payload.customizeType === "feature") {
-                        this.actions.updateTemplateFeatureCustomizations(...updateArgs);
+                        this.actions.updateTemplateFeatureCustomizations(
+                           ...e.data.payload.updateArgs,
+                        );
                      } else {
                         this.actions.updateTemplateCustomizations(
                            ...e.data.payload.updateArgs,
@@ -2884,6 +2886,7 @@
 
          // This helper method retrieves the snapshot of an element
          getElementSnapshot: (el) => {
+            console.log(el);
             if (!el) return null;
             const attributes = {};
             if (el.hasAttributes()) {

@@ -962,6 +962,7 @@
                      const key = editableElement.getAttribute("data-editor-key");
                      // TESTING !!!!
                      this.$clickedElement = editableElement;
+                     console.log(this.$clickedElement)
                      window.parent.postMessage(
                         {
                            type: "BM_ELEMENT_CLICKED",

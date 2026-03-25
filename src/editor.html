@@ -978,6 +978,7 @@
                   if (e.data?.type === "FROM_IFRAME") {
                      console.log("from iframe:", e.data.payload);
                   } else if (e.data.type === "UPDATE_FROM_PARENT") {
+                     console.log(e.data)
                      if (e.data.customizeType !== "element") {
                         this.actions.updateTemplateElementCustomizations(
                            ...e.data.payload.updateArgs,

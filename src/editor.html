@@ -1072,6 +1072,7 @@
                         },
                      );
                   } else if (c.type === "select" || c.type === "font") {
+                     // First we will check if the type is either select or font, if font we will return the active tempaltes fonts else just the passed options
                      const options = (() => {
                         if (c.type === "font") {
                            return this.activeTemplate["fonts"];
@@ -1081,9 +1082,9 @@
                      return this?.widgets?.select(
                         templateItem.key,
                         c.property,
-                        c?.value,
+                        c?.value || "",
                         c.type,
-                        c?.placeholder,
+                        c?.placeholder || "",
                         options,
                         (updatedValue) => {
                            const updateArgs = (() => {

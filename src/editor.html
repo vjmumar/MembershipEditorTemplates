@@ -924,6 +924,7 @@
 
          // This method will initialize all editor components and attach tooltips + sidebar
          initializeEditor: (isPreview = false) => {
+            console.log(isPreview);
             // First we will loop over all items from the activePageOnTemplate to prepare the DOM elements
             if (isPreview) {
                this.activePageOnTemplate.forEach((item) => {

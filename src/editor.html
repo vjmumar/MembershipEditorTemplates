@@ -1071,7 +1071,13 @@
                            this.actions.updateTemplateCustomizations(...updateArgs);
                         },
                      );
-                  } else if (c.type === "select") {
+                  } else if (c.type === "select" || c.type === "font") {
+                     const options = (() => {
+                        if (c.type === "font") {
+                           return this.activeTemplate["fonts"];
+                        }
+                        return c.options;
+                     })();
                      return this?.widgets?.select(
                         templateItem.key,
                         c.property,

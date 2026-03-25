@@ -1183,8 +1183,8 @@ window.templateCustomizationSchema = {
                   {
                      name: "Font Family",
                      property: "font-family",
-                     type: "text",
-                     placeholder: "",
+                     type: "font",
+                     important: true,
                      value: "",
                   },
                ],

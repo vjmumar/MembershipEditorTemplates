@@ -877,14 +877,6 @@
 
          // This method will wait until the #app container exists before initializing the editor
          initShowEditor: () => {
-            // TESTING !!!!
-            const isPreviewEditor = location.href.includes("previewEditor=true");
-
-            if (isPreviewEditor) {
-               return;
-            }
-
-            // TESTING !!!!
             // First we will retrieve the editor styles from the DOM
             const editorStyle = document.querySelector("#editor").outerHTML;
 

@@ -1103,8 +1103,9 @@
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
                const input = (() => {
                   if (c.type === "multi") {
-                     const propertyValue =
-                        window.parent.window.getComputedStyle(element)[c.property];
+                     const propertyValue = document
+                        ?.querySelector("iframe")
+                        ?.contentDocument.querySelector(element)[c.property];
                      return this?.widgets?.multiInput(
                         templateItem.key,
                         c?.property,
@@ -1175,8 +1176,9 @@
                         },
                      );
                   } else {
-                     const propertyValue =
-                        window.parent.window.getComputedStyle(element)[c.property];
+                     const propertyValue = document
+                        ?.querySelector("iframe")
+                        ?.contentDocument.querySelector(element)[c.property];
                      return this?.widgets?.input(
                         templateItem.key,
                         c.property,
@@ -1494,7 +1496,7 @@
                return `
                   <div class="advance-settings__customcss">
                      <p class="advance-settings__customcss__label">Custom Css</p>
-                     <textarea oninput="window.MembershipCustomization.actions.updateTemplateCustomCss(this.value || '')">${this.activeTemplate?.["customCss"]}</textarea>   
+                     <textarea oninput="window.MembershipCustomization.actions.updateTemplateCustomCss(this.value || '')">${this.activeTemplate?.["customCss"]}</textarea>
                   </div>
                `;
             })();
@@ -1504,8 +1506,8 @@
                return `
                   <div class="advance-settings__fonts">
                      <p class="advance-settings__fonts__label">Fonts</p>
-                     <textarea oninput="window.MembershipCustomization.actions.updateTemplateFonts(this.value || '')">${(this.activeTemplate?.["fonts"] || []).join(",\n")}</textarea>  
-                     <p class="advance-settings__fonts__info">ⓘ Import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p> 
+                     <textarea oninput="window.MembershipCustomization.actions.updateTemplateFonts(this.value || '')">${(this.activeTemplate?.["fonts"] || []).join(",\n")}</textarea>
+                     <p class="advance-settings__fonts__info">ⓘ Import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p>
                   </div>
                `;
             })();

@@ -978,9 +978,15 @@
                   if (e.data?.type === "FROM_IFRAME") {
                      console.log("from iframe:", e.data.payload);
                   } else if (e.data.type === "UPDATE_FROM_PARENT") {
-                     this.actions.updateTemplateCustomizations(
-                        ...e.data.payload.updateArgs,
-                     );
+                     if (e.data.customizeType !== "element") {
+                        this.actions.updateTemplateElementCustomizations(
+                           ...e.data.payload.updateArgs,
+                        );
+                     } else {
+                        this.actions.updateTemplateCustomizations(
+                           ...e.data.payload.updateArgs,
+                        );
+                     }
                   }
                   console.log(e.data.payload);
                });
@@ -1275,6 +1281,7 @@
                            this.$iframe.contentWindow.postMessage(
                               {
                                  type: "UPDATE_FROM_PARENT",
+                                 customizeType: "element",
                                  payload: { updateArgs },
                               },
                               "*",

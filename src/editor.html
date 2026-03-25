@@ -879,12 +879,6 @@
          initShowEditor: () => {
             // TESTING !!!!
             const isPreviewEditor = location.href.includes("previewEditor=true");
-            if (isPreviewEditor) {
-               this.initializers.initializeEditor(isPreviewEditor);
-               const editorStyle = document.querySelector("#editor").outerHTML;
-               document.head.insertAdjacentHTML("beforeend", editorStyle);
-               return;
-            }
             // TESTING !!!!
 
             // First we will retrieve the editor styles from the DOM
@@ -917,7 +911,7 @@
                         this.activePageOnTemplate = page.editor;
 
                         // Finally we will invoke the main editor initializer to render the sidebar and attach the necessary event listeners to the page
-                        this.initializers.initializeEditor(false);
+                        this.initializers.initializeEditor(isPreviewEditor);
                      }
                   });
                }

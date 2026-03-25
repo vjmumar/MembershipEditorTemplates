@@ -1099,13 +1099,16 @@
                }
             })();
 
+            console.log(element);
+
             // Then we will generate the HTML for the CSS customization inputs
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
                const input = (() => {
                   if (c.type === "multi") {
                      const propertyValue = document
-                        ?.querySelector("iframe")
+                        ?.getElementById("membership-editor-iframe-preview")
                         ?.contentDocument.querySelector(element)[c.property];
+                     console.log(propertyValue);
                      return this?.widgets?.multiInput(
                         templateItem.key,
                         c?.property,
@@ -1177,7 +1180,7 @@
                      );
                   } else {
                      const propertyValue = document
-                        ?.querySelector("iframe")
+                        ?.getElementById("membership-editor-iframe-preview")
                         ?.contentDocument.querySelector(element)[c.property];
                      return this?.widgets?.input(
                         templateItem.key,

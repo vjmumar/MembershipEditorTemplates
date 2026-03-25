@@ -1064,6 +1064,7 @@
                   );
                   window.addEventListener("message", (e) => {
                      if (e.data?.type === "INITIALIZE_ELEMENT_EDITOR") {
+                        console.log(e.data);
                         const { key, elementSelector } = e.data.payload;
                         const elementSnapshot = this.utils.getElementSnapshot(
                            document.querySelector(elementSelector),

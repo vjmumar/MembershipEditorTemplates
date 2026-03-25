@@ -979,7 +979,7 @@
                      const propertyValue = window.getComputedStyle(element)[c.property];
                      return this?.widgets?.multiInput(
                         templateItem.key,
-                        propertyValue || c.property,
+                        c.property || propertyValue,
                         c?.value,
                         (updatedValue) => {
                            const updateArgs = (() => {
@@ -1044,7 +1044,7 @@
                      return this?.widgets?.input(
                         templateItem.key,
                         c.property,
-                        propertyValue || c?.value,
+                        c?.value || propertyValue,
                         c.type,
                         c?.placeholder,
                         (updatedValue) => {

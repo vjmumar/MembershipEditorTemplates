@@ -1,6 +1,8 @@
 window.templateCustomizationSchema = {
    name: "Production",
    id: "template-3",
+   customJs: "",
+   fonts: [],
    global: [
       {
          name: "Loading Overlay",

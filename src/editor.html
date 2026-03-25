@@ -1076,8 +1076,9 @@
             isGlobal = false,
             globalName = "",
          ) => {
-            console.log(this.$iframe);
-            const element = this.$iframe.contentDocument.querySelector(selector);
+            const element = document
+               ?.getElementById("membership-editor-iframe-preview")
+               .contentDocument.querySelector(selector);
             console.log(element);
 
             // First we will retrieve the sidebar and its content container

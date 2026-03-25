@@ -1470,7 +1470,7 @@
                const globalItemElements = c?.customizations?.reduce((ac, cc) => {
                   // We will generate a clickable global contents item which will open the element editor in global mode
                   ac += `
-                         <div class="global-contents-item__item" onclick="window.MembershipCustomization.initializers.initializeElementEditor('${cc.key}','template1',document.querySelector('${cc.elementSelector}'), true, '${c.name}');">
+                         <div class="global-contents-item__item" onclick="window.MembershipCustomization.initializers.initializeElementEditor('${cc.key}',window.MembershipCustomization.utils.getElementSnapshot(document.querySelector('${cc.elementSelector}')), true, '${c.name}');">
                              <p class="global-contents-item__item__title">
                                  ${cc.label}
                                  <i class="fa-solid fa-angle-right"></i>

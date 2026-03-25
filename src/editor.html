@@ -976,9 +976,10 @@
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
                const input = (() => {
                   if (c.type === "multi") {
+                     const propertyValue = window.getComputedStyle(element)[c.property];
                      return this?.widgets?.multiInput(
                         templateItem.key,
-                        c.property,
+                        propertyValue || c.property,
                         c?.value,
                         (updatedValue) => {
                            const updateArgs = (() => {
@@ -1039,7 +1040,7 @@
                         },
                      );
                   } else {
-                     const value = window.getComputedStyle(element)[c.property];
+                     const propertyValue = window.getComputedStyle(element)[c.property];
                      return this?.widgets?.input(
                         templateItem.key,
                         c.property,

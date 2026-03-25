@@ -697,7 +697,10 @@
                         activeTemplateFromSavedTemplates?.name ===
                         window?.templateCustomizationSchema?.name
                      ) {
-                        console.log("bpro")
+                        console.log(
+                           window?.templateCustomizationSchema,
+                           activeTemplateFromSavedTemplates,
+                        );
                         /**
                          * Merges the specific active template from the saved array into the Master Template Schema.
                          * We use _.mergeWith to ensure that if we fix a CSS selector or property

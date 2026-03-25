@@ -676,7 +676,6 @@
             const currentTemplate = this.templates.find(
                (tem) => tem.id === activeTemplateFromSavedTemplates?.id,
             );
-            console.log(currentTemplate);
             const script = document.createElement("script");
             script.src = (
                currentTemplate ? currentTemplate : this.templates[0]
@@ -2098,6 +2097,7 @@
                   );
                   updatedActiveTemplatesConfig.push(this.activeTemplate);
 
+                  console.log(this.activeTemplate);
                   /**
                    * Then, we stringify the entire template configuration array and apply a replacer function
                    * to convert executable functions into strings, allowing them to be safely stored in the database.

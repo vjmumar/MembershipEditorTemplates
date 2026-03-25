@@ -736,6 +736,8 @@
                   }
                })();
 
+               console.log(this.activeTemplate)
+
                // Then we will select the default page editor configuration from the active template
                this.activePageOnTemplate =
                   this.activeTemplate?.[
@@ -2080,7 +2082,7 @@
             // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
             if (this.token) {
                try {
-                  // First we will create a variable where we will store the updated window?.activeTemplatesConfig
+                  // First we will create a variable where we will store the updated window.activeTemplatesConfig
                   let updatedActiveTemplatesConfig = window?.activeTemplatesConfig || [];
 
                   // Then, we reset the active state for all templates in the global configuration

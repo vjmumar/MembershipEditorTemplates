@@ -305,6 +305,7 @@
       padding: 10px;
       cursor: pointer;
       border-radius: 5px;
+      margin: 10px;
    }
 
    .global-contents__advance-settings p {
@@ -1354,10 +1355,50 @@
                            <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipCustomization.initializers.initializeThemeSelector()"></i>
                        </div>
                        ${globalItemsHTML}
-                       <div class="global-contents__advance-settings" onClick="this.parentElement.classList.toggle('active')">
+                       <div class="global-contents__advance-settings" onClick="window.MembershipCustomization.initializers.initializeAdvanceSettings()">
                            <p>Advance Settings</p>
                            <i class="fa-solid fa-angle-right"></i>
                         </div>
+                   </div>
+               `;
+         },
+
+         // This method will initialize the advance settings in sidebar
+         initializeAdvanceSettings: () => {
+            // First we will retrieve the sidebar and its content container where we will inject the HTML
+            const $sidebar = document.querySelector(".editor-customizer-sidebar");
+            const $sidebarContent = $sidebar.querySelector(
+               ".editor-customizer-sidebar__content",
+            );
+
+            // Then we will create the custom css html
+            const customCssHTML = (() => {
+               return `
+                  <div class="advance-settings__customcss">
+                     <textarea></textarea>   
+                  </div>
+               `;
+            })();
+
+            // Then we will create the fonts list html
+            const fontsListHTML = (() => {
+               return `
+                  <div class="advance-settings__fonts">
+                     <textarea></textarea>   
+                  </div>
+               `;
+            })();
+
+            // Finally we will render the fully generated HTML into the sidebar content area
+            $sidebarContent.innerHTML = `
+                   <div class="theme-selector">
+                       <div class="theme-selector__header">
+                           <i class="fa-solid fa-arrow-left theme-selector__header__icon" onclick="window.MembershipCustomization.initializers.initializeGlobalContents()"></i>
+                           <p class="theme-selector__header__text">Advance Settings</p>
+                           <div></div>
+                       </div>
+                       ${customCssHTML}
+                       ${fontsListHTML}
                    </div>
                `;
          },

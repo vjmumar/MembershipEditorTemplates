@@ -697,10 +697,6 @@
                         activeTemplateFromSavedTemplates?.name ===
                         window?.templateCustomizationSchema?.name
                      ) {
-                        console.log(
-                           window?.templateCustomizationSchema,
-                           activeTemplateFromSavedTemplates,
-                        );
                         /**
                          * Merges the specific active template from the saved array into the Master Template Schema.
                          * We use _.mergeWith to ensure that if we fix a CSS selector or property
@@ -715,7 +711,12 @@
                               // --- STEP 1: USER DATA OVERWRITES ---
                               // If the current property is 'value' (the actual color/text)
                               // or 'isTurnedOn' (the toggle state), we want the user's saved data.
-                              if (key === "value" || key === "isTurnedOn") {
+                              if (
+                                 key === "value" ||
+                                 key === "isTurnedOn" ||
+                                 key === "customCss" ||
+                                 key === "fonts"
+                              ) {
                                  return srcValue;
                               }
 

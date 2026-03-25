@@ -880,12 +880,6 @@
             // TESTING !!!!
             const isPreviewEditor = location.href.includes("previewEditor=true");
 
-            if (isPreviewEditor) {
-               this.initializers.initializeEditor();
-               return;
-            }
-
-            // TESTING !!!!
             // First we will retrieve the editor styles from the DOM
             const editorStyle = document.querySelector("#editor").outerHTML;
 

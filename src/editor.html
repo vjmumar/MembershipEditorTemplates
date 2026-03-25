@@ -1418,7 +1418,7 @@
                return `
                   <div class="advance-settings__customcss">
                      <p class="advance-settings__customcss__label">Custom Css</p>
-                     <textarea oninput="console.log(this.value)">${this.activeTemplate?.["customCss"]}</textarea>   
+                     <textarea oninput="window.MembershipCustomization.action.updateTemplateCustomCss(this.value || '')">${this.activeTemplate?.["customCss"]}</textarea>   
                   </div>
                `;
             })();
@@ -1814,7 +1814,7 @@
          },
 
          // This method updates the template's custom css
-         updateTemplateCustomizations: (customCss = "") => {
+         updateTemplateCustomCss: (customCss = "") => {
             // First we will update the active template's custom css
             this.activeTemplate["customCss"] = customCss;
 

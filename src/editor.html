@@ -958,7 +958,20 @@
                   const editableElement = e.target.closest("[data-editable]");
                   if (editableElement) {
                      const key = editableElement.getAttribute("data-editor-key");
-                     this.initializers.initializeElementEditor(key, editableElement);
+                     window.parent.postMessage(
+                        {
+                           type: "FROM_IFRAME",
+                           payload: { key, editableElement },
+                        },
+                        "*",
+                     );
+                     // this.initializers.initializeElementEditor(key, editableElement);
+                  }
+               });
+
+               window.addEventListener("message", (e) => {
+                  if (e.data?.type === "FROM_IFRAME") {
+                     console.log("from iframe:", e.data.payload);
                   }
                });
             }
@@ -1020,10 +1033,18 @@
                url.searchParams.append("previewEditor", "true");
                const cleanUrl = url.toString();
                $appContainer.remove();
-               $app.insertAdjacentHTML(
+               let iframe = $app.insertAdjacentHTML(
                   "afterbegin",
                   `<iframe src="${cleanUrl}" style="width:100%; height:100vh; border:none; display:block;"></iframe>`,
                );
+               setTimeout(() => {
+                  // Listen from Iframe
+                  window.addEventListener("message", (e) => {
+                     if (e.data?.type === "UPDATE") {
+                        console.log("from parent:", e.data.payload);
+                     }
+                  });
+               }, 100);
             }
          },
 

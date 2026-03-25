@@ -2366,7 +2366,7 @@ class CourseTemplate {
                                 ${sideBarCategories}    
                             </div>    
                             <a class="template-sidebar__image" href="#">
-                                <img src="https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/690ed3310269a35386dd56dd.png" />    
+                                <img src="https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774399872/Media_Kit_Section_Background_Image_page-0001_1_wbgjz3.jpg" />    
                             </a>
                         </div>
                         <div class="template-sidebar__toggler">

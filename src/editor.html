@@ -940,7 +940,7 @@
                   `<iframe src="${cleanUrl}" style="width:100%; height:100%; border:none; display:block;"></iframe>`,
                );
 
-               // Test !!!1
+               // Test !!!
                this.activePageOnTemplate.forEach((item) => {
                   // First we will retrieve the element based on its selector
                   let $element = document.querySelector(item.elementSelector);
@@ -995,7 +995,12 @@
                    </div>
                </div>
             `;
-            document.querySelector("#app").insertAdjacentHTML("beforeend", sidebarHTML);
+
+            if (!isPreview) {
+               document
+                  .querySelector("#app")
+                  .insertAdjacentHTML("beforeend", sidebarHTML);
+            }
 
             // Then we will initialize/show the global contents settings after a short delay
             setTimeout(() => {

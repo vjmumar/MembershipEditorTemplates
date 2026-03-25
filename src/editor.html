@@ -1433,7 +1433,7 @@
                return `
                   <div class="advance-settings__fonts">
                      <p class="advance-settings__fonts__label">Fonts</p>
-                     <textarea>${(this.activeTemplate?.["fonts"] || []).join(",\n")}</textarea>  
+                     <textarea oninput="window.MembershipCustomization.actions.updateTemplateFonts(this.value || '')">${(this.activeTemplate?.["fonts"] || []).join(",\n")}</textarea>  
                      <p class="advance-settings__fonts__info">ⓘ Import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p> 
                   </div>
                `;
@@ -1825,6 +1825,18 @@
 
             // Finally we will sync the updated custom CSS value with the live preview
             this.actions.syncTemplateCustomCss();
+         },
+
+         // This method updates the template's fonts
+         updateTemplateFonts: (stringedFonts = "") => {
+            // First Split by comma and trim whitespace from each name
+            const formattedFontsToArray = stringedFonts
+               ?.split(",")
+               ?.map((font) => font.trim())
+               ?.filter((font) => font.length > 0);
+
+            // Finally, update the active template fonts with the clean array
+            this.activeTemplate.fonts = formattedFontsToArray;
          },
 
          // This method applies the template's custom css

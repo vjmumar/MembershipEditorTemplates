@@ -1013,19 +1013,18 @@
                         e.target.classList.toggle("saving");
                      });
                }, 500);
+               const $app = document.querySelector("#app");
+               const $appContainer = document.querySelector("#app-container");
+               const url = new URL(location.href);
+               url.searchParams.delete("previewEditor");
+               url.searchParams.append("previewEditor", "true");
+               const cleanUrl = url.toString();
+               $appContainer.remove();
+               $app.insertAdjacentHTML(
+                  "afterbegin",
+                  `<iframe src="${cleanUrl}" style="width:100%; height:100vh; border:none; display:block;"></iframe>`,
+               );
             }
-
-            const $app = document.querySelector("#app");
-            const $appContainer = document.querySelector("#app-container");
-            const url = new URL(location.href);
-            url.searchParams.delete("previewEditor");
-            url.searchParams.append("previewEditor", "true");
-            const cleanUrl = url.toString();
-            $appContainer.remove();
-            $app.insertAdjacentHTML(
-               "afterbegin",
-               `<iframe src="${cleanUrl}" style="width:100%; height:100vh; border:none; display:block;"></iframe>`,
-            );
          },
 
          // This method builds and renders the customization sidebar for a specific selected element

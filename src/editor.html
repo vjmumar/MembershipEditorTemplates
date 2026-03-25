@@ -1188,7 +1188,7 @@
                            })();
                            // this.actions.updateTemplateCustomizations(...updateArgs);
                            // TESTING!!!!
-                           this.$iframe.postMessage(
+                           this.$iframe.contentWindow.postMessage(
                               {
                                  type: "UPDATE_FROM_PARENT",
                                  payload: { updateArgs },

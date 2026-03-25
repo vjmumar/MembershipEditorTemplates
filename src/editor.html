@@ -960,9 +960,9 @@
                   const editableElement = e.target.closest("[data-editable]");
                   if (editableElement) {
                      const key = editableElement.getAttribute("data-editor-key");
-                     this.parethis.initializers.initializeElementEditor(
+                     window.parent.MembershipCustomization.initializers.initializeElementEditor(
                         key,
-                        editableElement,
+                        `[data-editor-key='${key}']`,
                      );
                   }
                });

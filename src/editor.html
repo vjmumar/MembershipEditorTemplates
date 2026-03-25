@@ -881,6 +881,8 @@
             const isPreviewEditor = location.href.includes("previewEditor=true");
             if (isPreviewEditor) {
                this.initializers.initializeEditor(isPreviewEditor);
+               const editorStyle = document.querySelector("#editor").outerHTML;
+               document.head.insertAdjacentHTML("beforeend", editorStyle);
                return;
             }
             // TESTING !!!!

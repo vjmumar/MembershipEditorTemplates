@@ -641,6 +641,7 @@
          this.activePageOnTemplate = null;
          this.token = "";
          this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
+         this.$iframe = null;
 
          (async () => {
             // First we will retrieve the client's templates
@@ -1040,6 +1041,7 @@
                   "afterbegin",
                   `<iframe src="${cleanUrl}" style="width:100%; height:100vh; border:none; display:block;"></iframe>`,
                );
+               this.$iframe = iframe;
                setTimeout(() => {
                   // Listen from Iframe
                   // Testing
@@ -1186,8 +1188,7 @@
                            })();
                            // this.actions.updateTemplateCustomizations(...updateArgs);
                            // TESTING!!!!
-                           console.log(updateArgs);
-                           window.parent.postMessage(
+                           this.$iframe.postMessage(
                               {
                                  type: "UPDATE_FROM_PARENT",
                                  payload: { updateArgs },

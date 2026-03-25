@@ -1065,7 +1065,6 @@
             globalName = "",
          ) => {
             const element = this.$iframe.contentDocument.querySelector(selector);
-            console.log(element, this.$iframe.contentWindow);
 
             // First we will retrieve the sidebar and its content container
             const $sidebar = document.querySelector(".editor-customizer-sidebar");
@@ -1092,7 +1091,7 @@
                const input = (() => {
                   if (c.type === "multi") {
                      const propertyValue =
-                        this.$iframe?.contentWindow.querySelector(element)[c.property];
+                        this.$iframe?.contentDocument.querySelector(element)[c.property];
                      return this?.widgets?.multiInput(
                         templateItem.key,
                         c?.property,
@@ -1164,7 +1163,7 @@
                      );
                   } else {
                      const propertyValue =
-                        this.$iframe?.contentWindow.querySelector(element)[c.property];
+                        this.$iframe?.contentDocument.querySelector(element)[c.property];
                      return this?.widgets?.input(
                         templateItem.key,
                         c.property,

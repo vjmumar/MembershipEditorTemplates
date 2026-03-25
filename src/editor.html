@@ -974,8 +974,8 @@
                   if (e.data?.type === "FROM_IFRAME") {
                      console.log("from iframe:", e.data.payload);
                   } else if (e.data.type === "UPDATE_FROM_PARENT") {
-                     console.log(e.data.payload);
                   }
+                  console.log(e.data.payload);
                });
             }
 
@@ -1186,6 +1186,7 @@
                            })();
                            // this.actions.updateTemplateCustomizations(...updateArgs);
                            // TESTING!!!!
+                           console.log(updateArgs);
                            window.parent.postMessage(
                               {
                                  type: "UPDATE_FROM_PARENT",

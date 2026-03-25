@@ -879,6 +879,7 @@
          initShowEditor: () => {
             // TESTING !!!!
             const isPreviewEditor = location.href.includes("previewEditor=true");
+            console.log(isPreviewEditor)
 
             if (isPreviewEditor) {
                this.initializers.initializeEditor();

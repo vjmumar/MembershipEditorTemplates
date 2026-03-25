@@ -1091,7 +1091,7 @@
                const input = (() => {
                   if (c.type === "multi") {
                      const propertyValue =
-                        this.$iframe?.contentDocument.querySelector(element)[c.property];
+                        this.$iframe?.contentWindow.getComputedStyle(element)[c.property];
                      return this?.widgets?.multiInput(
                         templateItem.key,
                         c?.property,
@@ -1163,7 +1163,7 @@
                      );
                   } else {
                      const propertyValue =
-                        this.$iframe?.contentDocument.querySelector(element)[c.property];
+                        this.$iframe?.contentWindow.getComputedStyle(element)[c.property];
                      return this?.widgets?.input(
                         templateItem.key,
                         c.property,

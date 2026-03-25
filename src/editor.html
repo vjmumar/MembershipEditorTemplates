@@ -264,6 +264,22 @@
       cursor: pointer;
    }
 
+   .global-contents__separator {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-inline: 10px;
+   }
+
+   .global-contents__separator::before,
+   .global-contents__separator::after {
+      content: "";
+      height: 0.5px;
+      flex: 1;
+      background-color: #364758;
+   }
+
    .global-contents-item {
       padding: 10px;
       margin-bottom: 0px;
@@ -295,25 +311,6 @@
 
    .global-contents-item.active .global-contents-item__toggler i {
       rotate: 90deg;
-   }
-
-   .global-contents__advance-settings {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #8080801f;
-      padding: 10px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin: 10px;
-   }
-
-   .global-contents__advance-settings p {
-      font-size: 15px;
-   }
-
-   .global-contents__advance-settings i {
-      font-size: 11px;
    }
 
    .global-contents-item__wrapper {
@@ -352,6 +349,33 @@
 
    .global-contents-item__item.active .global-contents-item__item__title i {
       rotate: 90deg;
+   }
+
+   .global-contents__advance-settings {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #8080801f;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 10px;
+   }
+
+   .global-contents__advance-settings p {
+      font-size: 15px;
+   }
+
+   .global-contents__advance-settings i {
+      font-size: 11px;
+   }
+
+   .advance-settings__customcss {
+      margin: 10px;
+   }
+
+   .advance-settings__fonts {
+      margin: 10px;
    }
 
    /* Sidebar Footer */
@@ -1376,6 +1400,7 @@
             const customCssHTML = (() => {
                return `
                   <div class="advance-settings__customcss">
+                     <p class="advance-settings__customcss__label">Custom Css</p>
                      <textarea></textarea>   
                   </div>
                `;
@@ -1385,7 +1410,9 @@
             const fontsListHTML = (() => {
                return `
                   <div class="advance-settings__fonts">
-                     <textarea></textarea>   
+                     <p class="advance-settings__fonts__label">Fonts</p>
+                     <textarea></textarea>  
+                     <p class="advance-settings__fonts__label">ⓘ Import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p> 
                   </div>
                `;
             })();

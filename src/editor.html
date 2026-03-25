@@ -780,7 +780,7 @@
             // First we will retrieve the current URL
             const url = window.location.href;
 
-            // Then we will sunc the custom css
+            // Then we will sync the template's custom css
             this.actions.syncCustomCss();
 
             // Finally we will iterate through the template pages to find the current view and process it
@@ -1812,13 +1812,13 @@
                }
             }
          },
-         // This method applies the custom css
+
+         // This method applies the template's custom css
          syncCustomCss: () => {
             // First we will remove any previously rendered style tags
             document
                ?.querySelectorAll(".bm-template-custom-style")
                ?.forEach((e) => e.remove());
-            console.log(this.activeTemplate);
 
             // Then we will generate the Custom JS Style Tag
             const customCssStyleTagHTML = `
@@ -1826,7 +1826,7 @@
             `;
 
             // Finally we will insert the fresh style tags with the updated CSS values
-            document.body.insertAdjacentHTML("beforeend", `${commonTemplateStyles}`);
+            document.body.insertAdjacentHTML("beforeend", `${customCssStyleTagHTML}`);
          },
 
          // This method applies all CSS customizations from the activePageOnTemplate into the page

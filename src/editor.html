@@ -961,12 +961,12 @@
                   if (editableElement) {
                      const key = editableElement.getAttribute("data-editor-key");
                      // TESTING !!!!
-                     this.$clickedElement = editableElement;
-                     console.log(this.$clickedElement)
+                     const editableElementSnapshot =
+                        this.utils.getElementSnapshot(editableElement);
                      window.parent.postMessage(
                         {
                            type: "BM_ELEMENT_CLICKED",
-                           payload: { key },
+                           payload: { key, editableElementSnapshot },
                         },
                         "*",
                      );
@@ -1055,10 +1055,10 @@
                   );
                   window.addEventListener("message", (e) => {
                      if (e.data?.type === "BM_ELEMENT_CLICKED") {
-                        const { key } = e.data.payload;
+                        const { key, editableElementSnapshot } = e.data.payload;
                         this.initializers.initializeElementEditor(
                            key,
-                           this.$clickedElement,
+                           editableElementSnapshot,
                         );
                      }
                   });
@@ -1069,7 +1069,7 @@
          // This method builds and renders the customization sidebar for a specific selected element
          initializeElementEditor: (
             key = "",
-            element = null,
+            editableElementSnapshot = {},
             isGlobal = false,
             globalName = "",
          ) => {
@@ -1097,13 +1097,12 @@
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
                const input = (() => {
                   if (c.type === "multi") {
-                     const propertyValue = window.getComputedStyle(this.$clickedElement)[
-                        c.property
-                     ];
+                     const propertyValue =
+                        editableElementSnapshot?.computedStyle[c.property];
                      return this?.widgets?.multiInput(
                         templateItem.key,
                         c?.property,
-                        c?.value,
+                        c?.value || propertyValue,
                         (updatedValue) => {
                            const updateArgs = (() => {
                               if (isGlobal && globalName) {
@@ -1170,13 +1169,12 @@
                         },
                      );
                   } else {
-                     const propertyValue = window.getComputedStyle(this.$clickedElement)[
-                        c.property
-                     ];
+                     const propertyValue =
+                        editableElementSnapshot?.computedStyle[c.property];
                      return this?.widgets?.input(
                         templateItem.key,
                         c.property,
-                        c?.value,
+                        c?.value || propertyValue,
                         c.type,
                         c?.placeholder,
                         (updatedValue) => {
@@ -2842,6 +2840,30 @@
                done = true;
                observer.disconnect();
                clearTimeout(timeout);
+            };
+         },
+
+         // This helper method retrieves the snapshot of an element
+         getElementSnapshot: (el) => {
+            if (!el) return null;
+            const attributes = {};
+            if (el.hasAttributes()) {
+               for (const attr of el.attributes) {
+                  attributes[attr.name] = attr.value;
+               }
+            }
+            const styles = {};
+            const computed = window.getComputedStyle(el);
+            for (let i = 0; i < computed.length; i++) {
+               const propName = computed[i];
+               styles[propName] = computed.getPropertyValue(propName);
+            }
+            return {
+               tagName: el.tagName.toLowerCase(),
+               innerHTML: el.innerHTML,
+               innerText: el.innerText,
+               attributes: attributes,
+               computedStyle: styles,
             };
          },
 

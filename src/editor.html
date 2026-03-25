@@ -927,6 +927,20 @@
          initializeEditor: (isPreview = false) => {
             // First we will loop over all items from the activePageOnTemplate to prepare the DOM elements
             if (isPreview) {
+               const $app = document.querySelector("#app");
+               const $appContainer = document.querySelector("#app-container");
+               const url = new URL(location.href);
+               url.searchParams.delete("previewEditor");
+               const cleanUrl = url.toString();
+
+               // First we will remove the app container
+               $appContainer.remove();
+               $app.insertAdjacentHTML(
+                  "afterbegin",
+                  `<iframe src="${cleanUrl}" style="width:100%; height:100%; border:none; display:block;"></iframe>`,
+               );
+
+               // Test !!!1
                this.activePageOnTemplate.forEach((item) => {
                   // First we will retrieve the element based on its selector
                   let $element = document.querySelector(item.elementSelector);

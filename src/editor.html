@@ -958,9 +958,10 @@
                   const editableElement = e.target.closest("[data-editable]");
                   if (editableElement) {
                      const key = editableElement.getAttribute("data-editor-key");
+                     // TESTING !!!!
                      window.parent.postMessage(
                         {
-                           type: "FROM_IFRAME",
+                           type: "BM_ELEMENT_CLICKED",
                            payload: { key, editableElement },
                         },
                         "*",
@@ -1040,8 +1041,9 @@
                setTimeout(() => {
                   // Listen from Iframe
                   window.addEventListener("message", (e) => {
-                     if (e.data?.type === "UPDATE") {
-                        console.log("from parent:", e.data.payload);
+                     if (e.data?.type === "BM_ELEMENT_CLICKED") {
+                        const { key, editableElement } = e.data.payload;
+                        this.initializers.initializeElementEditor(key, editableElement);
                      }
                   });
                }, 100);

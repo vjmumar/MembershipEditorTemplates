@@ -1040,8 +1040,8 @@
             isGlobal = false,
             globalName = "",
          ) => {
+            if (this.isPreviewEditor) return;
             // First we will retrieve the element from the passed selector
-            console.log(this.$iframe);
             const element = this.$iframe.contentDocument.querySelector(selector);
 
             // Then we will retrieve the sidebar and its content container

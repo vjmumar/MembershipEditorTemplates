@@ -1354,7 +1354,7 @@
                   });
             }, 500);
 
-            // Then, attach the event listener for the "Save" button.
+            // Finally, attach the event listener for the "Save" button.
             setTimeout(() => {
                document
                   .querySelector(".editor-customizer-save")
@@ -1364,11 +1364,6 @@
                      e.target.classList.toggle("saving");
                   });
             }, 500);
-
-            // Finally, initialize the global contents by default.
-            setTimeout(() => {
-               this.initializers.initializeGlobalContents();
-            }, 2000);
          },
 
          // This method builds and renders the customization sidebar for a specific selected element
@@ -2280,7 +2275,16 @@
 
          // This method is responsible for saving the user's edits inside the current product custom js in ghl
          saveEditsToProductsCustomJs: async (seamlessUpdate = false) => {
-            // First we will retrieve the authentication token and extract the location and product IDs from the URL
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+            const activeTemplatesConfig =
+               previewIframeMembershipParser.activeTemplatesConfig;
+
+            // Then we will retrieve the authentication token and extract the location and product IDs from the URL
             const locationId = this.utils.getAuth()?.locationId;
             const productId = this.utils.getAuth()?.productId;
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
@@ -2289,7 +2293,7 @@
             if (this.token) {
                try {
                   // First we will create a variable where we will store the updated window.activeTemplatesConfig
-                  let updatedActiveTemplatesConfig = window?.activeTemplatesConfig || [];
+                  let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
 
                   // Then, we reset the active state for all templates in the global configuration
                   updatedActiveTemplatesConfig.forEach((tem) => {
@@ -2297,13 +2301,13 @@
                   });
 
                   // Then we will set the current active template as active
-                  this.activeTemplate.isActive = true;
+                  activeTemplate.isActive = true;
 
                   // Then we will filter out the old version of the template from the array and push the newly updated active template
                   updatedActiveTemplatesConfig = updatedActiveTemplatesConfig.filter(
-                     (tem) => tem.id !== this.activeTemplate.id,
+                     (tem) => tem.id !== activeTemplate.id,
                   );
-                  updatedActiveTemplatesConfig.push(this.activeTemplate);
+                  updatedActiveTemplatesConfig.push(activeTemplate);
 
                   /**
                    * Then, we stringify the entire template configuration array and apply a replacer function
@@ -2354,7 +2358,8 @@
                   });
 
                   // Then we will update the window.activeTemplatesConfig with updatedActiveTemplatesConfig
-                  window.activeTemplatesConfig = updatedActiveTemplatesConfig;
+                  previewIframeMembershipParser.activeTemplatesConfig =
+                     updatedActiveTemplatesConfig;
 
                   /**
                    * Finally, we provide visual confirmation to the user that their changes have been saved successfully,
@@ -2382,7 +2387,16 @@
             // First we will confirm the user's intent to switch template
             if (!confirm("Do you want to proceed?")) return;
 
-            // First we will retrieve the authentication token and extract the location and product IDs from the URL
+            // Then we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+            const activeTemplatesConfig =
+               previewIframeMembershipParser.activeTemplatesConfig;
+
+            // Then we will retrieve the authentication token and extract the location and product IDs from the URL
             const locationId = this.utils.getAuth()?.locationId;
             const productId = this.utils.getAuth().productId;
 
@@ -2405,7 +2419,7 @@
                   );
 
                   // Then we will create a variable where we will store the updated window?.activeTemplatesConfig
-                  let updatedActiveTemplatesConfig = window?.activeTemplatesConfig || [];
+                  let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
 
                   // Then, we reset the active state for all templates in the global configuration
                   updatedActiveTemplatesConfig?.forEach((tem) => {

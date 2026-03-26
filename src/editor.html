@@ -719,7 +719,7 @@
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isDesktop = true;
 
-         if (!this.isEdit) return;
+         if (this.isEdit) return;
 
          // Finally we will start the process of intializing and fetching the clients template and user's active template
          (async () => {

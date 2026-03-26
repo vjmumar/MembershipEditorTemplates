@@ -1780,7 +1780,7 @@
             $sidebarContent.innerHTML = `
                    <div class="global-contents">
                        <div class="global-contents__header">
-                           <i onclick="window.MembershipEditor.actions.switchEditoreMode(${this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
+                           <i onclick="window.MembershipEditor.actions.switchEditoreMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
                            <p class="global-contents__header__text">Global (Desktop/Mobile)</p>
                            <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipEditor.initializers.initializeThemeSelector()"></i>
                        </div>

@@ -1020,20 +1020,18 @@
                   "afterbegin",
                   `<iframe src="${cleanUrl}" id="membership-editor-iframe-preview" style="width:100%; height:100vh; border:none; display:block;"></iframe>`,
                );
-               setTimeout(() => {
+               this.$iframe = document?.getElementById(
+                  "membership-editor-iframe-preview",
+               );
+               this.$iframe.onload = () => {
+                  document
+                     .querySelector("#app")
+                     .insertAdjacentHTML("beforeend", sidebarHTML);
                   this.$iframe = document?.getElementById(
                      "membership-editor-iframe-preview",
                   );
-                  this.$iframe.onload = () => {
-                     document
-                        .querySelector("#app")
-                        .insertAdjacentHTML("beforeend", sidebarHTML);
-                     this.$iframe = document?.getElementById(
-                        "membership-editor-iframe-preview",
-                     );
-                     console.log(this.$iframe);
-                  };
-               }, 1000);
+                  console.log(this.$iframe);
+               };
             }
          },
 

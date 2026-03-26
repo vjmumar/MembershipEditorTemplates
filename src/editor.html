@@ -645,7 +645,7 @@
          this.$iframe = null;
 
          if (!this.isPreviewEditor) {
-            this.initializers.initShowEditor();
+            this.initializers.initializeEditor();
          }
          (async () => {
             // First we will retrieve the client's templates
@@ -1031,6 +1031,10 @@
                      .insertAdjacentHTML("beforeend", sidebarHTML);
                   setTimeout(() => {
                      this.initializers.initializeGlobalContents();
+                     this.activePageOnTemplate =
+                        this.$iframe.contentWindow.MembershipCustomization.activePageOnTemplate;
+                     this.activeTemplate =
+                        this.$iframe.contentWindow.MembershipCustomization.activeTemplate;
                   }, 100);
                };
             }

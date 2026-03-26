@@ -760,9 +760,9 @@
       // Initializer module
       initializers = {
          // This method serves as the entry point for the application initialization
-         init: async () => {
-            this.initializers.initSyncConfig();
+         init: () => {
             window.MembershipPreview = new MembershipPreview();
+            this.initializers.initSyncConfig();
          },
 
          // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution

@@ -762,6 +762,7 @@
          // This method serves as the entry point for the application initialization
          init: async () => {
             this.initializers.initSyncConfig();
+            window.MembershipPreview = new MembershipPreview();
          },
 
          // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution
@@ -1070,9 +1071,7 @@
       constructor() {
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
          if (this.isPreviewEditor) {
-            setTimeout(() => {
-               this.initializers.init();
-            }, 5000);
+            this.initializers.init();
          }
       }
 
@@ -3191,6 +3190,5 @@
    }
 
    window.MembershipParser = new MembershipParser();
-   window.MembershipPreview = new MembershipPreview();
    window.MembershipEditor = new MembershipEditor();
 </script>

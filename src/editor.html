@@ -1187,7 +1187,9 @@
                      }, 100);
                   };
                } else {
-                  this.initializers.initFloatingWidgetToggler();
+                 setTimeout(() => {
+                   this.initializers.initFloatingWidgetToggler();
+                 },2000)
                }
             }
          },

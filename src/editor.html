@@ -1928,7 +1928,14 @@
                isTurnedOn: false,
             },
          ) => {
-            // First we will initialize placeholders for the items we need to find
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will initialize placeholders for the items we need to find
             let templateItem = null;
             let featureItem = null;
 
@@ -1985,7 +1992,7 @@
                );
 
                // Then we will update the feature's isTurnedOn state in the data structure
-               this.activePageOnTemplate.forEach((item) => {
+               activePageOnTemplate.forEach((item) => {
                   if (item.key === normal.templateItemKey) {
                      item.features.forEach((fI) => {
                         if (fI.key === normal.featureKey) {
@@ -2003,7 +2010,7 @@
                );
             } else {
                // First otherwise if this is a global update, we will retrieve the items from the global settings
-               templateItem = this.activeTemplate.global
+               templateItem = activeTemplate.global
                   .find((item) => item.name === global.name)
                   .customizations.find((item) => item.key === global.templateItemKey);
                featureItem = templateItem.features.find(
@@ -2011,7 +2018,7 @@
                );
 
                // Then we will update the feature's isTurnedOn state in the global data structure
-               this.activeTemplate.global.forEach((item) => {
+               activeTemplate.global.forEach((item) => {
                   if (item.name === global.name) {
                      item.customizations.forEach((cItem) => {
                         if (cItem.key === global.templateItemKey) {

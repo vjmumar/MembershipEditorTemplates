@@ -865,7 +865,10 @@
                      setTimeout(() => {
                         this.actions.syncTemplateFeatureCustomizations(null, null, true);
                      }, 5500);
-                     window.MembershipPreview = new MembershipPreview();
+                     setInterval(() => {
+                        window.MembershipPreview = new MembershipPreview();
+                        console.log("goo");
+                     }, 1000);
                   }
                },
             );

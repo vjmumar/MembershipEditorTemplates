@@ -754,19 +754,19 @@
                      this.isDesktop ? "pages" : "mobilePages"
                   ][0]?.editor;
 
+               if (this.isPreviewEditor) {
+                  console.log("testing", location.href);
+                  window.parent.MembershipCustomization.activePageOnTemplate =
+                     this.activePageOnTemplate;
+                  window.parent.MembershipCustomization.activeTemplate =
+                     this.activeTemplate;
+               }
                // Finally we will invoke the initialization sequence to start the application
                this.initializers.init();
             };
 
             // Finally we will retrieve the authentication token by parsing the product data from the cookies
             this.token = this.utils.getAuth().tokenId;
-
-            if (this.isPreviewEditor) {
-               console.log("testing", location.href);
-               window.parent.MembershipCustomization.activePageOnTemplate =
-                  this.activePageOnTemplate;
-               window.parent.MembershipCustomization.activeTemplate = this.activeTemplate;
-            }
          })();
       }
 

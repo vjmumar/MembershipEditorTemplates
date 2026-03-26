@@ -718,7 +718,7 @@
          this.activePageOnTemplate = null;
          this.token = "";
          this.isEdit = location.href.includes("membershipeditor=true");
-         this.isDesktop = true;
+         this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
          // Then we will check if we are in edit mode, we stop the constructor here to prevent redundant initialization.
          if (this.isEdit) return;
@@ -1736,7 +1736,7 @@
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;
             const activePageOnTemplate =
-               previewIframeMembershipParser.activePageOnTemplate;
+               previewIframeMembershipParser?.activePageOnTemplate;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
             // Then we will retrieve the sidebar and its content container where we will inject the HTML

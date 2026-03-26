@@ -1166,6 +1166,7 @@
                // If the editor flag is present, we initialize the full editor, otherwise we show the floating toggle widget
                if (this.isEdit) {
                   this.initializers.initShowEditor();
+
                   const $app = document.querySelector("#app");
                   const $appContainer = document.querySelector("#app-container");
                   const url = new URL(location.href);
@@ -1277,45 +1278,12 @@
                   // Then we will retrieve the current url
                   const url = window.location.href;
 
-                  // Finally we will iterate through the template pages to find the current view and initialize the editor logic
-                  this.activeTemplate?.[
-                     this.isDesktop ? "pages" : "mobilePages"
-                  ]?.forEach((page) => {
-                     const urlRegex = new RegExp(page?.urlRegex);
-                     if (urlRegex?.test(url)) {
-                        // First we will inject the editor styles into the document head to ensure they persist even if the app container is cleared during rendering
-                        document.head.insertAdjacentHTML("beforeend", editorStyle);
-
-                        // Then we will update the active page state with the specific editor configuration that matches the current URL
-                        this.activePageOnTemplate = page.editor;
-
-                        // Finally we will invoke the main editor initializer to render the sidebar and attach the necessary event listeners to the page
-                        this.initializers.initializeEditor();
-                     }
-                  });
+                  this.initializers.initializeEditor();
                }
             }, 0);
          },
 
          initializeEditor: () => {
-            // First we will loop over all items from the activePageOnTemplate to prepare the DOM elements
-            this.activePageOnTemplate.forEach((item) => {
-               // First we will retrieve the element based on its selector
-               let $element = document.querySelector(item.elementSelector);
-
-               // Then we will attach the required attributes so our editor can identify it
-               $element?.setAttribute("data-editable", "true");
-               $element?.setAttribute("data-editor-key", item.key);
-
-               /**
-                * Finally we will re-render the element by resetting its outerHTML.
-                * This is needed because some SPA frameworks handle navigation without anchor tags.
-                * By forcing a re-render, all existing event listeners on the element get removed,
-                * which prevents unintended navigation behavior.
-                */
-               if ($element) $element.outerHTML = $element.outerHTML;
-            });
-
             // Then we will inject the customization sidebar HTML into the application container
             const sidebarHTML = `
                            <div class="editor-customizer-sidebar ${this.isDesktop ? "active" : ""}">

@@ -1947,7 +1947,7 @@
             ) => {
                if (isTurnedOn) {
                   // First we will insert the feature's styles
-                  document.body.insertAdjacentHTML(
+                  this.$iframe.contentDocument.body.insertAdjacentHTML(
                      "beforeend",
                      `
                            <style id="${templateItemKey}-${featureKey}">
@@ -1957,24 +1957,24 @@
                   );
 
                   // Finally we will insert and execute the feature's JavaScript
-                  const scriptTag = document.createElement("script");
+                  const scriptTag =  this.$iframe.contentDocument.createElement("script");
                   scriptTag.id = `${templateItemKey}-${featureKey}`;
                   scriptTag.innerHTML = featureItem.js(featureItem.customizations);
-                  document.body.append(scriptTag);
+                  this.$iframe.contentDocument.body.append(scriptTag);
                } else {
                   // First we will remove the previous styles and script tags
-                  document
+                  this.$iframe.contentDocument
                      .querySelector(`style[id = '${templateItemKey}-${featureKey}']`)
                      ?.remove();
-                  document
+                  this.$iframe.contentDocument
                      .querySelector(`script[id = '${templateItemKey}-${featureKey}']`)
                      ?.remove();
 
                   // Finally we will run the cleanup script to reset any side effects
-                  const scriptTag = document.createElement("script");
+                  const scriptTag =  this.$iframe.contentDocument.createElement("script");
                   scriptTag.id = `${templateItemKey}-${featureKey}`;
                   scriptTag.innerHTML = featureItem.cleanUpJs(featureItem.customizations);
-                  document.body.append(scriptTag);
+                   this.$iframe.contentDocument.body.append(scriptTag);
                   setTimeout(() => {
                      scriptTag.remove();
                   }, 500);
@@ -2212,7 +2212,7 @@
             // Then if a global feature key is provided, we will iterate through the global settings to find and update the matching feature customization while checking if the feature is active
             if (global.featureKey) {
                let isTurnedOn = false;
-               this.activeTemplate.global.forEach((item) => {
+               activeTemplate.global.forEach((item) => {
                   if (item.name === global.name) {
                      item.customizations.forEach((cItem) => {
                         if (cItem.key === global.templateItemKey) {
@@ -3001,7 +3001,7 @@
          },
       };
    }
-   console.log('ready')
+
    window.MembershipParser = new MembershipParser();
    window.MembershipEditor = new MembershipEditor();
 </script>

@@ -1032,10 +1032,10 @@
                      .insertAdjacentHTML("beforeend", sidebarHTML);
                   setTimeout(() => {
                      this.initializers.initializeGlobalContents();
-                     this.activePageOnTemplate =
-                        this.$iframe.contentWindow.MembershipCustomization.activePageOnTemplate;
-                     this.activeTemplate =
-                        this.$iframe.contentWindow.MembershipCustomization.activeTemplate;
+                     window.parent.MembershipCustomization.activeTemplate =
+                        this.activeTemplate;
+                     window.parent.MembershipCustomization.activePageOnTemplate =
+                        this.activePageOnTemplate;
                   }, 100);
                };
             }
@@ -1315,9 +1315,9 @@
                // Then we will generate the inline js for toggling the feature
                const toggleFeatureInlineJs = (() => {
                   if (isGlobal && globalName) {
-                     return `window['membership-editor-iframe-preview'].contentWindow.MembershipCustomization.actions.toggleTemplateFeature({},{name: '${globalName}',templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
+                     return `window.MembershipCustomization.actions.toggleTemplateFeature({},{name: '${globalName}',templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
                   } else {
-                     return `window['membership-editor-iframe-preview'].contentWindow.MembershipCustomization.actions.toggleTemplateFeature({templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
+                     return `window.MembershipCustomization.actions.toggleTemplateFeature({templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
                   }
                })();
 

@@ -1397,7 +1397,8 @@
                      // First we will check if the type is either select or font, if font we will return the active tempaltes fonts else just the passed options
                      const options = (() => {
                         if (c.type === "font") {
-                           return this.$iframe.contentWindow.MembershipParser.activeTemplate["fonts"];
+                           return this.$iframe.contentWindow.MembershipParser
+                              .activeTemplate["fonts"];
                         }
                         return c.options;
                      })();
@@ -1967,11 +1968,14 @@
             normal = { key: "", property: "", value: "" },
             global = { name: "", key: "", property: "", value: "" },
          ) => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
             const activePageOnTemplate =
-               this.$iframe.contentWindow.MembershipParser.activePageOnTemplate;
-            const activeTemplate =
-               this.$iframe.contentWindow.MembershipParser.activeTemplate;
-            // First if a normal key is provided, we will find the specific item on the active page and update its CSS value
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then if a normal key is provided, we will find the specific item on the active page and update its CSS value
             if (normal?.key) {
                activePageOnTemplate.forEach((item) => {
                   if (item.key === normal?.key) {
@@ -2002,7 +2006,7 @@
             }
 
             // Finally we will sync the updated CSS values with the live preview
-            this.$iframe.contentWindow.MembershipParser.actions.syncTemplateCssCustomizations();
+            previewIframeMembershipParser.actions.syncTemplateCssCustomizations();
          },
 
          // This method updates a specific customization for the activePageOnTemplate's element
@@ -2016,15 +2020,22 @@
                value: "",
             },
          ) => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
             /**
-             * First we will locate the element customization on the active page by matching:
+             * Then we will locate the element customization on the active page by matching:
              * - the element key
              * - the customization type (attribute/html)
              * - the customization target (attr name)
              * When found, we will update its value
              */
             if (normal.key) {
-               this.activePageOnTemplate.forEach((item) => {
+               activePageOnTemplate.forEach((item) => {
                   if (item.key === normal.key) {
                      item.elementCustomizations.forEach((item) => {
                         if (item.type === normal.type && item.target === normal.target) {
@@ -2043,7 +2054,7 @@
              * When found, we will update its value
              */
             if (global.key) {
-               this.activeTemplate.global.forEach((item) => {
+               activeTemplate.global.forEach((item) => {
                   if (item.name === global.name) {
                      item.customizations.forEach((customizationItem) => {
                         if (customizationItem.key === global.key) {
@@ -2067,7 +2078,7 @@
              * Finally we will sync the updated customizations so the UI and preview
              * will reflect the new state
              */
-            this.actions.syncTemplateElementsCustomization();
+            previewIframeMembershipParser.actions.syncTemplateElementsCustomization();
          },
 
          // This method updates a specific feature customization
@@ -2086,10 +2097,17 @@
                value: "",
             },
          ) => {
-            // First if a normal feature key is provided, we will traverse the active page to find and update the specific feature customization while checking if the feature is active
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then if a normal feature key is provided, we will traverse the active page to find and update the specific feature customization while checking if the feature is active
             if (normal.featureKey) {
                let isTurnedOn = false;
-               this.activePageOnTemplate.forEach((item) => {
+               activePageOnTemplate.forEach((item) => {
                   if (item.key === normal.templateItemKey) {
                      item.features.forEach((fItem) => {
                         if (fItem.key === normal.featureKey) {
@@ -2106,7 +2124,7 @@
 
                // Finally we will re-sync the feature only if it is currently turned on
                if (isTurnedOn) {
-                  this.actions.syncTemplateFeatureCustomizations({
+                  previewIframeMembershipParser.syncTemplateFeatureCustomizations({
                      featureKey: normal.featureKey,
                      templateItemKey: normal.templateItemKey,
                   });
@@ -2139,7 +2157,7 @@
 
                // Finally we will re-sync the global feature only if it is currently turned on
                if (isTurnedOn) {
-                  this.actions.syncTemplateFeatureCustomizations(
+                  previewIframeMembershipParser.actions.syncTemplateFeatureCustomizations(
                      {},
                      {
                         name: global.name,
@@ -2153,15 +2171,25 @@
 
          // This method updates the template's custom css
          updateTemplateCustomCss: (customCss = "") => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
             // First we will update the active template's custom css
-            this.activeTemplate["customCss"] = customCss;
+            activeTemplate["customCss"] = customCss;
 
             // Finally we will sync the updated custom CSS value with the live preview
-            this.actions.syncTemplateCustomCss();
+            previewIframeMembershipParser.actions.syncTemplateCustomCss();
          },
 
          // This method updates the template's fonts
          updateTemplateFonts: (stringedFonts = "") => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
             // First Split by comma and trim whitespace from each name
             const formattedFontsToArray = stringedFonts
                ?.split(",")
@@ -2169,7 +2197,7 @@
                ?.filter((font) => font.length > 0);
 
             // Finally, update the active template fonts with the clean array
-            this.activeTemplate.fonts = formattedFontsToArray;
+            activeTemplate.fonts = formattedFontsToArray;
          },
 
          // This method is responsible for saving the user's edits inside the current product custom js in ghl

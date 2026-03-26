@@ -1320,7 +1320,10 @@
          },
 
          initializeEditor: () => {
-            // First, inject the customization sidebar HTML into the application container.
+            // First we will remove existing sidebar editor's
+            document.querySelector(".editor-customizer-sidebar").remove();
+
+            // Then, inject the customization sidebar HTML into the application container.
             const sidebarHTML = `
                 <div class="editor-customizer-sidebar ${this.isDesktop ? "active" : ""}">
                     <div class="editor-customizer-sidebar__content">
@@ -1746,7 +1749,7 @@
             );
 
             // Then we will generate the HTML structure by iterating through the global contents
-            const globalItemsHTML = activeTemplate.global.reduce((a, c) => {
+            const globalItemsHTML = activeTemplate?.global.reduce((a, c) => {
                // First we will generate the elements of the current global item
                const globalItemElements = c?.customizations?.reduce((ac, cc) => {
                   // We will generate a clickable global contents item which will open the element editor in global mode
@@ -2622,7 +2625,7 @@
             document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(
                "beforeend",
                `
-            <div style="padding: 24px 16px; background: #f9f9f9; border-radius: 8px; border: 1px solid #eee; text-align: center; font-family: sans-serif;">
+            <div style="padding: 24px 16px;background: #f9f9f9;border-radius: 8px;border: 1px solid #eee;text-align: center;font-family: sans-serif;position: absolute;top: 0;height: 100%;z-index: 99999999;">
                 <div style="margin: 0 auto 16px auto; width: 24px; height: 24px; border: 3px solid #ddd; border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
                 <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
                 <h3 style="margin: 0 0 8px 0; color: #000; font-size: 18px; font-weight: 600;">Changing View</h3>

@@ -633,6 +633,82 @@
    referrerpolicy="no-referrer"
 ></script>
 <script defer>
+   class MembershipPreview {
+      constructor() {
+         this.isPreviewEditor = location.href.includes("isEditorPreview=true");
+         if (this.isPreviewEditor) {
+            this.initializers.init();
+         }
+      }
+
+      // Initializer module
+      initializers = {
+         // This method serves as the entry point for the application initialization
+         init: () => {
+            // First we will loop over all items from the activePageOnTemplate to prepare the DOM elements
+            window.MembershipParser.activePageOnTemplate.forEach((item) => {
+               // First we will retrieve the element based on its selector
+               let $element = document.querySelector(item.elementSelector);
+
+               // Then we will attach the required attributes so our editor can identify it
+               $element?.setAttribute("data-editable", "true");
+               $element?.setAttribute("data-editor-key", item.key);
+
+               /**
+                * Finally we will re-render the element by resetting its outerHTML.
+                * This is needed because some SPA frameworks handle navigation without anchor tags.
+                * By forcing a re-render, all existing event listeners on the element get removed,
+                * which prevents unintended navigation behavior.
+                */
+               if ($element) $element.outerHTML = $element.outerHTML;
+            });
+
+            // Then we will disable all anchor tags to prevent accidental navigation while editing
+            setTimeout(() => {
+               document.querySelectorAll("a").forEach((a) => {
+                  a.href = "javascript:void(0)";
+                  a.removeAttribute("download");
+               });
+            }, 2000);
+
+            // Finally we will attach the main click listener to detect interactions with editable elements
+            window.addEventListener("click", (e) => {
+               /**
+                * We will check if the clicked element or any of its parent elements
+                * contains the data-editable attribute.
+                * If it does, we will open the editor for that element.
+                */
+               const editableElement = e.target.closest("[data-editable]");
+               if (editableElement) {
+                  const key = editableElement.getAttribute("data-editor-key");
+                  // window.parent.MembershipCustomization.initializers.initializeElementEditor(
+                  //    key,
+                  //    `[data-editor-key='${key}']`,
+                  // );
+               }
+            });
+         },
+      };
+
+      // Utils module
+      utils = {
+         // This helper method retrieves the auth information
+         getAuth: () => {
+            const acatToken = $cookies.get("acat");
+            const catToken = $cookies.get("cat");
+            const data = JSON.parse(window.atob(acatToken || catToken) || "{}");
+            if (!("productId" in data)) {
+               const url = location.href
+                  ?.split("/products/")[1]
+                  .split("/")[0]
+                  .split("?")[0];
+               data.productId = url;
+            }
+            return data;
+         },
+      };
+   }
+
    class MembershipParser {
       constructor() {
          // First, we define the available templates along with their metadata such as IDs, preview images, and script sources
@@ -1045,82 +1121,6 @@
                // Finally, we will invoke the helper to apply the global changes to the DOM
                syncFeature(global.templateItemKey, global.featureKey);
             }
-         },
-      };
-
-      // Utils module
-      utils = {
-         // This helper method retrieves the auth information
-         getAuth: () => {
-            const acatToken = $cookies.get("acat");
-            const catToken = $cookies.get("cat");
-            const data = JSON.parse(window.atob(acatToken || catToken) || "{}");
-            if (!("productId" in data)) {
-               const url = location.href
-                  ?.split("/products/")[1]
-                  .split("/")[0]
-                  .split("?")[0];
-               data.productId = url;
-            }
-            return data;
-         },
-      };
-   }
-
-   class MembershipPreview {
-      constructor() {
-         this.isPreviewEditor = location.href.includes("isEditorPreview=true");
-         if (this.isPreviewEditor) {
-            this.initializers.init();
-         }
-      }
-
-      // Initializer module
-      initializers = {
-         // This method serves as the entry point for the application initialization
-         init: () => {
-            // First we will loop over all items from the activePageOnTemplate to prepare the DOM elements
-            window.MembershipParser.activePageOnTemplate.forEach((item) => {
-               // First we will retrieve the element based on its selector
-               let $element = document.querySelector(item.elementSelector);
-
-               // Then we will attach the required attributes so our editor can identify it
-               $element?.setAttribute("data-editable", "true");
-               $element?.setAttribute("data-editor-key", item.key);
-
-               /**
-                * Finally we will re-render the element by resetting its outerHTML.
-                * This is needed because some SPA frameworks handle navigation without anchor tags.
-                * By forcing a re-render, all existing event listeners on the element get removed,
-                * which prevents unintended navigation behavior.
-                */
-               if ($element) $element.outerHTML = $element.outerHTML;
-            });
-
-            // Then we will disable all anchor tags to prevent accidental navigation while editing
-            setTimeout(() => {
-               document.querySelectorAll("a").forEach((a) => {
-                  a.href = "javascript:void(0)";
-                  a.removeAttribute("download");
-               });
-            }, 2000);
-
-            // Finally we will attach the main click listener to detect interactions with editable elements
-            window.addEventListener("click", (e) => {
-               /**
-                * We will check if the clicked element or any of its parent elements
-                * contains the data-editable attribute.
-                * If it does, we will open the editor for that element.
-                */
-               const editableElement = e.target.closest("[data-editable]");
-               if (editableElement) {
-                  const key = editableElement.getAttribute("data-editor-key");
-                  // window.parent.MembershipCustomization.initializers.initializeElementEditor(
-                  //    key,
-                  //    `[data-editor-key='${key}']`,
-                  // );
-               }
-            });
          },
       };
 

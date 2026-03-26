@@ -761,7 +761,6 @@
       initializers = {
          // This method serves as the entry point for the application initialization
          init: () => {
-            window.MembershipPreview = new MembershipPreview();
             this.initializers.initSyncConfig();
          },
 
@@ -790,6 +789,7 @@
                      setTimeout(() => {
                         this.actions.syncTemplateFeatureCustomizations(null, null, true);
                      }, 5500);
+                     window.MembershipPreview = new MembershipPreview();
                   }
                },
             );
@@ -1070,7 +1070,6 @@
    class MembershipPreview {
       constructor() {
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
-         console.log(this.isPreviewEditor)
          if (this.isPreviewEditor) {
             this.initializers.init();
          }

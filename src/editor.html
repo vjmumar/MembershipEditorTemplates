@@ -1168,8 +1168,8 @@
                   const $app = document.querySelector("#app");
                   const $appContainer = document.querySelector("#app-container");
                   const url = new URL(location.href);
-                  url.searchParams.delete("previewEditor");
-                  url.searchParams.append("previewEditor", "true");
+                  url.searchParams.delete("isEditorPreview");
+                  url.searchParams.append("isEditorPreview", "true");
                   const cleanUrl = url.toString();
                   $appContainer.remove();
                   this.$iframe = document.createElement("iframe");
@@ -1180,9 +1180,6 @@
                   $app.prepend(this.$iframe);
                   this.$iframe.onload = () => {
                      this.initializers.initShowEditor();
-                     setTimeout(() => {
-                        this.initializers.initializeGlobalContents();
-                     }, 100);
                   };
                } else {
                   this.initializers.initFloatingWidgetToggler();

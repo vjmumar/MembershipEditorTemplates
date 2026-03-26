@@ -1152,8 +1152,6 @@
 
    class MembershipEditor {
       constructor() {
-         this.activeTemplate = null;
-         this.activePageOnTemplate = null;
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isPagePreview = sessionStorage?.is_preview === "true";
          this.$previewIframe = null;
@@ -1349,11 +1347,11 @@
             // Then we will retrieve the specific template item data based on the clicked element's key or the global passed global name and key
             let templateItem = (() => {
                if (isGlobal && globalName) {
-                  return this.$iframe.contentWindow.MembershipCustomization.activeTemplate.global
+                  return this.$iframe.contentWindow.MembershipParser.activeTemplate.global
                      ?.find((item) => item.name === globalName)
                      ?.customizations?.find((item) => item.key === key);
                } else {
-                  return this.$iframe.contentWindow.MembershipCustomization.activePageOnTemplate.find(
+                  return this.$iframe.contentWindow.MembershipParser.activePageOnTemplate.find(
                      (item) => item.key === key,
                   );
                }

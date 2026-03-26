@@ -1948,7 +1948,7 @@
             })();
 
             // Finally we will insert the fresh style tags with the updated CSS values
-            $document.body.insertAdjacentHTML(
+            $document?.body?.insertAdjacentHTML(
                "beforeend",
                `${commonTemplateStyles}${globalTemplateStyles}`,
             );

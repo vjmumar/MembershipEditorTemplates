@@ -1780,7 +1780,7 @@
             $sidebarContent.innerHTML = `
                    <div class="global-contents">
                        <div class="global-contents__header">
-                           ${!this.isDesktop ? "<div></div>" : `<i onclick="window.MembershipEditor.actions.launchMobileCustomizer()" class="fa-solid fa-mobile-screen global-contents__header__mobile-switch"></i>`}
+                           <i onclick="window.MembershipEditor.actions.switchEditoreMode(${this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
                            <p class="global-contents__header__text">Global (Desktop/Mobile)</p>
                            <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipEditor.initializers.initializeThemeSelector()"></i>
                        </div>
@@ -2603,44 +2603,40 @@
             }
          },
 
-         // This method launches a 600px wide window to force GHL's internal engine to initialize the mobile DOM structure
-         launchMobileCustomizer: async () => {
-            this.isDesktop = false;
-            this.$iframe.style.width = "500px";
+         // This method toggles the editor view between desktop and mobile modes.
+         switchEditoreMode: async (isDesktop = true) => {
+            // First we will ask the user to confirm their decision to open the mobile customizer
+            const isConfirm = confirm(
+               `Please save your changes before switching to another view. If you have already saved, you may continue; otherwise, we advise saving now so your changes are not lost.`,
+            );
+
+            // Then we will check the user's decision and if they did not agree then we will not proceed
+            if (!isConfirm) return;
+
+            // Then we will update the iframe
+            this.isDesktop = isDesktop;
+            this.$iframe.style.width = isDesktop ? "100%" : "500px";
             this.$iframe.src = this.$iframe.src;
 
-            // // First we will ask the user to confirm their decision to open the mobile customizer
-            // const isConfirm = confirm(
-            //    `Opening the mobile customizer will create a data conflict with this window.We strongly advise you to save your desktop changes now before proceeding.Once the mobile editor is open, this page will be locked, and you must reload this page after you are finished to see your mobile updates.`,
-            // );
-            // // Then we will check the user's decision and if they did not agree then we will not proceed
-            // if (!isConfirm) return;
-            // // Then we will open a new window
-            // const mobileWindow = window.open(
-            //    location.href,
-            //    "Mobile_Editor",
-            //    "width=600,height=800,scrollbars=yes,resizable=yes",
-            // );
-            // // Then we will remove the sidebar
-            // document.querySelector(".editor-customizer-sidebar").remove();
-            // // Finally we will insert a warning message to the current body
-            // document.body.insertAdjacentHTML(
-            //    "beforeend",
-            //    `
-            //    <div style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: rgba(255, 255, 255, 0.85) !important; z-index: 99999999 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-family: sans-serif !important; text-align: center !important;">
-            //        <div style="max-width: 420px; padding: 20px;">
-            //            <h2 style="margin: 0 0 12px 0; color: #000; font-size: 24px; font-weight: 600;">Mobile Editor Active</h2>
-            //            <p style="color: #333; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
-            //                This page is locked because editing both versions at once causes data conflicts.
-            //                <b>Save your mobile changes first</b>, then reload this page to return.
-            //             </p>
-            //            <button onclick="window.location.reload();" style="background: #000; color: #fff; border: none; padding: 14px 35px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 15px; transition: opacity 0.2s;">
-            //                Reload Page
-            //            </button>
-            //        </div>
-            //    </div>
-            // `,
-            // );
+            // Finally we will add a loading indicator inside the sidebar editor
+            document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(
+               "beforeend",
+               `
+            <div style="padding: 24px 16px; background: #f9f9f9; border-radius: 8px; border: 1px solid #eee; text-align: center; font-family: sans-serif;">
+                <div style="margin: 0 auto 16px auto; width: 24px; height: 24px; border: 3px solid #ddd; border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+                <h3 style="margin: 0 0 8px 0; color: #000; font-size: 18px; font-weight: 600;">Changing View</h3>
+                <p style="color: #444; font-size: 14px; line-height: 1.5; margin: 0;">
+                    Please wait while we are changing the view...
+                </p>
+                <hr style="margin: 16px 0; border: 0; border-top: 1px solid #eee;">
+                <p style="color: #666; font-size: 12px; line-height: 1.4;">
+                    This window is temporarily locked to prevent data conflicts. 
+                    <b>Save your mobile changes</b> before returning to desktop.
+                </p>
+            </div>
+            `,
+            );
          },
       };
 

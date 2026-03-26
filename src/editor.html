@@ -1153,6 +1153,7 @@
    class MembershipEditor {
       constructor() {
          this.isEdit = location.href.includes("membershipeditor=true");
+         this.isPreviewEditor = location.href.includes("isEditorPreview=true");
          this.isPagePreview = sessionStorage?.is_preview === "true";
          this.$previewIframe = null;
          this.$iframe = null;
@@ -1186,7 +1187,9 @@
                      this.initializers.initShowEditor();
                   };
                } else {
-                  this.initializers.initFloatingWidgetToggler();
+                  if (isPreviewEditor) {
+                     this.initializers.initFloatingWidgetToggler();
+                  }
                }
             }
          },
@@ -1684,6 +1687,13 @@
 
          // This method will initialize the global contents in sidebar and render all the global elements
          initializeGlobalContents: () => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
             // First we will retrieve the sidebar and its content container where we will inject the HTML
             const $sidebar = document.querySelector(".editor-customizer-sidebar");
             const $sidebarContent = $sidebar.querySelector(
@@ -1691,7 +1701,7 @@
             );
 
             // Then we will generate the HTML structure by iterating through the global contents
-            const globalItemsHTML = this.activeTemplate.global.reduce((a, c) => {
+            const globalItemsHTML = activeTemplate.global.reduce((a, c) => {
                // First we will generate the elements of the current global item
                const globalItemElements = c?.customizations?.reduce((ac, cc) => {
                   // We will generate a clickable global contents item which will open the element editor in global mode

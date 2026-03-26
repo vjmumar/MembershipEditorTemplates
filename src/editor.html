@@ -1406,7 +1406,7 @@
                const globalItemElements = c?.customizations?.reduce((ac, cc) => {
                   // We will generate a clickable global contents item which will open the element editor in global mode
                   ac += `
-                         <div class="global-contents-item__item" onclick="window['membership-editor-iframe-preview'].contentWindow.MembershipCustomization.initializers.initializeElementEditor('${cc.key}',${cc.elementSelector}, true, '${c.name}')">
+                         <div class="global-contents-item__item" onclick="window['membership-editor-iframe-preview'].contentWindow.MembershipCustomization.initializers.initializeElementEditor('${cc.key}','${cc.elementSelector}', true, '${c.name}')">
                              <p class="global-contents-item__item__title">
                                  ${cc.label}
                                  <i class="fa-solid fa-angle-right"></i>

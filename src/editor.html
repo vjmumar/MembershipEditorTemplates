@@ -1709,6 +1709,7 @@
                   }
                });
             }
+
             // Then if a global key is provided, we will iterate through the global settings to find and update the matching CSS property
             if (global.name) {
                this.activeTemplate.global.forEach((item) => {
@@ -1916,7 +1917,9 @@
          // This method applies all CSS customizations from the activePageOnTemplate into the page
          syncTemplateCssCustomizations: () => {
             // First we will remove any previously rendered style tags
-            document.querySelectorAll(".bm-template-style")?.forEach((e) => e.remove());
+            this.$iframe.contentDocument
+               ?.querySelectorAll(".bm-template-style")
+               ?.forEach((e) => e.remove());
 
             // Then we will generate the HTML strings for both the active page and global styles
             const commonTemplateStyles = (() => {
@@ -1969,7 +1972,7 @@
             })();
 
             // Finally we will insert the fresh style tags with the updated CSS values
-            document.body.insertAdjacentHTML(
+            this.$iframe.contentDocument.body.insertAdjacentHTML(
                "beforeend",
                `${commonTemplateStyles}${globalTemplateStyles}`,
             );

@@ -1378,7 +1378,14 @@
             isGlobal = false,
             globalName = "",
          ) => {
-            // First we will retrieve the element from the passed selector
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will retrieve the element
             const element = this.$iframe.contentDocument.querySelector(selector);
 
             // Then we will retrieve the sidebar and its content container
@@ -1393,13 +1400,11 @@
             // Then we will retrieve the specific template item data based on the clicked element's key or the global passed global name and key
             let templateItem = (() => {
                if (isGlobal && globalName) {
-                  return this.$iframe.contentWindow.MembershipParser.activeTemplate.global
+                  return activeTemplate.global
                      ?.find((item) => item.name === globalName)
                      ?.customizations?.find((item) => item.key === key);
                } else {
-                  return this.$iframe.contentWindow.MembershipParser.activePageOnTemplate.find(
-                     (item) => item.key === key,
-                  );
+                  return activePageOnTemplate.find((item) => item.key === key);
                }
             })();
 
@@ -1737,7 +1742,7 @@
                previewIframeMembershipParser.activePageOnTemplate;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
-            // First we will retrieve the sidebar and its content container where we will inject the HTML
+            // Then we will retrieve the sidebar and its content container where we will inject the HTML
             const $sidebar = document.querySelector(".editor-customizer-sidebar");
             const $sidebarContent = $sidebar.querySelector(
                ".editor-customizer-sidebar__content",
@@ -1794,7 +1799,14 @@
 
          // This method will initialize the advance settings in sidebar
          initializeAdvanceSettings: () => {
-            // First we will retrieve the sidebar and its content container where we will inject the HTML
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will retrieve the sidebar and its content container where we will inject the HTML
             const $sidebar = document.querySelector(".editor-customizer-sidebar");
             const $sidebarContent = $sidebar.querySelector(
                ".editor-customizer-sidebar__content",
@@ -1805,7 +1817,7 @@
                return `
                   <div class="advance-settings__customcss">
                      <p class="advance-settings__customcss__label">Custom Css</p>
-                     <textarea oninput="window.MembershipEditor.actions.updateTemplateCustomCss(this.value || '')">${this.activeTemplate?.["customCss"]}</textarea>
+                     <textarea oninput="window.MembershipEditor.actions.updateTemplateCustomCss(this.value || '')">${activeTemplate?.["customCss"]}</textarea>
                   </div>
                `;
             })();
@@ -1815,7 +1827,7 @@
                return `
                   <div class="advance-settings__fonts">
                      <p class="advance-settings__fonts__label">Fonts</p>
-                     <textarea oninput="window.MembershipEditor.actions.updateTemplateFonts(this.value || '')">${(this.activeTemplate?.["fonts"] || []).join(",\n")}</textarea>
+                     <textarea oninput="window.MembershipEditor.actions.updateTemplateFonts(this.value || '')">${(activeTemplate?.["fonts"] || []).join(",\n")}</textarea>
                      <p class="advance-settings__fonts__info">ⓘ Import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p>
                   </div>
                `;
@@ -1837,7 +1849,13 @@
 
          // This method will initialize the theme selector sidebar
          initializeThemeSelector: () => {
-            // First we will retrieve the sidebar and its content container where we will inject the HTML
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const templates = previewIframeMembershipParser.templates;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will retrieve the sidebar and its content container where we will inject the HTML
             const $sidebar = document.querySelector(".editor-customizer-sidebar");
             const $sidebarContent = $sidebar.querySelector(
                ".editor-customizer-sidebar__content",
@@ -1845,9 +1863,9 @@
 
             // Then we will create the template list html
             const themeHTML = (() => {
-               const itemHTML = this.templates.reduce((a, c) => {
+               const itemHTML = templates.reduce((a, c) => {
                   const controllerHTML = (() => {
-                     if (this.activeTemplate.id === c.id) {
+                     if (activeTemplate.id === c.id) {
                         return `
                                <div class="theme-selector__list__item__controller">
                                    <p class="theme-selector__list__item__controller__info">Current</p>

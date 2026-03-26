@@ -1915,11 +1915,12 @@
          },
 
          // This method applies all CSS customizations from the activePageOnTemplate into the page
-         syncTemplateCssCustomizations: () => {
-            // First we will remove any previously rendered style tags
-            this.$iframe.contentDocument
-               ?.querySelectorAll(".bm-template-style")
-               ?.forEach((e) => e.remove());
+         syncTemplateCssCustomizations: (isPreview = false) => {
+            // First we will select the document we will use
+            const $document = isPreview ? this.$iframe.contentDocument : document;
+
+            // Then we will remove any previously rendered style tags
+            $document?.querySelectorAll(".bm-template-style")?.forEach((e) => e.remove());
 
             // Then we will generate the HTML strings for both the active page and global styles
             const commonTemplateStyles = (() => {
@@ -1972,16 +1973,19 @@
             })();
 
             // Finally we will insert the fresh style tags with the updated CSS values
-            this.$iframe.contentDocument.body.insertAdjacentHTML(
+            $document.body.insertAdjacentHTML(
                "beforeend",
                `${commonTemplateStyles}${globalTemplateStyles}`,
             );
          },
 
          // This method syncs all element customizations to the actual DOM elements
-         syncTemplateElementsCustomization: () => {
+         syncTemplateElementsCustomization: (isPreview = false) => {
+            // First we will select the document we will use
+            const $document = isPreview ? this.$iframe.contentDocument : document;
+
             /**
-             * First we will loop through the activePageOnTemplate because each template
+             * Then we will loop through the activePageOnTemplate because each template
              * element may have its own customizations that need to be applied.
              */
             this.activePageOnTemplate.forEach((item) => {
@@ -1992,16 +1996,26 @@
                    */
                   item.elementCustomizations.forEach((elItem) => {
                      if (elItem?.type === "attribute" && elItem?.value) {
-                        this.utils.whenElementReady(item.elementSelector, () => {
-                           document
-                              ?.querySelector(item.elementSelector)
-                              ?.setAttribute(elItem.target, elItem.value);
-                        });
+                        this.utils.whenElementReady(
+                           item.elementSelector,
+                           () => {
+                              $document
+                                 ?.querySelector(item.elementSelector)
+                                 ?.setAttribute(elItem.target, elItem.value);
+                           },
+                           0,
+                           $document,
+                        );
                      } else if (elItem.type === "html" && elItem.value) {
-                        this.utils.whenElementReady(item.elementSelector, () => {
-                           document.querySelector(item.elementSelector).innerHTML =
-                              elItem.value;
-                        });
+                        this.utils.whenElementReady(
+                           item.elementSelector,
+                           () => {
+                              $document.querySelector(item.elementSelector).innerHTML =
+                                 elItem.value;
+                           },
+                           0,
+                           $document,
+                        );
                      }
                   });
                }
@@ -2020,7 +2034,7 @@
                            elementCustomizationI?.value
                         ) {
                            this.utils.whenElementReady(cItem.elementSelector, () => {
-                              document
+                              $document
                                  ?.querySelector(cItem.elementSelector)
                                  ?.setAttribute(
                                     elementCustomizationI.target,
@@ -2032,7 +2046,7 @@
                            elementCustomizationI.value
                         ) {
                            this.utils.whenElementReady(cItem.elementSelector, () => {
-                              document.querySelector(cItem.elementSelector).innerHTML =
+                              $document.querySelector(cItem.elementSelector).innerHTML =
                                  elementCustomizationI?.value;
                            });
                         }
@@ -2791,6 +2805,7 @@
             selector,
             callback,
             { timeoutMs = 7000, root = document.documentElement, once = true } = {},
+            $document = document,
          ) => {
             // First we will initialize our state variables to track the observation status
             let done = false;
@@ -2800,7 +2815,7 @@
             // Then we will define the check function that verifies if the element exists and executes the callback
             const apply = () => {
                if (done) return;
-               const el = document.querySelector(selector);
+               const el = $document.querySelector(selector);
                if (!el) return false;
                callback(el);
                if (once) {

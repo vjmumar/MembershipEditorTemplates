@@ -1675,7 +1675,6 @@
             normal = { key: "", property: "", value: "" },
             global = { name: "", key: "", property: "", value: "" },
          ) => {
-            console.log(normal, global)
             // First if a normal key is provided, we will find the specific item on the active page and update its CSS value
             if (normal?.key) {
                this.activePageOnTemplate.forEach((item) => {
@@ -1899,6 +1898,7 @@
             const $document = this.isPreviewEditor
                ? this.$iframe?.contentDocument
                : document;
+            console.log($document);
 
             // Then we will remove any previously rendered style tags
             $document?.querySelectorAll(".bm-template-style")?.forEach((e) => e.remove());

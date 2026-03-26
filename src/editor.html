@@ -1958,7 +1958,7 @@
          syncTemplateElementsCustomization: () => {
             // First we will select the document we will use
             const $document = this.isPreviewEditor
-               ? this.$iframe.contentDocument
+               ? this.$iframe?.contentDocument
                : document;
 
             /**

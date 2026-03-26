@@ -1091,7 +1091,6 @@
                                  ];
                               }
                            })();
-                           console.log(updateArgs);
                            this.actions.updateTemplateCustomizations(...updateArgs);
                         },
                      );
@@ -1166,7 +1165,9 @@
                                  ];
                               }
                            })();
-                           this.actions.updateTemplateCustomizations(...updateArgs);
+                           this.$iframe.contentWindow.MembershipCustomization.actions.updateTemplateCustomizations(
+                              ...updateArgs,
+                           );
                         },
                      );
                   }

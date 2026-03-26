@@ -1157,6 +1157,8 @@
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isPagePreview = sessionStorage?.is_preview === "true";
          this.$previewIframe = null;
+         this.$iframe = null;
+         this.isDesktop = true;
          this.initializers.init();
       }
 
@@ -1332,7 +1334,6 @@
             isGlobal = false,
             globalName = "",
          ) => {
-            if (this.isPreviewEditor) return;
             // First we will retrieve the element from the passed selector
             const element = this.$iframe.contentDocument.querySelector(selector);
 

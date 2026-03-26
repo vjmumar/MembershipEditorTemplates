@@ -1749,7 +1749,7 @@
                const globalItemElements = c?.customizations?.reduce((ac, cc) => {
                   // We will generate a clickable global contents item which will open the element editor in global mode
                   ac += `
-                         <div class="global-contents-item__item" onclick="window.MembershipCustomization.initializers.initializeElementEditor('${cc.key}','${cc.elementSelector}', true, '${c.name}')">
+                         <div class="global-contents-item__item" onclick="window.MembershipEditor.initializers.initializeElementEditor('${cc.key}','${cc.elementSelector}', true, '${c.name}')">
                              <p class="global-contents-item__item__title">
                                  ${cc.label}
                                  <i class="fa-solid fa-angle-right"></i>
@@ -1778,11 +1778,11 @@
             $sidebarContent.innerHTML = `
                    <div class="global-contents">
                        <div class="global-contents__header">
-                           ${!this.isDesktop ? "<div></div>" : `<i onclick="window.MembershipCustomization.actions.launchMobileCustomizer()" class="fa-solid fa-mobile-screen global-contents__header__mobile-switch"></i>`}
+                           ${!this.isDesktop ? "<div></div>" : `<i onclick="window.MembershipEditor.actions.launchMobileCustomizer()" class="fa-solid fa-mobile-screen global-contents__header__mobile-switch"></i>`}
                            <p class="global-contents__header__text">Global (Desktop/Mobile)</p>
-                           <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipCustomization.initializers.initializeThemeSelector()"></i>
+                           <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipEditor.initializers.initializeThemeSelector()"></i>
                        </div>
-                        <div class="global-contents__advance-settings" onClick="window.MembershipCustomization.initializers.initializeAdvanceSettings()">
+                        <div class="global-contents__advance-settings" onClick="window.MembershipEditor.initializers.initializeAdvanceSettings()">
                            <p>Advance Settings</p>
                            <i class="fa-solid fa-angle-right"></i>
                         </div>
@@ -1805,7 +1805,7 @@
                return `
                   <div class="advance-settings__customcss">
                      <p class="advance-settings__customcss__label">Custom Css</p>
-                     <textarea oninput="window.MembershipCustomization.actions.updateTemplateCustomCss(this.value || '')">${this.activeTemplate?.["customCss"]}</textarea>
+                     <textarea oninput="window.MembershipEditor.actions.updateTemplateCustomCss(this.value || '')">${this.activeTemplate?.["customCss"]}</textarea>
                   </div>
                `;
             })();
@@ -1815,7 +1815,7 @@
                return `
                   <div class="advance-settings__fonts">
                      <p class="advance-settings__fonts__label">Fonts</p>
-                     <textarea oninput="window.MembershipCustomization.actions.updateTemplateFonts(this.value || '')">${(this.activeTemplate?.["fonts"] || []).join(",\n")}</textarea>
+                     <textarea oninput="window.MembershipEditor.actions.updateTemplateFonts(this.value || '')">${(this.activeTemplate?.["fonts"] || []).join(",\n")}</textarea>
                      <p class="advance-settings__fonts__info">ⓘ Import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p>
                   </div>
                `;
@@ -1856,7 +1856,7 @@
                      } else {
                         return `
                            <div class="theme-selector__list__item__controller">
-                               <a href="#" onclick="window.MembershipCustomization.actions.updateTemplateToProductsCustomJs('${c.id}', '.theme-selector__list')" class="theme-selector__list__item__controller__button">
+                               <a href="#" onclick="window.MembershipEditor.actions.updateTemplateToProductsCustomJs('${c.id}', '.theme-selector__list')" class="theme-selector__list__item__controller__button">
                                    <i class="fa-solid fa-check"></i>
                                </a>
                                <a href="${c.previewLink}" target="__blank" class="theme-selector__list__item__controller__button">
@@ -1884,7 +1884,7 @@
             $sidebarContent.innerHTML = `
                    <div class="theme-selector">
                        <div class="theme-selector__header">
-                           <i class="fa-solid fa-arrow-left theme-selector__header__icon" onclick="window.MembershipCustomization.initializers.initializeGlobalContents()"></i>
+                           <i class="fa-solid fa-arrow-left theme-selector__header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
                            <p class="theme-selector__header__text">Templates</p>
                            <div></div>
                        </div>

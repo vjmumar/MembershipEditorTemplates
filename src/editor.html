@@ -1327,23 +1327,10 @@
             // Then, inject the customization sidebar HTML into the application container.
             const sidebarHTML = `
                 <div class="editor-customizer-sidebar active">
-                   <div class="editor-customizer-sidebar__content" style="text-align: center; padding: 40px 20px; font-family: sans-serif;">
-                         <div style="font-size: 32px; margin-bottom: 16px;">👋</div>
-                         <p style="font-size: 18px; color: #111; font-weight: 500; line-height: 1.4; margin: 0 0 24px 0;">
-                             Click any editable element <br> to start customizing
-                         </p>
-                         <div style="display: flex; align-items: center; margin-bottom: 24px;">
-                             <div style="flex: 1; height: 1px; background: #eee;"></div>
-                             <span style="padding: 0 10px; color: #999; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">or</span>
-                             <div style="flex: 1; height: 1px; background: #eee;"></div>
-                         </div>
-                         <button 
-                             onclick="window.MembershipEditor.initializers.initializeGlobalContents()" 
-                             style="width: 100%; background: #000; color: #fff; border: none; padding: 12px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; transition: transform 0.1s ease, background 0.2s;"
-                           >
-                             Edit Global Content
-                         </button>
-                     </div>
+                    <div class="editor-customizer-sidebar__content">
+                        <p style="font-size: 20px; text-align:center; padding-block: 30px; margin-inline: 10px;">👋 Click any editable element to start customizing</p>
+                        <button                              style="width: 100%; background: #000; color: #fff; border: none; padding: 12px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 14px; transition: transform 0.1s ease, background 0.2s;" onclick="window.MembershipEditor.initializers.initializeGlobalContents()">oR Click Here To Start Editing</p>
+                    </div>
                     <div class="editor-customizer-sidebar__footer">
                         <button class="editor-customizer-sidebar__footer__button editor-customizer-exit">Exit</button>
                         <button class="editor-customizer-sidebar__footer__button editor-customizer-hide" onclick="this.closest('.editor-customizer-sidebar').classList.remove('active')">Hide</button>

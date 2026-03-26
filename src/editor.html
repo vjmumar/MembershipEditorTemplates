@@ -1070,6 +1070,7 @@
    class MembershipPreview {
       constructor() {
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
+         console.log(this.isPreviewEditor)
          if (this.isPreviewEditor) {
             this.initializers.init();
          }

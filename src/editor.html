@@ -1154,6 +1154,7 @@
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isPagePreview = sessionStorage?.is_preview === "true";
          this.$previewIframe = null;
+         this.initializers.init();
       }
 
       // Initializer module
@@ -1187,10 +1188,7 @@
                      }, 100);
                   };
                } else {
-                 setTimeout(() => {
-                   this.initializers.initFloatingWidgetToggler();
-                   console.log("brok")
-                 },2000)
+                  this.initializers.initFloatingWidgetToggler();
                }
             }
          },

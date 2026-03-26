@@ -681,10 +681,10 @@
                const editableElement = e.target.closest("[data-editable]");
                if (editableElement) {
                   const key = editableElement.getAttribute("data-editor-key");
-                  // window.parent.MembershipCustomization.initializers.initializeElementEditor(
-                  //    key,
-                  //    `[data-editor-key='${key}']`,
-                  // );
+                  window.parent.MembershipEditor.initializers.initializeElementEditor(
+                     key,
+                     `[data-editor-key='${key}']`,
+                  );
                }
             });
          },
@@ -859,12 +859,14 @@
                      // First we will update the active page state with the specific editor configuration that matches the current URL
                      this.activePageOnTemplate = page.editor;
 
-                     // Finally we will invoke all synchronizers to apply the configuration customizations
+                     // Then we will invoke all synchronizers to apply the configuration customizations
                      this.actions.syncTemplateCssCustomizations();
                      this.actions.syncTemplateElementsCustomization();
                      setTimeout(() => {
                         this.actions.syncTemplateFeatureCustomizations(null, null, true);
                      }, 5500);
+
+                     // Finally we will initialize the membership preview to conditionally initiate the membership editor preview mode
                      setTimeout(() => {
                         window.MembershipPreview = new MembershipPreview();
                      }, 2000);
@@ -1149,6 +1151,8 @@
       constructor() {
          this.activeTemplate = null;
          this.activePageOnTemplate = null;
+         this.isEdit = location.href.includes("membershipeditor=true");
+         this.isPagePreview = sessionStorage?.is_preview === "true";
          this.$previewIframe = null;
       }
 
@@ -1156,16 +1160,10 @@
       initializers = {
          // This method serves as the entry point for the application initialization
          init: () => {
-            // First we will retrieve the preview status from session storage and check the URL for the editor flag
-            const isPreview = sessionStorage?.is_preview === "true";
-            const isEdit =
-               new URLSearchParams(window.location.search).get("membershipeditor") ===
-               "true";
-
             // Then if we are in preview mode, we will determine which interface to show
-            if (isPreview) {
+            if (this.isPagePreview) {
                // If the editor flag is present, we initialize the full editor, otherwise we show the floating toggle widget
-               if (isEdit) {
+               if (this.isEdit) {
                   this.initializers.initShowEditor();
                   const $app = document.querySelector("#app");
                   const $appContainer = document.querySelector("#app-container");

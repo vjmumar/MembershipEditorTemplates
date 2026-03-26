@@ -1227,6 +1227,7 @@
                   "width:100%; height:100vh; border:none; display:block; margin-inline: auto";
                $app.prepend(this.$iframe);
 
+               document.body.style.overflow = "hidden";
                // Finally, wait for the iframe's internal DOM to be ready before firing the editor logic.
                this.$iframe.onload = () => {
                   this.initializers.initShowEditor();

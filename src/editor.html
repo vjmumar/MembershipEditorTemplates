@@ -1397,7 +1397,7 @@
                      // First we will check if the type is either select or font, if font we will return the active tempaltes fonts else just the passed options
                      const options = (() => {
                         if (c.type === "font") {
-                           return this.activeTemplate["fonts"];
+                           return this.$iframe.contentWindow.MembershipParser.activeTemplate["fonts"];
                         }
                         return c.options;
                      })();

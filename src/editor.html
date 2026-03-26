@@ -640,10 +640,11 @@
          this.activeTemplate = null;
          this.activePageOnTemplate = null;
          this.token = "";
-         this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
+         this.isDesktop = true;
          this.isPreviewEditor = location.href.includes("previewEditor=true");
          this.$iframe = null;
 
+         if (this.isPreviewEditor) return;
          (async () => {
             // First we will retrieve the client's templates
             await fetch(
@@ -1056,15 +1057,11 @@
             // Then we will retrieve the specific template item data based on the clicked element's key or the global passed global name and key
             let templateItem = (() => {
                if (isGlobal && globalName) {
-                  return window[
-                     "membership-editor-iframe-preview"
-                  ].contentWindow.MembershipCustomization.activeTemplate.global
+                  return this.$iframe.contentWindow.MembershipCustomization.activeTemplate.global
                      ?.find((item) => item.name === globalName)
                      ?.customizations?.find((item) => item.key === key);
                } else {
-                  return window[
-                     "membership-editor-iframe-preview"
-                  ].contentWindow.MembershipCustomization.activePageOnTemplate.find(
+                  return this.$iframe.contentWindow.MembershipCustomization.activePageOnTemplate.find(
                      (item) => item.key === key,
                   );
                }

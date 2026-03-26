@@ -1961,13 +1961,8 @@
 
          // This method syncs all element customizations to the actual DOM elements
          syncTemplateElementsCustomization: () => {
-            // First we will select the document we will use
-            const $document = this.isPreviewEditor
-               ? this.$iframe?.contentDocument
-               : document;
-
             /**
-             * Then we will loop through the activePageOnTemplate because each template
+             * First we will loop through the activePageOnTemplate because each template
              * element may have its own customizations that need to be applied.
              */
             this.activePageOnTemplate.forEach((item) => {
@@ -1978,26 +1973,16 @@
                    */
                   item.elementCustomizations.forEach((elItem) => {
                      if (elItem?.type === "attribute" && elItem?.value) {
-                        this.utils.whenElementReady(
-                           item.elementSelector,
-                           () => {
-                              $document
-                                 ?.querySelector(item.elementSelector)
-                                 ?.setAttribute(elItem.target, elItem.value);
-                           },
-                           0,
-                           $document,
-                        );
+                        this.utils.whenElementReady(item.elementSelector, () => {
+                           document
+                              ?.querySelector(item.elementSelector)
+                              ?.setAttribute(elItem.target, elItem.value);
+                        });
                      } else if (elItem.type === "html" && elItem.value) {
-                        this.utils.whenElementReady(
-                           item.elementSelector,
-                           () => {
-                              $document.querySelector(item.elementSelector).innerHTML =
-                                 elItem.value;
-                           },
-                           0,
-                           $document,
-                        );
+                        this.utils.whenElementReady(item.elementSelector, () => {
+                           document.querySelector(item.elementSelector).innerHTML =
+                              elItem.value;
+                        });
                      }
                   });
                }
@@ -2787,7 +2772,6 @@
             selector,
             callback,
             { timeoutMs = 7000, root = document.documentElement, once = true } = {},
-            $document = document,
          ) => {
             // First we will initialize our state variables to track the observation status
             let done = false;
@@ -2797,7 +2781,7 @@
             // Then we will define the check function that verifies if the element exists and executes the callback
             const apply = () => {
                if (done) return;
-               const el = $document.querySelector(selector);
+               const el = document.querySelector(selector);
                if (!el) return false;
                callback(el);
                if (once) {

@@ -1895,6 +1895,7 @@
          // This method applies all CSS customizations from the activePageOnTemplate into the page
          syncTemplateCssCustomizations: () => {
             // First we will select the document we will use
+            console.log(this.$iframe);
             const $document = this.isPreviewEditor
                ? this.$iframe?.contentDocument
                : document;

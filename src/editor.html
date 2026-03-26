@@ -1094,7 +1094,9 @@
                                  ];
                               }
                            })();
-                           this.actions.updateTemplateCustomizations(...updateArgs);
+                           this.$iframe.contentWindow.MembershipCustomization.actions.updateTemplateCustomizations(
+                              ...updateArgs,
+                           );
                         },
                      );
                   } else if (c.type === "select" || c.type === "font") {
@@ -1134,7 +1136,9 @@
                                  ];
                               }
                            })();
-                           this.actions.updateTemplateCustomizations(...updateArgs);
+                           this.$iframe.contentWindow.MembershipCustomization.actions.updateTemplateCustomizations(
+                              ...updateArgs,
+                           );
                         },
                      );
                   } else {
@@ -1229,7 +1233,7 @@
                                  ];
                               }
                            })();
-                           this.actions.updateTemplateElementCustomizations(
+                           this.$iframe.contentWindow.MembershipCustomization.actions.updateTemplateElementCustomizations(
                               ...updateArgs,
                            );
                         },

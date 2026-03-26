@@ -1231,8 +1231,9 @@
                      this.initializers.initShowEditor();
                   };
                } else {
-                  console.log(isPagePreview);
-                  this.initializers.initFloatingWidgetToggler();
+                  if (!this.isPreviewEditor) {
+                     this.initializers.initFloatingWidgetToggler();
+                  }
                }
             }
          },

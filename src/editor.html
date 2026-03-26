@@ -1032,10 +1032,10 @@
                      .insertAdjacentHTML("beforeend", sidebarHTML);
                   setTimeout(() => {
                      this.initializers.initializeGlobalContents();
-                     window.parent.MembershipCustomization.activeTemplate =
-                        this.activeTemplate;
-                     window.parent.MembershipCustomization.activePageOnTemplate =
-                        this.activePageOnTemplate;
+                     this.activeTemplate =
+                        this.$iframe.contentWindow.MembershipCustomization.activeTemplate;
+                     this.activePageOnTemplate =
+                        this.$iframe.contentWindow.MembershipCustomization.activePageOnTemplate;
                   }, 100);
                };
             }

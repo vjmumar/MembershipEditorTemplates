@@ -823,6 +823,258 @@
          },
       };
 
+      // Action module
+      actions = {
+         // This method applies the template's custom css
+         syncTemplateCustomCss: () => {
+            // First we will remove any previously rendered style tags
+            document
+               ?.querySelectorAll(".bm-template-custom-style")
+               ?.forEach((e) => e.remove());
+
+            // Then we will generate the Custom JS Style Tag
+            const customCssStyleTagHTML = `
+               <style class="bm-template-custom-style">${this.activeTemplate["customCss"]}</style>
+            `;
+
+            // Finally we will insert the fresh style tags with the updated CSS values
+            document.body.insertAdjacentHTML("beforeend", `${customCssStyleTagHTML}`);
+         },
+
+         // This method applies all CSS customizations from the activePageOnTemplate into the page
+         syncTemplateCssCustomizations: () => {
+            // First we will select the document we will use
+            // Then we will remove any previously rendered style tags
+            document?.querySelectorAll(".bm-template-style")?.forEach((e) => e.remove());
+
+            // Then we will generate the HTML strings for both the active page and global styles
+            const commonTemplateStyles = (() => {
+               return `
+                           <style class="bm-template-style">
+                           ${this.activePageOnTemplate.reduce((a, c) => {
+                              a += `
+                               ${c.elementSelector} {
+                               ${c.cssCustomizations.reduce((ac, cc) => {
+                                  const important = cc?.important ? "!important" : "";
+                                  if (cc.value) {
+                                     ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
+                                  }
+                                  return ac;
+                               }, "")}
+                               }
+                               `;
+                              return a;
+                           }, "")}
+                           </style>
+                           `;
+               return "";
+            })();
+            const globalTemplateStyles = (() => {
+               return `
+                           <style class="bm-template-style">
+                           ${this.activeTemplate.global?.reduce((a, c) => {
+                              c.customizations?.forEach((gCustomizations) => {
+                                 a += `
+                                       ${gCustomizations?.elementSelector} {
+                                           ${gCustomizations?.cssCustomizations?.reduce(
+                                              (ac, cc) => {
+                                                 if (cc.value) {
+                                                    const important = cc?.important
+                                                       ? "!important"
+                                                       : "";
+                                                    ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
+                                                 }
+                                                 return ac;
+                                              },
+                                              "",
+                                           )}
+                                       }
+                                       `;
+                              });
+                              return a;
+                           }, "")}
+                           </style>
+                           `;
+            })();
+
+            // Finally we will insert the fresh style tags with the updated CSS values
+            document?.body?.insertAdjacentHTML(
+               "beforeend",
+               `${commonTemplateStyles}${globalTemplateStyles}`,
+            );
+         },
+
+         // This method syncs all element customizations to the actual DOM elements
+         syncTemplateElementsCustomization: () => {
+            /**
+             * First we will loop through the activePageOnTemplate because each template
+             * element may have its own customizations that need to be applied.
+             */
+            this.activePageOnTemplate.forEach((item) => {
+               if (item?.elementCustomizations?.length) {
+                  /**
+                   * We will apply each customization, either as an attribute update
+                   * or an HTML content update depending on its type.
+                   */
+                  item.elementCustomizations.forEach((elItem) => {
+                     if (elItem?.type === "attribute" && elItem?.value) {
+                        this.utils.whenElementReady(item.elementSelector, () => {
+                           document
+                              ?.querySelector(item.elementSelector)
+                              ?.setAttribute(elItem.target, elItem.value);
+                        });
+                     } else if (elItem.type === "html" && elItem.value) {
+                        this.utils.whenElementReady(item.elementSelector, () => {
+                           document.querySelector(item.elementSelector).innerHTML =
+                              elItem.value;
+                        });
+                     }
+                  });
+               }
+            });
+
+            /**
+             * Finally we will iterate through the global template settings to apply
+             * any shared element customizations to their respective targets.
+             */
+            this.activeTemplate.global.forEach((item) => {
+               item.customizations.forEach((cItem) => {
+                  if (cItem?.elementCustomizations?.length) {
+                     cItem.elementCustomizations.forEach((elementCustomizationI) => {
+                        if (
+                           elementCustomizationI?.type === "attribute" &&
+                           elementCustomizationI?.value
+                        ) {
+                           this.utils.whenElementReady(cItem.elementSelector, () => {
+                              $document
+                                 ?.querySelector(cItem.elementSelector)
+                                 ?.setAttribute(
+                                    elementCustomizationI.target,
+                                    elementCustomizationI.value,
+                                 );
+                           });
+                        } else if (
+                           elementCustomizationI.type === "html" &&
+                           elementCustomizationI.value
+                        ) {
+                           this.utils.whenElementReady(cItem.elementSelector, () => {
+                              $document.querySelector(cItem.elementSelector).innerHTML =
+                                 elementCustomizationI?.value;
+                           });
+                        }
+                     });
+                  }
+               });
+            });
+         },
+
+         // This method re-syncs a feature by re-inserting its CSS and JS
+         syncTemplateFeatureCustomizations: (
+            normal = { templateItemKey: "", featureKey: "" },
+            global = { name: "", templateItemKey: "", featureKey: "" },
+            forceSync = false,
+         ) => {
+            // First we will initialize placeholders for the items we need to find
+            let templateItem = null;
+            let featureItem = null;
+
+            // Then we will define a helper function to handle the actual DOM manipulation (Cleanup -> Removal -> Injection)
+            const syncFeature = (templateItemKey = "", featureKey = "") => {
+               // First we will run the cleanup script to reset any previous states before removing the feature
+               const scriptTagCleanUp = document.createElement("script");
+               scriptTagCleanUp.id = `${templateItemKey}-${featureKey}`;
+               scriptTagCleanUp.innerHTML = featureItem.cleanUpJs(
+                  featureItem.customizations,
+               );
+               document.body.append(scriptTagCleanUp);
+               setTimeout(() => {
+                  scriptTagCleanUp.remove();
+               }, 500);
+
+               // Then we will remove the existing feature style and script tags from the DOM
+               document
+                  .querySelector(`style[id = '${templateItemKey}-${featureKey}']`)
+                  ?.remove();
+               document
+                  .querySelector(`script[id = '${templateItemKey}-${featureKey}']`)
+                  ?.remove();
+
+               // Then we will re-insert the fresh style tag with the updated CSS
+               document.body.insertAdjacentHTML(
+                  "beforeend",
+                  `
+                               <style id="${templateItemKey}-${featureKey}">
+                                   ${featureItem.css(featureItem.customizations)}
+                               </style>
+                           `,
+               );
+
+               // Finally we will re-insert the fresh script tag with the updated JavaScript
+               const scriptTag = document.createElement("script");
+               scriptTag.id = `${templateItemKey}-${featureKey}`;
+               scriptTag.innerHTML = featureItem.js(featureItem.customizations);
+               document.body.append(scriptTag);
+            };
+
+            // Then if a forced synchronization is requested, we will proceed to update all active features across the entire template
+            if (forceSync) {
+               // First we will iterate through the global configuration to identify and sync every feature found within the global customization settings
+               this.activeTemplate.global.forEach((e) => {
+                  e.customizations.forEach((eC) => {
+                     if (eC.features && eC.features?.length) {
+                        eC.features.forEach((fI) => {
+                           if (fI.isTurnedOn) {
+                              featureItem = fI;
+                              syncFeature(eC.key, fI.key);
+                           }
+                        });
+                     }
+                  });
+               });
+
+               // Then we will also iterate through the currently active page's elements to sync their specific features, completing the full refresh
+               this.activePageOnTemplate.forEach((e) => {
+                  if (e.features && e.features?.length) {
+                     e.features.forEach((fI) => {
+                        if (fI.isTurnedOn) {
+                           featureItem = fI;
+                           syncFeature(e.key, fI.key);
+                        }
+                     });
+                  }
+               });
+
+               // Finally we will return empty value to prevent the execution of the code below
+               return;
+            }
+
+            // Finally, depending on whether it is a global or normal update, we will determine the correct context and process the feature sync
+            if (!global.featureKey) {
+               // First, if it is a normal update, we will retrieve the template item and the specific feature directly from the active page configuration
+               templateItem = this.activePageOnTemplate.find(
+                  (item) => item.key === normal.templateItemKey,
+               );
+               featureItem = templateItem.features.find(
+                  (fI) => fI.key === normal.featureKey,
+               );
+
+               // Finally, we will invoke the helper to apply the changes to the DOM
+               syncFeature(normal.templateItemKey, normal.featureKey);
+            } else {
+               // First, otherwise if this is a global update, we will retrieve the target items from the global settings configuration
+               templateItem = this.activeTemplate.global
+                  .find((item) => item.name === global.name)
+                  .customizations.find((item) => item.key === global.templateItemKey);
+               featureItem = templateItem.features.find(
+                  (fI) => fI.key === global.featureKey,
+               );
+
+               // Finally, we will invoke the helper to apply the global changes to the DOM
+               syncFeature(global.templateItemKey, global.featureKey);
+            }
+         },
+      };
+
       // Utils module
       utils = {
          // This helper method retrieves the auth information

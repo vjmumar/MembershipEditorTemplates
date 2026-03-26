@@ -1304,9 +1304,9 @@
                // Then we will generate the inline js for toggling the feature
                const toggleFeatureInlineJs = (() => {
                   if (isGlobal && globalName) {
-                     return `window['membership-editor-iframe-preview'].contentWindow.MembershipCustomization.actions.toggleTemplateFeature({},{name: '${globalName}',templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
+                     return `window.MembershipCustomization.actions.toggleTemplateFeature({},{name: '${globalName}',templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
                   } else {
-                     return `window['membership-editor-iframe-preview'].contentWindow.MembershipCustomization.actions.toggleTemplateFeature({templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
+                     return `window.MembershipCustomization.actions.toggleTemplateFeature({templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
                   }
                })();
 

@@ -712,7 +712,7 @@
 
    class MembershipParser {
       constructor() {
-         // First, we define the available templates along with their metadata such as IDs, preview images, and script sources
+         // First, we define the available templates along with their metadata, such as IDs, preview images, and script sources.
          this.templates = [];
          this.activeTemplate = null;
          this.activePageOnTemplate = null;
@@ -720,11 +720,12 @@
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isDesktop = true;
 
+         // Then we will check if we are in edit mode, we stop the constructor here to prevent redundant initialization.
          if (this.isEdit) return;
 
-         // Finally we will start the process of intializing and fetching the clients template and user's active template
+         // Finally, we start the process of initializing the application and fetching the client's active templates.
          (async () => {
-            // First we will retrieve the client's templates
+            // First, we retrieve the client's available templates from the remote source.
             await fetch(
                `https://membershipeditor.netlify.app/src/clientTemplates/${window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID}/templates.json`,
             )
@@ -733,7 +734,7 @@
                   this.templates = e;
                });
 
-            // Then we will retrieve the saved template changes from media and append it
+            // Then, we retrieve any saved template changes from media storage and inject them into the document.
             if (window?.savedTemplatesFileInfo?.url) {
                await fetch(window?.savedTemplatesFileInfo?.url)
                   ?.then((e) => e.text())
@@ -746,9 +747,9 @@
             }
 
             /**
-             * Then, we determine the currently active template by searching through the saved configurations array,
-             * then we dynamically load its corresponding script, falling back to the first available template if no
-             * active configuration is found.
+             * Then, we determine the currently active template by searching through the saved configurations.
+             * We dynamically load its corresponding script, falling back to the first available template
+             * if no active configuration is found.
              */
             const savedTemplates = window?.activeTemplatesConfig || [];
             const activeTemplateFromSavedTemplates = savedTemplates.find(
@@ -764,53 +765,44 @@
             document.body.append(script);
 
             /**
-             * Then, once the template script has finished loading, we initialize the active template configuration,
-             * resolve the default page editor state, and finally trigger the application initialization sequence
+             * Finally, once the template script has finished loading, we initialize the active template configuration,
+             * resolve the default page editor state, and trigger the application initialization sequence.
              */
             script.onload = () => {
-               // First, we initialize the active template by merging the saved array data with the master schema when id match
+               // First, we initialize the active template by merging saved data with the Master Schema where IDs match.
                this.activeTemplate = (() => {
-                  if (
-                     activeTemplateFromSavedTemplates &&
-                     activeTemplateFromSavedTemplates?.id
-                  ) {
+                  if (activeTemplateFromSavedTemplates?.id) {
                      if (
                         activeTemplateFromSavedTemplates?.id ===
                         window?.templateCustomizationSchema?.id
                      ) {
                         /**
-                         * Merges the specific active template from the saved array into the Master Template Schema.
-                         * We use _.mergeWith to ensure that if we fix a CSS selector or property
-                         * in our code (the schema), those fixes are applied, while still
-                         * preserving the specific 'value' the user entered.
+                         * We use _.mergeWith to ensure that structural fixes in our Master Schema
+                         * are applied while preserving the specific values entered by the user.
                          */
                         return window?._?.mergeWith(
-                           // We clone the schema so we don't mutate the original "Master" object in memory
+                           // We clone the schema to avoid mutating the "Master" object in memory.
                            window._.cloneDeep(window?.templateCustomizationSchema),
                            activeTemplateFromSavedTemplates,
                            (objectValue, srcValue, key) => {
                               // --- STEP 1: USER DATA OVERWRITES ---
-                              // If the current property is 'value' (the actual color/text)
-                              // or 'isTurnedOn' (the toggle state), we want the user's saved data.
+                              // Prioritize saved user data for specific visual properties.
                               if (
-                                 key === "value" ||
-                                 key === "isTurnedOn" ||
-                                 key === "customCss" ||
-                                 key === "fonts"
+                                 ["value", "isTurnedOn", "customCss", "fonts"].includes(
+                                    key,
+                                 )
                               ) {
                                  return srcValue;
                               }
 
                               // --- STEP 2: RECURSIVE DRILLING ---
-                              // If the current property is an Object or Array (a "branch"),
-                              // we return 'undefined' to tell Lodash to keep digging deeper.
+                              // If the property is an Object or Array, we return undefined to continue merging deeper.
                               if (window._.isObject(objectValue)) {
                                  return undefined;
                               }
 
-                              // --- STEP 3: SCHEMA PROTECTION (THE LOCK) ---
-                              // For every other structural property, we prioritize 'objectValue'
-                              // to ensure the latest code fixes overwrite any stale saved data.
+                              // --- STEP 3: SCHEMA PROTECTION ---
+                              // For structural properties, we prioritize the Master Schema to ensure code updates take effect.
                               return objectValue;
                            },
                         );
@@ -822,17 +814,17 @@
                   }
                })();
 
-               // Then we will select the default page editor configuration from the active template
+               // Then, we select the default page editor configuration based on the device type (Desktop or Mobile).
                this.activePageOnTemplate =
                   this.activeTemplate?.[
                      this.isDesktop ? "pages" : "mobilePages"
                   ][0]?.editor;
 
-               // Finally we will invoke the initializer
+               // Finally, we invoke the main application initializer.
                this.initializers.init();
             };
 
-            // Finally we will retrieve the authentication token by parsing the product data from the cookies
+            // Finally, we retrieve the authentication token by parsing the product data from the cookies.
             this.token = this.utils.getAuth().tokenId;
          })();
       }
@@ -900,58 +892,57 @@
 
          // This method applies all CSS customizations from the activePageOnTemplate into the page
          syncTemplateCssCustomizations: () => {
-            // First we will select the document we will use
-            // Then we will remove any previously rendered style tags
+            // First we will remove any previously rendered style tags
             document?.querySelectorAll(".bm-template-style")?.forEach((e) => e.remove());
 
             // Then we will generate the HTML strings for both the active page and global styles
             const commonTemplateStyles = (() => {
                return `
-                           <style class="bm-template-style">
-                           ${this.activePageOnTemplate.reduce((a, c) => {
-                              a += `
-                               ${c.elementSelector} {
-                               ${c.cssCustomizations.reduce((ac, cc) => {
-                                  const important = cc?.important ? "!important" : "";
-                                  if (cc.value) {
-                                     ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
-                                  }
-                                  return ac;
-                               }, "")}
-                               }
-                               `;
-                              return a;
-                           }, "")}
-                           </style>
-                           `;
+                  <style class="bm-template-style">
+                  ${this.activePageOnTemplate.reduce((a, c) => {
+                     a += `
+                      ${c.elementSelector} {
+                      ${c.cssCustomizations.reduce((ac, cc) => {
+                         const important = cc?.important ? "!important" : "";
+                         if (cc.value) {
+                            ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
+                         }
+                         return ac;
+                      }, "")}
+                      }
+                      `;
+                     return a;
+                  }, "")}
+                  </style>
+               `;
                return "";
             })();
             const globalTemplateStyles = (() => {
                return `
-                           <style class="bm-template-style">
-                           ${this.activeTemplate.global?.reduce((a, c) => {
-                              c.customizations?.forEach((gCustomizations) => {
-                                 a += `
-                                       ${gCustomizations?.elementSelector} {
-                                           ${gCustomizations?.cssCustomizations?.reduce(
-                                              (ac, cc) => {
-                                                 if (cc.value) {
-                                                    const important = cc?.important
-                                                       ? "!important"
-                                                       : "";
-                                                    ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
-                                                 }
-                                                 return ac;
-                                              },
-                                              "",
-                                           )}
-                                       }
-                                       `;
-                              });
-                              return a;
-                           }, "")}
-                           </style>
-                           `;
+               <style class="bm-template-style">
+                  ${this.activeTemplate.global?.reduce((a, c) => {
+                     c.customizations?.forEach((gCustomizations) => {
+                        a += `
+                              ${gCustomizations?.elementSelector} {
+                                  ${gCustomizations?.cssCustomizations?.reduce(
+                                     (ac, cc) => {
+                                        if (cc.value) {
+                                           const important = cc?.important
+                                              ? "!important"
+                                              : "";
+                                           ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
+                                        }
+                                        return ac;
+                                     },
+                                     "",
+                                  )}
+                              }
+                              `;
+                     });
+                     return a;
+                  }, "")}
+               </style>
+               `;
             })();
 
             // Finally we will insert the fresh style tags with the updated CSS values
@@ -1060,10 +1051,10 @@
                document.body.insertAdjacentHTML(
                   "beforeend",
                   `
-                               <style id="${templateItemKey}-${featureKey}">
-                                   ${featureItem.css(featureItem.customizations)}
-                               </style>
-                           `,
+                     <style id="${templateItemKey}-${featureKey}">
+                         ${featureItem.css(featureItem.customizations)}
+                     </style>
+                  `,
                );
 
                // Finally we will re-insert the fresh script tag with the updated JavaScript
@@ -2614,42 +2605,42 @@
 
          // This method launches a 600px wide window to force GHL's internal engine to initialize the mobile DOM structure
          launchMobileCustomizer: async () => {
-            // First we will ask the user to confirm their decision to open the mobile customizer
-            const isConfirm = confirm(
-               `Opening the mobile customizer will create a data conflict with this window.We strongly advise you to save your desktop changes now before proceeding.Once the mobile editor is open, this page will be locked, and you must reload this page after you are finished to see your mobile updates.`,
-            );
+            this.isDesktop = false;
+            this.$iframe.style.width = "500px";
+            this.$iframe.src = this.$iframe.src;
 
-            // Then we will check the user's decision and if they did not agree then we will not proceed
-            if (!isConfirm) return;
-
-            // Then we will open a new window
-            const mobileWindow = window.open(
-               location.href,
-               "Mobile_Editor",
-               "width=600,height=800,scrollbars=yes,resizable=yes",
-            );
-
-            // Then we will remove the sidebar
-            document.querySelector(".editor-customizer-sidebar").remove();
-
-            // Finally we will insert a warning message to the current body
-            document.body.insertAdjacentHTML(
-               "beforeend",
-               `
-               <div style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: rgba(255, 255, 255, 0.85) !important; z-index: 99999999 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-family: sans-serif !important; text-align: center !important;">
-                   <div style="max-width: 420px; padding: 20px;">
-                       <h2 style="margin: 0 0 12px 0; color: #000; font-size: 24px; font-weight: 600;">Mobile Editor Active</h2>
-                       <p style="color: #333; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
-                           This page is locked because editing both versions at once causes data conflicts.
-                           <b>Save your mobile changes first</b>, then reload this page to return.
-                        </p>
-                       <button onclick="window.location.reload();" style="background: #000; color: #fff; border: none; padding: 14px 35px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 15px; transition: opacity 0.2s;">
-                           Reload Page
-                       </button>
-                   </div>
-               </div>
-            `,
-            );
+            // // First we will ask the user to confirm their decision to open the mobile customizer
+            // const isConfirm = confirm(
+            //    `Opening the mobile customizer will create a data conflict with this window.We strongly advise you to save your desktop changes now before proceeding.Once the mobile editor is open, this page will be locked, and you must reload this page after you are finished to see your mobile updates.`,
+            // );
+            // // Then we will check the user's decision and if they did not agree then we will not proceed
+            // if (!isConfirm) return;
+            // // Then we will open a new window
+            // const mobileWindow = window.open(
+            //    location.href,
+            //    "Mobile_Editor",
+            //    "width=600,height=800,scrollbars=yes,resizable=yes",
+            // );
+            // // Then we will remove the sidebar
+            // document.querySelector(".editor-customizer-sidebar").remove();
+            // // Finally we will insert a warning message to the current body
+            // document.body.insertAdjacentHTML(
+            //    "beforeend",
+            //    `
+            //    <div style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: rgba(255, 255, 255, 0.85) !important; z-index: 99999999 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-family: sans-serif !important; text-align: center !important;">
+            //        <div style="max-width: 420px; padding: 20px;">
+            //            <h2 style="margin: 0 0 12px 0; color: #000; font-size: 24px; font-weight: 600;">Mobile Editor Active</h2>
+            //            <p style="color: #333; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
+            //                This page is locked because editing both versions at once causes data conflicts.
+            //                <b>Save your mobile changes first</b>, then reload this page to return.
+            //             </p>
+            //            <button onclick="window.location.reload();" style="background: #000; color: #fff; border: none; padding: 14px 35px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 15px; transition: opacity 0.2s;">
+            //                Reload Page
+            //            </button>
+            //        </div>
+            //    </div>
+            // `,
+            // );
          },
       };
 

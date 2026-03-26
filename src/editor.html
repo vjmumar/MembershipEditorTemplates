@@ -1737,7 +1737,7 @@
                this.$iframe.contentWindow.MembershipParser;
             const activePageOnTemplate =
                previewIframeMembershipParser?.activePageOnTemplate;
-            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+            const activeTemplate = previewIframeMembershipParser?.activeTemplate;
 
             // Then we will retrieve the sidebar and its content container where we will inject the HTML
             const $sidebar = document.querySelector(".editor-customizer-sidebar");

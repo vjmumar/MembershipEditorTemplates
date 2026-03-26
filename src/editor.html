@@ -633,7 +633,7 @@
    referrerpolicy="no-referrer"
 ></script>
 <script defer>
-   class MembershipCustomization {
+   class MembershipEditorPreview {
       constructor() {
          // First, we define the available templates along with their metadata such as IDs, preview images, and script sources
          this.templates = [];
@@ -642,13 +642,8 @@
          this.token = "";
          this.isDesktop = true;
          this.isPreviewEditor = location.href.includes("previewEditor=true");
-         this.$iframe = null;
 
-         if (!this.isPreviewEditor) {
-            this.initializers.init();
-            return;
-         }
-
+         // Finally we will start the process of intializing and fetching the clients template and user's active template
          (async () => {
             // First we will retrieve the client's templates
             await fetch(
@@ -753,36 +748,40 @@
                   this.activeTemplate?.[
                      this.isDesktop ? "pages" : "mobilePages"
                   ][0]?.editor;
+
                // Finally we will invoke the initialization sequence to start the application
-               this.initializers.init();
+               if (!isPreviewEditor) {
+                  this.initializers.init();
+               }
             };
 
             // Finally we will retrieve the authentication token by parsing the product data from the cookies
             this.token = this.utils.getAuth().tokenId;
          })();
+
+         // Utils module
+         utils = {
+            // This helper method retrieves the auth information
+            getAuth: () => {
+               const acatToken = $cookies.get("acat");
+               const catToken = $cookies.get("cat");
+               const data = JSON.parse(window.atob(acatToken || catToken) || "{}");
+               if (!("productId" in data)) {
+                  const url = location.href
+                     ?.split("/products/")[1]
+                     .split("/")[0]
+                     .split("?")[0];
+                  data.productId = url;
+               }
+               return data;
+            },
+         };
       }
 
       // Initializer module
       initializers = {
          // This method serves as the entry point for the application initialization
          init: () => {
-            // First we will retrieve the preview status from session storage and check the URL for the editor flag
-            const isPreview = sessionStorage?.is_preview === "true";
-            const isEdit =
-               new URLSearchParams(window.location.search).get("membershipeditor") ===
-               "true";
-
-            // Then if we are in preview mode, we will determine which interface to show
-            if (isPreview) {
-               // If the editor flag is present, we initialize the full editor, otherwise we show the floating toggle widget
-               if (isEdit) {
-                  this.initializers.initShowEditor();
-               } else {
-                  this.initializers.initFloatingWidgetToggler();
-               }
-            }
-
-            // Finally we will initialize the synchronization configuration to ensure all customizations are applied
             this.initializers.initSyncConfig();
          },
 
@@ -794,7 +793,7 @@
             // Then we will sync the template's custom css
             this.actions.syncTemplateCustomCss();
 
-            // Finally we will iterate through the template pages to find the current view and process it
+            // Then we will iterate through the template pages to find the current view and process it
             this.activeTemplate?.[this.isDesktop ? "pages" : "mobilePages"]?.forEach(
                (page) => {
                   // First we will create a new RegExp instance using the regex pattern from the current page configuration
@@ -814,6 +813,85 @@
                   }
                },
             );
+
+            // Finally if it is a preview then we will add the edit...
+            if (this.isPreviewEditor) {
+               // Then we will disable all anchor tags to prevent accidental navigation while editing
+               setTimeout(() => {
+                  document.querySelectorAll("a").forEach((a) => {
+                     a.href = "javascript:void(0)";
+                     a.removeAttribute("download");
+                  });
+               }, 2000);
+
+               // Finally we will attach the main click listener to detect interactions with editable elements
+               window.addEventListener("click", (e) => {
+                  /**
+                   * We will check if the clicked element or any of its parent elements
+                   * contains the data-editable attribute.
+                   * If it does, we will open the editor for that element.
+                   */
+                  const editableElement = e.target.closest("[data-editable]");
+                  if (editableElement) {
+                     const key = editableElement.getAttribute("data-editor-key");
+                     window.parent.MembershipCustomization.initializers.initializeElementEditor(
+                        key,
+                        `[data-editor-key='${key}']`,
+                     );
+                  }
+               });
+            }
+         },
+      };
+   }
+
+   class MembershipEditorCustomization {
+      constructor() {
+         this.activeTemplate = null;
+         this.activePageOnTemplate = null;
+         this.$previewIframe = null;
+      }
+
+      // Initializer module
+      initializers = {
+         // This method serves as the entry point for the application initialization
+         init: () => {
+            // First we will retrieve the preview status from session storage and check the URL for the editor flag
+            const isPreview = sessionStorage?.is_preview === "true";
+            const isEdit =
+               new URLSearchParams(window.location.search).get("membershipeditor") ===
+               "true";
+
+            // Then if we are in preview mode, we will determine which interface to show
+            if (isPreview) {
+               // If the editor flag is present, we initialize the full editor, otherwise we show the floating toggle widget
+               if (isEdit) {
+                  this.initializers.initShowEditor();
+                  const $app = document.querySelector("#app");
+                  const $appContainer = document.querySelector("#app-container");
+                  const url = new URL(location.href);
+                  url.searchParams.delete("previewEditor");
+                  url.searchParams.append("previewEditor", "true");
+                  const cleanUrl = url.toString();
+                  $appContainer.remove();
+                  this.$iframe = document.createElement("iframe");
+                  this.$iframe.src = cleanUrl;
+                  this.$iframe.id = "membership-editor-iframe-preview";
+                  this.$iframe.style.cssText =
+                     "width:100%; height:100vh; border:none; display:block;";
+                  $app.prepend(this.$iframe);
+                  this.$iframe.onload = () => {
+                     document
+                        .querySelector("#app")
+                        .insertAdjacentHTML("beforeend", sidebarHTML);
+                     setTimeout(() => {
+                        this.initializers.initializeGlobalContents();
+                     }, 100);
+                  };
+               } else {
+                  this.initializers.initFloatingWidgetToggler();
+               }
+            }
          },
 
          // This method is responsible for showing the floating widget that toggles the page into editing
@@ -883,13 +961,6 @@
 
          // This method will wait until the #app container exists before initializing the editor
          initShowEditor: () => {
-            if (this.isPreviewEditor) {
-               console.log("testing", location.href);
-               window.parent.MembershipCustomization.activePageOnTemplate =
-                  this.activePageOnTemplate;
-               window.parent.MembershipCustomization.activeTemplate = this.activeTemplate;
-               // window.MembershipCustomization.initializers.initializeGlobalContents();
-            }
             // First we will retrieve the editor styles from the DOM
             const editorStyle = document.querySelector("#editor").outerHTML;
 
@@ -927,121 +998,71 @@
             }, 0);
          },
 
-         // This method will initialize all editor components and attach tooltips + sidebar
          initializeEditor: () => {
             // First we will loop over all items from the activePageOnTemplate to prepare the DOM elements
-            if (this.isPreviewEditor) {
-               this.activePageOnTemplate.forEach((item) => {
-                  // First we will retrieve the element based on its selector
-                  let $element = document.querySelector(item.elementSelector);
+            this.activePageOnTemplate.forEach((item) => {
+               // First we will retrieve the element based on its selector
+               let $element = document.querySelector(item.elementSelector);
 
-                  // Then we will attach the required attributes so our editor can identify it
-                  $element?.setAttribute("data-editable", "true");
-                  $element?.setAttribute("data-editor-key", item.key);
+               // Then we will attach the required attributes so our editor can identify it
+               $element?.setAttribute("data-editable", "true");
+               $element?.setAttribute("data-editor-key", item.key);
 
-                  /**
-                   * Finally we will re-render the element by resetting its outerHTML.
-                   * This is needed because some SPA frameworks handle navigation without anchor tags.
-                   * By forcing a re-render, all existing event listeners on the element get removed,
-                   * which prevents unintended navigation behavior.
-                   */
-                  if ($element) $element.outerHTML = $element.outerHTML;
-               });
+               /**
+                * Finally we will re-render the element by resetting its outerHTML.
+                * This is needed because some SPA frameworks handle navigation without anchor tags.
+                * By forcing a re-render, all existing event listeners on the element get removed,
+                * which prevents unintended navigation behavior.
+                */
+               if ($element) $element.outerHTML = $element.outerHTML;
+            });
 
-               // Then we will disable all anchor tags to prevent accidental navigation while editing
-               setTimeout(() => {
-                  document.querySelectorAll("a").forEach((a) => {
-                     a.href = "javascript:void(0)";
-                     a.removeAttribute("download");
-                  });
-               }, 2000);
+            // Then we will inject the customization sidebar HTML into the application container
+            const sidebarHTML = `
+                           <div class="editor-customizer-sidebar ${this.isDesktop ? "active" : ""}">
+                               <div class="editor-customizer-sidebar__content">
+                                   <p style="font-size: 20px; text-align:center; padding-block: 30px; margin-inline: 10px;">👋 Click any editable element to start customizing</p>
+                               </div>
+                               <div class="editor-customizer-sidebar__footer">
+                                   <button class="editor-customizer-sidebar__footer__button editor-customizer-exit">Exit</button>
+                                   <button class="editor-customizer-sidebar__footer__button editor-customizer-hide" onclick="this.closest('.editor-customizer-sidebar').classList.remove('active')">Hide</button>
+                                   <button class="editor-customizer-sidebar__footer__button editor-customizer-save"></button>
+                               </div>
+                           </div>
+                       `;
+            document.querySelector("#app").insertAdjacentHTML("beforeend", sidebarHTML);
 
-               // Finally we will attach the main click listener to detect interactions with editable elements
-               window.addEventListener("click", (e) => {
-                  /**
-                   * We will check if the clicked element or any of its parent elements
-                   * contains the data-editable attribute.
-                   * If it does, we will open the editor for that element.
-                   */
-                  const editableElement = e.target.closest("[data-editable]");
-                  if (editableElement) {
-                     const key = editableElement.getAttribute("data-editor-key");
-                     window.parent.MembershipCustomization.initializers.initializeElementEditor(
-                        key,
-                        `[data-editor-key='${key}']`,
+            // Then we will initialize/show the global contents settings after a short delay
+            setTimeout(() => {
+               this.initializers.initializeGlobalContents();
+            }, 500);
+
+            // Then we will attach a click listener into the exit button
+            setTimeout(() => {
+               document
+                  .querySelector(".editor-customizer-exit")
+                  ?.addEventListener("click", () => {
+                     const shouldExit = confirm(
+                        "Any unsaved changes will be lost. Are you sure you want to leave?",
                      );
-                  }
-               });
-            }
+                     if (shouldExit) {
+                        const u = new URL(window.location);
+                        u.searchParams.delete("membershipeditor");
+                        location.href = u.toString();
+                     }
+                  });
+            }, 500);
 
-            if (!this.isPreviewEditor) {
-               // Then we will inject the customization sidebar HTML into the application container
-               const sidebarHTML = `
-                  <div class="editor-customizer-sidebar ${this.isDesktop ? "active" : ""}">
-                      <div class="editor-customizer-sidebar__content">
-                          <p style="font-size: 20px; text-align:center; padding-block: 30px; margin-inline: 10px;">👋 Click any editable element to start customizing</p>
-                      </div>
-                      <div class="editor-customizer-sidebar__footer">
-                          <button class="editor-customizer-sidebar__footer__button editor-customizer-exit">Exit</button>
-                          <button class="editor-customizer-sidebar__footer__button editor-customizer-hide" onclick="this.closest('.editor-customizer-sidebar').classList.remove('active')">Hide</button>
-                          <button class="editor-customizer-sidebar__footer__button editor-customizer-save"></button>
-                      </div>
-                  </div>
-               `;
-
-               // Then we will initialize/show the global contents settings after a short delay
-               // setTimeout(() => {
-               //    this.initializers.initializeGlobalContents();
-               // }, 500);
-
-               // Then we will attach a click listener into the exit button
-               setTimeout(() => {
-                  document
-                     .querySelector(".editor-customizer-exit")
-                     ?.addEventListener("click", () => {
-                        const shouldExit = confirm(
-                           "Any unsaved changes will be lost. Are you sure you want to leave?",
-                        );
-                        if (shouldExit) {
-                           const u = new URL(window.location);
-                           u.searchParams.delete("membershipeditor");
-                           location.href = u.toString();
-                        }
-                     });
-               }, 500);
-
-               // Then we will attach the listener for save button
-               setTimeout(() => {
-                  document
-                     .querySelector(".editor-customizer-save")
-                     .addEventListener("click", async (e) => {
-                        e.target.classList.toggle("saving");
-                        await this.actions.saveEditsToProductsCustomJs();
-                        e.target.classList.toggle("saving");
-                     });
-               }, 500);
-               const $app = document.querySelector("#app");
-               const $appContainer = document.querySelector("#app-container");
-               const url = new URL(location.href);
-               url.searchParams.delete("previewEditor");
-               url.searchParams.append("previewEditor", "true");
-               const cleanUrl = url.toString();
-               $appContainer.remove();
-               this.$iframe = document.createElement("iframe");
-               this.$iframe.src = cleanUrl;
-               this.$iframe.id = "membership-editor-iframe-preview";
-               this.$iframe.style.cssText =
-                  "width:100%; height:100vh; border:none; display:block;";
-               $app.prepend(this.$iframe);
-               this.$iframe.onload = () => {
-                  document
-                     .querySelector("#app")
-                     .insertAdjacentHTML("beforeend", sidebarHTML);
-                  setTimeout(() => {
-                     this.initializers.initializeGlobalContents();
-                  }, 100);
-               };
-            }
+            // Then we will attach the listener for save button
+            setTimeout(() => {
+               document
+                  .querySelector(".editor-customizer-save")
+                  .addEventListener("click", async (e) => {
+                     e.target.classList.toggle("saving");
+                     await this.actions.saveEditsToProductsCustomJs();
+                     e.target.classList.toggle("saving");
+                  });
+            }, 500);
          },
 
          // This method builds and renders the customization sidebar for a specific selected element
@@ -2867,5 +2888,6 @@
       };
    }
 
-   window.MembershipCustomization = new MembershipCustomization();
+   window.MembershipEditorPreview = new MembershipEditorPreview();
+   // window.MembershipCustomization = new MembershipCustomization();
 </script>

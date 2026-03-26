@@ -1172,6 +1172,7 @@
                   const $appContainer = document.querySelector("#app-container");
                   const url = new URL(location.href);
                   url.searchParams.delete("isEditorPreview");
+                  url.searchParams.delete("membershipeditor");
                   url.searchParams.append("isEditorPreview", "true");
                   const cleanUrl = url.toString();
                   $appContainer.remove();

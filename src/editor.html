@@ -1265,15 +1265,11 @@
             const interval = setInterval(() => {
                // First we will retrieve the ghl container and the template container from our premade templates
                const $container = document.querySelector("#app");
-               const $template = document.querySelector(".template-container");
 
                // Finally once the necessary elements are found, we will stop the interval
-               if ($container && $template) {
+               if ($container) {
                   // First we will clear the interval
                   clearInterval(interval);
-
-                  // Then we will retrieve the current url
-                  const url = window.location.href;
 
                   this.initializers.initializeEditor();
                }

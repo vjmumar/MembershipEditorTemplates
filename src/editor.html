@@ -1296,11 +1296,6 @@
                        `;
             document.querySelector("#app").insertAdjacentHTML("beforeend", sidebarHTML);
 
-            // Then we will initialize/show the global contents settings after a short delay
-            setTimeout(() => {
-               this.initializers.initializeGlobalContents();
-            }, 500);
-
             // Then we will attach a click listener into the exit button
             setTimeout(() => {
                document
@@ -1327,6 +1322,10 @@
                      e.target.classList.toggle("saving");
                   });
             }, 500);
+
+            setTimeout(() => {
+               this.initializers.initializeGlobalContents();
+            }, 2000);
          },
 
          // This method builds and renders the customization sidebar for a specific selected element

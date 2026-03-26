@@ -1321,7 +1321,7 @@
 
          initializeEditor: () => {
             // First we will remove existing sidebar editor's
-            document.querySelector(".editor-customizer-sidebar").remove();
+            document.querySelector(".editor-customizer-sidebar")?.remove();
 
             // Then, inject the customization sidebar HTML into the application container.
             const sidebarHTML = `

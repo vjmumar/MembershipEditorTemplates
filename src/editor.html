@@ -644,7 +644,9 @@
          this.isPreviewEditor = location.href.includes("previewEditor=true");
          this.$iframe = null;
 
-         if (!this.isPreviewEditor) return;
+         if (!this.isPreviewEditor) {
+            this.initializers.initShowEditor();
+         }
          (async () => {
             // First we will retrieve the client's templates
             await fetch(

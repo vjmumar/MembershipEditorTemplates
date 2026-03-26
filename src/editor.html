@@ -1040,9 +1040,10 @@
             isGlobal = false,
             globalName = "",
          ) => {
+            // First we will retrieve the element from the passed selector
             const element = this.$iframe.contentDocument.querySelector(selector);
 
-            // First we will retrieve the sidebar and its content container
+            // Then we will retrieve the sidebar and its content container
             const $sidebar = document.querySelector(".editor-customizer-sidebar");
             const $sidebarContent = $sidebar.querySelector(
                ".editor-customizer-sidebar__content",
@@ -1065,9 +1066,9 @@
             // Then we will generate the HTML for the CSS customization inputs
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
                const input = (() => {
+                  const propertyValue =
+                     this.$iframe?.contentWindow.getComputedStyle(element)[c.property];
                   if (c.type === "multi") {
-                     const propertyValue =
-                        this.$iframe?.contentWindow.getComputedStyle(element)[c.property];
                      return this?.widgets?.multiInput(
                         templateItem.key,
                         c?.property,
@@ -1142,8 +1143,6 @@
                         },
                      );
                   } else {
-                     const propertyValue =
-                        this.$iframe?.contentWindow.getComputedStyle(element)[c.property];
                      return this?.widgets?.input(
                         templateItem.key,
                         c.property,
@@ -1286,7 +1285,7 @@
                                  ];
                               }
                            })();
-                           this.actions.updateTemplateFeatureCustomizations(
+                           this.$iframe.contentWindow.MembershipCustomization.actions.updateTemplateFeatureCustomizations(
                               ...updateArgs,
                            );
                         },
@@ -1304,9 +1303,9 @@
                // Then we will generate the inline js for toggling the feature
                const toggleFeatureInlineJs = (() => {
                   if (isGlobal && globalName) {
-                     return `window.MembershipCustomization.actions.toggleTemplateFeature({},{name: '${globalName}',templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
+                     return `document.getElementById("membership-editor-iframe-preview").contentWindow.MembershipCustomization.actions.toggleTemplateFeature({},{name: '${globalName}',templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
                   } else {
-                     return `window.MembershipCustomization.actions.toggleTemplateFeature({templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
+                     return `document.getElementById("membership-editor-iframe-preview").contentWindow.MembershipCustomization.actions.toggleTemplateFeature({templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
                   }
                })();
 

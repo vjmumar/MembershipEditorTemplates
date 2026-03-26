@@ -758,24 +758,6 @@
             // Finally we will retrieve the authentication token by parsing the product data from the cookies
             this.token = this.utils.getAuth().tokenId;
          })();
-
-         // Utils module
-         utils = {
-            // This helper method retrieves the auth information
-            getAuth: () => {
-               const acatToken = $cookies.get("acat");
-               const catToken = $cookies.get("cat");
-               const data = JSON.parse(window.atob(acatToken || catToken) || "{}");
-               if (!("productId" in data)) {
-                  const url = location.href
-                     ?.split("/products/")[1]
-                     .split("/")[0]
-                     .split("?")[0];
-                  data.productId = url;
-               }
-               return data;
-            },
-         };
       }
 
       // Initializer module
@@ -841,6 +823,24 @@
                   }
                });
             }
+         },
+      };
+
+      // Utils module
+      utils = {
+         // This helper method retrieves the auth information
+         getAuth: () => {
+            const acatToken = $cookies.get("acat");
+            const catToken = $cookies.get("cat");
+            const data = JSON.parse(window.atob(acatToken || catToken) || "{}");
+            if (!("productId" in data)) {
+               const url = location.href
+                  ?.split("/products/")[1]
+                  .split("/")[0]
+                  .split("?")[0];
+               data.productId = url;
+            }
+            return data;
          },
       };
    }

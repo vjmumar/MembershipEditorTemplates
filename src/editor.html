@@ -764,10 +764,28 @@
          init: async () => {
             await this.initializers.initSyncConfig();
 
-            console.log(this.isPreviewEditor)
+            console.log(this.isPreviewEditor);
             setTimeout(() => {
                // Finally if it is a preview then we will add the edit...
                if (this.isPreviewEditor) {
+                  // First we will loop over all items from the activePageOnTemplate to prepare the DOM elements
+                  this.activePageOnTemplate.forEach((item) => {
+                     // First we will retrieve the element based on its selector
+                     let $element = document.querySelector(item.elementSelector);
+
+                     // Then we will attach the required attributes so our editor can identify it
+                     $element?.setAttribute("data-editable", "true");
+                     $element?.setAttribute("data-editor-key", item.key);
+
+                     /**
+                      * Finally we will re-render the element by resetting its outerHTML.
+                      * This is needed because some SPA frameworks handle navigation without anchor tags.
+                      * By forcing a re-render, all existing event listeners on the element get removed,
+                      * which prevents unintended navigation behavior.
+                      */
+                     if ($element) $element.outerHTML = $element.outerHTML;
+                  });
+
                   // Then we will disable all anchor tags to prevent accidental navigation while editing
                   setTimeout(() => {
                      document.querySelectorAll("a").forEach((a) => {

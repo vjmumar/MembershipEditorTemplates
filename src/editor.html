@@ -1056,11 +1056,17 @@
             // Then we will retrieve the specific template item data based on the clicked element's key or the global passed global name and key
             let templateItem = (() => {
                if (isGlobal && globalName) {
-                  return this.activeTemplate.global
+                  return window[
+                     "membership-editor-iframe-preview"
+                  ].contentWindow.MembershipCustomization.activeTemplate.global
                      ?.find((item) => item.name === globalName)
                      ?.customizations?.find((item) => item.key === key);
                } else {
-                  return this.activePageOnTemplate.find((item) => item.key === key);
+                  return window[
+                     "membership-editor-iframe-preview"
+                  ].contentWindow.MembershipCustomization.activePageOnTemplate.find(
+                     (item) => item.key === key,
+                  );
                }
             })();
 
@@ -1709,9 +1715,7 @@
                   }
                });
             }
-            window.MembershipCustomization.activePageOnTemplate =
-               this.activePageOnTemplate;
-            window.MembershipCustomization.activeTemplate = this.activeTemplate;
+
             // Finally we will sync the updated CSS values with the live preview
             this.actions.syncTemplateCssCustomizations();
          },

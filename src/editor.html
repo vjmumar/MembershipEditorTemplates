@@ -1207,33 +1207,43 @@
 
       // Initializer module
       initializers = {
-         // This method serves as the entry point for the application initialization
+         // This method serves as the entry point for initializing the application.
          init: () => {
-            // Then if we are in preview mode, we will determine which interface to show
-            if (this.isPagePreview) {
-               // If the editor flag is present, we initialize the full editor, otherwise we show the floating toggle widget
-               if (this.isEdit) {
-                  const $app = document.querySelector("#app");
-                  const $appContainer = document.querySelector("#app-container");
-                  const url = new URL(location.href);
-                  url.searchParams.delete("isEditorPreview");
-                  url.searchParams.delete("membershipeditor");
-                  url.searchParams.append("isEditorPreview", "true");
-                  const cleanUrl = url.toString();
-                  $appContainer.remove();
-                  this.$iframe = document.createElement("iframe");
-                  this.$iframe.src = cleanUrl;
-                  this.$iframe.id = "membership-editor-iframe-preview";
-                  this.$iframe.style.cssText =
-                     "width:100%; height:100vh; border:none; display:block;";
-                  $app.prepend(this.$iframe);
-                  this.$iframe.onload = () => {
-                     this.initializers.initShowEditor();
-                  };
-               } else {
-                  if (!this.isPreviewEditor) {
-                     this.initializers.initFloatingWidgetToggler();
-                  }
+            // First, check if the page is in preview mode; if not, exit the method.
+            if (!this.isPagePreview) return;
+
+            // Next, determine if we need to launch the full Editor or just the toggle widget.
+            if (this.isEdit) {
+               // First, retrieve the main app and app-container elements.
+               const $app = document.querySelector("#app");
+               const $appContainer = document.querySelector("#app-container");
+
+               // Then, generate and sanitize the URL for the preview.
+               const url = new URL(location.href);
+               url.searchParams.delete("isEditorPreview");
+               url.searchParams.delete("membershipeditor");
+               url.searchParams.append("isEditorPreview", "true");
+               const cleanUrl = url.toString();
+
+               // Then, clear the existing UI to make room for the iframe editor.
+               if ($appContainer) $appContainer.remove();
+
+               // Then, create an iframe to load the current page in edit mode and append it to the app.
+               this.$iframe = document.createElement("iframe");
+               this.$iframe.src = cleanUrl;
+               this.$iframe.id = "membership-editor-iframe-preview";
+               this.$iframe.style.cssText =
+                  "width:100%; height:100vh; border:none; display:block;";
+               $app.prepend(this.$iframe);
+
+               // Finally, wait for the iframe's internal DOM to be ready before firing the editor logic.
+               this.$iframe.onload = () => {
+                  this.initializers.initShowEditor();
+               };
+            } else {
+               // Fallback: If in preview but not in edit mode, show the floating toggle (if not already present).
+               if (!this.isPreviewEditor) {
+                  this.initializers.initFloatingWidgetToggler();
                }
             }
          },
@@ -1305,41 +1315,36 @@
 
          // This method will wait until the #app container exists before initializing the editor
          initShowEditor: () => {
-            // First we will retrieve the editor styles from the DOM
+            // First, retrieve the editor styles from the DOM.
             const editorStyle = document.querySelector("#editor").outerHTML;
 
-            // Finally we will start an interval to wait for the application container and template to load
+            // Finally, we will start a polling interval to wait for the application container and template to load before initializing the editor
             const interval = setInterval(() => {
-               // First we will retrieve the ghl container and the template container from our premade templates
                const $container = document.querySelector("#app");
-
-               // Finally once the necessary elements are found, we will stop the interval
                if ($container) {
-                  // First we will clear the interval
                   clearInterval(interval);
-
                   this.initializers.initializeEditor();
                }
             }, 0);
          },
 
          initializeEditor: () => {
-            // Then we will inject the customization sidebar HTML into the application container
+            // First, inject the customization sidebar HTML into the application container.
             const sidebarHTML = `
-                           <div class="editor-customizer-sidebar ${this.isDesktop ? "active" : ""}">
-                               <div class="editor-customizer-sidebar__content">
-                                   <p style="font-size: 20px; text-align:center; padding-block: 30px; margin-inline: 10px;">👋 Click any editable element to start customizing</p>
-                               </div>
-                               <div class="editor-customizer-sidebar__footer">
-                                   <button class="editor-customizer-sidebar__footer__button editor-customizer-exit">Exit</button>
-                                   <button class="editor-customizer-sidebar__footer__button editor-customizer-hide" onclick="this.closest('.editor-customizer-sidebar').classList.remove('active')">Hide</button>
-                                   <button class="editor-customizer-sidebar__footer__button editor-customizer-save"></button>
-                               </div>
-                           </div>
-                       `;
+                <div class="editor-customizer-sidebar ${this.isDesktop ? "active" : ""}">
+                    <div class="editor-customizer-sidebar__content">
+                        <p style="font-size: 20px; text-align:center; padding-block: 30px; margin-inline: 10px;">👋 Click any editable element to start customizing</p>
+                    </div>
+                    <div class="editor-customizer-sidebar__footer">
+                        <button class="editor-customizer-sidebar__footer__button editor-customizer-exit">Exit</button>
+                        <button class="editor-customizer-sidebar__footer__button editor-customizer-hide" onclick="this.closest('.editor-customizer-sidebar').classList.remove('active')">Hide</button>
+                        <button class="editor-customizer-sidebar__footer__button editor-customizer-save"></button>
+                    </div>
+                </div>
+            `;
             document.querySelector("#app").insertAdjacentHTML("beforeend", sidebarHTML);
 
-            // Then we will attach a click listener into the exit button
+            // Then, attach a click listener to the "Exit" button.
             setTimeout(() => {
                document
                   .querySelector(".editor-customizer-exit")
@@ -1355,17 +1360,18 @@
                   });
             }, 500);
 
-            // Then we will attach the listener for save button
+            // Then, attach the event listener for the "Save" button.
             setTimeout(() => {
                document
                   .querySelector(".editor-customizer-save")
-                  .addEventListener("click", async (e) => {
+                  ?.addEventListener("click", async (e) => {
                      e.target.classList.toggle("saving");
                      await this.actions.saveEditsToProductsCustomJs();
                      e.target.classList.toggle("saving");
                   });
             }, 500);
 
+            // Finally, initialize the global contents by default.
             setTimeout(() => {
                this.initializers.initializeGlobalContents();
             }, 2000);
@@ -1957,7 +1963,7 @@
                   );
 
                   // Finally we will insert and execute the feature's JavaScript
-                  const scriptTag =  this.$iframe.contentDocument.createElement("script");
+                  const scriptTag = this.$iframe.contentDocument.createElement("script");
                   scriptTag.id = `${templateItemKey}-${featureKey}`;
                   scriptTag.innerHTML = featureItem.js(featureItem.customizations);
                   this.$iframe.contentDocument.body.append(scriptTag);
@@ -1971,10 +1977,10 @@
                      ?.remove();
 
                   // Finally we will run the cleanup script to reset any side effects
-                  const scriptTag =  this.$iframe.contentDocument.createElement("script");
+                  const scriptTag = this.$iframe.contentDocument.createElement("script");
                   scriptTag.id = `${templateItemKey}-${featureKey}`;
                   scriptTag.innerHTML = featureItem.cleanUpJs(featureItem.customizations);
-                   this.$iframe.contentDocument.body.append(scriptTag);
+                  this.$iframe.contentDocument.body.append(scriptTag);
                   setTimeout(() => {
                      scriptTag.remove();
                   }, 500);

@@ -1028,6 +1028,10 @@
                      document
                         .querySelector("#app")
                         .insertAdjacentHTML("beforeend", sidebarHTML);
+                     this.$iframe = document?.getElementById(
+                        "membership-editor-iframe-preview",
+                     );
+                     console.log(this.$iframe);
                   };
                }, 1000);
             }
@@ -1960,7 +1964,9 @@
          // This method syncs all element customizations to the actual DOM elements
          syncTemplateElementsCustomization: () => {
             // First we will select the document we will use
-            const $document = this.isPreviewEditor ? this.$iframe.contentDocument : document;
+            const $document = this.isPreviewEditor
+               ? this.$iframe.contentDocument
+               : document;
 
             /**
              * Then we will loop through the activePageOnTemplate because each template

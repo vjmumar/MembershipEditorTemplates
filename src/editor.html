@@ -764,6 +764,7 @@
          init: async () => {
             await this.initializers.initSyncConfig();
 
+            console.log(this.isPreviewEditor)
             setTimeout(() => {
                // Finally if it is a preview then we will add the edit...
                if (this.isPreviewEditor) {

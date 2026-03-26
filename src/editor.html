@@ -641,7 +641,7 @@
          this.activePageOnTemplate = null;
          this.token = "";
          this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
-
+         this.isPreviewEditor = location.href.includes("previewEditor=true");
          this.$iframe = null;
 
          (async () => {
@@ -879,10 +879,6 @@
 
          // This method will wait until the #app container exists before initializing the editor
          initShowEditor: () => {
-            // TESTING !!!!
-            const isPreviewEditor = location.href.includes("previewEditor=true");
-            // TESTING !!!!
-
             // First we will retrieve the editor styles from the DOM
             const editorStyle = document.querySelector("#editor").outerHTML;
 
@@ -913,7 +909,7 @@
                         this.activePageOnTemplate = page.editor;
 
                         // Finally we will invoke the main editor initializer to render the sidebar and attach the necessary event listeners to the page
-                        this.initializers.initializeEditor(isPreviewEditor);
+                        this.initializers.initializeEditor();
                      }
                   });
                }
@@ -921,9 +917,9 @@
          },
 
          // This method will initialize all editor components and attach tooltips + sidebar
-         initializeEditor: (isPreview = false) => {
+         initializeEditor: () => {
             // First we will loop over all items from the activePageOnTemplate to prepare the DOM elements
-            if (isPreview) {
+            if (this.isPreviewEditor) {
                this.activePageOnTemplate.forEach((item) => {
                   // First we will retrieve the element based on its selector
                   let $element = document.querySelector(item.elementSelector);
@@ -965,30 +961,9 @@
                      );
                   }
                });
-
-               window.addEventListener("message", (e) => {
-                  if (e.data?.type === "FROM_IFRAME") {
-                     console.log("from iframe:", e.data.payload);
-                  } else if (e.data.type === "UPDATE_FROM_PARENT") {
-                     if (e.data.payload.customizeType === "element") {
-                        this.actions.updateTemplateElementCustomizations(
-                           ...e.data.payload.updateArgs,
-                        );
-                     } else if (e.data.payload.customizeType === "feature") {
-                        this.actions.updateTemplateFeatureCustomizations(
-                           ...e.data.payload.updateArgs,
-                        );
-                     } else {
-                        this.actions.updateTemplateCustomizations(
-                           ...e.data.payload.updateArgs,
-                        );
-                     }
-                  }
-                  console.log(e.data.payload);
-               });
             }
 
-            if (!isPreview) {
+            if (!this.isPreviewEditor) {
                // Then we will inject the customization sidebar HTML into the application container
                const sidebarHTML = `
                   <div class="editor-customizer-sidebar ${this.isDesktop ? "active" : ""}">
@@ -1002,10 +977,6 @@
                       </div>
                   </div>
                `;
-
-               document
-                  .querySelector("#app")
-                  .insertAdjacentHTML("beforeend", sidebarHTML);
 
                // Then we will initialize/show the global contents settings after a short delay
                setTimeout(() => {
@@ -1053,6 +1024,11 @@
                   this.$iframe = document?.getElementById(
                      "membership-editor-iframe-preview",
                   );
+                  this.$iframe.onload = () => {
+                     document
+                        .querySelector("#app")
+                        .insertAdjacentHTML("beforeend", sidebarHTML);
+                  };
                }, 100);
             }
          },
@@ -1915,9 +1891,11 @@
          },
 
          // This method applies all CSS customizations from the activePageOnTemplate into the page
-         syncTemplateCssCustomizations: (isPreview = false) => {
+         syncTemplateCssCustomizations: () => {
             // First we will select the document we will use
-            const $document = isPreview ? this.$iframe.contentDocument : document;
+            const $document = this.isPreviewEditor
+               ? this.$iframe.contentDocument
+               : document;
 
             // Then we will remove any previously rendered style tags
             $document?.querySelectorAll(".bm-template-style")?.forEach((e) => e.remove());
@@ -1980,9 +1958,9 @@
          },
 
          // This method syncs all element customizations to the actual DOM elements
-         syncTemplateElementsCustomization: (isPreview = false) => {
+         syncTemplateElementsCustomization: () => {
             // First we will select the document we will use
-            const $document = isPreview ? this.$iframe.contentDocument : document;
+            const $document = this.isPreviewEditor ? this.$iframe.contentDocument : document;
 
             /**
              * Then we will loop through the activePageOnTemplate because each template

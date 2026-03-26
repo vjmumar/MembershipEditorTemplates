@@ -648,6 +648,7 @@
             this.initializers.initializeEditor();
             return;
          }
+
          (async () => {
             // First we will retrieve the client's templates
             await fetch(
@@ -759,6 +760,12 @@
 
             // Finally we will retrieve the authentication token by parsing the product data from the cookies
             this.token = this.utils.getAuth().tokenId;
+
+            if (this.isPreviewEditor) {
+               window.parent.MembershipCustomization.activePageOnTemplate =
+                  this.activePageOnTemplate;
+               window.parent.MembershipCustomization.activeTemplate = this.activeTemplate;
+            }
          })();
       }
 
@@ -1032,10 +1039,6 @@
                      .insertAdjacentHTML("beforeend", sidebarHTML);
                   setTimeout(() => {
                      this.initializers.initializeGlobalContents();
-                     this.activeTemplate =
-                        this.$iframe.contentWindow.MembershipCustomization.activeTemplate;
-                     this.activePageOnTemplate =
-                        this.$iframe.contentWindow.MembershipCustomization.activePageOnTemplate;
                   }, 100);
                };
             }

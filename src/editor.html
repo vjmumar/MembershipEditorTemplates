@@ -1134,6 +1134,49 @@
 
       // Utils module
       utils = {
+         whenElementReady: (
+            selector,
+            callback,
+            { timeoutMs = 7000, root = document.documentElement, once = true } = {},
+         ) => {
+            // First we will initialize our state variables to track the observation status
+            let done = false;
+            let observer = null;
+            let timeout = null;
+
+            // Then we will define the check function that verifies if the element exists and executes the callback
+            const apply = () => {
+               if (done) return;
+               const el = document.querySelector(selector);
+               if (!el) return false;
+               callback(el);
+               if (once) {
+                  done = true;
+                  observer?.disconnect();
+                  clearTimeout(timeout);
+               }
+               return true;
+            };
+
+            // Then will initialize the MutationObserver and start observing the root element for changes
+            observer = new MutationObserver(apply);
+            observer.observe(root, { childList: true, subtree: true });
+
+            // Then will also set a fallback timeout to stop observing if the element never appears
+            timeout = setTimeout(() => {
+               observer.disconnect();
+            }, timeoutMs);
+
+            // Then we will attempt an immediate check in case the element is already present in the DOM
+            apply();
+
+            // Finally return a cleanup function to allow the caller to cancel the observation manually
+            return () => {
+               done = true;
+               observer.disconnect();
+               clearTimeout(timeout);
+            };
+         },
          // This helper method retrieves the auth information
          getAuth: () => {
             const acatToken = $cookies.get("acat");
@@ -1188,7 +1231,7 @@
                      this.initializers.initShowEditor();
                   };
                } else {
-                  if (isPreviewEditor) {
+                  if (!isPreviewEditor) {
                      this.initializers.initFloatingWidgetToggler();
                   }
                }

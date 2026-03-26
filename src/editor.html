@@ -768,6 +768,7 @@
             setTimeout(() => {
                // Finally if it is a preview then we will add the edit...
                if (this.isPreviewEditor) {
+                  console.log(this.activePageOnTemplate)
                   // First we will loop over all items from the activePageOnTemplate to prepare the DOM elements
                   this.activePageOnTemplate.forEach((item) => {
                      // First we will retrieve the element based on its selector

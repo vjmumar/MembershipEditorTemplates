@@ -1709,7 +1709,9 @@
                   }
                });
             }
-
+            window.MembershipCustomization.activePageOnTemplate =
+               this.activePageOnTemplate;
+            window.MembershipCustomization.activeTemplate = this.activeTemplate;
             // Finally we will sync the updated CSS values with the live preview
             this.actions.syncTemplateCssCustomizations();
          },

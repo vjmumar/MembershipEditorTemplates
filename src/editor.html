@@ -425,6 +425,29 @@
    }
 
    /* Editable Pages */
+   .editable-pages__list {
+      display: flex;
+      flex-direction: column;
+      padding: 0 10px;
+      gap: 8px;
+   }
+
+   .editable-pages__list__item {
+      display: flex;
+      align-items: center;
+      background-color: #8080801f;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      gap: 10px;
+   }
+
+   .editable-pages__list__item input {
+   }
+
+   .editable-pages__list__item p {
+      font-size: 12px;
+   }
 
    /* Sidebar Footer */
    .editor-customizer-sidebar__footer {
@@ -2014,10 +2037,10 @@
             // Then we will generate the list of editable pages html
             const listOfPagesHTML = listOfEditablePages.reduce((a, c) => {
                a += `
-                  <a href="${c.url}" class="editable-pages__list__item">
+                  <div onclick="window.MembershipEditor.initializers.switchPage('${c.url}')" href="${c.url}" class="editable-pages__list__item">
                      <input type="checkbox" style="pointer-events: none;" />
                      <p>${c.name}</p>   
-                  </a>
+                  </div>
                `;
                return a;
             }, "");
@@ -2838,6 +2861,35 @@
                   <h3 style="margin: 0 0 8px 0; color: #000; font-size: 18px; font-weight: 600;">Changing View</h3>
                   <p style="color: #444; font-size: 14px; line-height: 1.5; margin: 0;">
                       Please wait while we are changing the view...
+                  </p>
+               </div>
+            `,
+            );
+         },
+
+         // This method update the page of the preview url with the passed page url.
+         switchPage: async (page = "") => {
+            // First we will ask the user to confirm their decision to switch page
+            const isConfirm = confirm(
+               `Please save your changes before switching to another page. If you have already saved, you may continue; otherwise, we advise saving now so your changes are not lost.`,
+            );
+
+            // Then we will check the user's decision and if they did not agree then we will not proceed
+            if (!isConfirm) return;
+
+            // Then we will update the iframe
+            this.$iframe.src = page;
+
+            // Finally we will add a loading indicator inside the sidebar editor
+            document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(
+               "beforeend",
+               `
+               <div style="padding: 24px 16px;background: #f9f9f9;border-radius: 8px;border: 1px solid #eee;text-align: center;font-family: sans-serif;position: absolute;top: 0;height: 100%;z-index: 99999999;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+                  <div style="margin: 0 auto 16px auto; width: 24px; height: 24px; border: 3px solid #ddd; border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                  <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+                  <h3 style="margin: 0 0 8px 0; color: #000; font-size: 18px; font-weight: 600;">Switching Page</h3>
+                  <p style="color: #444; font-size: 14px; line-height: 1.5; margin: 0;">
+                      Please wait while we are switching the page...
                   </p>
                </div>
             `,

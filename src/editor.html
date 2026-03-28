@@ -355,7 +355,7 @@
       rotate: 90deg;
    }
 
-   .global-contents__advance-settings {
+   .global-contents__additional-settings {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -366,14 +366,42 @@
       margin: 10px;
    }
 
-   .global-contents__advance-settings p {
+   .global-contents__additional-settings p {
       font-size: 15px;
    }
 
-   .global-contents__advance-settings i {
+   .global-contents__additional-settings i {
       font-size: 11px;
    }
 
+   /* Additional Settings Header */
+   .additional-settings-header {
+      display: flex;
+      align-items: center;
+      padding: 25px 15px;
+      background-color: white;
+      border-bottom: 1px solid #e5e7eb;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      position: sticky;
+      top: 0;
+      height: 40px;
+      z-index: 9999;
+   }
+
+   .additional-settings-header__text {
+      font-weight: 700;
+      font-size: 14px;
+      color: black;
+   }
+
+   .additional-settings-header__icon {
+      font-size: 20px;
+      color: black;
+      cursor: pointer;
+   }
+
+   /* Advance settings */
    .advance-settings__customcss {
       margin: 10px;
    }
@@ -395,6 +423,8 @@
    .advance-settings__fonts__info {
       font-size: 9px;
    }
+
+   /* Editable Pages */
 
    /* Sidebar Footer */
    .editor-customizer-sidebar__footer {
@@ -448,7 +478,7 @@
    }
 
    /* Theme Selector */
-   .theme-selector__header {
+   .additional-settings-header {
       display: flex;
       align-items: center;
       padding: 25px 15px;
@@ -462,13 +492,13 @@
       z-index: 9999;
    }
 
-   .theme-selector__header__text {
+   .additional-settings-header__text {
       font-weight: 700;
       font-size: 14px;
       color: black;
    }
 
-   .theme-selector__header__icon {
+   .additional-settings-header__icon {
       font-size: 20px;
       color: black;
       cursor: pointer;
@@ -641,7 +671,6 @@
    class MembershipPreview {
       constructor() {
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
-         this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
          if (this.isPreviewEditor) {
             this.initializers.init();
          }
@@ -702,6 +731,83 @@
          },
       };
 
+      // Data module
+      data = {
+         // This helper method retrieve the editable pages name and url
+         getListOfEditablePages: async () => {
+            // First, we will retrieve the iframe
+            const $iframe = document.querySelector("#membership-editor-iframe-preview");
+
+            // Then, we will retrieve the template schema inside the preview iframe
+            const templateSchema = $iframe.contentWindow.templateCustomizationSchema;
+
+            // Then, we will request to retrieve the categories inside the course template
+            const categoriesWithPost =
+               await $iframe.contentWindow.CourseTemplate.data.fetchCategories();
+
+            // Then, we will retrieve the productId, valid category ID, and valid post ID
+            const categoryWithValidPosts = [...categoriesWithPost]
+               .filter((cat) => !cat.parentCategory)
+               .sort((a, b) => {
+                  const hasMedia = (cat) =>
+                     cat.posts?.some(
+                        (p) => p.video !== null || p.audio !== null || !!p.embedJson,
+                     );
+                  if (hasMedia(a) && !hasMedia(b)) return -1;
+                  if (!hasMedia(a) && hasMedia(b)) return 1;
+                  return (a.sequenceNo || 0) - (b.sequenceNo || 0);
+               })[0];
+            const productId = categoryWithValidPosts?.["productId"];
+            const categoryId = categoryWithValidPosts?.["id"];
+
+            const postId = (() => {
+               const rawPosts = categoryWithValidPosts?.posts || [];
+               return [...rawPosts].sort((a, b) => {
+                  const aHasMedia = a.video !== null || a.audio !== null || !!a.embedJson;
+                  const bHasMedia = b.video !== null || b.audio !== null || !!b.embedJson;
+                  if (aHasMedia && !bHasMedia) return -1;
+                  if (!aHasMedia && bHasMedia) return 1;
+                  return (a.sequenceNo || 0) - (b.sequenceNo || 0);
+               })[0]?.id;
+            })();
+
+            // Then, we will create a function that will hydrate the GHL URL regex
+            const hydrateGhlUrl = (urlRegex, pId, cId = null, poId = null) => {
+               const currentUrl = new URL(window.location.href);
+               let path = urlRegex.replace(/\\/g, "").replace(/\(\?.*\)\?\$$/, "");
+
+               if (pId) path = path.replace("[^/]+", pId);
+               if (cId) path = path.replace("[^/]+", cId);
+               if (poId) path = path.replace("[^/]+", poId);
+
+               const finalUrl = new URL(path, window.location.origin);
+               currentUrl.searchParams.forEach((value, key) => {
+                  finalUrl.searchParams.set(key, value);
+               });
+               return finalUrl.toString();
+            };
+
+            // Then, we will retrieve the pages from the template schema based on the window size
+            const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+            const pages = templateSchema[isDesktop ? "pages" : "mobilePages"];
+
+            // Then, we will format the pages and return them
+            const allPages = pages.map((page) => {
+               const fullUrl = hydrateGhlUrl(
+                  page.urlRegex,
+                  productId,
+                  categoryId,
+                  postId,
+               );
+               return {
+                  name: page.name,
+                  url: fullUrl,
+               };
+            });
+            return allPages;
+         },
+      };
+
       // Utils module
       utils = {
          // This helper method retrieves the auth information
@@ -717,14 +823,6 @@
                data.productId = url;
             }
             return data;
-         },
-
-         // This helper method retrieves possible preview urls for current view
-         retrievePossiblePreviewUrlsInCurrentView: async () => {
-            const $iframe = document.querySelector("#membership-editor-iframe-preview");
-            const templateSchema = $iframe.contentWindow.templateCustomizationSchema;
-            const categoriesWithPost = await $iframe.contentWindow.data.fetchCategories();
-            console.log(categoriesWithPost);
          },
       };
    }
@@ -1841,8 +1939,12 @@
                            <p class="global-contents__header__text">Global (Desktop/Mobile)</p>
                            <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipEditor.initializers.initializeThemeSelector()"></i>
                        </div>
-                        <div class="global-contents__advance-settings" onClick="window.MembershipEditor.initializers.initializeAdvanceSettings()">
+                        <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeAdvanceSettings()">
                            <p>Advance Settings</p>
+                           <i class="fa-solid fa-angle-right"></i>
+                        </div>
+                        <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeListOfEditablePages()">
+                           <p>Switch Page</p>
                            <i class="fa-solid fa-angle-right"></i>
                         </div>
                         <p class="global-contents__separator">Global Components</p>
@@ -1890,13 +1992,49 @@
             // Finally we will render the fully generated HTML into the sidebar content area
             $sidebarContent.innerHTML = `
                    <div class="theme-selector">
-                       <div class="theme-selector__header">
-                           <i class="fa-solid fa-arrow-left theme-selector__header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
-                           <p class="theme-selector__header__text">Advance Settings</p>
+                       <div class="additional-settings-header">
+                           <i class="fa-solid fa-arrow-left additional-settings-header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
+                           <p class="additional-settings-header__text">Advance Settings</p>
                            <div></div>
                        </div>
                        ${customCssHTML}
                        ${fontsListHTML}
+                   </div>
+               `;
+         },
+
+         // This methid will intialize the page preview list selector
+         initializeListOfEditablePages: async () => {
+            // First we will retrieve the editable pages from membership preview getListOfEditablePages
+            const listOfEditablePages =
+               await this.$iframe.contentWindow.MembershipPreview.data.getListOfEditablePages();
+
+            // Then we will retrieve the sidebar and its content container where we will inject the HTML
+            const $sidebar = document.querySelector(".editor-customizer-sidebar");
+            const $sidebarContent = $sidebar.querySelector(
+               ".editor-customizer-sidebar__content",
+            );
+
+            // Then we will generate the list of editable pages html
+            const listOfPagesHTML = listOfEditablePages.reduce((a, c) => {
+               a += `
+                  <a href="${c.url}" class="editable-pages__list__item">
+                     <input type="checkbox" style="pointer-events: none;" />
+                     <p>${c.name}</p>   
+                  </a>
+               `;
+               return a;
+            }, "");
+
+            // Finally we will render the fully generated HTML into the sidebar content area
+            $sidebarContent.innerHTML = `
+                   <div class="editable-pages">
+                       <div class="editable-pages__header">
+                           <i class="fa-solid fa-arrow-left editable-pages__header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
+                           <p class="editable-pages__header__text">Switch Page</p>
+                           <div></div>
+                       </div>
+                       <div class="editable-pages__list">${listOfEditablePages}</div>
                    </div>
                `;
          },
@@ -1955,9 +2093,9 @@
             // Finally we will render the fully generated HTML into the sidebar content area
             $sidebarContent.innerHTML = `
                    <div class="theme-selector">
-                       <div class="theme-selector__header">
-                           <i class="fa-solid fa-arrow-left theme-selector__header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
-                           <p class="theme-selector__header__text">Templates</p>
+                       <div class="additional-settings-header">
+                           <i class="fa-solid fa-arrow-left additional-settings-header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
+                           <p class="additional-settings-header__text">Templates</p>
                            <div></div>
                        </div>
                        ${themeHTML}
@@ -2921,7 +3059,6 @@
                      />
                   `;
          },
-
          select: (
             templateKey,
             property,

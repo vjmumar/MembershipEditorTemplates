@@ -2025,12 +2025,12 @@
             // Finally we will render the fully generated HTML into the sidebar content area
             $sidebarContent.innerHTML = `
                    <div class="editable-pages">
-                       <div class="editable-pages__header">
-                           <i class="fa-solid fa-arrow-left editable-pages__header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
-                           <p class="editable-pages__header__text">Switch Page</p>
+                       <div class="additional-settings-header">
+                           <i class="fa-solid fa-arrow-left additional-settings-header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
+                           <p class="additional-settings-header__text">Switch Page</p>
                            <div></div>
                        </div>
-                       <div class="editable-pages__list">${listOfEditablePages}</div>
+                       <div class="editable-pages__list">${listOfPagesHTML}</div>
                    </div>
                `;
          },

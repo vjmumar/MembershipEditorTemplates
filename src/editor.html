@@ -672,6 +672,9 @@
                });
             }, 2000);
 
+            // Then we will initialize the global editor
+            window.parent?.MembershipEditor?.initializers?.initializeGlobalContents();
+
             // Finally we will attach the main click listener to detect interactions with editable elements
             window.addEventListener("click", (e) => {
                /**

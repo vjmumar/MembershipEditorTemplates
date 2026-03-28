@@ -2582,7 +2582,7 @@
                      redirect: "follow",
                   });
 
-                  // Then we will update the window.activeTemplatesConfig with updatedActiveTemplatesConfig
+                  // Then we will update the window.activeTemplatesConfig inside the preview iframe with updatedActiveTemplatesConfig
                   previewIframeMembershipParser.activeTemplatesConfig =
                      updatedActiveTemplatesConfig;
 
@@ -2693,8 +2693,7 @@
                      `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
                      `${productId}.txt`,
                   );
-
-                  window.savedTemplatesFileInfo = fileData;
+                  this.$iframe.contentWindow.savedTemplatesFileInfo = fileData;
 
                   // Then we will attempt to update the product configuration by sending a PUT request with a rehydration script embedded in customJs
                   await fetch(url, {
@@ -2717,8 +2716,9 @@
                      redirect: "follow",
                   });
 
-                  // Then we will update the window.activeTemplatesConfig with updatedActiveTemplatesConfig
-                  window.activeTemplatesConfig = updatedActiveTemplatesConfig;
+                  // Then we will update the window.activeTemplatesConfig inside the preview iframe with updatedActiveTemplatesConfig
+                  previewIframeMembershipParser.activeTemplatesConfig =
+                     updatedActiveTemplatesConfig;
 
                   // Finally we will show a success message and reload the preview iframe
                   alert("✅ Done! You’ve switched to a new template.");

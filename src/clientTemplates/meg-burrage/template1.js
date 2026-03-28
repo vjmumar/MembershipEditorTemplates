@@ -2040,7 +2040,7 @@ window.templateCustomizationSchema = {
    mobilePages: [
       {
          name: "Main",
-         urlRegex: "\\/courses\\/products\\/[a-zA-Z0-9-]{36}(?:\\/.*)?(?:\\?.*)?$",
+         urlRegex: "/courses/products/[^/]+/categories/?(\\?.*)?$",
          editor: [
             {
                elementSelector: ".template-hero",

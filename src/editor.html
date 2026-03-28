@@ -794,11 +794,9 @@
             const hydrateGhlUrl = (urlRegex, pId, cId = null, poId = null) => {
                const currentUrl = new URL(window.location.href);
                let path = urlRegex.replace(/\\/g, "").replace(/\(\?.*\)\?\$$/, "");
-
                if (pId) path = path.replace("[^/]+", pId);
                if (cId) path = path.replace("[^/]+", cId);
                if (poId) path = path.replace("[^/]+", poId);
-
                const finalUrl = new URL(path, window.location.origin);
                currentUrl.searchParams.forEach((value, key) => {
                   finalUrl.searchParams.set(key, value);
@@ -2862,8 +2860,10 @@
 
             // Then we will update the iframe
             this.isDesktop = isDesktop;
-            this.$iframe.style.width = isDesktop ? "100%" : "500px";
             this.$iframe.src = this.$iframe.src;
+            setTimeout(() => {
+               this.$iframe.style.width = isDesktop ? "100%" : "500px";
+            },500);
 
             // Finally we will add a loading indicator inside the sidebar editor
             document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(

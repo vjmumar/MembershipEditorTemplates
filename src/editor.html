@@ -812,6 +812,7 @@
 
             // Then, we will format the pages and return them
             const allPages = pages.map((page) => {
+               const isActive = new RegExp(page.urlRegex).test(location.href);
                const fullUrl = hydrateGhlUrl(
                   page.urlRegex,
                   productId,
@@ -821,6 +822,7 @@
                return {
                   name: page.name,
                   url: fullUrl,
+                  isActive,
                };
             });
             return allPages;
@@ -1494,7 +1496,7 @@
             const sidebarHTML = `
                 <div class="editor-customizer-sidebar active">
                     <div class="editor-customizer-sidebar__content">
-                        <div style="padding: 24px 16px; background: #f9f9f9; border-radius: 8px; border: 1px solid #eee; text-align: center; font-family: sans-serif; position: absolute; top: 0; height: 100%; z-index: 99999999; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; box-sizing: border-box;">
+                        <div style="padding: 24px 16px; background: #f9f9f9; border-radius: 8px; border: 1px solid #eee; text-align: center; font-family: sans-serif; position: absolute; top: 0; height: 100%; z-index: 99999999; display: flex; flex-direction: column; justify-content: center; width: 100%; box-sizing: border-box;">
                             <style>
                                 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
                             </style>
@@ -2036,9 +2038,10 @@
 
             // Then we will generate the list of editable pages html
             const listOfPagesHTML = listOfEditablePages.reduce((a, c) => {
+               const clickAction = `window.MembershipEditor.actions.switchPage('${c.url}')`;
                a += `
-                  <div onclick="window.MembershipEditor.actions.switchPage('${c.url}')" href="${c.url}" class="editable-pages__list__item">
-                     <input type="checkbox" style="pointer-events: none;" />
+                  <div onclick="${c.isActive ? "" : clickAction}" class="editable-pages__list__item">
+                     <input ${c.isActive ? "checked" : ""} type="checkbox" style="pointer-events: none;" />
                      <p>${c.name}</p>   
                   </div>
                `;
@@ -2855,7 +2858,7 @@
             document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(
                "beforeend",
                `
-               <div style="padding: 24px 16px;background: #f9f9f9;border-radius: 8px;border: 1px solid #eee;text-align: center;font-family: sans-serif;position: absolute;top: 0;height: 100%;z-index: 99999999;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+               <div style="padding: 24px 16px;background: #f9f9f9;border-radius: 8px;border: 1px solid #eee;text-align: center;font-family: sans-serif;position: absolute;top: 0;height: 100%;z-index: 99999999;display: flex;flex-direction: column;justify-content: center;">
                   <div style="margin: 0 auto 16px auto; width: 24px; height: 24px; border: 3px solid #ddd; border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
                   <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
                   <h3 style="margin: 0 0 8px 0; color: #000; font-size: 18px; font-weight: 600;">Changing View</h3>
@@ -2884,7 +2887,7 @@
             document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(
                "beforeend",
                `
-               <div style="padding: 24px 16px;background: #f9f9f9;border-radius: 8px;border: 1px solid #eee;text-align: center;font-family: sans-serif;position: absolute;top: 0;height: 100%;z-index: 99999999;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+               <div style="padding: 24px 16px;background: #f9f9f9;border-radius: 8px;border: 1px solid #eee;text-align: center;font-family: sans-serif;position: absolute;top: 0;height: 100%;z-index: 99999999;display: flex;flex-direction: column;justify-content: center;">
                   <div style="margin: 0 auto 16px auto; width: 24px; height: 24px; border: 3px solid #ddd; border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
                   <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
                   <h3 style="margin: 0 0 8px 0; color: #000; font-size: 18px; font-weight: 600;">Switching Page</h3>

@@ -809,29 +809,29 @@
             const pages = templateSchema[isDesktop ? "pages" : "mobilePages"];
 
             // Then, we will format the pages and return them
-           const allPages = pages.map((page) => {
-    const fullUrl = hydrateGhlUrl(page.urlRegex, productId, categoryId, postId);
-
-    const isActive = (() => {
-        const currentRegex = new RegExp(page.urlRegex);
-        if (!currentRegex.test(location.pathname)) return false;
-
-        const segmentCount = (regex) => (regex.match(/\//g) || []).length;
-
-        const hasBetterMatch = pages.some((otherPage) => {
-            if (otherPage.name === page.name) return false;
-            const otherRegex = new RegExp(otherPage.urlRegex);
-            return (
-                otherRegex.test(location.pathname) &&
-                segmentCount(otherPage.urlRegex) > segmentCount(page.urlRegex)
-            );
-        });
-
-        return !hasBetterMatch;
-    })();
-
-    return { name: page.name, url: fullUrl, isActive };
-});
+            const allPages = pages.map((page) => {
+               const fullUrl = hydrateGhlUrl(
+                  page.urlRegex,
+                  productId,
+                  categoryId,
+                  postId,
+               );
+               const isActive = (() => {
+                  const currentRegex = new RegExp(page.urlRegex);
+                  if (!currentRegex.test(location.pathname)) return false;
+                  const segmentCount = (regex) => (regex.match(/\//g) || []).length;
+                  const hasBetterMatch = pages.some((otherPage) => {
+                     if (otherPage.name === page.name) return false;
+                     const otherRegex = new RegExp(otherPage.urlRegex);
+                     return (
+                        otherRegex.test(location.pathname) &&
+                        segmentCount(otherPage.urlRegex) > segmentCount(page.urlRegex)
+                     );
+                  });
+                  return !hasBetterMatch;
+               })();
+               return { name: page.name, url: fullUrl, isActive };
+            });
             return allPages;
          },
       };
@@ -1357,6 +1357,7 @@
          this.$iframe = null;
          this.isDesktop = true;
          this.initializers.init();
+         this.token = this.utils.getAuth().tokenId;
       }
 
       // Initializer module

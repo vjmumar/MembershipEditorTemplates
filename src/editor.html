@@ -30,6 +30,10 @@
    }
 
    /* Editor */
+   .editor-customizer-sidebar {
+      background-color: #ffffff;
+   }
+
    .editor-customizer-sidebar input[type="text"],
    .editor-customizer-sidebar input[type="number"],
    .editor-customizer-sidebar input[type="color"],
@@ -1251,10 +1255,26 @@
                   "width:100%; height:100vh; border:none; display:block; margin-inline: auto";
                $app.prepend(this.$iframe);
 
+               // Then we will set the body overflow to hidden
                document.body.style.overflow = "hidden";
+
                // Finally, wait for the iframe's internal DOM to be ready before firing the editor logic.
                this.$iframe.onload = () => {
-                  this.initializers.initShowEditor();
+                  /**
+                   * First we will check if the editor is already mounted in the current context.
+                   * This can happen when re-initializing (e.g. switching between desktop and mobile modes).
+                   */
+                  const isEditorAlreadyInserted =
+                     document.querySelector(".editor-customizer-sidebar") !== null;
+
+                  /**
+                   * Then we will decide which initializer to run:
+                   * - If the editor already exists, we call initializeEditor to re-sync and update the current state
+                   * - If not, we call initShowEditor to perform the full initialization flow
+                   */
+                  this.initializers?.[
+                     isEditorAlreadyInserted ? "initializeEditor" : "initShowEditor"
+                  ]();
                };
             } else {
                // Fallback: If in preview but not in edit mode, show the floating toggle (if not already present).
@@ -1331,10 +1351,6 @@
 
          // This method will wait until the #app container exists before initializing the editor
          initShowEditor: () => {
-            // First, retrieve the editor styles from the DOM.
-            const editorStyle = document.querySelector("#editor").outerHTML;
-
-            // Finally, we will start a polling interval to wait for the application container and template to load before initializing the editor
             const interval = setInterval(() => {
                const $container = document.querySelector("#app");
                if ($container) {

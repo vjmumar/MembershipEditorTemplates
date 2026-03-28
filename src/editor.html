@@ -819,13 +819,13 @@
                const isActive = (() => {
                   const currentRegex = new RegExp(page.urlRegex);
                   if (!currentRegex.test(location.href)) return false;
+                  const segmentCount = (regex) => (regex.match(/\//g) || []).length;
                   const hasBetterMatch = pages.some((otherPage) => {
                      if (otherPage.name === page.name) return false;
                      const otherRegex = new RegExp(otherPage.urlRegex);
-                     const matchesCurrentUrl = otherRegex.test(location.href);
                      return (
-                        matchesCurrentUrl &&
-                        otherPage.urlRegex.length > page.urlRegex.length
+                        otherRegex.test(location.href) &&
+                        segmentCount(otherPage.urlRegex) > segmentCount(page.urlRegex)
                      );
                   });
                   return !hasBetterMatch;
@@ -2863,7 +2863,7 @@
             this.$iframe.src = this.$iframe.src;
             setTimeout(() => {
                this.$iframe.style.width = isDesktop ? "100%" : "500px";
-            },500);
+            }, 500);
 
             // Finally we will add a loading indicator inside the sidebar editor
             document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(

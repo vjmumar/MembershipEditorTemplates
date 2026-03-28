@@ -641,6 +641,7 @@
    class MembershipPreview {
       constructor() {
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
+         this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
          if (this.isPreviewEditor) {
             this.initializers.init();
          }
@@ -716,6 +717,14 @@
                data.productId = url;
             }
             return data;
+         },
+
+         // This helper method retrieves possible preview urls for current view
+         retrievePossiblePreviewUrlsInCurrentView: async () => {
+            const $iframe = document.querySelector("#membership-editor-iframe-preview");
+            const templateSchema = $iframe.contentWindow.templateCustomizationSchema;
+            const categoriesWithPost = await $iframe.contentWindow.data.fetchCategories();
+            console.log(categoriesWithPost);
          },
       };
    }

@@ -735,15 +735,11 @@
       data = {
          // This helper method retrieve the editable pages name and url
          getListOfEditablePages: async () => {
-            // First, we will retrieve the iframe
-            const $iframe = document.querySelector("#membership-editor-iframe-preview");
-
-            // Then, we will retrieve the template schema inside the preview iframe
-            const templateSchema = $iframe.contentWindow.templateCustomizationSchema;
+            // First, we will retrieve the template schema inside the preview iframe
+            const templateSchema = window.templateCustomizationSchema;
 
             // Then, we will request to retrieve the categories inside the course template
-            const categoriesWithPost =
-               await $iframe.contentWindow.CourseTemplate.data.fetchCategories();
+            const categoriesWithPost = await window.CourseTemplate.data.fetchCategories();
 
             // Then, we will retrieve the productId, valid category ID, and valid post ID
             const categoryWithValidPosts = [...categoriesWithPost]
@@ -1939,12 +1935,12 @@
                            <p class="global-contents__header__text">Global (Desktop/Mobile)</p>
                            <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipEditor.initializers.initializeThemeSelector()"></i>
                        </div>
+                       <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeListOfEditablePages()">
+                          <p>Switch Page</p>
+                          <i class="fa-solid fa-angle-right"></i>
+                       </div>
                         <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeAdvanceSettings()">
                            <p>Advance Settings</p>
-                           <i class="fa-solid fa-angle-right"></i>
-                        </div>
-                        <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeListOfEditablePages()">
-                           <p>Switch Page</p>
                            <i class="fa-solid fa-angle-right"></i>
                         </div>
                         <p class="global-contents__separator">Global Components</p>
@@ -2007,7 +2003,7 @@
          initializeListOfEditablePages: async () => {
             // First we will retrieve the editable pages from membership preview getListOfEditablePages
             const listOfEditablePages =
-               await this.$iframe.contentWindow.MembershipPreview.data.getListOfEditablePages();
+               await this.$iframe.contentWindow?.MembershipPreview?.data?.getListOfEditablePages();
 
             // Then we will retrieve the sidebar and its content container where we will inject the HTML
             const $sidebar = document.querySelector(".editor-customizer-sidebar");

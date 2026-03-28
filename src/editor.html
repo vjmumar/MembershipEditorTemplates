@@ -2583,7 +2583,7 @@
                   });
 
                   // Then we will update the window.activeTemplatesConfig inside the preview iframe with updatedActiveTemplatesConfig
-                  previewIframeMembershipParser.activeTemplatesConfig =
+                  this.$iframe.contentWindow.MembershipParser.activeTemplatesConfig =
                      updatedActiveTemplatesConfig;
 
                   /**
@@ -2717,7 +2717,7 @@
                   });
 
                   // Then we will update the window.activeTemplatesConfig inside the preview iframe with updatedActiveTemplatesConfig
-                  previewIframeMembershipParser.activeTemplatesConfig =
+                  this.$iframe.contentWindow.MembershipParser.activeTemplatesConfig =
                      updatedActiveTemplatesConfig;
 
                   // Finally we will show a success message and reload the preview iframe

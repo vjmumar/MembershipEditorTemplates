@@ -2037,7 +2037,7 @@
             // Then we will generate the list of editable pages html
             const listOfPagesHTML = listOfEditablePages.reduce((a, c) => {
                a += `
-                  <div onclick="window.MembershipEditor.initializers.switchPage('${c.url}')" href="${c.url}" class="editable-pages__list__item">
+                  <div onclick="window.MembershipEditor.actions.switchPage('${c.url}')" href="${c.url}" class="editable-pages__list__item">
                      <input type="checkbox" style="pointer-events: none;" />
                      <p>${c.name}</p>   
                   </div>

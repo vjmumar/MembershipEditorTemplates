@@ -657,9 +657,9 @@
 
                /**
                 * Finally we will re-render the element by resetting its outerHTML.
-                * This is needed because some SPA frameworks handle navigation without anchor tags.
-                * By forcing a re-render, all existing event listeners on the element get removed,
-                * which prevents unintended navigation behavior.
+                * This is needed because some SPA frameworks handle navigation without full page reloads.
+                * By forcing a re-render, all existing event listeners on the element are removed,
+                * preventing unintended navigation or stale event bindings.
                 */
                if ($element) $element.outerHTML = $element.outerHTML;
             });
@@ -672,7 +672,10 @@
                });
             }, 2000);
 
-            // Then we will initialize the global editor
+            /**
+             * Then we will initialize the global editor from the parent window,
+             * since this script is running inside an iframe and the editor lives outside of it
+             */
             window.parent?.MembershipEditor?.initializers?.initializeGlobalContents();
 
             // Finally we will attach the main click listener to detect interactions with editable elements
@@ -721,6 +724,7 @@
          this.activePageOnTemplate = null;
          this.token = "";
          this.isEdit = location.href.includes("membershipeditor=true");
+         this.isPreviewEditor = location.href.includes("isEditorPreview=true");
          this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
          // Then we will check if we are in edit mode, we stop the constructor here to prevent redundant initialization.
@@ -841,33 +845,50 @@
 
          // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution
          initSyncConfig: () => {
-            // First we will retrieve the current URL
+            // First we will retrieve the current URL to determine which page configuration should be applied
             const url = window.location.href;
 
-            // Then we will sync the template's custom css
+            // Then we will sync the template's custom CSS so base styles are applied before other customizations
             this.actions.syncTemplateCustomCss();
 
             // Finally we will iterate through the template pages to find the current view and process it
             this.activeTemplate?.[this.isDesktop ? "pages" : "mobilePages"]?.forEach(
                (page) => {
-                  // First we will create a new RegExp instance using the regex pattern from the current page configuration
+                  /**
+                   * First we will create a RegExp instance using the page's URL pattern.
+                   * This allows us to support dynamic route matching instead of exact URL comparison.
+                   */
                   const urlRegex = new RegExp(page?.urlRegex);
 
-                  // Finally we will check if the current URL matches the regex pattern; if it does, we will proceed to process it
+                  /**
+                   * Finally we will check if the current URL matches the pattern.
+                   * If it does, we proceed with applying the corresponding page configuration.
+                   */
                   if (urlRegex?.test(url)) {
-                     // First we will update the active page state with the specific editor configuration that matches the current URL
+                     // First we will update the active page state with the editor configuration that matches the current URL
                      this.activePageOnTemplate = page.editor;
 
-                     // Then we will invoke all synchronizers to apply the configuration customizations
+                     // Then we will invoke all synchronizers to apply CSS and element-level customizations for this page
                      this.actions.syncTemplateCssCustomizations();
                      this.actions.syncTemplateElementsCustomization();
+
+                     /**
+                      * Then we will delay feature customizations to ensure the DOM
+                      * and previous customizations are fully applied before executing
+                      */
                      setTimeout(() => {
                         this.actions.syncTemplateFeatureCustomizations(null, null, true);
                      }, 5500);
 
-                     // Finally we will initialize the membership preview to conditionally initiate the membership editor preview mode
+                     /**
+                      * Finally we will initialize the membership preview after a short delay.
+                      * This ensures all required elements and configurations are ready
+                      * before activating preview mode
+                      */
                      setTimeout(() => {
-                        window.MembershipPreview = new MembershipPreview();
+                        if (this.isPreviewEditor) {
+                           window.MembershipPreview = new MembershipPreview();
+                        }
                      }, 2000);
                   }
                },
@@ -1331,7 +1352,16 @@
             const sidebarHTML = `
                 <div class="editor-customizer-sidebar active">
                     <div class="editor-customizer-sidebar__content">
-                        <p style="font-size: 20px; text-align:center; padding-block: 30px; margin-inline: 10px;">👋 Click any editable element to start customizing</p>
+                        <div style="padding: 24px 16px; background: #f9f9f9; border-radius: 8px; border: 1px solid #eee; text-align: center; font-family: sans-serif; position: absolute; top: 0; height: 100%; z-index: 99999999; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; box-sizing: border-box;">
+                            <style>
+                                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+                            </style>
+                            <div style="margin: 0 auto 16px auto; width: 24px; height: 24px; border: 3px solid #ddd; border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                            <h3 style="margin: 0 0 8px 0; color: #000; font-size: 18px; font-weight: 600;">Please wait</h3>
+                            <p style="color: #444; font-size: 14px; line-height: 1.5; margin: 0;">
+                                Waiting for the configuration...
+                            </p>
+                        </div>
                     </div>
                     <div class="editor-customizer-sidebar__footer">
                         <button class="editor-customizer-sidebar__footer__button editor-customizer-exit">Exit</button>
@@ -2649,11 +2679,6 @@
                 <h3 style="margin: 0 0 8px 0; color: #000; font-size: 18px; font-weight: 600;">Changing View</h3>
                 <p style="color: #444; font-size: 14px; line-height: 1.5; margin: 0;">
                     Please wait while we are changing the view...
-                </p>
-                <hr style="margin: 16px 0; border: 0; border-top: 1px solid #eee;">
-                <p style="color: #666; font-size: 12px; line-height: 1.4;">
-                    This window is temporarily locked to prevent data conflicts. 
-                    <b>Save your mobile changes</b> before returning to desktop.
                 </p>
             </div>
             `,

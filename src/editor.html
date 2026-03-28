@@ -812,13 +812,26 @@
 
             // Then, we will format the pages and return them
             const allPages = pages.map((page) => {
-               const isActive = new RegExp(page.urlRegex).test(location.href);
                const fullUrl = hydrateGhlUrl(
                   page.urlRegex,
                   productId,
                   categoryId,
                   postId,
                );
+               const isActive = (() => {
+                  const currentRegex = new RegExp(page.urlRegex);
+                  if (!currentRegex.test(location.href)) return false;
+                  const hasBetterMatch = pages.some((otherPage) => {
+                     if (otherPage.name === page.name) return false;
+                     const otherRegex = new RegExp(otherPage.urlRegex);
+                     const matchesCurrentUrl = otherRegex.test(location.href);
+                     return (
+                        matchesCurrentUrl &&
+                        otherPage.urlRegex.length > page.urlRegex.length
+                     );
+                  });
+                  return !hasBetterMatch;
+               })();
                return {
                   name: page.name,
                   url: fullUrl,

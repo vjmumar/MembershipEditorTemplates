@@ -2720,9 +2720,9 @@
                   // Then we will update the window.activeTemplatesConfig with updatedActiveTemplatesConfig
                   window.activeTemplatesConfig = updatedActiveTemplatesConfig;
 
-                  // Finally we will show a success message
+                  // Finally we will show a success message and reload the preview iframe
                   alert("✅ Done! You’ve switched to a new template.");
-                  location.reload();
+                  this.$iframe.src = this.$iframe.src;
                } catch (err) {
                   // Finally we will notify the user and log the error for debugging if saving fails for any reason
                   alert(

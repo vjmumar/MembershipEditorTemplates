@@ -2556,7 +2556,7 @@
                      throw "error";
                      return;
                   }
-                  window.savedTemplatesFileInfo = fileData;
+                  this.$iframe.contentWindow.savedTemplatesFileInfo = fileData;
 
                   /**
                    * Then, we attempt to update the product configuration via a PUT request, injecting a rehydration

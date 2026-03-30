@@ -2020,6 +2020,17 @@
                `;
             })();
 
+            // Then we will create the updateTemplatePlaceholderThumbnail html
+            const templatePlaceholderThumbnailHTML = (() => {
+               return `
+                  <div class="advance-settings__placeholder-thumbnail">
+                     <p class="advance-settings__placeholder-thumbnail__label">Fonts</p>
+                     <div class="advance-settings__placeholder-thumbnail__preview"></div>
+                     <input oninput="window.MembershipEditor.actions.updatePlaceholderThumbnail(this.value || '')" value="${activeTemplate?.["placeholderThumbnail"] || ""}" />
+                  </div>
+               `;
+            })();
+
             // Finally we will render the fully generated HTML into the sidebar content area
             $sidebarContent.innerHTML = `
                    <div class="theme-selector">
@@ -2028,6 +2039,7 @@
                            <p class="additional-settings-header__text">Advance Settings</p>
                            <div></div>
                        </div>
+                       ${templatePlaceholderThumbnailHTML}
                        ${customCssHTML}
                        ${fontsListHTML}
                    </div>
@@ -2500,6 +2512,17 @@
 
             // Finally, update the active template fonts with the clean array
             activeTemplate.fonts = formattedFontsToArray;
+         },
+
+         // This method updates the template's placeholderThumbnail
+         updateTemplatePlaceholderThumbnail: (newThumbnail = "") => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Finally, update the active template placeholderThumbnail
+            activeTemplate.placeholderThumbnail = newThumbnail;
          },
 
          // This method is responsible for saving the user's edits inside the current product custom js in ghl

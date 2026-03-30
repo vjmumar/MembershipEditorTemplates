@@ -421,8 +421,9 @@
       background-position: center;
    }
 
-    .advance-settings__thumbnail-placeholder__info {
+   .advance-settings__thumbnail-placeholder__info {
       font-size: 9px;
+      margin-bottom: 9px;
    }
 
    .advance-settings__customcss {
@@ -2669,7 +2670,12 @@
             selectorToToggle = "",
          ) => {
             // First we will confirm the user's intent to switch template
-            if (!confirm("Do you want to proceed?")) return;
+            if (
+               !confirm(
+                  "Do you want to proceed? Please save your changes before switching templates to avoid losing them.",
+               )
+            )
+               return;
 
             // Then we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =

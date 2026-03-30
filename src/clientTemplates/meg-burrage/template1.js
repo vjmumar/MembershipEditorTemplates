@@ -154,7 +154,7 @@ window.templateCustomizationSchema = {
             },
             {
                elementSelector: ".template-navbar__content__nav-links",
-               label: "Navigation Bar Menu",
+               label: "Menu",
                key: "template-navbar-nab-links-wrapper",
                cssCustomizations: [
                   {
@@ -168,7 +168,7 @@ window.templateCustomizationSchema = {
             },
             {
                elementSelector: ".template-navbar__content__nav-links a",
-               label: "Navigation Bar Menu Items",
+               label: "Menu Items",
                key: "template-navbar-content-nav-links",
                features: [
                   {

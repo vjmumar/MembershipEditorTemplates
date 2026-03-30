@@ -1992,6 +1992,7 @@
             const activePageOnTemplate =
                previewIframeMembershipParser.activePageOnTemplate;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
+            console.log(activeTemplate)
 
             // Then we will retrieve the sidebar and its content container where we will inject the HTML
             const $sidebar = document.querySelector(".editor-customizer-sidebar");
@@ -2004,7 +2005,7 @@
                return `
                   <div class="advance-settings__customcss">
                      <p class="advance-settings__customcss__label">Custom Css</p>
-                     <textarea oninput="window.MembershipEditor.actions.updateTemplateCustomCss(this.value || '')">${activeTemplate?.customCss || ""}</textarea>
+                     <textarea name="custom-css" oninput="window.MembershipEditor.actions.updateTemplateCustomCss(this.value || '')">${activeTemplate?.customCss || ""}</textarea>
                   </div>
                `;
             })();
@@ -2014,7 +2015,7 @@
                return `
                   <div class="advance-settings__fonts">
                      <p class="advance-settings__fonts__label">Fonts</p>
-                     <textarea oninput="window.MembershipEditor.actions.updateTemplateFonts(this.value || '')">${(activeTemplate?.fonts || []).join(",\n")}</textarea>
+                     <textarea name="fonts" oninput="window.MembershipEditor.actions.updateTemplateFonts(this.value || '')">${(activeTemplate?.fonts || []).join(",\n")}</textarea>
                      <p class="advance-settings__fonts__info">ⓘ Import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p>
                   </div>
                `;

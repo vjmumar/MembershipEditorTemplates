@@ -989,9 +989,11 @@
                      this.isDesktop ? "pages" : "mobilePages"
                   ][0]?.editor;
 
+               // Then we will update the template customization schema into the this.activeTemplate
+               window.templateCustomizationSchema = this.activeTemplate;
+               
                // Finally, we invoke the main application initializer.
                this.initializers.init();
-               window.templateCustomizationSchema = this.activeTemplate;
             };
 
             // Finally, we retrieve the authentication token by parsing the product data from the cookies.

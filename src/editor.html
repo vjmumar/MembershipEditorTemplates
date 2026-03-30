@@ -1992,7 +1992,7 @@
             const activePageOnTemplate =
                previewIframeMembershipParser.activePageOnTemplate;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
-            console.log(activeTemplate)
+            console.log(activeTemplate);
 
             // Then we will retrieve the sidebar and its content container where we will inject the HTML
             const $sidebar = document.querySelector(".editor-customizer-sidebar");
@@ -2692,11 +2692,7 @@
                      updatedActiveTemplatesConfig.push({
                         id: selectedTemplate.id,
                         isActive: true,
-                        customCss: "",
-                        fonts: [],
-                        pages: [],
-                        mobilePages: [],
-                        global: [],
+                        ...selectedTemplate,
                      });
                   } else {
                      updatedActiveTemplatesConfig.forEach((tem) => {

@@ -2020,13 +2020,13 @@
                `;
             })();
 
-            // Then we will create the updateTemplatePlaceholderThumbnail html
-            const templatePlaceholderThumbnailHTML = (() => {
+            // Then we will create the updateTemplateThumbnailPlaceholder html
+            const templateThumbnailPlaceholderHTML = (() => {
                return `
-                  <div class="advance-settings__placeholder-thumbnail">
-                     <p class="advance-settings__placeholder-thumbnail__label">Fonts</p>
-                     <div class="advance-settings__placeholder-thumbnail__preview"></div>
-                     <input name="palceholder-thumbnail" type="text" oninput="window.MembershipEditor.actions.updateTemplatePlaceholderThumbnail(this.value || '')" value="${activeTemplate?.placeholderThumbnail || ""}" />
+                  <div class="advance-settings__thumbnail-placeholder">
+                     <p class="advance-settings__thumbnail-placeholder__label">Thumbnail Placeholder</p>
+                     <div class="advance-settings__thumbnail-placeholder__preview"></div>
+                     <input name="palceholder-thumbnail" type="text" oninput="window.MembershipEditor.actions.updateTemplateThumbnailPlaceholder(this.value || '')" value="${activeTemplate?.placeholderThumbnail || ""}" />
                   </div>
                `;
             })();
@@ -2039,7 +2039,7 @@
                            <p class="additional-settings-header__text">Advance Settings</p>
                            <div></div>
                        </div>
-                       ${templatePlaceholderThumbnailHTML}
+                       ${templateThumbnailPlaceholderHTML}
                        ${customCssHTML}
                        ${fontsListHTML}
                    </div>
@@ -2515,7 +2515,7 @@
          },
 
          // This method updates the template's placeholderThumbnail
-         updateTemplatePlaceholderThumbnail: (newThumbnail = "") => {
+         updateTemplateThumbnailPlaceholder: (newThumbnail = "") => {
             // First we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;

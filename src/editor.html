@@ -957,8 +957,8 @@
                                     "value",
                                     "isTurnedOn",
                                     "customCss",
-                                    "fonts",
                                     "placeholderThumbnail",
+                                    "fonts",
                                  ].includes(key)
                               ) {
                                  return srcValue;
@@ -1002,7 +1002,7 @@
       initializers = {
          // This method serves as the entry point for the application initialization
          init: () => {
-            this.initializers.initSyncConfig();
+            // this.initializers.initSyncConfig();
          },
 
          // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution

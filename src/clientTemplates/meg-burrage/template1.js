@@ -3595,7 +3595,7 @@ class CourseTemplate {
                                 alt="Thumbnail for ${c.title}" 
                                 class="template-categories__thumbnail"
                                 loading="lazy"
-                                onerror="this.onerror=null; this.src='https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png';"
+                                onerror="this.onerror=null; this.src='${window.templateCustomizationSchema.placeholderThumbnail}';"
                             />
                             <div class="template-categories__info">
                                 <h3 class="template-categories__title-text">${c.title}</h3>
@@ -3632,7 +3632,7 @@ class CourseTemplate {
                                 alt="Thumbnail for ${c.title}" 
                                 class="template-post__thumbnail"
                                 loading="lazy"
-                                onerror="this.onerror=null; this.src='https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png';"
+                                onerror="this.onerror=null; this.src='${window.templateCustomizationSchema.placeholderThumbnail}';"
                             />
                             <div class="template-post__info">
                                 <h3 class="template-post__title-text">${c.title}</h3>

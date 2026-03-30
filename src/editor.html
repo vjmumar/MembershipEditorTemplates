@@ -2026,7 +2026,7 @@
                   <div class="advance-settings__placeholder-thumbnail">
                      <p class="advance-settings__placeholder-thumbnail__label">Fonts</p>
                      <div class="advance-settings__placeholder-thumbnail__preview"></div>
-                     <input type="text" oninput="window.MembershipEditor.actions.updateTemplatePlaceholderThumbnail(this.value || '')" value="${activeTemplate?.placeholderThumbnail || ""}" />
+                     <input name="palceholder-thumbnail" type="text" oninput="window.MembershipEditor.actions.updateTemplatePlaceholderThumbnail(this.value || '')" value="${activeTemplate?.placeholderThumbnail || ""}" />
                   </div>
                `;
             })();

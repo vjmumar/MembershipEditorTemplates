@@ -402,6 +402,25 @@
    }
 
    /* Advance settings */
+   .advance-settings__thumbnail-placeholder {
+      margin: 10px;
+   }
+
+   .advance-settings__thumbnail-placeholder__label {
+      font-size: 13px;
+      margin-bottom: 6px;
+   }
+
+   .advance-settings__thumbnail-placeholder__preview {
+      width: 100%;
+      height: 150px;
+      background-size: 100% 100%;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 6px;
+      background-position: center;
+   }
+
    .advance-settings__customcss {
       margin: 10px;
    }
@@ -2026,8 +2045,8 @@
                return `
                   <div class="advance-settings__thumbnail-placeholder">
                      <p class="advance-settings__thumbnail-placeholder__label">Thumbnail Placeholder</p>
-                     <div class="advance-settings__thumbnail-placeholder__preview"></div>
-                     <input name="palceholder-thumbnail" type="text" oninput="window.MembershipEditor.actions.updateTemplateThumbnailPlaceholder(this.value || '')" value="${activeTemplate?.placeholderThumbnail || ""}" />
+                     <div style="background-image: url('${activeTemplate?.placeholderThumbnail || ""}')" class="advance-settings__thumbnail-placeholder__preview"></div>
+                     <input name="placeholder-thumbnail" type="text" oninput="window.MembershipEditor.actions.updateTemplateThumbnailPlaceholder(this.value || '')" value="${activeTemplate?.placeholderThumbnail || ""}" />
                   </div>
                `;
             })();
@@ -2521,6 +2540,11 @@
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will update the background image url of the thumbnail placeholder previewer
+            document.querySelector(
+               ".advance-settings__thumbnail-placeholder__preview",
+            ).style.backgroundImage = `url(${newThumbnail})`;
 
             // Finally, update the active template placeholderThumbnail
             activeTemplate.placeholderThumbnail = newThumbnail;

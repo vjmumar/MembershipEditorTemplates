@@ -4,6 +4,8 @@ window.templateCustomizationSchema = {
    customCss:
       "@import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&display=swap');",
    fonts: ["Lavishly Yours", "Playfair Display", "Quicksand"],
+   placeholderThumbnail:
+      "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
    global: [
       {
          name: "Loading Overlay",
@@ -2885,7 +2887,7 @@ class CourseTemplate {
             ?.map((cat) => ({
                thumbnail:
                   cat?.posterImage ||
-                  "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
+                  window.templateCustomizationSchema.placeholderThumbnail,
                title: cat.title,
                url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
             }));
@@ -2936,7 +2938,7 @@ class CourseTemplate {
             return posts?.map((post) => ({
                thumbnail:
                   post?.posterImage ||
-                  "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
+                  window.templateCustomizationSchema.placeholderThumbnail,
                title: post.title,
                url: `/courses/products/${post?.productId}/categories/${post?.categoryId}/posts/${post?.id}`,
             }));
@@ -2991,7 +2993,7 @@ class CourseTemplate {
                ?.map((cat) => ({
                   thumbnail:
                      cat?.posterImage ||
-                     "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
+                     window.templateCustomizationSchema.placeholderThumbnail,
                   title: cat.title,
                   url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
                }));
@@ -3589,7 +3591,7 @@ class CourseTemplate {
             a += `
                         <a href="${c.url || "#"}" class="template-categories__card">
                             <img 
-                                src="${c.thumbnail || "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png"}" 
+                                src="${c.thumbnail || window.templateCustomizationSchema.placeholderThumbnail}" 
                                 alt="Thumbnail for ${c.title}" 
                                 class="template-categories__thumbnail"
                                 loading="lazy"
@@ -3626,7 +3628,7 @@ class CourseTemplate {
             a += `
                         <a href="${c.url || "#"}" class="template-post__card">
                             <img 
-                                src="${c.thumbnail ? `https://cdn.courses.apisystem.tech/${c.thumbnail}` : null || "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png"}" 
+                                src="${c.thumbnail ? `https://cdn.courses.apisystem.tech/${c.thumbnail}` : null || window.templateCustomizationSchema.placeholderThumbnail}" 
                                 alt="Thumbnail for ${c.title}" 
                                 class="template-post__thumbnail"
                                 loading="lazy"
@@ -3723,8 +3725,7 @@ class CourseTemplate {
          categoryProgress = [],
       ) => {
          // First we will create the necessary variables
-         let fallbackImage =
-            "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png";
+         let fallbackImage = window.templateCustomizationSchema.placeholderThumbnail;
 
          // Then we will add a boolean to each category if it is completed
          categories.forEach((category) => {

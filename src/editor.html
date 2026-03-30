@@ -934,9 +934,13 @@
                               // --- STEP 1: USER DATA OVERWRITES ---
                               // Prioritize saved user data for specific visual properties.
                               if (
-                                 ["value", "isTurnedOn", "customCss", "fonts"].includes(
-                                    key,
-                                 )
+                                 [
+                                    "value",
+                                    "isTurnedOn",
+                                    "customCss",
+                                    "fonts",
+                                    "placeholderThumbnail",
+                                 ].includes(key)
                               ) {
                                  return srcValue;
                               }

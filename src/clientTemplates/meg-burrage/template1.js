@@ -2527,7 +2527,9 @@ window.templateCustomizationSchema = {
 };
 
 class CourseTemplate {
-   constructor() {}
+   constructor() {
+      this.init();
+   }
 
    // This method initialize the script
    init = async () => {

@@ -991,6 +991,7 @@
 
                // Finally, we invoke the main application initializer.
                this.initializers.init();
+               window.templateCustomizationSchema = this.activeTemplate;
 
                window.CourseTemplate.init();
             };

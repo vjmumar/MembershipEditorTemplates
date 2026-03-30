@@ -163,6 +163,11 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                ],
+            },
+            {
+               elementSelector: ".template-navbar__content__nav-links a",
+               label: "Navigation Bar Menu Items",
+               key: "template-navbar-content-nav-links",
                features: [
                   {
                      name: "Menus",
@@ -326,11 +331,6 @@ window.templateCustomizationSchema = {
                      },
                   },
                ],
-            },
-            {
-               elementSelector: ".template-navbar__content__nav-links a",
-               label: "Navigation Bar Menu Items",
-               key: "template-navbar-content-nav-links",
                cssCustomizations: [
                   {
                      name: "Text Color",

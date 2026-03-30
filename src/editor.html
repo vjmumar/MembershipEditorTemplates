@@ -991,6 +991,8 @@
 
                // Finally, we invoke the main application initializer.
                this.initializers.init();
+
+               window.CourseTemplate.init();
             };
 
             // Finally, we retrieve the authentication token by parsing the product data from the cookies.
@@ -1002,7 +1004,7 @@
       initializers = {
          // This method serves as the entry point for the application initialization
          init: () => {
-            // this.initializers.initSyncConfig();
+            this.initializers.initSyncConfig();
          },
 
          // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution

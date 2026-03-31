@@ -1745,7 +1745,7 @@
                      const value = (() => {
                         let elementValue = "";
                         if (c.type === "html") {
-                           const elementHTML = element?.innerHTML || "";
+                           const elementHTML = element?.outerHTML || "";
                            elementValue = elementHTML;
                         } else {
                            const elementAttribute = element?.getAttribute(c?.target);
@@ -1753,7 +1753,6 @@
                         }
                         return c.value || elementValue;
                      })();
-                     console.log(c);
                      return this?.widgets?.input(
                         templateItem.key,
                         `${c?.type}-${c?.target}`,
@@ -3306,7 +3305,7 @@
             }
             return {
                tagName: el.tagName.toLowerCase(),
-               innerHTML: el.outerHTML,
+               innerHTML: el.innerHTML,
                innerText: el.innerText,
                attributes: attributes,
                computedStyle: styles,

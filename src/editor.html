@@ -2803,7 +2803,11 @@
             const size = blob.size;
             let isError = false;
             try {
-               // First we will upload the new configuration
+               // First  we will retrieve the preview iframe membership
+               const previewIframeMembershipSavedTemplatesFileInfo =
+                  this.$iframe.contentWindow.savedTemplatesFileInfo;
+
+               // Then we will upload the new configuration
                const registerResponse = await fetch(
                   "https://services.leadconnectorhq.com/medias/files/",
                   {
@@ -2866,19 +2870,22 @@
                      "token-id": this.token,
                   },
                   body: JSON.stringify({
-                     altId: String(window.savedTemplatesFileInfo?.altId),
-                     altType: window.savedTemplatesFileInfo?.altType,
+                     altId: String(previewIframeMembershipSavedTemplatesFileInfo?.altId),
+                     altType: previewIframeMembershipSavedTemplatesFileInfo?.altType,
                      mode: "public",
                      status: "trashed",
                      filesToBeDeleted: [
                         {
-                           _id: String(window.savedTemplatesFileInfo?.id),
-                           altId: String(window.savedTemplatesFileInfo?.altId),
-                           altType: window.savedTemplatesFileInfo?.altType,
+                           _id: String(previewIframeMembershipSavedTemplatesFileInfo?.id),
+                           altId: String(
+                              previewIframeMembershipSavedTemplatesFileInfo?.altId,
+                           ),
+                           altType:
+                              previewIframeMembershipSavedTemplatesFileInfo?.altType,
                            parentId: "",
-                           name: window.savedTemplatesFileInfo?.name,
-                           url: window.savedTemplatesFileInfo?.url,
-                           size: window.savedTemplatesFileInfo?.size,
+                           name: previewIframeMembershipSavedTemplatesFileInfo?.name,
+                           url: previewIframeMembershipSavedTemplatesFileInfo?.url,
+                           size: previewIframeMembershipSavedTemplatesFileInfo?.size,
                            contentType: "text/plain",
                            isPrivate: false,
                         },

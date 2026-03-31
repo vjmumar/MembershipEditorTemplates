@@ -2782,8 +2782,6 @@ class CourseTemplate {
             this.data.fetchCategories(),
          ]).then((res) => res.map((e) => e.value));
 
-         console.log(product);
-
          // Then we will organize subcategories under their parents
          let allCategories = categories.sort((a, b) =>
             a.sequenceNo > b.sequenceNo ? 1 : -1,
@@ -2886,7 +2884,7 @@ class CourseTemplate {
                                 ${sideBarCategories}    
                             </div>    
                             <a class="template-sidebar__image" href="#">
-                                <img src="https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774399872/Media_Kit_Section_Background_Image_page-0001_1_wbgjz3.jpg" />    
+                                <img src="${product?.posterImage}" />    
                             </a>
                         </div>
                         <div class="template-sidebar__toggler">

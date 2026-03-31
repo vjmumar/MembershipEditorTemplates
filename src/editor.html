@@ -2193,7 +2193,7 @@
                isTurnedOn: false,
             },
          ) => {
-            console.log(normal, global)
+            console.log(normal, global);
             // First we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;
@@ -2250,7 +2250,7 @@
             // Finally depends if it is a global or normal update we will process the feature toggle accordingly
             if (!global.featureKey) {
                // First if it is a normal update, we will retrieve the template item and the specific feature from the active page
-               templateItem = this.activePageOnTemplate.find(
+               templateItem = activePageOnTemplate.find(
                   (item) => item.key === normal.templateItemKey,
                );
                featureItem = templateItem.features.find(

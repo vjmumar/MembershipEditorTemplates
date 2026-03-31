@@ -2150,14 +2150,14 @@ window.templateCustomizationSchema = {
                      value: "",
                      important: true,
                   },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     important: true,
-                     value: "",
-                  },
+                  // {
+                  //    name: "Padding",
+                  //    property: "padding",
+                  //    type: "multi",
+                  //    placeholder: "",
+                  //    important: true,
+                  //    value: "",
+                  // },
                ],
             },
             {

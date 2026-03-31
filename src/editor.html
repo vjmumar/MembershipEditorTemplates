@@ -1617,8 +1617,10 @@
                }
             })();
 
+            console.log(templateItem)
+
             // Then we will generate the HTML for the CSS customization inputs
-            console.log(templateItem.cssCustomizations);
+            console.log(templateItem.cssCustomizations)
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
                const input = (() => {
                   const propertyValue = element

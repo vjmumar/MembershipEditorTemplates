@@ -1157,7 +1157,7 @@ window.templateCustomizationSchema = {
                ],
                features: [
                   {
-                     name: "Replace Content With Video",
+                     name: "Video",
                      key: "template-hero-right-video",
                      isTurnedOn: false,
                      customizations: [

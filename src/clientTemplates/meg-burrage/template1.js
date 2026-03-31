@@ -342,6 +342,13 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
                      name: "Padding",
                      property: "padding",
                      type: "multi",
@@ -494,6 +501,13 @@ window.templateCustomizationSchema = {
                      type: "color",
                      value: "",
                   },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
                ],
                elementCustomizations: [
                   {
@@ -530,6 +544,34 @@ window.templateCustomizationSchema = {
                ],
             },
             {
+               elementSelector:
+                  ".template-sidebar__category__item__title__content__title",
+               label: "Category Item Text",
+               key: "template-sidebar-category-item-title-content-title",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     placeholder: "E.g: 20px",
+                     type: "text",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+               ],
+            },
+            {
                elementSelector: ".template-sidebar__category__item__title i",
                label: "Category Item Icon",
                key: "template-sidebar-category-item-title-i",
@@ -541,7 +583,7 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Size",
+                     name: "Font Size",
                      property: "font-size",
                      placeholder: "E.g: 20px",
                      type: "text",
@@ -664,10 +706,17 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Size",
+                     name: "Font Size",
                      property: "font-size",
                      placeholder: "E.g: 20px",
                      type: "text",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
                      value: "",
                   },
                ],

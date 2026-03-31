@@ -1006,8 +1006,11 @@
                               }
 
                               // --- STEP 3: RECURSIVE DRILLING ---
-                              // If the property is an Object or Array, we return undefined to continue merging deeper.
-                              if (window._.isObject(objectValue)) {
+                              // If the property is an Object (but not Array), we return undefined to continue merging deeper.
+                              if (
+                                 window._.isObject(objectValue) &&
+                                 !Array.isArray(objectValue)
+                              ) {
                                  return undefined;
                               }
 

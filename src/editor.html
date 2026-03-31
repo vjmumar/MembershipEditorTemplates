@@ -1688,7 +1688,6 @@
                                 : match;
                           })
                      : "";
-                  console.log(propertyValue);
                   if (c.type === "multi") {
                      return this?.widgets?.multiInput(
                         templateItem.key,
@@ -2090,7 +2089,6 @@
             const activePageOnTemplate =
                previewIframeMembershipParser.activePageOnTemplate;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
-            console.log(activeTemplate);
 
             // Then we will retrieve the sidebar and its content container where we will inject the HTML
             const $sidebar = document.querySelector(".editor-customizer-sidebar");
@@ -2264,7 +2262,6 @@
                isTurnedOn: false,
             },
          ) => {
-            console.log(normal, global);
             // First we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;

@@ -1746,6 +1746,7 @@
                         let elementValue = "";
                         if (c.type === "html") {
                            const elementHTML = element?.outerHTML || "";
+                           console.log(elementHTML);
                            elementValue = elementHTML;
                         } else {
                            const elementAttribute = element?.getAttribute(c?.target);

@@ -1871,6 +1871,13 @@ window.templateCustomizationSchema = {
                      placeholder: "",
                      value: "",
                   },
+               ],
+            },
+            {
+               elementSelector: ".template-categories__title-text",
+               label: "Categories Category Card Info Text",
+               key: "template-categories-title-text",
+               cssCustomizations: [
                   {
                      name: "Text Color",
                      property: "color",

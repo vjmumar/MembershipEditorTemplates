@@ -2804,39 +2804,10 @@ window.templateCustomizationSchema = {
                   },
                ],
             },
-            // test
             {
-               elementSelector: ".template-cwd__category__item__title",
-               label: "CWD Category Item",
-               key: "template-cwd-category-item-title",
-               cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Background Color",
-                     property: "background-color",
-                     type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
-               ],
-            },
-            {
-               elementSelector: ".template-cwd__category__item__title__content__image",
-               label: "CWD Category Item Image",
-               key: "template-cwd-category-item-title-content-image",
+               elementSelector: ".template-cwd__category__item__post__icon",
+               label: "CWD Post Item Image",
+               key: "template-cwd-category-item-post-icon",
                cssCustomizations: [
                   {
                      name: "Border Color",
@@ -2855,10 +2826,9 @@ window.templateCustomizationSchema = {
                ],
             },
             {
-               elementSelector:
-                  ".template-cwd__category__item__title__content__details__title",
-               label: "CWD Category Item Title",
-               key: "template-cwd-category-item-title-content-details-title",
+               elementSelector: ".template-cwd__category__item__post__text",
+               label: "CWD Post Item Title",
+               key: "template-cwd-category-item-post-text",
                cssCustomizations: [
                   {
                      name: "Color",
@@ -2885,10 +2855,9 @@ window.templateCustomizationSchema = {
                ],
             },
             {
-               elementSelector:
-                  ".template-cwd__category__item__title__content__details__completed",
-               label: "CWD Category Item Icon Detail",
-               key: "template-cwd-category-item-title-content-details-completed",
+               elementSelector: ".template-cwd__category__item__post__completed",
+               label: "CWD Post Item Icon Detail",
+               key: "template-cwd-category-item-post-completed",
                cssCustomizations: [
                   {
                      name: "Color",
@@ -2901,10 +2870,105 @@ window.templateCustomizationSchema = {
                ],
             },
             {
-               elementSelector:
-                  ".template-cwd__category__item__title__content__details__posts",
-               label: "CWD Category Item Detail",
-               key: "template-cwd-category-item-title-content-details-posts",
+               elementSelector: ".template-cwd__category__item__post__title",
+               label: "CWD Post Item Detail",
+               key: "template-cwd-category-item-post-title",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+               ],
+            },
+
+            // Test
+            {
+               elementSelector: ".template-cwd__category__item__post__icon",
+               label: "CWD Post Item Image",
+               key: "template-cwd-category-item-post-icon",
+               cssCustomizations: [
+                  {
+                     name: "Border Color",
+                     property: "border-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Border Width",
+                     property: "border-width",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__category__item__post__text",
+               label: "CWD Post Item Title",
+               key: "template-cwd-category-item-post-text",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__category__item__post__completed",
+               label: "CWD Post Item Icon Detail",
+               key: "template-cwd-category-item-post-completed",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                     important: true,
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__category__item__post__title",
+               label: "CWD Post Item Detail",
+               key: "template-cwd-category-item-post-title",
                cssCustomizations: [
                   {
                      name: "Color",

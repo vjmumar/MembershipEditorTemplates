@@ -3152,6 +3152,11 @@
                         editor.on("input change keyup", function () {
                            editor.save();
                            const originalTextarea = editor.getElement();
+                           const value = originalTextarea.value.replace(
+                              /^<p>(.*)<\/p>$/s,
+                              "$1",
+                           );
+                           originalTextarea.value = value;
                            const event = new Event("input", { bubbles: true });
                            originalTextarea.dispatchEvent(event);
                         });

@@ -856,13 +856,13 @@ window.templateCustomizationSchema = {
                label: "Welcome Container",
                key: "welcome-container",
                cssCustomizations: [
-                  {
-                     name: "Background Color",
-                     property: "background-color",
-                     type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
+                  // {
+                  //    name: "Background Color",
+                  //    property: "background-color",
+                  //    type: "color",
+                  //    placeholder: "",
+                  //    value: "",
+                  // },
                   {
                      name: "Box Shadow",
                      property: "box-shadow",
@@ -2140,6 +2140,7 @@ window.templateCustomizationSchema = {
                      name: "Color",
                      property: "color",
                      type: "color",
+                     important: true,
                      placeholder: "",
                      value: "",
                   },

@@ -1684,6 +1684,7 @@
                           ?.getComputedStyle(element)
                           ?.[c.property]?.replace(/^url\(["']?|["']?\)$/g, "")
                      : "";
+                  console.log(propertyValue)
                   if (c.type === "multi") {
                      return this?.widgets?.multiInput(
                         templateItem.key,

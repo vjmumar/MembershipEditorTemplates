@@ -1627,6 +1627,13 @@ window.templateCustomizationSchema = {
                      placeholder: "",
                      value: "",
                   },
+               ],
+            },
+            {
+               elementSelector: ".template-post__title-text",
+               label: "Category Posts Post Card Info Text",
+               key: "template-post-info",
+               cssCustomizations: [
                   {
                      name: "Text Color",
                      property: "color",
@@ -1969,6 +1976,13 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
                      name: "Border Color",
                      property: "border-color",
                      type: "color",
@@ -2085,6 +2099,13 @@ window.templateCustomizationSchema = {
                      property: "color",
                      type: "color",
                      placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
                      value: "",
                   },
                   {
@@ -2809,10 +2830,17 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Size",
+                     name: "Font Size",
                      property: "font-size",
                      type: "text",
                      placeholder: "E.g: 20px",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
                      value: "",
                   },
                ],
@@ -2841,6 +2869,13 @@ window.templateCustomizationSchema = {
                      property: "color",
                      type: "color",
                      placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
                      value: "",
                   },
                   {

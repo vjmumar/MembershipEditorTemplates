@@ -1186,6 +1186,7 @@ window.templateCustomizationSchema = {
                      js: (customizations = []) => {
                         let js = `
                         (() => {
+                           window['template-hero-right-previous-html'] = document.querySelector('.template-hero__right').innerHTML;
                            document.querySelector('.template-hero__right').innerHTML =  '<video src="{{template-hero-right-video-url}}" playsinline="" controls="" poster="{{template-hero-right-video-thumbnail}}"></video>'; 
                         })();
                         `;
@@ -1197,7 +1198,7 @@ window.templateCustomizationSchema = {
                      cleanUpJs: (customizations = []) => {
                         let js = `
                         (() => {
-                            document.querySelector('.template-hero__right').innerHTML = "";
+                            document.querySelector('.template-hero__right').innerHTML = window['template-hero-right-previous-html'];
                         })();     
                          `;
                         customizations.forEach((cItem) => {

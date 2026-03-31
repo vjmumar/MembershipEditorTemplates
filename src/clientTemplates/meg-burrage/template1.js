@@ -1149,7 +1149,7 @@ window.templateCustomizationSchema = {
                ],
                elementCustomizations: [
                   {
-                     name: "Content",
+                     name: "Content Embed",
                      type: "html",
                      target: "",
                      value: "",
@@ -1157,7 +1157,7 @@ window.templateCustomizationSchema = {
                ],
                features: [
                   {
-                     name: "Video",
+                     name: "Replace Content With Video",
                      key: "template-hero-right-video",
                      isTurnedOn: false,
                      customizations: [

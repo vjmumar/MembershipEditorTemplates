@@ -2782,6 +2782,8 @@ class CourseTemplate {
             this.data.fetchCategories(),
          ]).then((res) => res.map((e) => e.value));
 
+         console.log(product);
+
          // Then we will organize subcategories under their parents
          let allCategories = categories.sort((a, b) =>
             a.sequenceNo > b.sequenceNo ? 1 : -1,

@@ -1682,9 +1682,13 @@
                   const propertyValue = element
                      ? this.$iframe?.contentWindow
                           ?.getComputedStyle(element)
-                          ?.[c.property]?.replace(/^url\(["']?|["']?\)$/g, "")
+                          ?.replace(/^url\(["']?(.*)["']?\)$/, (match) => {
+                             return match.includes("url(")
+                                ? match.replace(/^url\(["']?|["']?\)$/g, "")
+                                : match;
+                          })
                      : "";
-                  console.log(propertyValue)
+                  console.log(propertyValue);
                   if (c.type === "multi") {
                      return this?.widgets?.multiInput(
                         templateItem.key,

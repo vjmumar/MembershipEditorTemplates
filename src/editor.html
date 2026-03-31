@@ -1188,7 +1188,7 @@
                            elementCustomizationI?.value
                         ) {
                            this.utils.whenElementReady(cItem.elementSelector, () => {
-                              $document
+                              document
                                  ?.querySelector(cItem.elementSelector)
                                  ?.setAttribute(
                                     elementCustomizationI.target,
@@ -1200,7 +1200,7 @@
                            elementCustomizationI.value
                         ) {
                            this.utils.whenElementReady(cItem.elementSelector, () => {
-                              $document.querySelector(cItem.elementSelector).innerHTML =
+                              document.querySelector(cItem.elementSelector).innerHTML =
                                  elementCustomizationI?.value;
                            });
                         }

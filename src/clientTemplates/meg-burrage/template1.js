@@ -4543,7 +4543,7 @@ class CourseTemplate {
                if (!cP?.posts) {
                   cPA += `
                             <a class="template-cwd__category__item__post" href="/courses/products/${cP.productId}/categories/${cP.categoryId}/posts/${cP.id}?source=courses">
-                                <img class="template-cwd__category__post__icon" src="${image}" />
+                                <img class="template-cwd__category__item__post__icon" src="${image}" />
                                  <div>
                                    <p class="template-cwd__category__item__post__text">${cP.title}</p>
                                     <div style="display: flex; align-items: center; gap: 5px;">

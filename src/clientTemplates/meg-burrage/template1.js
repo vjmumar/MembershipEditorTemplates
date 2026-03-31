@@ -2484,6 +2484,112 @@ window.templateCustomizationSchema = {
                ],
             },
             {
+               elementSelector: ".template-community-toggle__button",
+               label: "Community Toggle Button",
+               key: "template-community-toggle-button",
+               cssCustomizations: [
+                  {
+                     name: "Padding",
+                     property: "padding",
+                     type: "multi",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Border Radius",
+                     property: "border-radius",
+                     type: "multi",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Box Shadow",
+                     property: "box-shadow",
+                     type: "text",
+                     placeholder: "5px 10px #888888",
+                     value: "",
+                  },
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-community-embed",
+               label: "Community Embed",
+               key: "template-community-embed",
+               cssCustomizations: [
+                  {
+                     name: "Padding",
+                     property: "padding",
+                     type: "multi",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Margin",
+                     property: "margin",
+                     type: "multi",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Border Radius",
+                     property: "border-radius",
+                     type: "multi",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Box Shadow",
+                     property: "box-shadow",
+                     type: "text",
+                     placeholder: "5px 10px #888888",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "Content",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
                elementSelector: ".template-hero__left",
                label: "Dashboard Info",
                key: "template-hero-left",
@@ -2898,8 +3004,6 @@ window.templateCustomizationSchema = {
                   },
                ],
             },
-
-            // Test
             {
                elementSelector: ".template-cwd__category__item__sub-folder__title__image",
                label: "CWD Subfolder Item Image",

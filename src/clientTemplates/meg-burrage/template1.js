@@ -1271,7 +1271,7 @@ window.templateCustomizationSchema = {
                         let js = `
                         (() => {
                            window['template-hero-right-previous-html'] = document.querySelector('.template-hero__right').innerHTML;
-                           document.querySelector('.template-hero__right').innerHTML =  '<video src="{{template-hero-right-video-url}}" playsinline="" controls="" poster="{{template-hero-right-video-thumbnail}}"></video>'; 
+                           document.querySelector('.template-hero__right').innerHTML =  '<video style="width: 100%;" src="{{template-hero-right-video-url}}" playsinline="" controls="" poster="{{template-hero-right-video-thumbnail}}"></video>'; 
                         })();
                         `;
                         customizations.forEach((cItem) => {

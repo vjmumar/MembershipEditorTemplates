@@ -1679,15 +1679,19 @@
             // Then we will generate the HTML for the CSS customization inputs
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
                const input = (() => {
-                  const propertyValue = element
-                     ? this.$iframe?.contentWindow
-                          ?.getComputedStyle(element)
-                          ?.replace(/^url\(["']?(.*)["']?\)$/, (match) => {
-                             return match.includes("url(")
-                                ? match.replace(/^url\(["']?|["']?\)$/g, "")
-                                : match;
-                          })
-                     : "";
+                  const propertyValue = (() => {
+                     const computedStyleValue = element
+                        ? this.$iframe?.contentWindow?.getComputedStyle(element)?.[c.property]
+                        : "";
+                     return computedStyleValue?.replace(
+                        /^url\(["']?(.*)["']?\)$/,
+                        (match) => {
+                           return match.includes("url(")
+                              ? match.replace(/^url\(["']?|["']?\)$/g, "")
+                              : match;
+                        },
+                     );
+                  })();
                   if (c.type === "multi") {
                      return this?.widgets?.multiInput(
                         templateItem.key,

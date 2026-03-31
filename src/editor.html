@@ -1745,7 +1745,7 @@
                      const value = (() => {
                         let elementValue = "";
                         if (c.type === "html") {
-                           const elementHTML = element?.outerHTML || "";
+                           const elementHTML = element?.innerHTML || "";
                            elementValue = elementHTML;
                         } else {
                            const elementAttribute = element?.getAttribute(c?.target);
@@ -1753,7 +1753,6 @@
                         }
                         return c.value || elementValue;
                      })();
-                     console.log(value);
                      return this?.widgets?.input(
                         templateItem.key,
                         `${c?.type}-${c?.target}`,
@@ -3141,6 +3140,10 @@
                      promotion: false,
                      statusbar: true,
                      elementpath: false,
+                     forced_root_block: "",
+                     valid_elements: "*[*]",
+                     valid_children: "+body[style]",
+                     verify_html: false,
                      plugins: ["advlist", "lists", "code", "fullscreen"],
                      toolbar:
                         "code | bold italic | bullist numlist | removeformat | undo redo",

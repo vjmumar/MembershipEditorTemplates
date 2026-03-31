@@ -1158,19 +1158,19 @@ window.templateCustomizationSchema = {
                features: [
                   {
                      name: "Video Url",
-                     key: "template-hero-right",
+                     key: "template-hero-right-video",
                      isTurnedOn: false,
                      customizations: [
                         {
                            name: "Video Url",
-                           property: "video-url",
+                           property: "template-hero-right-video-url",
                            type: "text",
                            placeholder: "Video Url",
                            value: "https://www.w3schools.com/html/mov_bbb.mp4",
                         },
                         {
                            name: "Video Thumbnail",
-                           property: "video-thumbnail",
+                           property: "template-hero-right-video-thumbnail",
                            type: "text",
                            placeholder: "Video Thumbnail",
                            value: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
@@ -1186,7 +1186,7 @@ window.templateCustomizationSchema = {
                      js: (customizations = []) => {
                         let js = `
                         (() => {
-                           document.querySelector('.template-hero__right').innerHTML =  '<video src="{{video-url}}" playsinline="" controls="" poster=""></video>'; 
+                           document.querySelector('.template-hero__right').innerHTML =  '<video src="{{template-hero-right-video-url}}" playsinline="" controls="" poster="{{template-hero-right-video-thumbnail}}"></video>'; 
                         })();
                         `;
                         customizations.forEach((cItem) => {

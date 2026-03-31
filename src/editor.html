@@ -1746,7 +1746,6 @@
                         let elementValue = "";
                         if (c.type === "html") {
                            const elementHTML = element?.outerHTML || "";
-                           console.log(elementHTML);
                            elementValue = elementHTML;
                         } else {
                            const elementAttribute = element?.getAttribute(c?.target);
@@ -1754,6 +1753,7 @@
                         }
                         return c.value || elementValue;
                      })();
+                     console.log(value);
                      return this?.widgets?.input(
                         templateItem.key,
                         `${c?.type}-${c?.target}`,

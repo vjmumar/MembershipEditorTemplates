@@ -1,16 +1,16 @@
 [
   {
+    "id": "template-3",
+    "imageUrl": "https://dummyimage.com/700x400/000/fff&text=Main+Template",
+    "title": "Production",
+    "scriptLink": "https://membershipeditor.netlify.app/src/clientTemplates/meg-burrage/template1.js",
+    "previewLink": "1"
+  },
+  {
     "id": "template-1",
     "imageUrl": "https://storage.googleapis.com/msgsndr/imyvHV2ppMPun9vEAcRz/media/69492d947614ce184f7e9b76.png",
     "title": "Template 2",
     "scriptLink": "https://membershipeditor.netlify.app/src/clientTemplates/meg-burrage/template2.js",
     "previewLink": ""
-  },
-  {
-    "id": "template-3",
-    "imageUrl": "https://dummyimage.com/700x400/000/fff&text=Dummy+Template",
-    "title": "Production",
-    "scriptLink": "https://membershipeditor.netlify.app/src/clientTemplates/meg-burrage/template1.js",
-    "previewLink": "1"
   }
 ]

@@ -969,12 +969,11 @@
 
                            return result;
                         };
-
                         const cleanedSaved = window._.cloneDeep(
                            activeTemplateFromSavedTemplates,
                         );
 
-                        // First we will strip deprecated items from each page's edit structure
+                        // Then we will strip deprecated items from each page's edit structure
                         if (
                            Array.isArray(cleanedSaved.pages) &&
                            Array.isArray(window.templateCustomizationSchema.pages)
@@ -1006,7 +1005,7 @@
                         }
 
                         /**
-                         * We use _.mergeWith to ensure that structural fixes in our Master Schema
+                         * Finally use _.mergeWith to ensure that structural fixes in our Master Schema
                          * are applied while preserving the specific values entered by the user.
                          */
                         return window?._?.mergeWith(

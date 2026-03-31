@@ -1122,7 +1122,7 @@ window.templateCustomizationSchema = {
             },
             {
                elementSelector: ".template-hero__right",
-               label: "Dashboard Info Embed",
+               label: "Dashboard Info Video",
                key: "template-hero-right",
                cssCustomizations: [
                   {
@@ -1157,8 +1157,8 @@ window.templateCustomizationSchema = {
                ],
                features: [
                   {
-                     name: "Menus",
-                     key: "template-navbar-menus",
+                     name: "Video Url",
+                     key: "template-hero-right",
                      isTurnedOn: false,
                      customizations: [
                         {

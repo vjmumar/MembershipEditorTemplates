@@ -1686,11 +1686,10 @@
                      })();
                      const value = (() => {
                         if (c.type === "font" && !c?.value) {
-                           return options.find((fN) => fN === propertyValue);
+                           return options.find((fN) => propertyValue.includes(fN));
                         }
                         return c?.value || "";
                      })();
-                     console.log(value, propertyValue, options);
                      return this?.widgets?.select(
                         templateItem.key,
                         c.property,

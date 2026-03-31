@@ -2826,12 +2826,12 @@ class CourseTemplate {
                                     <a href="${`/courses/products/${cPP?.productId}/categories/${cPP?.categoryId}/posts/${cPP?.id}`}" class="template-sidebar__category__item__post">
                                         <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                             <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#748493" fill-rule="nonzero">
+                                                <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#000000" fill-rule="nonzero">
                                                     <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
                                                     <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
                                                     <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
                                                 </g>
-                                                <rect class="color-stroke" id="Rectangle" stroke="#748493" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
+                                                <rect class="color-stroke" id="Rectangle" stroke="#000000" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
                                             </g>
                                         </svg>
                                         <p class="template-sidebar__category__item__post__text">${cPP.title}</p>

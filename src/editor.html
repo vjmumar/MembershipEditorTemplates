@@ -939,7 +939,7 @@
              */
             script.onload = () => {
                // First, we initialize the active template by merging saved data with the Master Schema where IDs match.
-               this.activeTemplate = (() => {
+              this.activeTemplate = (() => {
                   if (activeTemplateFromSavedTemplates?.id) {
                      if (
                         activeTemplateFromSavedTemplates?.id ===
@@ -949,53 +949,33 @@
                          * We use _.mergeWith to ensure that structural fixes in our Master Schema
                          * are applied while preserving the specific values entered by the user.
                          */
-                        const USER_DATA_KEYS_TO_MERGE = [
-                           "value",
-                           "isTurnedOn",
-                           "customCss",
-                           "placeholderThumbnail",
-                           "fonts",
-                        ];
                         return window?._?.mergeWith(
+                           // We clone the schema to avoid mutating the "Master" object in memory.
                            window._.cloneDeep(window?.templateCustomizationSchema),
                            activeTemplateFromSavedTemplates,
                            (objectValue, srcValue, key) => {
                               // --- STEP 1: USER DATA OVERWRITES ---
-                              // Only these keys carry over saved user data.
-                              if (USER_DATA_KEYS_TO_MERGE.includes(key)) {
+                              // Prioritize saved user data for specific visual properties.
+                              if (
+                                 [
+                                    "value",
+                                    "isTurnedOn",
+                                    "customCss",
+                                    "placeholderThumbnail",
+                                    "fonts",
+                                 ].includes(key)
+                              ) {
                                  return srcValue;
                               }
 
-                              // --- STEP 2: ARRAY GUARD ---
-                              // For arrays, we use the master schema as the source of truth for structure.
-                              // We only merge saved values into items that still exist in the master schema,
-                              // matched by key. This handles deprecation across cssCustomizations, element, and features.
-                              if (Array.isArray(objectValue) && Array.isArray(srcValue)) {
-                                 return objectValue.map((masterItem) => {
-                                    const savedItem = srcValue.find(
-                                       (s) =>
-                                          s.key === masterItem.key ||
-                                          s.property === masterItem.property,
-                                    );
-                                    if (!savedItem) return masterItem;
-                                    return window._.mergeWith(
-                                       window._.cloneDeep(masterItem),
-                                       savedItem,
-                                       (o, s, k) => {
-                                          if (USER_DATA_KEYS_TO_MERGE.includes(k))
-                                             return s;
-                                          return o;
-                                       },
-                                    );
-                                 });
-                              }
-
-                              // --- STEP 3: RECURSIVE DRILLING ---
+                              // --- STEP 2: RECURSIVE DRILLING ---
+                              // If the property is an Object or Array, we return undefined to continue merging deeper.
                               if (window._.isObject(objectValue)) {
                                  return undefined;
                               }
 
-                              // --- STEP 4: SCHEMA PROTECTION ---
+                              // --- STEP 3: SCHEMA PROTECTION ---
+                              // For structural properties, we prioritize the Master Schema to ensure code updates take effect.
                               return objectValue;
                            },
                         );

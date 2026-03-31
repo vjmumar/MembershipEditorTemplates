@@ -1640,15 +1640,16 @@
             // Then we will generate the HTML for the CSS customization inputs
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
                const input = (() => {
-                  const propertyValue = element
-                     ? this.$iframe?.contentWindow.getComputedStyle(element)?.[c.property]
-                     : "";
-                  const sanitizedValue = (c?.value || "").replace(/"/g, "'");
+                  const propertyValue =
+                     element &&
+                     this.$iframe?.contentWindow
+                        ?.getComputedStyle(element)
+                        ?.[c.property]?.replace(/^url\(["']?|["']?\)$/g, "");
                   if (c.type === "multi") {
                      return this?.widgets?.multiInput(
                         templateItem.key,
                         c?.property,
-                        sanitizedValue || propertyValue,
+                        c?.value || propertyValue,
                         (updatedValue) => {
                            const updateArgs = (() => {
                               if (isGlobal && globalName) {
@@ -1686,7 +1687,7 @@
                      return this?.widgets?.select(
                         templateItem.key,
                         c.property,
-                        sanitizedValue || "",
+                        c?.value || "",
                         c.type,
                         c?.placeholder || "",
                         options,
@@ -1719,7 +1720,7 @@
                      return this?.widgets?.input(
                         templateItem.key,
                         c.property,
-                        sanitizedValue || propertyValue,
+                        c?.value || propertyValue,
                         c.type,
                         c?.placeholder,
                         (updatedValue) => {
@@ -1825,12 +1826,11 @@
             const featuresHTML = templateItem?.features?.reduce((a, c) => {
                // First we will build the inputs for this specific feature's customizations
                const customizationHTML = c.customizations?.reduce((ac, cc) => {
-                  const sanitizedValue = cc?.value?.replace(/"/g, "'");
                   const input = (() => {
                      return this?.widgets?.input(
                         templateItem.key,
                         `${cc.type}-${cc.property}`,
-                        sanitizedValue,
+                        cc?.value,
                         cc.type,
                         cc?.placeholder,
                         (updatedValue) => {

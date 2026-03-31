@@ -949,33 +949,53 @@
                          * We use _.mergeWith to ensure that structural fixes in our Master Schema
                          * are applied while preserving the specific values entered by the user.
                          */
+                        const USER_DATA_KEYS_TO_MERGE = [
+                           "value",
+                           "isTurnedOn",
+                           "customCss",
+                           "placeholderThumbnail",
+                           "fonts",
+                        ];
                         return window?._?.mergeWith(
-                           // We clone the schema to avoid mutating the "Master" object in memory.
                            window._.cloneDeep(window?.templateCustomizationSchema),
                            activeTemplateFromSavedTemplates,
                            (objectValue, srcValue, key) => {
                               // --- STEP 1: USER DATA OVERWRITES ---
-                              // Prioritize saved user data for specific visual properties.
-                              if (
-                                 [
-                                    "value",
-                                    "isTurnedOn",
-                                    "customCss",
-                                    "placeholderThumbnail",
-                                    "fonts",
-                                 ].includes(key)
-                              ) {
+                              // Only these keys carry over saved user data.
+                              if (USER_DATA_KEYS_TO_MERGE.includes(key)) {
                                  return srcValue;
                               }
 
-                              // --- STEP 2: RECURSIVE DRILLING ---
-                              // If the property is an Object or Array, we return undefined to continue merging deeper.
+                              // --- STEP 2: ARRAY GUARD ---
+                              // For arrays, we use the master schema as the source of truth for structure.
+                              // We only merge saved values into items that still exist in the master schema,
+                              // matched by key. This handles deprecation across cssCustomizations, element, and features.
+                              if (Array.isArray(objectValue) && Array.isArray(srcValue)) {
+                                 return objectValue.map((masterItem) => {
+                                    const savedItem = srcValue.find(
+                                       (s) =>
+                                          s.key === masterItem.key ||
+                                          s.property === masterItem.property,
+                                    );
+                                    if (!savedItem) return masterItem;
+                                    return window._.mergeWith(
+                                       window._.cloneDeep(masterItem),
+                                       savedItem,
+                                       (o, s, k) => {
+                                          if (USER_DATA_KEYS_TO_MERGE.includes(k))
+                                             return s;
+                                          return o;
+                                       },
+                                    );
+                                 });
+                              }
+
+                              // --- STEP 3: RECURSIVE DRILLING ---
                               if (window._.isObject(objectValue)) {
                                  return undefined;
                               }
 
-                              // --- STEP 3: SCHEMA PROTECTION ---
-                              // For structural properties, we prioritize the Master Schema to ensure code updates take effect.
+                              // --- STEP 4: SCHEMA PROTECTION ---
                               return objectValue;
                            },
                         );
@@ -1623,11 +1643,12 @@
                   const propertyValue = element
                      ? this.$iframe?.contentWindow.getComputedStyle(element)?.[c.property]
                      : "";
+                  const sanitizedValue = (c?.value || "").replace(/"/g, "'");
                   if (c.type === "multi") {
                      return this?.widgets?.multiInput(
                         templateItem.key,
                         c?.property,
-                        c?.value || propertyValue,
+                        sanitizedValue || propertyValue,
                         (updatedValue) => {
                            const updateArgs = (() => {
                               if (isGlobal && globalName) {
@@ -1665,7 +1686,7 @@
                      return this?.widgets?.select(
                         templateItem.key,
                         c.property,
-                        c?.value || "",
+                        sanitizedValue || "",
                         c.type,
                         c?.placeholder || "",
                         options,
@@ -1698,7 +1719,7 @@
                      return this?.widgets?.input(
                         templateItem.key,
                         c.property,
-                        c?.value || propertyValue,
+                        sanitizedValue || propertyValue,
                         c.type,
                         c?.placeholder,
                         (updatedValue) => {
@@ -1804,11 +1825,12 @@
             const featuresHTML = templateItem?.features?.reduce((a, c) => {
                // First we will build the inputs for this specific feature's customizations
                const customizationHTML = c.customizations?.reduce((ac, cc) => {
+                  const sanitizedValue = cc?.value?.replace(/"/g, "'");
                   const input = (() => {
                      return this?.widgets?.input(
                         templateItem.key,
                         `${cc.type}-${cc.property}`,
-                        cc?.value,
+                        sanitizedValue,
                         cc.type,
                         cc?.placeholder,
                         (updatedValue) => {

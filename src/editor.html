@@ -945,6 +945,10 @@
                         activeTemplateFromSavedTemplates?.id ===
                         window?.templateCustomizationSchema?.id
                      ) {
+                        /**
+                         * We use _.mergeWith to ensure that structural fixes in our Master Schema
+                         * are applied while preserving the specific values entered by the user.
+                         */
                         const USER_DATA_KEYS = [
                            "value",
                            "isTurnedOn",
@@ -953,20 +957,41 @@
                            "fonts",
                         ];
 
+                        const mergeItem = (masterItem, savedItem) => {
+                           return window._.mergeWith(
+                              window._.cloneDeep(masterItem),
+                              savedItem,
+                              (o, s, k) => {
+                                 if (USER_DATA_KEYS.includes(k)) return s ?? o;
+                                 if (Array.isArray(o) && Array.isArray(s)) {
+                                    return o.map((mItem) => {
+                                       const sItem = s.find(
+                                          (si) =>
+                                             si.key === mItem.key ||
+                                             si.property === mItem.property,
+                                       );
+                                       return sItem ? mergeItem(mItem, sItem) : mItem;
+                                    });
+                                 }
+                                 return undefined;
+                              },
+                           );
+                        };
+
                         return window?._?.mergeWith(
+                           // We clone the schema to avoid mutating the "Master" object in memory.
                            window._.cloneDeep(window?.templateCustomizationSchema),
                            activeTemplateFromSavedTemplates,
                            (objectValue, srcValue, key) => {
                               // --- STEP 1: USER DATA OVERWRITES ---
-                              // Only these keys carry over saved user data.
+                              // Prioritize saved user data for specific visual properties.
                               if (USER_DATA_KEYS.includes(key)) {
                                  return srcValue;
                               }
 
                               // --- STEP 2: ARRAY GUARD ---
                               // For arrays, we use the master schema as the source of truth for structure.
-                              // We only merge saved values into items that still exist in the master schema,
-                              // matched by key. This handles deprecation across cssCustomizations, element, and features.
+                              // This ensures deprecated items from saved data are dropped.
                               if (Array.isArray(objectValue) && Array.isArray(srcValue)) {
                                  return objectValue.map((masterItem) => {
                                     const savedItem = srcValue.find(
@@ -974,24 +999,20 @@
                                           s.key === masterItem.key ||
                                           s.property === masterItem.property,
                                     );
-                                    if (!savedItem) return masterItem;
-                                    return window._.mergeWith(
-                                       window._.cloneDeep(masterItem),
-                                       savedItem,
-                                       (o, s, k) => {
-                                          if (USER_DATA_KEYS.includes(k)) return s;
-                                          return o;
-                                       },
-                                    );
+                                    return savedItem
+                                       ? mergeItem(masterItem, savedItem)
+                                       : masterItem;
                                  });
                               }
 
                               // --- STEP 3: RECURSIVE DRILLING ---
+                              // If the property is an Object or Array, we return undefined to continue merging deeper.
                               if (window._.isObject(objectValue)) {
                                  return undefined;
                               }
 
                               // --- STEP 4: SCHEMA PROTECTION ---
+                              // For structural properties, we prioritize the Master Schema to ensure code updates take effect.
                               return objectValue;
                            },
                         );

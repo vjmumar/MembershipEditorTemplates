@@ -2748,6 +2748,13 @@ window.templateCustomizationSchema = {
                key: "template-cwd-title",
                cssCustomizations: [
                   {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
                      name: "Font Size",
                      property: "font-size",
                      type: "text",

@@ -729,11 +729,7 @@
          init: () => {
             // First we will loop over all items from the activePageOnTemplate to prepare the DOM elements
             window.MembershipParser.activePageOnTemplate.forEach((item) => {
-               // First we will retrieve the element based on its selector
-               let $elements = document.querySelectorAll(item.elementSelector);
-
-               // Finally...
-               $elements.forEach(($element) => {
+               document.querySelectorAll(item.elementSelector).forEach(($element) => {
                   // First we will attach the required attributes so our editor can identify it
                   $element?.setAttribute("data-editable", "true");
                   $element?.setAttribute("data-editor-key", item.key);

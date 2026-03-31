@@ -1686,14 +1686,14 @@
                      })();
                      const value = () => {
                         if (c.type === "font" && !c?.value) {
-                           return options.find((fN) => fN === propertyValue)
+                           return options.find((fN) => fN === propertyValue);
                         }
-                        return c?.value;
+                        return c?.value || "";
                      };
                      return this?.widgets?.select(
                         templateItem.key,
                         c.property,
-                        c?.value || "",
+                        value,
                         c.type,
                         c?.placeholder || "",
                         options,

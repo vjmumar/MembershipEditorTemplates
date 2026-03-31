@@ -1516,20 +1516,6 @@ window.templateCustomizationSchema = {
                key: "template-category-post-breadcrumbs",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Background Color",
-                     property: "background-color",
-                     type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Text Color",
                      property: "color",
                      type: "color",
@@ -2150,20 +2136,6 @@ window.templateCustomizationSchema = {
                label: "Post Bread Crumbs",
                key: "template-post-page-breadcrumbs",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Background Color",
-                     property: "background-color",
-                     type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Text Color",
                      property: "color",
@@ -2920,20 +2892,6 @@ window.templateCustomizationSchema = {
                label: "Post Bread Crumbs",
                key: "template-post-page-breadcrumbs",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Background Color",
-                     property: "background-color",
-                     type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Text Color",
                      property: "color",

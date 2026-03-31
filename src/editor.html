@@ -1640,11 +1640,11 @@
             // Then we will generate the HTML for the CSS customization inputs
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
                const input = (() => {
-                  const propertyValue =
-                     element &&
-                     this.$iframe?.contentWindow
-                        ?.getComputedStyle(element)
-                        ?.[c.property]?.replace(/^url\(["']?|["']?\)$/g, "");
+                  const propertyValue = element
+                     ? this.$iframe?.contentWindow
+                          ?.getComputedStyle(element)
+                          ?.[c.property]?.replace(/^url\(["']?|["']?\)$/g, "")
+                     : "";
                   if (c.type === "multi") {
                      return this?.widgets?.multiInput(
                         templateItem.key,
@@ -2120,7 +2120,7 @@
                a += `
                   <div onclick="${c.isActive ? "" : clickAction}" class="editable-pages__list__item">
                      <input ${c.isActive ? "checked" : ""} type="checkbox" style="pointer-events: none;" />
-                     <p>${c.name}</p>   
+                     <p>${c.name}</p>
                   </div>
                `;
                return a;

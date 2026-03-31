@@ -1157,7 +1157,7 @@ window.templateCustomizationSchema = {
                ],
                features: [
                   {
-                     name: "Video Url",
+                     name: "Video",
                      key: "template-hero-right-video",
                      isTurnedOn: false,
                      customizations: [
@@ -2243,6 +2243,131 @@ window.templateCustomizationSchema = {
                      type: "html",
                      target: "",
                      value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-hero__left",
+               label: "Dashboard Info",
+               key: "template-hero-left",
+               cssCustomizations: [
+                  {
+                     name: "Padding",
+                     property: "padding",
+                     type: "multi",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Border Radius",
+                     property: "border-radius",
+                     type: "multi",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "Content",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-hero__right",
+               label: "Dashboard Info Video",
+               key: "template-hero-right",
+               cssCustomizations: [
+                  {
+                     name: "Padding",
+                     property: "padding",
+                     type: "multi",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Border Radius",
+                     property: "border-radius",
+                     type: "multi",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "Content",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+               features: [
+                  {
+                     name: "Video",
+                     key: "template-hero-right-video",
+                     isTurnedOn: false,
+                     customizations: [
+                        {
+                           name: "Video Url",
+                           property: "template-hero-right-video-url",
+                           type: "text",
+                           placeholder: "Video Url",
+                           value: "https://www.w3schools.com/html/mov_bbb.mp4",
+                        },
+                        {
+                           name: "Video Thumbnail",
+                           property: "template-hero-right-video-thumbnail",
+                           type: "text",
+                           placeholder: "Video Thumbnail",
+                           value: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
+                        },
+                     ],
+                     css: (customizations = []) => {
+                        let css = ``;
+                        customizations.forEach((cItem) => {
+                           css = css.replace(`{{${cItem?.property}}}`, cItem?.value);
+                        });
+                        return css;
+                     },
+                     js: (customizations = []) => {
+                        let js = `
+                        (() => {
+                           window['template-hero-right-previous-html'] = document.querySelector('.template-hero__right').innerHTML;
+                           document.querySelector('.template-hero__right').innerHTML =  '<video src="{{template-hero-right-video-url}}" playsinline="" controls="" poster="{{template-hero-right-video-thumbnail}}"></video>'; 
+                        })();
+                        `;
+                        customizations.forEach((cItem) => {
+                           js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
+                        });
+                        return js;
+                     },
+                     cleanUpJs: (customizations = []) => {
+                        let js = `
+                        (() => {
+                            document.querySelector('.template-hero__right').innerHTML = window['template-hero-right-previous-html'];
+                        })();     
+                         `;
+                        customizations.forEach((cItem) => {
+                           js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
+                        });
+                        return js;
+                     },
                   },
                ],
             },

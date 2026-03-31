@@ -1334,6 +1334,13 @@ window.templateCustomizationSchema = {
                      placeholder: "",
                      value: "",
                   },
+               ],
+            },
+            {
+               elementSelector: ".template-categories__title-text",
+               label: "Dasboard Category Card Info Text",
+               key: "template-categories-info-text",
+               cssCustomizations: [
                   {
                      name: "Text Color",
                      property: "color",

@@ -3575,9 +3575,24 @@ class CourseTemplate {
                         <div class="template-hero__right">
                             <!-- Embed HTML provided by the customizer is injected here -->
                             ${`
-                              <video-player>
+<!--
+  The PlayerProvider passes state between the UI components
+  and Media, and makes fully custom UIs possible.
+  It does not have layout by default (display:contents)
+ -->
+<video-player>
+  <!--
+    Skins contain the entire player UI and are easily swappable.
+    They can each be "ejected" for full control and customization
+    of UI components.
+   -->
   <video-minimal-skin>
-    <video src="https://stream.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/highest.mp4" playsinline></video>
+    <!--
+      Media are players without UIs, handling networking
+      and display of the media. They are easily swappable
+      to handle different sources.
+    -->
+    <video src="https://res.cloudinary.com/dpr6hw8uh/video/upload/v1758126578/quiz_bg_xvotom.mp4" playsinline></video>
   </video-minimal-skin>
 </video-player>
                               `} 

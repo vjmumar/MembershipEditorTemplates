@@ -3574,13 +3574,13 @@ class CourseTemplate {
                         <!-- Right Column: Video Embed -->
                         <div class="template-hero__right">
                             <!-- Embed HTML provided by the customizer is injected here -->
-                               <video 
-                                   id="myVideo"
-                                   src="https://www.w3schools.com/html/mov_bbb.mp4" 
-                                   playsinline
-                                   poster="https://peach.blender.org/wp-content/uploads/title_anouncement.jpg"
-                               >
-                               </video>
+                            ${`
+                              <video-player>
+  <video-minimal-skin>
+    <video src="https://stream.mux.com/BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM/highest.mp4" playsinline></video>
+  </video-minimal-skin>
+</video-player>
+                              `} 
                         </div>
                     </div>
                 `;

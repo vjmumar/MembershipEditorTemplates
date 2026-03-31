@@ -2098,22 +2098,62 @@ window.templateCustomizationSchema = {
          urlRegex: "/courses/products/[^/]+/categories(\\?.*)?$",
          editor: [
             {
-               elementSelector: ".template-hero",
-               label: "Hero",
-               key: "template-container",
+               elementSelector: ".template-hero__image",
+               label: "Hero Image",
+               key: "template-hero-image",
                cssCustomizations: [
                   {
-                     name: "Box Shadow",
-                     property: "box-shadow",
+                     name: "Width",
+                     property: "height",
                      type: "text",
-                     placeholder: "5px 10px #888888",
+                     placeholder: "E.g: 400px",
                      value: "",
                   },
                   {
-                     name: "Mininum Height",
+                     name: "Minimum Hight",
                      property: "min-height",
                      type: "text",
                      placeholder: "E.g: 400px",
+                     value: "",
+                  },
+                  {
+                     name: "Padding",
+                     property: "padding",
+                     type: "multi",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "Image Src",
+                     type: "attribute",
+                     target: "src",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-container",
+               label: "Template Container",
+               key: "template-container",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     value: "",
+                  },
+                  {
+                     name: "Padding",
+                     property: "padding",
+                     type: "multi",
+                     placeholder: "",
                      value: "",
                   },
                ],
@@ -2234,14 +2274,6 @@ window.templateCustomizationSchema = {
                      property: "background-color",
                      type: "color",
                      placeholder: "",
-                     value: "",
-                  },
-               ],
-               elementCustomizations: [
-                  {
-                     name: "Content",
-                     type: "html",
-                     target: "",
                      value: "",
                   },
                ],

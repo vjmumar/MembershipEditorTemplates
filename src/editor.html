@@ -1427,6 +1427,8 @@
 
                // Finally, wait for the iframe's internal DOM to be ready before firing the editor logic.
                this.$iframe.onload = () => {
+                  const url = this.$iframe.contentWindow.location.href;
+                  console.log(url)
                   /**
                    * First we will check if the editor is already mounted in the current context.
                    * This can happen when re-initializing (e.g. switching between desktop and mobile modes).

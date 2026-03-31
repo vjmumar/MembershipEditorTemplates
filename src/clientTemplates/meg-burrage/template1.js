@@ -1511,7 +1511,7 @@ window.templateCustomizationSchema = {
                ],
             },
             {
-               elementSelector: ".template-category-post__breadcrumbs",
+               elementSelector: ".template-category-post__breadcrumbs *",
                label: "Category Posts Bread Crumbs",
                key: "template-category-post-breadcrumbs",
                cssCustomizations: [
@@ -2132,7 +2132,7 @@ window.templateCustomizationSchema = {
                ],
             },
             {
-               elementSelector: ".template-post-page__breadcrumbs",
+               elementSelector: ".template-post-page__breadcrumbs *",
                label: "Post Bread Crumbs",
                key: "template-post-page-breadcrumbs",
                cssCustomizations: [
@@ -2888,7 +2888,7 @@ window.templateCustomizationSchema = {
                ],
             },
             {
-               elementSelector: ".template-post-page__breadcrumbs",
+               elementSelector: ".template-post-page__breadcrumbs *",
                label: "Post Bread Crumbs",
                key: "template-post-page-breadcrumbs",
                cssCustomizations: [

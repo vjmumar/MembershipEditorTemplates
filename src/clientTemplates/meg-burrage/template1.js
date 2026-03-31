@@ -1632,7 +1632,7 @@ window.templateCustomizationSchema = {
             {
                elementSelector: ".template-post__title-text",
                label: "Category Posts Post Card Info Text",
-               key: "template-post-info",
+               key: "template-post-info-text",
                cssCustomizations: [
                   {
                      name: "Text Color",

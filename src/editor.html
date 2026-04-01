@@ -3514,7 +3514,7 @@
                            ?.slice(0, 100);
                      }
                      const optionsHTML = gFonts.reduce((a, c) => {
-                        a += `<li class="widget-font-select__item" onmousedown="document.getElementById('${templateKey}${property}').value = '${c?.family}'; document.getElementById('${templateKey}${property}').setAttribute('data-type', 'google')">${c?.family}</li>`;
+                        a += `<li class="widget-font-select__item" onmousedown="function(){const $input = document.getElementById('${templateKey}${property}');$input.value = '${c?.family}';$input.setAttribute('data-type', 'google');$input.dispatchEvent(new Event('input'))}">${c?.family}</li>`;
                         return a;
                      }, ``);
                      return optionsHTML ? `<p>Google Fonts</p>${optionsHTML}` : "";
@@ -3569,7 +3569,7 @@
                   );
                   if (widgetTemplateKey === templateKey && widgetProperty === property) {
                      onChange?.(e.target.value);
-                     console.log(e.target.value)
+                     console.log(e.target.value);
                   }
                }
             };

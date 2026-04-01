@@ -1845,9 +1845,7 @@
                               }
                            })();
                            this.actions.updateTemplateCustomizations(...updateArgs);
-                           this.$iframe.contentWindow.MembershipParser.actions.pushFontGoogleFontsUsed(
-                              updatedValue,
-                           );
+                           this.actions.pushFontGoogleFontsUsed(updatedValue);
                         },
                      );
                   } else if (c.type === "select") {

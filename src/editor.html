@@ -1839,7 +1839,7 @@
                                        name: globalName,
                                        key: templateItem.key,
                                        property: c.property,
-                                       value: updatedValue,
+                                       value: updatedValue?.name,
                                     },
                                  ];
                               } else {
@@ -1847,13 +1847,15 @@
                                     {
                                        key: templateItem.key,
                                        property: c.property,
-                                       value: updatedValue,
+                                       value: updatedValue?.name,
                                     },
                                  ];
                               }
                            })();
                            this.actions.updateTemplateCustomizations(...updateArgs);
-                           this.actions.pushFontGoogleFontsUsed(updatedValue);
+                           if (updatedValue.type === "google") {
+                              this.actions.pushFontGoogleFontsUsed(updatedValue);
+                           }
                         },
                      );
                   } else if (c.type === "select") {
@@ -3541,7 +3543,7 @@
                                  .includes(filterText.toLocaleLowerCase()),
                            )
                            ?.reduce((a, c) => {
-                              a += `<li class="widget-font-select__item" onmousedown="document.getElementById('${templateKey}${property}').value = '${c}'; document.getElementById('${templateKey}${property}').setAttribute('data-type', 'custom')">${c}</li>`;
+                              a += `<li class="widget-font-select__item" onmousedown="(function(){const $i = document.getElementById('${templateKey}${property}');$i.value = '${c}';$i.setAttribute('data-type', 'custom');$i.dispatchEvent(new Event('input', { bubbles: true }));})();">${c}</li>`;
                               return a;
                            }, ``);
                      return optionsHTML ? `<p>Custom Fonts</p>${optionsHTML}` : "";
@@ -3549,7 +3551,7 @@
 
                   // Finally we will replace the select list inner HTML with the new filtered options
                   $selectList.innerHTML = `
-                     <li class="widget-font-select__item" onmousedown="document.getElementById('${templateKey}${property}').value = ''; document.getElementById('${templateKey}${property}').setAttribute('data-type', '')">Select</li>
+                     <li class="widget-font-select__item" onmousedown="(function(){const $i = document.getElementById('${templateKey}${property}');$i.value = '';$i.setAttribute('data-type', 'custom');$i.dispatchEvent(new Event('input', { bubbles: true }));})();">Select</li>
                      ${customFontsOptionsHTML}
                      ${gFontsOptionsHTML}
                   `;
@@ -3577,14 +3579,20 @@
                      "data-template-property",
                   );
                   if (widgetTemplateKey === templateKey && widgetProperty === property) {
-                     // First we will update the value of the search input
+                     // First we will retrieve the data type e.g(google, custom)
+                     const type = e.target.getAttribute("data-type");
+
+                     // Then we will update the value of the search input
                      const $filterInput = document.querySelector(
                         `.${templateKey}${property}-search`,
                      );
                      $filterInput.value = e.target.value;
 
                      // Finally we will invoke the onChange callback
-                     onChange?.(e.target.value);
+                     onChange?.({
+                        name: e.target.value,
+                        type,
+                     });
                   }
                }
             };

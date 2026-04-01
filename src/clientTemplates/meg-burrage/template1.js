@@ -2,9 +2,9 @@ window.templateCustomizationSchema = {
    name: "Production",
    id: "template-3",
    customCss:
-      "@import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&display=swap');",
-   customFonts: ["Lavishly Yours", "Playfair Display", "Quicksand"],
-   googleFontsUsed: [],
+      "@font-face { font-family: 'Ogg'; src: url('https://res.cloudinary.com/dpr6hw8uh/raw/upload/v1659948521/Ogg-Roman_vloao9.otf') format('opentype'); font-weight: normal; font-style: normal; font-display: swap; }",
+   customFonts: ["Ogg"],
+   googleFontsUsed: ["Lavishly Yours", "Playfair Display", "Quicksand,"],
    placeholderThumbnail:
       "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
    global: [

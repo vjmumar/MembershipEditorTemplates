@@ -1640,7 +1640,7 @@
          },
 
          // This method builds and renders the customization sidebar for a specific selected element
-         initializeElementEditor: async (
+         initializeElementEditor: (
             key = "",
             selector = "",
             isGlobal = false,
@@ -1677,164 +1677,161 @@
             })();
 
             // Then we will generate the HTML for the CSS customization inputs
-            const cssCustomizationHtml = await templateItem.cssCustomizations.reduce(
-               async (a, c) => {
-                  const input = await (async () => {
-                     const propertyValue = (() => {
-                        const computedStyleValue = element
-                           ? this.$iframe?.contentWindow?.getComputedStyle(element)?.[
-                                c.property
-                             ]
-                           : "";
-                        return computedStyleValue?.replace(
-                           /^url\(["']?(.*)["']?\)$/,
-                           (match) => {
-                              return match.includes("url(")
-                                 ? match.replace(/^url\(["']?|["']?\)$/g, "")
-                                 : match;
-                           },
-                        );
-                     })();
-                     if (c.type === "multi") {
-                        return this?.widgets?.multiInput(
-                           templateItem.key,
-                           c?.property,
-                           c?.value || propertyValue,
-                           (updatedValue) => {
-                              const updateArgs = (() => {
-                                 if (isGlobal && globalName) {
-                                    return [
-                                       {},
-                                       {
-                                          name: globalName,
-                                          key: templateItem.key,
-                                          property: c.property,
-                                          value: updatedValue,
-                                       },
-                                    ];
-                                 } else {
-                                    return [
-                                       {
-                                          key: templateItem.key,
-                                          property: c.property,
-                                          value: updatedValue,
-                                       },
-                                    ];
-                                 }
-                              })();
-                              this.actions.updateTemplateCustomizations(...updateArgs);
-                           },
-                        );
-                     } else if (c.type === "font") {
-                        return await this?.widgets?.fontSelect(
-                           templateItem.key,
-                           c?.property,
-                           c?.value,
-                           c?.type,
-                           c?.placeholder || "",
-                           (updatedValue) => {
-                              const updateArgs = (() => {
-                                 if (isGlobal && globalName) {
-                                    return [
-                                       {},
-                                       {
-                                          name: globalName,
-                                          key: templateItem.key,
-                                          property: c.property,
-                                          value: updatedValue,
-                                       },
-                                    ];
-                                 } else {
-                                    return [
-                                       {
-                                          key: templateItem.key,
-                                          property: c.property,
-                                          value: updatedValue,
-                                       },
-                                    ];
-                                 }
-                              })();
-                              this.actions.updateTemplateCustomizations(...updateArgs);
-                           },
-                        );
-                     } else if (c.type === "select") {
-                        // First we will check if the type is either select or font, if font we will return the active tempaltes fonts else just the passed options
-                        return this?.widgets?.select(
-                           templateItem.key,
-                           c.property,
-                           c?.value || "",
-                           c.type,
-                           c?.placeholder || "",
-                           c.options,
-                           (updatedValue) => {
-                              const updateArgs = (() => {
-                                 if (isGlobal && globalName) {
-                                    return [
-                                       {},
-                                       {
-                                          name: globalName,
-                                          key: templateItem.key,
-                                          property: c.property,
-                                          value: updatedValue,
-                                       },
-                                    ];
-                                 } else {
-                                    return [
-                                       {
-                                          key: templateItem.key,
-                                          property: c.property,
-                                          value: updatedValue,
-                                       },
-                                    ];
-                                 }
-                              })();
-                              this.actions.updateTemplateCustomizations(...updateArgs);
-                           },
-                        );
-                     } else {
-                        return this?.widgets?.input(
-                           templateItem.key,
-                           c.property,
-                           c?.value || propertyValue,
-                           c.type,
-                           c?.placeholder,
-                           (updatedValue) => {
-                              const updateArgs = (() => {
-                                 if (isGlobal && globalName) {
-                                    return [
-                                       {},
-                                       {
-                                          name: globalName,
-                                          key: templateItem.key,
-                                          property: c.property,
-                                          value: updatedValue,
-                                       },
-                                    ];
-                                 } else {
-                                    return [
-                                       {
-                                          key: templateItem.key,
-                                          property: c.property,
-                                          value: updatedValue,
-                                       },
-                                    ];
-                                 }
-                              })();
-                              this.actions.updateTemplateCustomizations(...updateArgs);
-                           },
-                        );
-                     }
+            const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
+               const input = (async () => {
+                  const propertyValue = (() => {
+                     const computedStyleValue = element
+                        ? this.$iframe?.contentWindow?.getComputedStyle(element)?.[
+                             c.property
+                          ]
+                        : "";
+                     return computedStyleValue?.replace(
+                        /^url\(["']?(.*)["']?\)$/,
+                        (match) => {
+                           return match.includes("url(")
+                              ? match.replace(/^url\(["']?|["']?\)$/g, "")
+                              : match;
+                        },
+                     );
                   })();
-                  a += `
+                  if (c.type === "multi") {
+                     return this?.widgets?.multiInput(
+                        templateItem.key,
+                        c?.property,
+                        c?.value || propertyValue,
+                        (updatedValue) => {
+                           const updateArgs = (() => {
+                              if (isGlobal && globalName) {
+                                 return [
+                                    {},
+                                    {
+                                       name: globalName,
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              } else {
+                                 return [
+                                    {
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              }
+                           })();
+                           this.actions.updateTemplateCustomizations(...updateArgs);
+                        },
+                     );
+                  } else if (c.type === "font") {
+                     return this?.widgets?.fontSelect(
+                        templateItem.key,
+                        c?.property,
+                        c?.value,
+                        c?.type,
+                        c?.placeholder || "",
+                        (updatedValue) => {
+                           const updateArgs = (() => {
+                              if (isGlobal && globalName) {
+                                 return [
+                                    {},
+                                    {
+                                       name: globalName,
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              } else {
+                                 return [
+                                    {
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              }
+                           })();
+                           this.actions.updateTemplateCustomizations(...updateArgs);
+                        },
+                     );
+                  } else if (c.type === "select") {
+                     // First we will check if the type is either select or font, if font we will return the active tempaltes fonts else just the passed options
+                     return this?.widgets?.select(
+                        templateItem.key,
+                        c.property,
+                        c?.value || "",
+                        c.type,
+                        c?.placeholder || "",
+                        c.options,
+                        (updatedValue) => {
+                           const updateArgs = (() => {
+                              if (isGlobal && globalName) {
+                                 return [
+                                    {},
+                                    {
+                                       name: globalName,
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              } else {
+                                 return [
+                                    {
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              }
+                           })();
+                           this.actions.updateTemplateCustomizations(...updateArgs);
+                        },
+                     );
+                  } else {
+                     return this?.widgets?.input(
+                        templateItem.key,
+                        c.property,
+                        c?.value || propertyValue,
+                        c.type,
+                        c?.placeholder,
+                        (updatedValue) => {
+                           const updateArgs = (() => {
+                              if (isGlobal && globalName) {
+                                 return [
+                                    {},
+                                    {
+                                       name: globalName,
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              } else {
+                                 return [
+                                    {
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              }
+                           })();
+                           this.actions.updateTemplateCustomizations(...updateArgs);
+                        },
+                     );
+                  }
+               })();
+               a += `
                        <div class="editor-customizer-item__form__item__input__group">
                            <h3 class="editor-customizer-item__form__item__input__group__name">${c.name}</h3>
                            ${input}
                        </div>
                    `;
-                  return a;
-               },
-               "",
-            );
+               return a;
+            }, "");
 
             // Then we will generate the HTML for the Element customization inputs (attributes or inner HTML)
             const elementCustomizationHTML = templateItem?.elementCustomizations?.reduce(
@@ -3369,7 +3366,7 @@
                </select>
             `;
          },
-         fontSelect: async (
+         fontSelect: (
             templateKey,
             property,
             value = "",
@@ -3407,15 +3404,24 @@
             window._input[listenerId] = listenerFunction;
 
             // Then we will retrieve all of the google fonts
-            const gFonts = await this.data.getGoogleFonts().then((gFont) => gFont?.items);
-            console.log(gFonts)
+            this.data
+               .getGoogleFonts()
+               .then((gFont) => gFont?.items?.slice(0, 50).map((f) => f?.family) || [])
+               .then((gFonts) => {
+                  const $select = document.querySelector(
+                     `select[id="${templateKey}${property}"]`,
+                  );
+                  const gFontsOptionsHTML = options.reduce((a, c) => {
+                     const isSelected = c === value;
+                     a += `<option value="${c}" ${isSelected ? "selected" : ""}>${c?.toUpperCase()}</option>`;
+                     return a;
+                  }, "");
+                  $select.innerHTML = `
+                     <option value="">Select</option>
+                     ${optionsHTML}
+                  `;
+               });
 
-            // Finally return the actual HTML for the widget
-            const optionsHTML = options.reduce((a, c) => {
-               const isSelected = c === value;
-               a += `<option value="${c}" ${isSelected ? "selected" : ""}>${c?.toUpperCase()}</option>`;
-               return a;
-            }, "");
             return `
                <select
                  data-template-key=${templateKey}
@@ -3423,8 +3429,7 @@
                  id="${templateKey}${property}"
                  class="editor-customizer-form__item__input select"
                >
-                  <option value="">Select</option>
-                  ${optionsHTML}
+                  <option value="">Loading...</option>
                </select>
             `;
          },

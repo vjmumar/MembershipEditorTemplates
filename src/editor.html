@@ -3411,7 +3411,7 @@
                   const $select = document.querySelector(
                      `select[id="${templateKey}${property}"]`,
                   );
-                  const gFontsOptionsHTML = options.reduce((a, c) => {
+                  const gFontsOptionsHTML = gFonts.reduce((a, c) => {
                      const isSelected = c === value;
                      a += `<option value="${c}" ${isSelected ? "selected" : ""}>${c?.toUpperCase()}</option>`;
                      return a;

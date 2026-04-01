@@ -1153,6 +1153,9 @@
             // Then we will sync the template's custom CSS so base styles are applied before other customizations
             this.actions.syncTemplateCustomCss();
 
+            // Then we will sync the template's used google fonts
+            this.actions.syncTemplateGoogleFontsUsed();
+
             // Finally we will iterate through the template pages to find the current view and process it
             this.activeTemplate?.[this.isDesktop ? "pages" : "mobilePages"]?.forEach(
                (page) => {
@@ -1172,7 +1175,6 @@
 
                      // Then we will invoke all synchronizers to apply CSS and element-level customizations for this page
                      this.actions.syncTemplateCssCustomizations();
-                     this.actions.syncTemplateGoogleFontsUsed();
                      this.actions.syncTemplateElementsCustomization();
 
                      /**

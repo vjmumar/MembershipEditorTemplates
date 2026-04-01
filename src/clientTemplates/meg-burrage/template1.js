@@ -4,7 +4,7 @@ window.templateCustomizationSchema = {
    customCss:
       "@font-face { font-family: 'Ogg'; src: url('https://res.cloudinary.com/dpr6hw8uh/raw/upload/v1659948521/Ogg-Roman_vloao9.otf') format('opentype'); font-weight: normal; font-style: normal; font-display: swap; }",
    customFonts: ["Ogg"],
-   googleFontsUsed: ["Lavishly Yours", "Playfair Display", "Quicksand,"],
+   googleFontsUsed: ["Lavishly Yours", "Playfair Display", "Quicksand"],
    placeholderThumbnail:
       "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
    global: [

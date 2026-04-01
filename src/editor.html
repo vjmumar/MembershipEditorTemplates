@@ -3454,6 +3454,9 @@
                      `.${templateKey}${property}-list`,
                   );
                   const gFontsOptionsHTML = (() => {
+<<<<<<< HEAD
+                     let gFonts = gFontRes?.items;
+=======
                      function getInitialFonts(fonts) {
                         const map = {};
 
@@ -3473,24 +3476,55 @@
                            .slice(0, 100);
                      }
 
+>>>>>>> 9a4d9ea17c16bb65cfed48682af27d7fa1c7eda0
                      if (!filterText) {
-                        return getInitialFonts(gFontRes?.items);
+                        function getInitialFonts(fonts) {
+                           return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                              .split("")
+                              .flatMap((l) =>
+                                 fonts.filter((f) => f.family.startsWith(l)).slice(0, 5),
+                              );
+                        }
+                        gFonts = getInitialFonts(gFontRes?.items);
                      }
 
-                     return gFontRes?.items?.filter((gFont) =>
-                        gFont?.family
-                           ?.toLowerCase()
-                           .includes(filterText.toLocaleLowerCase()),
-                     );
-                  })()
-                     ?.slice(0, 100)
-                     ?.reduce((a, c) => {
-                        const isSelected = c === value;
+                     gFonts = gFontRes?.items
+                        ?.filter((gFont) =>
+                           gFont?.family
+                              ?.toLowerCase()
+                              .includes(filterText.toLocaleLowerCase()),
+                        )
+                        ?.slice(0, 100);
+
+                     const optionsHTML = gFonts.reduce((a, c) => {
                         a += `<li class="widget-font-select__item">${c?.family}</li>`;
                         return a;
-                     }, `<p>Google Fonts</p>`);
+                     }, ``);
+
+                     return optionsHTML ? `<p>Google Fonts</p>{optionsHTML}` : "";
+                  })();
+
+                  const customFontsOptionsHTML = (() => {
+                     const optionsHTML =
+                        this.$iframe.contentWindow.MembershipParser?.activeTemplate[
+                           "fonts"
+                        ]
+                           ?.filter((cFont) =>
+                              cFont
+                                 ?.toLowerCase()
+                                 .includes(filterText.toLocaleLowerCase()),
+                           )
+                           ?.reduce((a, c) => {
+                              a += `<li class="widget-font-select__item">${c}</li>`;
+                              return a;
+                           }, ``);
+
+                     return optionsHTML ? `<p>Custom Fonts</p>${optionsHTML}` : "";
+                  })();
+
                   $selectList.innerHTML = `
                      <li class="widget-font-select__item" value="">Select</li>
+                     ${customFontsOptionsHTML}
                      ${gFontsOptionsHTML}
                   `;
                });

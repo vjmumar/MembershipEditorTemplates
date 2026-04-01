@@ -3454,29 +3454,7 @@
                      `.${templateKey}${property}-list`,
                   );
                   const gFontsOptionsHTML = (() => {
-<<<<<<< HEAD
                      let gFonts = gFontRes?.items;
-=======
-                     function getInitialFonts(fonts) {
-                        const map = {};
-
-                        fonts.forEach((family) => {
-                           const letter = family.family[0].toUpperCase();
-                           if (!map[letter]) map[letter] = [];
-                           map[letter].push(family);
-                        });
-
-                        // First we will sort letters alphabetically and take an even spread
-                        const letters = Object.keys(map).sort();
-                        const perLetter = Math.ceil(100 / letters.length);
-
-                        // Finally we will take the calculated slice per letter and flatten
-                        return letters
-                           .flatMap((letter) => map[letter].slice(0, perLetter))
-                           .slice(0, 100);
-                     }
-
->>>>>>> 9a4d9ea17c16bb65cfed48682af27d7fa1c7eda0
                      if (!filterText) {
                         function getInitialFonts(fonts) {
                            return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

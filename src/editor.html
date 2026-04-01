@@ -674,7 +674,8 @@
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
       position: absolute;
       width: 100%;
-      z-index: 999;
+      z-index: 9999999;
+      background-color: #ffffff;
    }
 
    .widget-font-select:focus-within .widget-font-select__list {
@@ -3481,8 +3482,8 @@
                      a += `<li value="${c}" ${isSelected ? "selected" : ""}>${c?.toUpperCase()}</li>`;
                      return a;
                   }, "");
-                  $select.innerHTML = `
-                     <option value="">Select</option>
+                  $selectList.innerHTML = `
+                     <li value="">Select</li>
                      ${gFontsOptionsHTML}
                   `;
                });

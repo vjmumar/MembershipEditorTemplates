@@ -3372,7 +3372,6 @@
             value = "",
             type = "font",
             placeholder = "",
-            options = [],
             onChange = () => {},
          ) => {
             // First we will create a listener for ANY input change inside the widget
@@ -3411,7 +3410,7 @@
                   const $select = document.querySelector(
                      `select[id="${templateKey}${property}"]`,
                   );
-                  console.log(value)
+                  console.log(value);
                   const gFontsOptionsHTML = gFonts.reduce((a, c) => {
                      const isSelected = c === value;
                      a += `<option value="${c}" ${isSelected ? "selected" : ""}>${c?.toUpperCase()}</option>`;

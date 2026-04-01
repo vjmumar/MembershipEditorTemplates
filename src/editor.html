@@ -3455,7 +3455,9 @@
                   );
                   const gFontsOptionsHTML = gFontRes?.items
                      ?.filter((gFont) =>
-                        gFont.toLowerCase().includes(filterText.toLocaleLowerCase()),
+                        gFont?.family
+                           ?.toLowerCase()
+                           .includes(filterText.toLocaleLowerCase()),
                      )
                      ?.slice(0, 100)
                      ?.reduce((a, c) => {

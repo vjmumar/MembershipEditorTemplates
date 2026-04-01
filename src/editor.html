@@ -678,6 +678,12 @@
       background-color: #ffffff;
    }
 
+   .widget-font-select__list p {
+      font-size: 10px;
+      padding-inline: 7px;
+      padding-block: 5px;
+   }
+
    .widget-font-select:focus-within .widget-font-select__list {
       display: block;
    }
@@ -3443,25 +3449,25 @@
          ) => {
             const showData = (filterText = "") => {
                // Then we will retrieve all of the google fonts
-               this.data
-                  .getGoogleFonts()
-                  .then(
-                     (gFont) => gFont?.items?.slice(0, 100).map((f) => f?.family) || [],
-                  )
-                  .then((gFonts) => {
-                     const $selectList = document.querySelector(
-                        `.${templateKey}${property}-list`,
-                     );
-                     const gFontsOptionsHTML = gFonts.reduce((a, c) => {
+               this.data.getGoogleFonts().then((gFontRes) => {
+                  const $selectList = document.querySelector(
+                     `.${templateKey}${property}-list`,
+                  );
+                  const gFontsOptionsHTML = gFontRes?.items
+                     ?.filter((gFont) =>
+                        gFont.toLowerCase().includes(filterText.toLocaleLowerCase()),
+                     )
+                     ?.slice(0, 100)
+                     ?.reduce((a, c) => {
                         const isSelected = c === value;
-                        a += `<li class="widget-font-select__item">${c}</li>`;
+                        a += `<li class="widget-font-select__item">${c?.family}</li>`;
                         return a;
                      }, `<p>Google Fonts</p>`);
-                     $selectList.innerHTML = `
+                  $selectList.innerHTML = `
                      <li class="widget-font-select__item" value="">Select</li>
                      ${gFontsOptionsHTML}
                   `;
-                  });
+               });
             };
 
             // First we will create a listener for ANY input change inside the widget
@@ -3471,7 +3477,7 @@
                if (
                   $targetElement.classList.contains(`${templateKey}${property}-search`)
                ) {
-                  showData(e.target.value)
+                  showData(e.target.value);
                }
                if (
                   $targetElement.classList.contains(`editor-customizer-form__item__input`)

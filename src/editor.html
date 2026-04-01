@@ -1725,21 +1725,7 @@
                         },
                      );
                   } else if (c.type === "font") {
-                     // First we will check if the type is either select or font, if font we will return the active tempaltes fonts else just the passed options
-                     const options = (() => {
-                        if (c.type === "font") {
-                           return this.$iframe.contentWindow.MembershipParser
-                              .activeTemplate["fonts"];
-                        }
-                        return c.options;
-                     })();
-                     const value = (() => {
-                        if (c.type === "font" && !c?.value) {
-                           return options.find((fN) => propertyValue.includes(fN));
-                        }
-                        return c?.value || "";
-                     })();
-                     return this?.widgets?.select(
+                     return this?.widgets?.fontSelect(
                         templateItem.key,
                         c.property,
                         value,
@@ -2283,6 +2269,37 @@
                        ${themeHTML}
                    </div>
                `;
+         },
+      };
+
+      // Data module
+      data = {
+         getGoogleFonts: async () => {
+            const storageName = `google-fonts`;
+            const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+            if (Object.keys(previousData).length > 0) return previousData;
+            return await new Promise((resolved, reject) => {
+               const url = `https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAHS80BtgSVvvCpN8iEMvVyKcOBJCVOCSM`;
+               if (token) {
+                  fetch(url, {
+                     headers: {
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.6",
+                        "authorization": `Bearer ${token}`,
+                        "channel": "APP",
+                     },
+                     body: null,
+                     method: "GET",
+                  })
+                     .then((e) => e.json())
+                     .then((e) => {
+                        resolved(e);
+                        sessionStorage.setItem(storageName, JSON.stringify(e));
+                     });
+               } else {
+                  console.log("No Token Found!");
+               }
+            });
          },
       };
 
@@ -3307,7 +3324,7 @@
             templateKey,
             property,
             value = "",
-            type = "text",
+            type = "select",
             placeholder = "",
             options = [],
             onChange = () => {},
@@ -3339,6 +3356,65 @@
             }
             window.addEventListener("input", listenerFunction);
             window._input[listenerId] = listenerFunction;
+
+            // Finally return the actual HTML for the widget
+            const optionsHTML = options.reduce((a, c) => {
+               const isSelected = c === value;
+               a += `<option value="${c}" ${isSelected ? "selected" : ""}>${c?.toUpperCase()}</option>`;
+               return a;
+            }, "");
+            return `
+               <select
+                 data-template-key=${templateKey}
+                 data-template-property=${property}
+                 id="${templateKey}${property}"
+                 class="editor-customizer-form__item__input select"
+               >
+                  <option value="">Select</option>
+                  ${optionsHTML}
+               </select>
+            `;
+         },
+         fontSelect: async (
+            templateKey,
+            property,
+            value = "",
+            type = "font",
+            placeholder = "",
+            options = [],
+            onChange = () => {},
+         ) => {
+            // First we will create a listener for ANY input change inside the widget
+            const listenerId = `${templateKey}-${property}`;
+            const listenerFunction = (e) => {
+               const $targetElement = e.target;
+               if (
+                  $targetElement.classList.contains(`editor-customizer-form__item__input`)
+               ) {
+                  const widgetTemplateKey =
+                     $targetElement.getAttribute("data-template-key");
+                  const widgetProperty = $targetElement.getAttribute(
+                     "data-template-property",
+                  );
+                  if (widgetTemplateKey === templateKey && widgetProperty === property) {
+                     onChange?.(e.target.value);
+                  }
+               }
+            };
+
+            // Then we will manage the event listeners using a global registry to prevent duplication
+            if (!window._input) {
+               window._input = {};
+            }
+            if (listenerId in window?._input) {
+               window.removeEventListener("input", window._input[listenerId]);
+            }
+            window.addEventListener("input", listenerFunction);
+            window._input[listenerId] = listenerFunction;
+
+            // Then we will retrieve all of the google fonts
+            const gFonts = await this.data.getGoogleFonts();
+            console.log(gFonts.items);
 
             // Finally return the actual HTML for the widget
             const optionsHTML = options.reduce((a, c) => {

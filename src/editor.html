@@ -1727,9 +1727,9 @@
                   } else if (c.type === "font") {
                      return this?.widgets?.fontSelect(
                         templateItem.key,
-                        c.property,
-                        value,
-                        c.type,
+                        c?.property,
+                        c?.value,
+                        c?.type,
                         c?.placeholder || "",
                         options,
                         (updatedValue) => {

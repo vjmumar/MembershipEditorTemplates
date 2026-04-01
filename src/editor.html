@@ -2282,24 +2282,20 @@
             if (Object.keys(previousData).length > 0) return previousData;
             return await new Promise((resolved, reject) => {
                const url = `https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAHS80BtgSVvvCpN8iEMvVyKcOBJCVOCSM`;
-               if (token) {
-                  fetch(url, {
-                     headers: {
-                        "accept": "application/json, text/plain, */*",
-                        "accept-language": "en-US,en;q=0.6",
-                        "channel": "APP",
-                     },
-                     body: null,
-                     method: "GET",
-                  })
-                     .then((e) => e.json())
-                     .then((e) => {
-                        resolved(e);
-                        sessionStorage.setItem(storageName, JSON.stringify(e));
-                     });
-               } else {
-                  console.log("No Token Found!");
-               }
+               fetch(url, {
+                  headers: {
+                     "accept": "application/json, text/plain, */*",
+                     "accept-language": "en-US,en;q=0.6",
+                     "channel": "APP",
+                  },
+                  body: null,
+                  method: "GET",
+               })
+                  .then((e) => e.json())
+                  .then((e) => {
+                     resolved(e);
+                     sessionStorage.setItem(storageName, JSON.stringify(e));
+                  });
             });
          },
       };

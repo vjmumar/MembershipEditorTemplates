@@ -1681,7 +1681,9 @@
                const input = (() => {
                   const propertyValue = (() => {
                      const computedStyleValue = element
-                        ? this.$iframe?.contentWindow?.getComputedStyle(element)?.[c.property]
+                        ? this.$iframe?.contentWindow?.getComputedStyle(element)?.[
+                             c.property
+                          ]
                         : "";
                      return computedStyleValue?.replace(
                         /^url\(["']?(.*)["']?\)$/,
@@ -1722,7 +1724,7 @@
                            this.actions.updateTemplateCustomizations(...updateArgs);
                         },
                      );
-                  } else if (c.type === "select" || c.type === "font") {
+                  } else if (c.type === "font") {
                      // First we will check if the type is either select or font, if font we will return the active tempaltes fonts else just the passed options
                      const options = (() => {
                         if (c.type === "font") {
@@ -1744,6 +1746,40 @@
                         c.type,
                         c?.placeholder || "",
                         options,
+                        (updatedValue) => {
+                           const updateArgs = (() => {
+                              if (isGlobal && globalName) {
+                                 return [
+                                    {},
+                                    {
+                                       name: globalName,
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              } else {
+                                 return [
+                                    {
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              }
+                           })();
+                           this.actions.updateTemplateCustomizations(...updateArgs);
+                        },
+                     );
+                  } else if (c.type === "select") {
+                     // First we will check if the type is either select or font, if font we will return the active tempaltes fonts else just the passed options
+                     return this?.widgets?.select(
+                        templateItem.key,
+                        c.property,
+                        c?.value || "",
+                        c.type,
+                        c?.placeholder || "",
+                        c.options,
                         (updatedValue) => {
                            const updateArgs = (() => {
                               if (isGlobal && globalName) {
@@ -2540,10 +2576,12 @@
 
                // Finally we will re-sync the feature only if it is currently turned on
                if (isTurnedOn) {
-                  previewIframeMembershipParser.actions.syncTemplateFeatureCustomizations({
-                     featureKey: normal.featureKey,
-                     templateItemKey: normal.templateItemKey,
-                  });
+                  previewIframeMembershipParser.actions.syncTemplateFeatureCustomizations(
+                     {
+                        featureKey: normal.featureKey,
+                        templateItemKey: normal.templateItemKey,
+                     },
+                  );
                }
             }
 

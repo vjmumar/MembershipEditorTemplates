@@ -684,7 +684,7 @@
       padding-block: 5px;
    }
 
-   .widget-font-select:focus-within .widget-font-select__list {
+   .widget-font-select:focus .widget-font-select__list {
       display: block;
    }
 
@@ -3478,7 +3478,7 @@
                            ?.slice(0, 100);
                      }
                      const optionsHTML = gFonts.reduce((a, c) => {
-                        a += `<li class="widget-font-select__item" value="${c?.family}" onclick="console.log(${c.family})">${c?.family}</li>`;
+                        a += `<li class="widget-font-select__item" value="${c?.family}" onclick="console.log('${c.family}')">${c?.family}</li>`;
                         return a;
                      }, ``);
                      return optionsHTML ? `<p>Google Fonts</p>${optionsHTML}` : "";

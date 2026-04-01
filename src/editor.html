@@ -3407,8 +3407,8 @@
             window._input[listenerId] = listenerFunction;
 
             // Then we will retrieve all of the google fonts
-            const gFonts = await this.data.getGoogleFonts();
-            console.log(gFonts.items);
+            const gFonts = await this.data.getGoogleFonts().then((gFont) => gFont?.items);
+            console.log(gFonts)
 
             // Finally return the actual HTML for the widget
             const optionsHTML = options.reduce((a, c) => {

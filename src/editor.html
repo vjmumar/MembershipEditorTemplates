@@ -3475,7 +3475,7 @@
                .then((gFont) => gFont?.items?.slice(0, 50).map((f) => f?.family) || [])
                .then((gFonts) => {
                   const $selectList = document.querySelector(
-                     `${templateKey}${property}-list`,
+                     `.${templateKey}${property}-list`,
                   );
                   const gFontsOptionsHTML = gFonts.reduce((a, c) => {
                      const isSelected = c === value;

@@ -3473,12 +3473,12 @@
                .getGoogleFonts()
                .then((gFont) => gFont?.items?.slice(0, 50).map((f) => f?.family) || [])
                .then((gFonts) => {
-                  const $select = document.querySelector(
-                     `select[id="${templateKey}${property}"]`,
+                  const $selectList = document.querySelector(
+                     `${templateKey}${property}-list`,
                   );
                   const gFontsOptionsHTML = gFonts.reduce((a, c) => {
                      const isSelected = c === value;
-                     a += `<option value="${c}" ${isSelected ? "selected" : ""}>${c?.toUpperCase()}</option>`;
+                     a += `<li value="${c}" ${isSelected ? "selected" : ""}>${c?.toUpperCase()}</li>`;
                      return a;
                   }, "");
                   $select.innerHTML = `
@@ -3488,13 +3488,13 @@
                });
 
             return `
-               <div class="widget-font-select">
+               <div class="widget-font-select ${templateKey}${property}-select">
                    <input type="text" 
                           class="widget-font-select__input" 
                           placeholder="Search fonts..." 
                           autocomplete="off">
-                   <ul class="widget-font-select__list">
-                       <li class="widget-font-select__item" data-value="roboto" onmousedown="selectWidgetItem(this)">Loading...</li>
+                   <ul class="widget-font-select__list ${templateKey}${property}-list">
+                       <li class="widget-font-select__item" data-value="">Loading...</li>
                    </ul>
                    <input 
                      type="hidden" 

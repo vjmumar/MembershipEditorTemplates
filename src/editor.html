@@ -630,6 +630,72 @@
    }
 
    /* Widget */
+   .widget-font-select {
+      max-width: 300px;
+      margin: 0 auto;
+      position: relative;
+   }
+
+   .widget-font-select__input {
+      width: 100%;
+      height: 38px;
+      padding: 0 12px;
+      border: 1px solid var(--wfs-border);
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+      background: var(--wfs-bg);
+      transition:
+         border-color 0.2s,
+         box-shadow 0.2s;
+   }
+
+   .widget-font-select__input:focus {
+      border-color: var(--wfs-primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+   }
+
+   .widget-font-select__input--has-selection::placeholder {
+      color: var(--wfs-text);
+      font-weight: 500;
+   }
+
+   .widget-font-select__list {
+      list-style: none;
+      margin: 4px 0 0;
+      padding: 0;
+      background: var(--wfs-bg);
+      border: 1px solid var(--wfs-border);
+      border-radius: 4px;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      position: absolute;
+      width: 100%;
+      z-index: 999;
+   }
+
+   .widget-font-select:focus-within .widget-font-select__list {
+      display: block;
+   }
+
+   .widget-font-select__item {
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--wfs-text);
+      cursor: pointer;
+   }
+
+   .widget-font-select__item:hover {
+      background: var(--wfs-hover);
+   }
+
+   .widget-font-select__item--hidden {
+      display: none;
+   }
+
    .widget-multi-input {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -3410,7 +3476,6 @@
                   const $select = document.querySelector(
                      `select[id="${templateKey}${property}"]`,
                   );
-                  console.log(value);
                   const gFontsOptionsHTML = gFonts.reduce((a, c) => {
                      const isSelected = c === value;
                      a += `<option value="${c}" ${isSelected ? "selected" : ""}>${c?.toUpperCase()}</option>`;
@@ -3423,14 +3488,22 @@
                });
 
             return `
-               <select
-                 data-template-key=${templateKey}
-                 data-template-property=${property}
-                 id="${templateKey}${property}"
-                 class="editor-customizer-form__item__input select"
-               >
-                  <option value="">Loading...</option>
-               </select>
+               <div class="widget-font-select">
+                   <input type="text" 
+                          class="widget-font-select__input" 
+                          placeholder="Search fonts..." 
+                          autocomplete="off">
+                   <ul class="widget-font-select__list">
+                       <li class="widget-font-select__item" data-value="roboto" onmousedown="selectWidgetItem(this)">Loading...</li>
+                   </ul>
+                   <input 
+                     type="hidden" 
+                     data-template-key=${templateKey}
+                     data-template-property=${property}
+                     id="${templateKey}${property}"
+                     name="font_family" class="widget-font-select__value"
+                   >
+               </div>
             `;
          },
       };

@@ -3441,6 +3441,29 @@
             placeholder = "",
             onChange = () => {},
          ) => {
+            const showData = (filterText = "") => {
+               // Then we will retrieve all of the google fonts
+               this.data
+                  .getGoogleFonts()
+                  .then(
+                     (gFont) => gFont?.items?.slice(0, 100).map((f) => f?.family) || [],
+                  )
+                  .then((gFonts) => {
+                     const $selectList = document.querySelector(
+                        `.${templateKey}${property}-list`,
+                     );
+                     const gFontsOptionsHTML = gFonts.reduce((a, c) => {
+                        const isSelected = c === value;
+                        a += `<li class="widget-font-select__item">${c}</li>`;
+                        return a;
+                     }, `<p>Google Fonts</p>`);
+                     $selectList.innerHTML = `
+                     <li class="widget-font-select__item" value="">Select</li>
+                     ${gFontsOptionsHTML}
+                  `;
+                  });
+            };
+
             // First we will create a listener for ANY input change inside the widget
             const listenerId = `${templateKey}-${property}`;
             const listenerFunction = (e) => {
@@ -3448,7 +3471,7 @@
                if (
                   $targetElement.classList.contains(`${templateKey}${property}-search`)
                ) {
-                  console.log(e.target.value)
+                  showData(e.target.value)
                }
                if (
                   $targetElement.classList.contains(`editor-customizer-form__item__input`)
@@ -3474,24 +3497,7 @@
             window.addEventListener("input", listenerFunction);
             window._input[listenerId] = listenerFunction;
 
-            // Then we will retrieve all of the google fonts
-            this.data
-               .getGoogleFonts()
-               .then((gFont) => gFont?.items?.slice(0, 100).map((f) => f?.family) || [])
-               .then((gFonts) => {
-                  const $selectList = document.querySelector(
-                     `.${templateKey}${property}-list`,
-                  );
-                  const gFontsOptionsHTML = gFonts.reduce((a, c) => {
-                     const isSelected = c === value;
-                     a += `<li class="widget-font-select__item">${c}</li>`;
-                     return a;
-                  }, "");
-                  $selectList.innerHTML = `
-                     <li class="widget-font-select__item" value="">Select</li>
-                     ${gFontsOptionsHTML}
-                  `;
-               });
+            showData();
 
             return `
                <div class="widget-font-select ${templateKey}${property}-select">

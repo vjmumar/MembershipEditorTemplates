@@ -3479,7 +3479,7 @@
                   );
                   const gFontsOptionsHTML = gFonts.reduce((a, c) => {
                      const isSelected = c === value;
-                     a += `<li value="${c}" ${isSelected ? "selected" : ""}>${c?.toUpperCase()}</li>`;
+                     a += `<li class="widget-font-select__item">${c?.toUpperCase()}</li>`;
                      return a;
                   }, "");
                   $selectList.innerHTML = `

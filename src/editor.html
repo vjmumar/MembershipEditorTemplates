@@ -2284,11 +2284,8 @@
                const url = `https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAHS80BtgSVvvCpN8iEMvVyKcOBJCVOCSM`;
                fetch(url, {
                   headers: {
-                     "accept": "application/json, text/plain, */*",
-                     "accept-language": "en-US,en;q=0.6",
-                     "channel": "APP",
+                     accept: "application/json",
                   },
-                  body: null,
                   method: "GET",
                })
                   .then((e) => e.json())

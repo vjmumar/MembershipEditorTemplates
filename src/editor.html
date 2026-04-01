@@ -1640,7 +1640,7 @@
          },
 
          // This method builds and renders the customization sidebar for a specific selected element
-         initializeElementEditor: (
+         initializeElementEditor: async (
             key = "",
             selector = "",
             isGlobal = false,
@@ -1677,161 +1677,164 @@
             })();
 
             // Then we will generate the HTML for the CSS customization inputs
-            const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
-               const input = (() => {
-                  const propertyValue = (() => {
-                     const computedStyleValue = element
-                        ? this.$iframe?.contentWindow?.getComputedStyle(element)?.[
-                             c.property
-                          ]
-                        : "";
-                     return computedStyleValue?.replace(
-                        /^url\(["']?(.*)["']?\)$/,
-                        (match) => {
-                           return match.includes("url(")
-                              ? match.replace(/^url\(["']?|["']?\)$/g, "")
-                              : match;
-                        },
-                     );
+            const cssCustomizationHtml = await templateItem.cssCustomizations.reduce(
+               async (a, c) => {
+                  const input = await (async () => {
+                     const propertyValue = (() => {
+                        const computedStyleValue = element
+                           ? this.$iframe?.contentWindow?.getComputedStyle(element)?.[
+                                c.property
+                             ]
+                           : "";
+                        return computedStyleValue?.replace(
+                           /^url\(["']?(.*)["']?\)$/,
+                           (match) => {
+                              return match.includes("url(")
+                                 ? match.replace(/^url\(["']?|["']?\)$/g, "")
+                                 : match;
+                           },
+                        );
+                     })();
+                     if (c.type === "multi") {
+                        return this?.widgets?.multiInput(
+                           templateItem.key,
+                           c?.property,
+                           c?.value || propertyValue,
+                           (updatedValue) => {
+                              const updateArgs = (() => {
+                                 if (isGlobal && globalName) {
+                                    return [
+                                       {},
+                                       {
+                                          name: globalName,
+                                          key: templateItem.key,
+                                          property: c.property,
+                                          value: updatedValue,
+                                       },
+                                    ];
+                                 } else {
+                                    return [
+                                       {
+                                          key: templateItem.key,
+                                          property: c.property,
+                                          value: updatedValue,
+                                       },
+                                    ];
+                                 }
+                              })();
+                              this.actions.updateTemplateCustomizations(...updateArgs);
+                           },
+                        );
+                     } else if (c.type === "font") {
+                        return await this?.widgets?.fontSelect(
+                           templateItem.key,
+                           c?.property,
+                           c?.value,
+                           c?.type,
+                           c?.placeholder || "",
+                           (updatedValue) => {
+                              const updateArgs = (() => {
+                                 if (isGlobal && globalName) {
+                                    return [
+                                       {},
+                                       {
+                                          name: globalName,
+                                          key: templateItem.key,
+                                          property: c.property,
+                                          value: updatedValue,
+                                       },
+                                    ];
+                                 } else {
+                                    return [
+                                       {
+                                          key: templateItem.key,
+                                          property: c.property,
+                                          value: updatedValue,
+                                       },
+                                    ];
+                                 }
+                              })();
+                              this.actions.updateTemplateCustomizations(...updateArgs);
+                           },
+                        );
+                     } else if (c.type === "select") {
+                        // First we will check if the type is either select or font, if font we will return the active tempaltes fonts else just the passed options
+                        return this?.widgets?.select(
+                           templateItem.key,
+                           c.property,
+                           c?.value || "",
+                           c.type,
+                           c?.placeholder || "",
+                           c.options,
+                           (updatedValue) => {
+                              const updateArgs = (() => {
+                                 if (isGlobal && globalName) {
+                                    return [
+                                       {},
+                                       {
+                                          name: globalName,
+                                          key: templateItem.key,
+                                          property: c.property,
+                                          value: updatedValue,
+                                       },
+                                    ];
+                                 } else {
+                                    return [
+                                       {
+                                          key: templateItem.key,
+                                          property: c.property,
+                                          value: updatedValue,
+                                       },
+                                    ];
+                                 }
+                              })();
+                              this.actions.updateTemplateCustomizations(...updateArgs);
+                           },
+                        );
+                     } else {
+                        return this?.widgets?.input(
+                           templateItem.key,
+                           c.property,
+                           c?.value || propertyValue,
+                           c.type,
+                           c?.placeholder,
+                           (updatedValue) => {
+                              const updateArgs = (() => {
+                                 if (isGlobal && globalName) {
+                                    return [
+                                       {},
+                                       {
+                                          name: globalName,
+                                          key: templateItem.key,
+                                          property: c.property,
+                                          value: updatedValue,
+                                       },
+                                    ];
+                                 } else {
+                                    return [
+                                       {
+                                          key: templateItem.key,
+                                          property: c.property,
+                                          value: updatedValue,
+                                       },
+                                    ];
+                                 }
+                              })();
+                              this.actions.updateTemplateCustomizations(...updateArgs);
+                           },
+                        );
+                     }
                   })();
-                  if (c.type === "multi") {
-                     return this?.widgets?.multiInput(
-                        templateItem.key,
-                        c?.property,
-                        c?.value || propertyValue,
-                        (updatedValue) => {
-                           const updateArgs = (() => {
-                              if (isGlobal && globalName) {
-                                 return [
-                                    {},
-                                    {
-                                       name: globalName,
-                                       key: templateItem.key,
-                                       property: c.property,
-                                       value: updatedValue,
-                                    },
-                                 ];
-                              } else {
-                                 return [
-                                    {
-                                       key: templateItem.key,
-                                       property: c.property,
-                                       value: updatedValue,
-                                    },
-                                 ];
-                              }
-                           })();
-                           this.actions.updateTemplateCustomizations(...updateArgs);
-                        },
-                     );
-                  } else if (c.type === "font") {
-                     return this?.widgets?.fontSelect(
-                        templateItem.key,
-                        c?.property,
-                        c?.value,
-                        c?.type,
-                        c?.placeholder || "",
-                        (updatedValue) => {
-                           const updateArgs = (() => {
-                              if (isGlobal && globalName) {
-                                 return [
-                                    {},
-                                    {
-                                       name: globalName,
-                                       key: templateItem.key,
-                                       property: c.property,
-                                       value: updatedValue,
-                                    },
-                                 ];
-                              } else {
-                                 return [
-                                    {
-                                       key: templateItem.key,
-                                       property: c.property,
-                                       value: updatedValue,
-                                    },
-                                 ];
-                              }
-                           })();
-                           this.actions.updateTemplateCustomizations(...updateArgs);
-                        },
-                     );
-                  } else if (c.type === "select") {
-                     // First we will check if the type is either select or font, if font we will return the active tempaltes fonts else just the passed options
-                     return this?.widgets?.select(
-                        templateItem.key,
-                        c.property,
-                        c?.value || "",
-                        c.type,
-                        c?.placeholder || "",
-                        c.options,
-                        (updatedValue) => {
-                           const updateArgs = (() => {
-                              if (isGlobal && globalName) {
-                                 return [
-                                    {},
-                                    {
-                                       name: globalName,
-                                       key: templateItem.key,
-                                       property: c.property,
-                                       value: updatedValue,
-                                    },
-                                 ];
-                              } else {
-                                 return [
-                                    {
-                                       key: templateItem.key,
-                                       property: c.property,
-                                       value: updatedValue,
-                                    },
-                                 ];
-                              }
-                           })();
-                           this.actions.updateTemplateCustomizations(...updateArgs);
-                        },
-                     );
-                  } else {
-                     return this?.widgets?.input(
-                        templateItem.key,
-                        c.property,
-                        c?.value || propertyValue,
-                        c.type,
-                        c?.placeholder,
-                        (updatedValue) => {
-                           const updateArgs = (() => {
-                              if (isGlobal && globalName) {
-                                 return [
-                                    {},
-                                    {
-                                       name: globalName,
-                                       key: templateItem.key,
-                                       property: c.property,
-                                       value: updatedValue,
-                                    },
-                                 ];
-                              } else {
-                                 return [
-                                    {
-                                       key: templateItem.key,
-                                       property: c.property,
-                                       value: updatedValue,
-                                    },
-                                 ];
-                              }
-                           })();
-                           this.actions.updateTemplateCustomizations(...updateArgs);
-                        },
-                     );
-                  }
-               })();
-               a += `
+                  a += `
                        <div class="editor-customizer-item__form__item__input__group">
                            <h3 class="editor-customizer-item__form__item__input__group__name">${c.name}</h3>
                            ${input}
                        </div>
                    `;
-               return a;
-            }, "");
+                  return a;
+               },
+               "",
+            );
 
             // Then we will generate the HTML for the Element customization inputs (attributes or inner HTML)
             const elementCustomizationHTML = templateItem?.elementCustomizations?.reduce(
@@ -2284,7 +2287,6 @@
                      headers: {
                         "accept": "application/json, text/plain, */*",
                         "accept-language": "en-US,en;q=0.6",
-                        "authorization": `Bearer ${token}`,
                         "channel": "APP",
                      },
                      body: null,

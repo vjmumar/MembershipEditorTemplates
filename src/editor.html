@@ -1854,7 +1854,7 @@
                            })();
                            this.actions.updateTemplateCustomizations(...updateArgs);
                            if (updatedValue.type === "google") {
-                              this.actions.pushFontGoogleFontsUsed(updatedValue);
+                              this.actions.pushFontGoogleFontsUsed(updatedValue.name);
                            }
                         },
                      );

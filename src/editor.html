@@ -3464,15 +3464,15 @@
                               );
                         }
                         gFonts = getInitialFonts(gFontRes?.items);
+                     } else {
+                        gFonts = gFontRes?.items
+                           ?.filter((gFont) =>
+                              gFont?.family
+                                 ?.toLowerCase()
+                                 .includes(filterText.toLocaleLowerCase()),
+                           )
+                           ?.slice(0, 100);
                      }
-
-                     gFonts = gFontRes?.items
-                        ?.filter((gFont) =>
-                           gFont?.family
-                              ?.toLowerCase()
-                              .includes(filterText.toLocaleLowerCase()),
-                        )
-                        ?.slice(0, 100);
 
                      const optionsHTML = gFonts.reduce((a, c) => {
                         a += `<li class="widget-font-select__item">${c?.family}</li>`;

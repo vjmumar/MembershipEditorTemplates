@@ -823,7 +823,7 @@
                   a.href = "javascript:void(0)";
                   a.removeAttribute("download");
                });
-            }, 2000);
+            }, 1500);
 
             /**
              * Then we will initialize the global editor from the parent window,
@@ -1094,7 +1094,8 @@
                                     "isTurnedOn",
                                     "customCss",
                                     "placeholderThumbnail",
-                                    "fonts",
+                                    "customFonts",
+                                    "googleFontsUsed",
                                  ].includes(key)
                               ) {
                                  return srcValue;
@@ -1171,6 +1172,7 @@
 
                      // Then we will invoke all synchronizers to apply CSS and element-level customizations for this page
                      this.actions.syncTemplateCssCustomizations();
+                     this.action.syncTemplateGoogleFontsUsed();
                      this.actions.syncTemplateElementsCustomization();
 
                      /**
@@ -1213,6 +1215,22 @@
 
             // Finally we will insert the fresh style tags with the updated CSS values
             document.body.insertAdjacentHTML("beforeend", `${customCssStyleTagHTML}`);
+         },
+
+         // This method applies the template's Google Fonts used
+         syncTemplateGoogleFontsUsed: () => {
+            // First we will remove any previously rendered font style tags
+            document
+               ?.querySelectorAll(".bm-template-google-fonts-used")
+               ?.forEach((e) => e.remove());
+
+            // Then we will generate the Google Fonts used style HTML
+            const googleFontsUsedStyleHTML = `
+               <style class="bm-template-google-fonts-used">${this.activeTemplate["googleFontsUsed"]?.map((f) => `${f.replace(/ /g, "+")}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900`)}</style>
+            `;
+
+            // Finally we will insert the fresh style tag with the updated CSS values
+            document.body.insertAdjacentHTML("beforeend", `${googleFontsUsedStyleHTML}`);
          },
 
          // This method applies all CSS customizations from the activePageOnTemplate into the page
@@ -2204,12 +2222,12 @@
                `;
             })();
 
-            // Then we will create the fonts list html
+            // Then we will create the custom fonts list html
             const fontsListHTML = (() => {
                return `
                   <div class="advance-settings__fonts">
-                     <p class="advance-settings__fonts__label">Fonts</p>
-                     <textarea name="fonts" oninput="window.MembershipEditor.actions.updateTemplateFonts(this.value || '')">${(activeTemplate?.fonts || []).join(",\n")}</textarea>
+                     <p class="advance-settings__fonts__label">Custom Fonts</p>
+                     <textarea name="customFonts" oninput="window.MembershipEditor.actions.updateTemplateCustomFonts(this.value || '')">${(activeTemplate?.customFonts || []).join(",\n")}</textarea>
                      <p class="advance-settings__fonts__info">ⓘ Import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p>
                   </div>
                `;
@@ -2719,7 +2737,7 @@
          },
 
          // This method updates the template's fonts
-         updateTemplateFonts: (stringedFonts = "") => {
+         updateTemplateCustomFonts: (stringedFonts = "") => {
             // First we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;
@@ -2731,8 +2749,8 @@
                ?.map((font) => font.trim())
                ?.filter((font) => font.length > 0);
 
-            // Finally, update the active template fonts with the clean array
-            activeTemplate.fonts = formattedFontsToArray;
+            // Finally, update the active template custom fonts with the clean array
+            activeTemplate.customFonts = formattedFontsToArray;
          },
 
          // This method updates the template's placeholderThumbnail
@@ -2749,6 +2767,24 @@
 
             // Finally, update the active template placeholderThumbnail
             activeTemplate.placeholderThumbnail = newThumbnail;
+         },
+
+         // This method pushes a new font into the template's googleFontsUsed
+         pushFontGoogleFontsUsed: (fontName = "") => {
+            // First we will retrieve the preview iframe MembershipParser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+            const activeTemplateGoogleFontsUsed = activeTemplate.googleFontsUsed;
+
+            // Then we will check if the passed font name already exists, if it does then we will not proceed
+            if (activeTemplateGoogleFontsUsed.includes(fontName?.trim())) return;
+
+            // Then we will push the passed font name into activeTemplateGoogleFontsUsed
+            activeTemplateGoogleFontsUsed.push(fontName?.trim());
+
+            // Finally we will sync the template's Google Fonts used
+            previewIframeMembershipParser.actions.syncTemplateGoogleFontsUsed();
          },
 
          // This method is responsible for saving the user's edits inside the current product custom js in ghl
@@ -3478,7 +3514,7 @@
                            ?.slice(0, 100);
                      }
                      const optionsHTML = gFonts.reduce((a, c) => {
-                        a += `<li class="widget-font-select__item" value="${c?.family}" onmousedown="console.log('${c.family}')">${c?.family}</li>`;
+                        a += `<li class="widget-font-select__item" onmousedown="document.getElementById('${templateKey}${property}').value = '${c?.family}'; document.getElementById('${templateKey}${property}').setAttribute('data-type', 'google')">${c?.family}</li>`;
                         return a;
                      }, ``);
                      return optionsHTML ? `<p>Google Fonts</p>${optionsHTML}` : "";
@@ -3488,7 +3524,7 @@
                   const customFontsOptionsHTML = (() => {
                      const optionsHTML =
                         this.$iframe.contentWindow.MembershipParser?.activeTemplate[
-                           "fonts"
+                           "customFonts"
                         ]
                            ?.filter((cFont) =>
                               cFont
@@ -3496,7 +3532,7 @@
                                  .includes(filterText.toLocaleLowerCase()),
                            )
                            ?.reduce((a, c) => {
-                              a += `<li class="widget-font-select__item" value="${c}">${c}</li>`;
+                              a += `<li class="widget-font-select__item" onmousedown="document.getElementById('${templateKey}${property}').value = '${c?.family}'; document.getElementById('${templateKey}${property}').setAttribute('data-type', 'custom')">${c}</li>`;
                               return a;
                            }, ``);
                      return optionsHTML ? `<p>Custom Fonts</p>${optionsHTML}` : "";
@@ -3504,7 +3540,7 @@
 
                   // Finally we will replace the select list inner HTML with the new filtered options
                   $selectList.innerHTML = `
-                     <li class="widget-font-select__item" value="">Select</li>
+                     <li class="widget-font-select__item" onmousedown="document.getElementById('${templateKey}${property}').value = '${c?.family}'; document.getElementById('${templateKey}${property}').setAttribute('data-type', '')">Select</li>
                      ${customFontsOptionsHTML}
                      ${gFontsOptionsHTML}
                   `;
@@ -3515,7 +3551,6 @@
             const listenerId = `${templateKey}-${property}`;
             const listenerFunction = (e) => {
                const $targetElement = e.target;
-
                // First we will listen for the select option list input change and filter the options
                if (
                   $targetElement.classList.contains(`${templateKey}${property}-search`)
@@ -3556,7 +3591,7 @@
                <div class="widget-font-select ${templateKey}${property}-select">
                    <input type="text" 
                           class="widget-font-select__input ${templateKey}${property}-search" 
-                          placeholder="Search fonts..." 
+                          placeholder="${value || `Search fonts...`}" 
                           autocomplete="off">
                    <ul class="widget-font-select__list ${templateKey}${property}-list">
                        <li class="widget-font-select__item" data-value="">Loading...</li>

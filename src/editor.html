@@ -1678,7 +1678,7 @@
 
             // Then we will generate the HTML for the CSS customization inputs
             const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
-               const input = (async () => {
+               const input = (() => {
                   const propertyValue = (() => {
                      const computedStyleValue = element
                         ? this.$iframe?.contentWindow?.getComputedStyle(element)?.[

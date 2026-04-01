@@ -3540,7 +3540,7 @@
 
                   // Finally we will replace the select list inner HTML with the new filtered options
                   $selectList.innerHTML = `
-                     <li class="widget-font-select__item" onmousedown="document.getElementById('${templateKey}${property}').value = '${c?.family}'; document.getElementById('${templateKey}${property}').setAttribute('data-type', '')">Select</li>
+                     <li class="widget-font-select__item" onmousedown="document.getElementById('${templateKey}${property}').value = ''; document.getElementById('${templateKey}${property}').setAttribute('data-type', '')">Select</li>
                      ${customFontsOptionsHTML}
                      ${gFontsOptionsHTML}
                   `;
@@ -3569,6 +3569,7 @@
                   );
                   if (widgetTemplateKey === templateKey && widgetProperty === property) {
                      onChange?.(e.target.value);
+                     console.log(e.target.value)
                   }
                }
             };

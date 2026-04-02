@@ -23,7 +23,7 @@ window.templateCustomizationSchema = {
                      type: "select",
                      options: ["flex", "none"],
                      important: true,
-                     value: "flex",
+                     value: "none",
                   },
                   {
                      name: "Background Color",
@@ -404,7 +404,7 @@ window.templateCustomizationSchema = {
       },
       {
          name: "Sidebar",
-         showOnMobileEditor: false,
+         showOnMobileEditor: true,
          customizations: [
             {
                elementSelector: ".template-sidebar__content",
@@ -4229,6 +4229,7 @@ class CourseTemplate {
          // Finally we will invoke the necessary initializers
          this.mobileInitializers.initStyles();
          this.globalInitializers.initNavBar();
+         this.globalInitializers.initSidebar();
          document.body.classList.add("page-dashboard");
       },
 

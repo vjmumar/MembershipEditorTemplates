@@ -1543,6 +1543,7 @@
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
          this.isPagePreview = sessionStorage?.is_preview === "true";
+         this.loadedPreviewFonts = [];
          this.$previewIframe = null;
          this.$iframe = null;
          this.isDesktop = true;
@@ -3529,9 +3530,9 @@
                      // Test
                      (() => {
                         // First we will remove any previously rendered font style tags
-                        document
-                           ?.querySelectorAll(".bm-editor-fonts-preview")
-                           ?.forEach((e) => e.remove());
+                        // document
+                        //    ?.querySelectorAll(".bm-editor-fonts-preview")
+                        //    ?.forEach((e) => e.remove());
 
                         // Then we will generate the Google Fonts used style HTML
                         const chunks = [];
@@ -3540,13 +3541,16 @@
                         }
 
                         chunks.forEach((chunk) => {
+                           chunk.forEach((e) => {
+                              this.loadedPreviewFonts.push(e.family);
+                           });
                            const googleFontsUsed = chunk
+                              ?.filter((f) => !this.loadedPreviewFonts.includes(f.family))
                               ?.map(
                                  (f) =>
                                     `${f.family.replace(/ /g, "+")}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900`,
                               )
                               .join("&family=");
-                           console.log(googleFontsUsed);
                            const googleFontsUsedStyleHTML = `
                               <style class="bm-editor-fonts-preview">
                                  @import url('https://fonts.googleapis.com/css2?family=${googleFontsUsed}&display=swap');

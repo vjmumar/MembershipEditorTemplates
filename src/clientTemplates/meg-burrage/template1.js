@@ -4229,7 +4229,7 @@ class CourseTemplate {
          // Finally we will invoke the necessary initializers
          this.mobileInitializers.initStyles();
          this.globalInitializers.initNavBar();
-         this.globalInitializers.initSidebar();
+         this.globalInitializers.initSidebar($container);
          document.body.classList.add("page-dashboard");
       },
 

@@ -3660,21 +3660,11 @@
             // Finally we will return the font selection HTML
             return `
                <div class="widget-font-select ${templateKey}${property}-select">
-                   <input type="text" 
-                          class="widget-font-select__input ${templateKey}${property}-search" 
-                          placeholder="${value || `Search fonts...`}" 
-                          autocomplete="off">
+                   <input type="text" value="${value}" style="font-family: ${value}" class="widget-font-select__input ${templateKey}${property}-search" placeholder="${value || `Search fonts...`}" autocomplete="off">
                    <ul class="widget-font-select__list ${templateKey}${property}-list">
                        <li class="widget-font-select__item" data-value="">Loading...</li>
                    </ul>
-                   <input 
-                     type="hidden" 
-                     data-template-key=${templateKey}
-                     data-template-property=${property}
-                     id="${templateKey}${property}"
-                     name="font_family" 
-                     class="widget-font-select__value editor-customizer-form__item__input"
-                   >
+                   <input type="hidden" data-template-key=${templateKey} data-template-property=${property} id="${templateKey}${property}" name="font_family" class="widget-font-select__value editor-customizer-form__item__input" >
                </div>
             `;
          },

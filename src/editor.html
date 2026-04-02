@@ -1543,7 +1543,7 @@
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
          this.isPagePreview = sessionStorage?.is_preview === "true";
-         this.loadedPreviewFonts = [];
+         this.loadedGoogleFontsPreview = [];
          this.$previewIframe = null;
          this.$iframe = null;
          this.isDesktop = true;
@@ -3542,7 +3542,7 @@
 
                         chunks.forEach((chunk) => {
                            const filteredChunk = chunk?.filter(
-                              (f) => !this.loadedPreviewFonts.includes(f.family),
+                              (f) => !this.loadedGoogleFontsPreview.includes(f.family),
                            );
                            const googleFontsUsed = filteredChunk
                               ?.map(
@@ -3564,7 +3564,7 @@
                            );
 
                            chunk.forEach((e) => {
-                              this.loadedPreviewFonts.push(e.family);
+                              this.loadedGoogleFontsPreview.push(e.family);
                            });
                         });
                      })();
@@ -3628,11 +3628,12 @@
                      // First we will retrieve the data type e.g(google, custom)
                      const type = e.target.getAttribute("data-type");
 
-                     // Then we will update the value of the search input
+                     // Then we will update the value and font family of the search input
                      const $filterInput = document.querySelector(
                         `.${templateKey}${property}-search`,
                      );
                      $filterInput.value = e.target.value;
+                     $filterInput.style.fontFamily = e.target.value;
 
                      // Finally we will invoke the onChange callback
                      onChange?.({

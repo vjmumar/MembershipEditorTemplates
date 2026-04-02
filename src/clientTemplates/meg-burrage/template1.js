@@ -3619,7 +3619,7 @@ class CourseTemplate {
                             <div class="template-sidebar__category__item__sub-folder">
                                 <div class="template-sidebar__category__item__sub-folder__title">
                                     <p class="template-sidebar__category__item__sub-folder__title__text">${cP.title}</p>
-                                    <a  style="${this.isMobile ? "none" : "flex"}" href="/courses/products/${cP?.productId}/categories/${cP?.id}" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
+                                    <a  style="display: ${this.isMobile ? "none" : "flex"}" href="/courses/products/${cP?.productId}/categories/${cP?.id}" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
                                 </div>
                                 <div class="template-sidebar-category__item__sub-folder__posts">
                                     ${posts}    
@@ -3636,7 +3636,7 @@ class CourseTemplate {
                                 <i class="fas fa-angle-right template-sidebar__category__item__title__content__icon"></i>
                                 <p class="template-sidebar__category__item__title__content__title">${c.title}</p>
                             </div>
-                            <a  style="${this.isMobile ? "none" : "flex"}" href="/courses/products/${c?.productId}/categories/${c?.id}" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></a>
+                            <a  style="display: ${this.isMobile ? "none" : "flex"}" href="/courses/products/${c?.productId}/categories/${c?.id}" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></a>
                         </div>
                         <div class="template-sidebar__category__item__content">
                             ${postsHTML}     

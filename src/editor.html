@@ -3541,13 +3541,16 @@
                         }
 
                         chunks.forEach((chunk) => {
-                           const googleFontsUsed = chunk
-                              ?.filter((f) => !this.loadedPreviewFonts.includes(f.family))
+                           const filteredChunk = chunk?.filter(
+                              (f) => !this.loadedPreviewFonts.includes(f.family),
+                           );
+                           const googleFontsUsed = filteredChunk
                               ?.map(
                                  (f) =>
                                     `${f.family.replace(/ /g, "+")}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900`,
                               )
                               .join("&family=");
+                           if (!filteredChunk.length) return;
                            const googleFontsUsedStyleHTML = `
                               <style class="bm-editor-fonts-preview">
                                  @import url('https://fonts.googleapis.com/css2?family=${googleFontsUsed}&display=swap');

@@ -4379,6 +4379,7 @@ class CourseTemplate {
          // Then we will invoke the necessary initializers
          this.mobileInitializers.initStyles();
          this.globalInitializers.initNavBar();
+         this.globalInitializers.initSidebar($container);
          document.body.classList.add("page-post");
 
          // Finally we will append all container conditionally

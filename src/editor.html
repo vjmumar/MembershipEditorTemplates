@@ -3534,9 +3534,10 @@
                            ?.forEach((e) => e.remove());
 
                         // Then we will generate the Google Fonts used style HTML
+                        console.log(gFonts)
                         const chunks = [];
-                        for (let i = 0; i < gFonts?.items.length; i += 10) {
-                           chunks.push(gFonts.items?.slice(i, i + 10));
+                        for (let i = 0; i < gFonts.length; i += 10) {
+                           chunks.push(gFonts?.slice(i, i + 10));
                         }
 
                         chunks.forEach((chunk) => {
@@ -3546,7 +3547,7 @@
                                     `${f.family.replace(/ /g, "+")}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900`,
                               )
                               .join("&family=");
-                           console.log(googleFontsUsed)
+                           console.log(googleFontsUsed);
                            const googleFontsUsedStyleHTML = `
                               <style class="bm-editor-fonts-preview">
                                  @import url('https://fonts.googleapis.com/css2?family=${googleFontsUsed}&display=swap');

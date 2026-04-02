@@ -3544,6 +3544,7 @@
                            chunk.forEach((e) => {
                               this.loadedPreviewFonts.push(e.family);
                            });
+                           console.log(this.loadedPreviewFonts)
                            const googleFontsUsed = chunk
                               ?.filter((f) => !this.loadedPreviewFonts.includes(f.family))
                               ?.map(

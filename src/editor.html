@@ -3507,7 +3507,7 @@
 
                   // Then we will generate the Google Fonts options HTML
                   const gFontsOptionsHTML = (() => {
-                     let gFonts = gFontRes?.items;
+                     let gFonts = [];
                      if (!filterText) {
                         function getInitialFonts(fonts) {
                            return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -3535,8 +3535,8 @@
 
                         // Then we will generate the Google Fonts used style HTML
                         const chunks = [];
-                        for (let i = 0; gFonts.length; i += 10) {
-                           chunks.push(gFonts.slice(i, i + 10));
+                        for (let i = 0; i < gFonts?.items.length; i += 10) {
+                           chunks.push(gFonts.items?.slice(i, i + 10));
                         }
 
                         chunks.forEach((chunk) => {
@@ -3546,6 +3546,7 @@
                                     `${f.family.replace(/ /g, "+")}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900`,
                               )
                               .join("&family=");
+                           console.log(googleFontsUsed)
                            const googleFontsUsedStyleHTML = `
                               <style class="bm-editor-fonts-preview">
                                  @import url('https://fonts.googleapis.com/css2?family=${googleFontsUsed}&display=swap');
@@ -3559,6 +3560,7 @@
                            );
                         });
                      })();
+
                      // Test
                      const optionsHTML = gFonts.reduce((a, c) => {
                         a += `<li style="font-family: ${c?.family}" class="widget-font-select__item" onmousedown="(function(){const $i = document.getElementById('${templateKey}${property}');$i.value = '${c?.family}';$i.setAttribute('data-type', 'google');$i.dispatchEvent(new Event('input', { bubbles: true }));})();">${c?.family}</li>`;

@@ -2003,6 +2003,7 @@
 
             // Then we will generate the HTML for the Feature customization inputs
             const featuresHTML = templateItem?.features?.reduce((a, c) => {
+               console.log(c)
                // First we will build the inputs for this specific feature's customizations
                const customizationHTML = c.customizations?.reduce((ac, cc) => {
                   const input = (() => {
@@ -2063,7 +2064,7 @@
                // Then we will append this feature (toggle + customizations) into the features HTML
                a += `
                        <div class="editor-customizer-item__form__item__input__group feature">
-                           <h3 class="editor-customizer-item__form__item__input__group__name__toggler" onClick="this.parentElement.classList.toggle('active')">
+                           <h3 class="editor-customizer-item__form__item__input__group__name__toggler" onclick="this.parentElement.classList.toggle('active')">
                                ${c.name}
                                <i class="fa-solid fa-angle-right"></i>
                            </h3>
@@ -2078,6 +2079,7 @@
                                <p>Turn On Feature</p>
                                </div>
                                <div class="editor-customizer-item__form__item__input__group__customizations">${customizationHTML}</div>
+                               <button>Increment</button>
                            </div>
                        </div>
                    `;

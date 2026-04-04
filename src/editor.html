@@ -2762,7 +2762,6 @@
                value: "",
             },
          ) => {
-            console.log(normal, global)
             // First we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;
@@ -2780,6 +2779,7 @@
                            isTurnedOn = fItem.isTurnedOn;
                            fItem.customizations.forEach((fItemC) => {
                               if (fItemC.property === normal.customizationProperty) {
+                                 console.log(fItemC);
                                  fItemC.value = normal.value;
                               }
                            });
@@ -2812,6 +2812,7 @@
                                     if (
                                        fcItem.property === global.customizationProperty
                                     ) {
+                                       console.log(fItemC);
                                        isTurnedOn = fItem.isTurnedOn;
                                        fcItem.value = global.value;
                                     }

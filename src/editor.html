@@ -2070,7 +2070,7 @@
 
                // Then we will append this feature (toggle + customizations) into the features HTML
                a += `
-                       <div class="editor-customizer-item__form__item__input__group feature">
+                       <div class="editor-customizer-item__form__item__input__group feature" data-feature-key="${c.key}">
                            <h3 class="editor-customizer-item__form__item__input__group__name__toggler" onclick="this.parentElement.classList.toggle('active')">
                                ${c.name}
                                <i class="fa-solid fa-angle-right"></i>
@@ -2768,6 +2768,69 @@
                previewIframeMembershipParser.activePageOnTemplate;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
+            let templateItem = (() => {
+               if (isGlobal && globalName) {
+                  return activeTemplate.global
+                     ?.find((item) => item.name === globalName)
+                     ?.customizations?.find((item) => item.key === key);
+               } else {
+                  return activePageOnTemplate.find((item) => item.key === key);
+               }
+            })();
+
+            // Then we will generate the HTML for the Feature customization inputs
+            const updateFeatureCustomizations = () => {
+               templateItem?.features?.forEach((gg) => {
+                  // First we will build the inputs for this specific feature's customizations
+                  const customizationHTML = gg.customizations?.reduce((ac, cc) => {
+                     const input = (() => {
+                        return this?.widgets?.input(
+                           templateItem.key,
+                           `${cc.type}-${cc.property}`,
+                           cc?.value,
+                           cc.type,
+                           cc?.placeholder,
+                           (updatedValue) => {
+                              const updateArgs = (() => {
+                                 if (isGlobal && globalName) {
+                                    return [
+                                       {},
+                                       {
+                                          name: globalName,
+                                          templateItemKey: templateItem.key,
+                                          featureKey: c.key,
+                                          customizationProperty: cc.property,
+                                          value: updatedValue,
+                                       },
+                                    ];
+                                 } else {
+                                    return [
+                                       {
+                                          templateItemKey: templateItem.key,
+                                          featureKey: c.key,
+                                          customizationProperty: cc.property,
+                                          value: updatedValue,
+                                       },
+                                    ];
+                                 }
+                              })();
+                              this.actions.updateTemplateFeatureCustomizations(
+                                 ...updateArgs,
+                              );
+                           },
+                        );
+                     })();
+                     ac += `
+                           <div class="editor-customizer-item__form__item__input__group">
+                               <p class="editor-customizer-item__form__item__input__group__name">${cc.name}</p>
+                               ${input}
+                           </div>
+                       `;
+                     return ac;
+                  }, "");
+               });
+            };
+
             // Then if a normal feature key is provided, we will traverse the active page to find and update the specific feature customization while checking if the feature is active
             if (normal.featureKey) {
                let isTurnedOn = false;
@@ -2811,6 +2874,9 @@
                                        placeholder: "https://example.com/image",
                                        value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
                                     },
+                                 );
+                                 this.initializers.initializeElementEditor(
+                                    global.templateItemKey,
                                  );
                               }
                            });

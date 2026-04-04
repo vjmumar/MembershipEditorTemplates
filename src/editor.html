@@ -2025,6 +2025,7 @@
                   return a;
                }, []);
 
+               console.log(groupedCustomizations)
                // Then we will build the inputs for this specific feature's customizations
                const customizationHTML = groupedCustomizations?.reduce((ac, cc) => {
                   // First we will create a function that generate the input of the customization

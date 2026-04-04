@@ -2769,23 +2769,23 @@
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
             console.log("lol", global, normal);
 
-            let templateItem = (() => {
+            let feature = (() => {
                if (global.name) {
                   return activeTemplate.global
                      ?.find((item) => item.name === global.name)
-                     ?.customizations?.find((item) => item.key === global.featureKey);
+                     ?.features?.find((item) => item.key === global.featureKey);
                } else {
-                  return activePageOnTemplate.find(
-                     (item) => item.key === normal.featureKey,
-                  );
+                  // return activePageOnTemplate.find(
+                  //    (item) => item.key === normal.featureKey,
+                  // );
                }
             })();
 
-            console.log(templateItem);
+            console.log(feature);
 
             // Then we will generate the HTML for the Feature customization inputs
             const updateFeatureCustomizations = () => {
-               templateItem?.features?.forEach((gg) => {
+               templateItem?.forEach((gg) => {
                   // First we will build the inputs for this specific feature's customizations
                   const customizationHTML = gg.customizations?.reduce((ac, cc) => {
                      const input = (() => {

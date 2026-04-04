@@ -260,7 +260,7 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "https://example.com/image",
                            value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
-                           group: "menu-6",
+                           group: "menu-5",
                         },
                         {
                            name: "Menu Text 6",

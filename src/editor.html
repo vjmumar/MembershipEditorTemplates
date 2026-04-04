@@ -1747,6 +1747,7 @@
             selector = "",
             isGlobal = false,
             globalName = "",
+            openFeatureByKey = "",
          ) => {
             // First we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
@@ -2070,7 +2071,7 @@
 
                // Then we will append this feature (toggle + customizations) into the features HTML
                a += `
-                       <div class="editor-customizer-item__form__item__input__group feature" data-feature-key="${c.key}">
+                       <div class="editor-customizer-item__form__item__input__group feature ${openFeatureByKey === c.key ? "acutve" : ""}" data-feature-key="${c.key}">
                            <h3 class="editor-customizer-item__form__item__input__group__name__toggler" onclick="this.parentElement.classList.toggle('active')">
                                ${c.name}
                                <i class="fa-solid fa-angle-right"></i>
@@ -2897,6 +2898,7 @@
                                     cItem.elementSelector,
                                     true,
                                     global.name,
+                                    fItem.key
                                  );
                               }
                            });

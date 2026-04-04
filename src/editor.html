@@ -2003,7 +2003,6 @@
 
             // Then we will generate the HTML for the Feature customization inputs
             const featuresHTML = templateItem?.features?.reduce((a, c) => {
-               console.log(c);
                // First we will build the inputs for this specific feature's customizations
                const customizationHTML = c.customizations?.reduce((ac, cc) => {
                   const input = (() => {
@@ -2762,6 +2761,7 @@
                value: "",
             },
          ) => {
+            console.log(norma, global, "loll")
             // First we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;
@@ -3584,7 +3584,6 @@
             placeholder = "",
             onChange = () => {},
          ) => {
-            console.log(value);
             // First we will create a function that will be responsible for showing and filtering the font options
             const showFontSelectOptions = (filterText = "") => {
                // We will retrieve the Google Fonts and process them along with the custom fonts

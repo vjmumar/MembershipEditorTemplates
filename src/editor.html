@@ -2808,7 +2808,8 @@
                         if (cItem.key === global.templateItemKey) {
                            cItem.features.forEach((fItem) => {
                               if (fItem.key === global.featureKey) {
-                                 fItemC.customizations.push({
+                                 console.log(fItem, "lool")
+                                 fItem.customizations.push({
                                     name: "{{menu-text-7}}",
                                     link: "{{menu-link-7}}",
                                  });

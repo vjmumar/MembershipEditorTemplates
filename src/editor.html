@@ -2769,12 +2769,14 @@
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
             let templateItem = (() => {
-               if (isGlobal && globalName) {
+               if (global.name) {
                   return activeTemplate.global
-                     ?.find((item) => item.name === globalName)
-                     ?.customizations?.find((item) => item.key === key);
+                     ?.find((item) => item.name === global.name)
+                     ?.customizations?.find((item) => item.key === global.featureKey);
                } else {
-                  return activePageOnTemplate.find((item) => item.key === key);
+                  return activePageOnTemplate.find(
+                     (item) => item.key === normal.featureKey,
+                  );
                }
             })();
 
@@ -2828,7 +2830,11 @@
                        `;
                      return ac;
                   }, "");
-                  document.querySelector(`.editor-customizer-item__form__item__input__group.feature[data-feature-key='${gg.key}']`).remove()
+                  document
+                     .querySelector(
+                        `.editor-customizer-item__form__item__input__group.feature[data-feature-key='${gg.key}']`,
+                     )
+                     .remove();
                });
             };
 
@@ -2875,9 +2881,6 @@
                                        placeholder: "https://example.com/image",
                                        value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
                                     },
-                                 );
-                                 this.initializers.initializeElementEditor(
-                                    global.templateItemKey,
                                  );
                               }
                            });

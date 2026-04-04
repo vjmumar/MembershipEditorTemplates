@@ -2111,12 +2111,15 @@
                               }
                            })();
                            if (isGroup) {
-                              if (!window["test"]) {
-                                 window["test"] = {
-                                    [templateItem?.key]: updateArgs,
+                              if (!window[featureKey]) {
+                                 window[featureKey] = {
+                                    [`${customization?.type}-${customization?.property}`]:
+                                       updateArgs,
                                  };
                               } else {
-                                 window["test"][templateItem?.key] = updateArgs
+                                 window[featureKey][
+                                    `${customization?.type}-${customization?.property}`
+                                 ] = updateArgs;
                               }
                            } else {
                               this.actions.updateTemplateFeatureCustomizations(
@@ -2141,13 +2144,21 @@
                         },
                         "",
                      );
+                      const saveButtonJs = `
+                       Object.values(window['${cc.key}']).forEach((inp) => window.MembershipEditor.actions.updateTemplateCustomizations(...inp))
+                     `;
                      ac += `
                               <div class="editor-customizer-item__form__item__input__group__group" data-feature-group="${cc.groupId}">
                                   <div class="editor-customizer-item__form__item__input__group__group__header" onclick="this.parentElement.classList.toggle('active')">
                                     <p>${cc.label}</p>  
                                     <i class="fa-solid fa-caret-down"></i>
                                   </div>
-                                  <div class="editor-customizer-item__form__item__input__group__group__contents">${groupCustomizationsHTML}</div>
+                                  <div class="editor-customizer-item__form__item__input__group__group__contents">
+                                    ${groupCustomizationsHTML}
+                                    <div>
+                                       <button onclick="${saveButtonJs}">Save</button>   
+                                    </div>
+                                  </div>
                               </div>
                           `;
                   } else {

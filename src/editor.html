@@ -2003,38 +2003,38 @@
 
             // Then we will generate the HTML for the Feature customization inputs
             const featuresHTML = templateItem?.features?.reduce((a, c) => {
-               // First we will build the inputs for this specific feature's customizations
-               const groupedCustomizations = c.customizations.reduce((a,c) => {
+               // First we will group the feature customizations
+               const groupedCustomizations = c.customizations?.reduce((a, c) => {
                   if (c.group) {
                      if (c.groupLabel) {
                         a.push({
                            groupId: c.group,
                            label: c.groupLabel,
-                           customizations: [c]
-                        })
+                           customizations: [c],
+                        });
                      } else {
                         a.forEach((el) => {
                            if (el?.groupId) {
                               el.customizations.push(c);
                            }
-                        })
+                        });
                      }
                   } else {
-                     a.push(c)
+                     a.push(c);
                   }
-                  return a
-               },[]);
+                  return a;
+               }, []);
 
-               console.log(groupedCustomizations);
-
-               const customizationHTML = c.customizations?.reduce((ac, cc) => {
-                  const input = (() => {
+               // Then we will build the inputs for this specific feature's customizations
+               const customizationHTML = groupedCustomizations?.reduce((ac, cc) => {
+                  // First we will create a function that generate the input of the customization
+                  const generateInput = (customization = {}) => {
                      return this?.widgets?.input(
                         templateItem.key,
-                        `${cc.type}-${cc.property}`,
-                        cc?.value,
-                        cc.type,
-                        cc?.placeholder,
+                        `${customization?.type}-${customization?.property}`,
+                        customization?.value,
+                        customization.type,
+                        customization?.placeholder,
                         (updatedValue) => {
                            const updateArgs = (() => {
                               if (isGlobal && globalName) {
@@ -2042,18 +2042,18 @@
                                     {},
                                     {
                                        name: globalName,
-                                       templateItemKey: templateItem.key,
+                                       templateItemKey: templateItem?.key,
                                        featureKey: c.key,
-                                       customizationProperty: cc.property,
+                                       customizationProperty: customization?.property,
                                        value: updatedValue,
                                     },
                                  ];
                               } else {
                                  return [
                                     {
-                                       templateItemKey: templateItem.key,
+                                       templateItemKey: templateItem?.key,
                                        featureKey: c.key,
-                                       customizationProperty: cc.property,
+                                       customizationProperty: customization?.property,
                                        value: updatedValue,
                                     },
                                  ];
@@ -2064,13 +2064,36 @@
                            );
                         },
                      );
-                  })();
-                  ac += `
-                           <div class="editor-customizer-item__form__item__input__group">
-                               <p class="editor-customizer-item__form__item__input__group__name">${cc.name}</p>
-                               ${input}
-                           </div>
-                       `;
+                  };
+
+                  // Finally we will append the html to accumulator
+                  if (cc.groupId) {
+                     const groupCustomizationsHTML = cc.customizations.reduce(
+                        (aaa, ccc) => {
+                           aaa += `
+                              <div class="editor-customizer-item__form__item__input__group">
+                                  <p class="editor-customizer-item__form__item__input__group__name">${ccc.name}</p>
+                                  ${generateInput(ccc)}
+                              </div>
+                           `;
+                           return aaa;
+                        },
+                        "",
+                     );
+                     ac += `
+                              <div class="editor-customizer-item__form__item__input__group__group" data-feature-group="${ccc.groupId}">
+                                  <p class="editor-customizer-item__form__item__input__group__group__name">${ccc.label}</p>
+                                  ${groupCustomizationsHTML}
+                              </div>
+                          `;
+                  } else {
+                     ac += `
+                              <div class="editor-customizer-item__form__item__input__group">
+                                  <p class="editor-customizer-item__form__item__input__group__name">${cc.name}</p>
+                                  ${generateInput(cc)}
+                              </div>
+                          `;
+                  }
                   return ac;
                }, "");
 

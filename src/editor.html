@@ -39,8 +39,8 @@
    .editor-customizer-sidebar input[type="color"],
    .editor-customizer-sidebar input[type="checkbox"],
    .editor-customizer-sidebar select {
-      font-size: 14px;
-      padding: 6px 10px;
+      font-size: 13px;
+      padding: 5px 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
       width: 100%;
@@ -233,6 +233,49 @@
       border: 1px solid #f0f0f0;
       padding-inline: 6px;
       border-top: none;
+   }
+
+   /* Customization Group */
+   .editor-customizer-item__form__item__input__group__group {
+      margin-bottom: 5px;
+   }
+
+   .editor-customizer-item__form__item__input__group__group__header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      background-color: #f0f0f0;
+      padding-inline: 5px;
+      align-items: center;
+      padding-block: 5px;
+      cursor: pointer;
+   }
+
+   .editor-customizer-item__form__item__input__group__group__header p {
+      font-size: 13.5px;
+   }
+
+   .editor-customizer-item__form__item__input__group__group__header i {
+      font-size: 9px;
+   }
+
+   .editor-customizer-item__form__item__input__group__group.active
+      .editor-customizer-item__form__item__input__group__group__header
+      i {
+      transform: rotate(180deg);
+   }
+
+   .editor-customizer-item__form__item__input__group__group__contents {
+      padding-block: 10px 2px;
+      padding-inline: 8px;
+      border: 1px solid #f0f0f0;
+      border-top: 0px;
+      display: none;
+   }
+
+   .editor-customizer-item__form__item__input__group__group.active
+      .editor-customizer-item__form__item__input__group__group__contents {
+      display: block;
    }
 
    /* Global */

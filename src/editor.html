@@ -2786,9 +2786,7 @@
 
             // Then we will generate the HTML for the Feature customization inputs
             const updateFeatureCustomizations = () => {
-               templateItem?.forEach((gg) => {
-                  // First we will build the inputs for this specific feature's customizations
-                  const customizationHTML = gg.customizations?.reduce((ac, cc) => {
+                  const customizationHTML = feature.customizations?.reduce((ac, cc) => {
                      const input = (() => {
                         return this?.widgets?.input(
                            templateItem.key,
@@ -2833,11 +2831,9 @@
                            </div>
                        `;
                      return ac;
-                  }, "");
-                  console.log(gg);
                   document
                      .querySelector(
-                        `.editor-customizer-item__form__item__input__group.feature[data-feature-key='${gg.key}']`,
+                        `.editor-customizer-item__form__item__input__group.feature[data-feature-key='${feature.key}']`,
                      )
                      .remove();
                });

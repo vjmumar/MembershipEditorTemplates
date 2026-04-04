@@ -2145,6 +2145,7 @@
                         "",
                      );
                      const saveButtonJs = `
+                       console.log(Object.values(window['${c.key}']));
                        Object.values(window['${c.key}']).forEach((inp) => window.MembershipEditor.actions.updateTemplateCustomizations(...inp))
                      `;
                      ac += `

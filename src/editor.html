@@ -1747,7 +1747,6 @@
             selector = "",
             isGlobal = false,
             globalName = "",
-            openFeatureByKey = "",
          ) => {
             // First we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
@@ -2071,7 +2070,7 @@
 
                // Then we will append this feature (toggle + customizations) into the features HTML
                a += `
-                       <div class="editor-customizer-item__form__item__input__group feature ${openFeatureByKey === c.key ? "acutve" : ""}" data-feature-key="${c.key}">
+                       <div class="editor-customizer-item__form__item__input__group feature" data-feature-key="${c.key}">
                            <h3 class="editor-customizer-item__form__item__input__group__name__toggler" onclick="this.parentElement.classList.toggle('active')">
                                ${c.name}
                                <i class="fa-solid fa-angle-right"></i>
@@ -2140,10 +2139,10 @@
                            <div class="editor-customizer-item__form__item" data-category-type="contents">
                                ${elementCustomizationHTML || formItemFallbackHTML}
                            </div>
-                           <div class="editor-customizer-item__form__item ${openFeatureByKey ? "" : "active"}" data-category-type="styles">
+                           <div class="editor-customizer-item__form__item active" data-category-type="styles">
                                ${cssCustomizationHtml || formItemFallbackHTML}
                            </div>
-                           <div class="editor-customizer-item__form__item ${openFeatureByKey ? "active" : ""}" data-category-type="advance">
+                           <div class="editor-customizer-item__form__item" data-category-type="advance">
                                ${featuresHTML || formItemFallbackHTML}
                            </div>
                        </div>
@@ -2786,66 +2785,26 @@
             console.log(feature);
 
             // Then we will generate the HTML for the Feature customization inputs
-            // const updateFeatureCustomizations = () => {
-            //    const customizationHTML = feature.customizations?.reduce((ac, cc) => {
-            //       const input = (() => {
-            //          return this?.widgets?.input(
-            //             global.templateItemKey,
-            //             `${cc.type}-${cc.property}`,
-            //             cc?.value,
-            //             cc.type,
-            //             cc?.placeholder,
-            //             (updatedValue) => {
-            //                const updateArgs = (() => {
-            //                   if (global.name) {
-            //                      return [
-            //                         {},
-            //                         {
-            //                            name: global.name,
-            //                            templateItemKey: global.templateItemKey,
-            //                            featureKey: global.fea,
-            //                            customizationProperty: cc.property,
-            //                            value: updatedValue,
-            //                         },
-            //                      ];
-            //                   } else {
-            //                      return [
-            //                         {
-            //                            templateItemKey: global.templateItemKey,
-            //                            featureKey: c.key,
-            //                            customizationProperty: cc.property,
-            //                            value: updatedValue,
-            //                         },
-            //                      ];
-            //                   }
-            //                })();
-            //                this.actions.updateTemplateFeatureCustomizations(
-            //                   ...updateArgs,
-            //                );
-            //             },
-            //          );
-            //       })();
-            //       ac += `
-            //                <div class="editor-customizer-item__form__item__input__group">
-            //                    <p class="editor-customizer-item__form__item__input__group__name">${cc.name}</p>
-            //                    ${input}
-            //                </div>
-            //            `;
-            //       return ac;
-            //       document
-            //          .querySelector(
-            //             `.editor-customizer-item__form__item__input__group.feature[data-feature-key='${feature.key}']`,
-            //          )
-            //          .remove();
-            //    });
-            //    document
-            //       .querySelector(
-            //          `.editor-customizer-item__form__item__input__group.feature[data-feature-key="${feature.key}"]`,
-            //       )
-            //       .querySelector(
-            //          ".editor-customizer-item__form__item__input__group__customizations",
-            //       ).innerHTML = customizationHTML;
-            // };
+            const updateFeatureCustomizations = () => {
+               document
+                  .querySelector(
+                     `.editor-customizer-item__form__item__input__group.feature[data-feature-key="${feature.key}"]`,
+                  )
+                  .querySelector(
+                     ".editor-customizer-item__form__item__input__group__customizations",
+                  )
+                  .insertAdjacentHTML(
+                     "beforeend",
+                     `
+                  <div class="editor-customizer-item__form__item__input__group">
+                               <p class="editor-customizer-item__form__item__input__group__name">Menu Link ${feature.customizations.length}</p>
+                               
+                     <input class="editor-customizer-form__item__input" data-template-key="template-navbar-content-nav-links" data-template-property="text-menu-link-${feature.customizations.length}" type="text" value="https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg" placeholder="https://example.com/image">
+                  
+                           </div>
+                  `,
+                  );
+            };
 
             // Then if a normal feature key is provided, we will traverse the active page to find and update the specific feature customization while checking if the feature is active
             if (normal.featureKey) {
@@ -2891,15 +2850,7 @@
                                        value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
                                     },
                                  );
-                                 // updateFeatureCustomizations();
-                                 // console.log(fI);
-                                 this.initializers.initializeElementEditor(
-                                    global.templateItemKey,
-                                    cItem.elementSelector,
-                                    true,
-                                    global.name,
-                                    fItem.key,
-                                 );
+                                 updateFeatureCustomizations();
                               }
                            });
                         }

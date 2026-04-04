@@ -2003,6 +2003,7 @@
 
             // Then we will generate the HTML for the Feature customization inputs
             const featuresHTML = templateItem?.features?.reduce((a, c) => {
+               console.log(c);
                // First we will build the inputs for this specific feature's customizations
                const customizationHTML = c.customizations?.reduce((ac, cc) => {
                   const input = (() => {
@@ -2060,10 +2061,18 @@
                   }
                })();
 
+               const incrementttt = (() => {
+                  if (isGlobal && globalName) {
+                     return `window.MembershipEditor.actions.incrementTemplateFeatureCustomizations({},{name: '${globalName}',templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
+                  } else {
+                     return `window.MembershipEditor.actions.incrementTemplateFeatureCustomizations({templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
+                  }
+               })();
+
                // Then we will append this feature (toggle + customizations) into the features HTML
                a += `
                        <div class="editor-customizer-item__form__item__input__group feature">
-                           <h3 class="editor-customizer-item__form__item__input__group__name__toggler" onClick="this.parentElement.classList.toggle('active')">
+                           <h3 class="editor-customizer-item__form__item__input__group__name__toggler" onclick="this.parentElement.classList.toggle('active')">
                                ${c.name}
                                <i class="fa-solid fa-angle-right"></i>
                            </h3>
@@ -2078,6 +2087,7 @@
                                <p>Turn On Feature</p>
                                </div>
                                <div class="editor-customizer-item__form__item__input__group__customizations">${customizationHTML}</div>
+                               <button onclick="${incrementttt}">Increment</button>
                            </div>
                        </div>
                    `;
@@ -2648,6 +2658,96 @@
 
          // This method updates a specific feature customization
          updateTemplateFeatureCustomizations: (
+            normal = {
+               templateItemKey: "",
+               featureKey: "",
+               customizationProperty: "",
+               value: "",
+            },
+            global = {
+               name: "",
+               templateItemKey: "",
+               featureKey: "",
+               customizationProperty: "",
+               value: "",
+            },
+         ) => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then if a normal feature key is provided, we will traverse the active page to find and update the specific feature customization while checking if the feature is active
+            if (normal.featureKey) {
+               let isTurnedOn = false;
+               activePageOnTemplate.forEach((item) => {
+                  if (item.key === normal.templateItemKey) {
+                     item.features.forEach((fItem) => {
+                        if (fItem.key === normal.featureKey) {
+                           isTurnedOn = fItem.isTurnedOn;
+                           fItem.customizations.forEach((fItemC) => {
+                              if (fItemC.property === normal.customizationProperty) {
+                                 fItemC.value = normal.value;
+                              }
+                           });
+                        }
+                     });
+                  }
+               });
+
+               // Finally we will re-sync the feature only if it is currently turned on
+               if (isTurnedOn) {
+                  previewIframeMembershipParser.actions.syncTemplateFeatureCustomizations(
+                     {
+                        featureKey: normal.featureKey,
+                        templateItemKey: normal.templateItemKey,
+                     },
+                  );
+               }
+            }
+
+            // Then if a global feature key is provided, we will iterate through the global settings to find and update the matching feature customization while checking if the feature is active
+            if (global.featureKey) {
+               let isTurnedOn = false;
+               activeTemplate.global.forEach((item) => {
+                  if (item.name === global.name) {
+                     item.customizations.forEach((cItem) => {
+                        if (cItem.key === global.templateItemKey) {
+                           cItem.features.forEach((fItem) => {
+                              if (fItem.key === global.featureKey) {
+                                 fItem.customizations.forEach((fcItem) => {
+                                    if (
+                                       fcItem.property === global.customizationProperty
+                                    ) {
+                                       isTurnedOn = fItem.isTurnedOn;
+                                       fcItem.value = global.value;
+                                    }
+                                 });
+                              }
+                           });
+                        }
+                     });
+                  }
+               });
+
+               // Finally we will re-sync the global feature only if it is currently turned on
+               if (isTurnedOn) {
+                  previewIframeMembershipParser.actions.syncTemplateFeatureCustomizations(
+                     {},
+                     {
+                        name: global.name,
+                        featureKey: global.featureKey,
+                        templateItemKey: global.templateItemKey,
+                     },
+                  );
+               }
+            }
+         },
+
+         // Test
+         incrementTemplateFeatureCustomizations: (
             normal = {
                templateItemKey: "",
                featureKey: "",
@@ -3497,7 +3597,7 @@
             placeholder = "",
             onChange = () => {},
          ) => {
-            console.log(value)
+            console.log(value);
             // First we will create a function that will be responsible for showing and filtering the font options
             const showFontSelectOptions = (filterText = "") => {
                // We will retrieve the Google Fonts and process them along with the custom fonts

@@ -2773,6 +2773,7 @@
                if (global.name) {
                   return activeTemplate.global
                      ?.find((item) => item.name === global.name)
+                     ?.customizations((item) => item.key === global.templateItemKey)
                      ?.features?.find((item) => item.key === global.featureKey);
                } else {
                   // return activePageOnTemplate.find(

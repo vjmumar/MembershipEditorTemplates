@@ -203,7 +203,7 @@
       margin-bottom: 10px;
       margin-top: 5px;
    }
-   
+
    .editor-customizer-item__form__item__input__group__toggler p {
       font-size: 13px;
    }
@@ -260,7 +260,7 @@
    }
 
    .editor-customizer-item__form__item__input__group__group__header p {
-      font-size: 13.5px;
+      font-size: 12px;
    }
 
    .editor-customizer-item__form__item__input__group__group__header i {
@@ -2079,7 +2079,7 @@
                // Then we will build the inputs for this specific feature's customizations
                const customizationHTML = groupedCustomizations?.reduce((ac, cc) => {
                   // First we will create a function that generate the input of the customization
-                  const generateInput = (customization = {}) => {
+                  const generateInput = (customization = {}, isGroup = false) => {
                      return this?.widgets?.input(
                         templateItem.key,
                         `${customization?.type}-${customization?.property}`,
@@ -2110,9 +2110,13 @@
                                  ];
                               }
                            })();
-                           this.actions.updateTemplateFeatureCustomizations(
-                              ...updateArgs,
-                           );
+                           if (isGroup) {
+                              window["test"][templateItem?.key] = updateArgs;
+                           } else {
+                              this.actions.updateTemplateFeatureCustomizations(
+                                 ...updateArgs,
+                              );
+                           }
                         },
                      );
                   };

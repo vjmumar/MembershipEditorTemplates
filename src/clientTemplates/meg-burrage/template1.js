@@ -183,6 +183,8 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "Home",
                            value: "Home",
+                           group: "menu-1",
+                           groupLabel: "Menu 1",
                         },
                         {
                            name: "Menu Link 1",
@@ -190,6 +192,7 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "https://example.com/image",
                            value: "https://img.freepik.com/free-vector/pastel-coloured-hand-painted-watercolour-background_1048-19244.jpg?semt=ais_hybrid&w=740&q=80",
+                           group: "menu-1",
                         },
                         {
                            name: "Menu Text 2",
@@ -197,6 +200,8 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "What's New",
                            value: "What's New",
+                           group: "menu-2",
+                           groupLabel: "Menu 2",
                         },
                         {
                            name: "Menu Link 2",
@@ -204,6 +209,7 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "https://example.com/image",
                            value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
+                           group: "menu-2",
                         },
                         {
                            name: "Menu Text 3",
@@ -211,6 +217,8 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "Favorites",
                            value: "Favorites",
+                           group: "menu-3",
+                           groupLabel: "Menu 3",
                         },
                         {
                            name: "Menu Link 3",
@@ -218,6 +226,7 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "https://example.com/image",
                            value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
+                           group: "menu-3",
                         },
                         {
                            name: "Menu Text 4",
@@ -225,6 +234,8 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "Announcements",
                            value: "Announcements",
+                           group: "menu-4",
+                           groupLabel: "Menu 4",
                         },
                         {
                            name: "Menu Link 4",
@@ -232,6 +243,7 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "https://example.com/image",
                            value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
+                           group: "menu-4",
                         },
                         {
                            name: "Menu Text 5",
@@ -239,6 +251,8 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "Pilates",
                            value: "Pilates",
+                           group: "menu-5",
+                           groupLabel: "Menu 5",
                         },
                         {
                            name: "Menu Link 5",
@@ -246,6 +260,7 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "https://example.com/image",
                            value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
+                           group: "menu-6",
                         },
                         {
                            name: "Menu Text 6",
@@ -253,6 +268,8 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "Contact",
                            value: "Contact",
+                           group: "menu-6",
+                           groupLabel: "Menu 6",
                         },
                         {
                            name: "Menu Link 6",
@@ -260,6 +277,7 @@ window.templateCustomizationSchema = {
                            type: "text",
                            placeholder: "https://example.com/image",
                            value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
+                           group: "menu-6",
                         },
                      ],
                      css: (customizations = []) => {

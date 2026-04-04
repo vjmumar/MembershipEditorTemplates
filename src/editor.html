@@ -2004,6 +2004,29 @@
             // Then we will generate the HTML for the Feature customization inputs
             const featuresHTML = templateItem?.features?.reduce((a, c) => {
                // First we will build the inputs for this specific feature's customizations
+               const groupedCustomizations = c.customizations.reduce((a,c) => {
+                  if (c.group) {
+                     if (c.groupLabel) {
+                        a.push({
+                           groupId: c.group,
+                           label: c.groupLabel,
+                           customizations: [c]
+                        })
+                     } else {
+                        a.forEach((el) => {
+                           if (el?.groupId) {
+                              el.customizations.push(c);
+                           }
+                        })
+                     }
+                  } else {
+                     a.push(c)
+                  }
+                  return a
+               },[]);
+
+               console.log(groupedCustomizations);
+
                const customizationHTML = c.customizations?.reduce((ac, cc) => {
                   const input = (() => {
                      return this?.widgets?.input(
@@ -3497,7 +3520,7 @@
             placeholder = "",
             onChange = () => {},
          ) => {
-            console.log(value)
+            console.log(value);
             // First we will create a function that will be responsible for showing and filtering the font options
             const showFontSelectOptions = (filterText = "") => {
                // We will retrieve the Google Fonts and process them along with the custom fonts

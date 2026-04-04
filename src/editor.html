@@ -2025,7 +2025,6 @@
                   return a;
                }, []);
 
-               console.log(groupedCustomizations)
                // Then we will build the inputs for this specific feature's customizations
                const customizationHTML = groupedCustomizations?.reduce((ac, cc) => {
                   // First we will create a function that generate the input of the customization
@@ -2083,8 +2082,11 @@
                      );
                      ac += `
                               <div class="editor-customizer-item__form__item__input__group__group" data-feature-group="${cc.groupId}">
-                                  <p class="editor-customizer-item__form__item__input__group__group__name">${cc.label}</p>
-                                  ${groupCustomizationsHTML}
+                                  <div class="editor-customizer-item__form__item__input__group__group__header" onclick="this.parentElement.classList.toggle('active')">
+                                    <p>${cc.label}</p>  
+                                    <i class="fa-solid fa-caret-down"></i>
+                                  </div>
+                                  <div class="editor-customizer-item__form__item__input__group__group__contents">${groupCustomizationsHTML}</div>
                               </div>
                           `;
                   } else {

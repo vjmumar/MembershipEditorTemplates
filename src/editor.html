@@ -2111,10 +2111,12 @@
                               }
                            })();
                            if (isGroup) {
-                              if (!window["test"][templateItem?.key]) {
+                              if (!window["test"]) {
                                  window["test"] = {
                                     [templateItem?.key]: updateArgs,
                                  };
+                              } else {
+                                 window["test"][templateItem?.key] = updateArgs
                               }
                            } else {
                               this.actions.updateTemplateFeatureCustomizations(

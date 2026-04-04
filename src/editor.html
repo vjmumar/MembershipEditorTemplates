@@ -2111,7 +2111,11 @@
                               }
                            })();
                            if (isGroup) {
-                              window["test"][templateItem?.key] = updateArgs;
+                              if (!window["test"][templateItem?.key]) {
+                                 window["test"] = {
+                                    [templateItem?.key]: updateArgs,
+                                 };
+                              }
                            } else {
                               this.actions.updateTemplateFeatureCustomizations(
                                  ...updateArgs,

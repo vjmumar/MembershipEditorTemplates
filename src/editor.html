@@ -2767,7 +2767,7 @@
             const activePageOnTemplate =
                previewIframeMembershipParser.activePageOnTemplate;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
-            console.log("lol")
+            console.log("lol", global, normal);
 
             let templateItem = (() => {
                if (global.name) {
@@ -2781,8 +2781,7 @@
                }
             })();
 
-                  console.log(templateItem)
-
+            console.log(templateItem);
 
             // Then we will generate the HTML for the Feature customization inputs
             const updateFeatureCustomizations = () => {

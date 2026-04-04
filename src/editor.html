@@ -2140,10 +2140,10 @@
                            <div class="editor-customizer-item__form__item" data-category-type="contents">
                                ${elementCustomizationHTML || formItemFallbackHTML}
                            </div>
-                           <div class="editor-customizer-item__form__item active" data-category-type="styles">
+                           <div class="editor-customizer-item__form__item ${openFeatureByKey ? "" : "active"}" data-category-type="styles">
                                ${cssCustomizationHtml || formItemFallbackHTML}
                            </div>
-                           <div class="editor-customizer-item__form__item" data-category-type="advance">
+                           <div class="editor-customizer-item__form__item ${openFeatureByKey ? "active" : ""}" data-category-type="advance">
                                ${featuresHTML || formItemFallbackHTML}
                            </div>
                        </div>
@@ -2898,7 +2898,7 @@
                                     cItem.elementSelector,
                                     true,
                                     global.name,
-                                    fItem.key
+                                    fItem.key,
                                  );
                               }
                            });

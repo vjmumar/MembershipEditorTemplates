@@ -2145,8 +2145,7 @@
                         "",
                      );
                      const saveButtonJs = `
-                       console.log(Object.values(window['${c.key}']));
-                       Object.values(window['${c.key}']).forEach((inp) => window.MembershipEditor.actions.updateTemplateCustomizations(...inp))
+                       Object.values(window['${c.key}']).forEach((inp) => window.MembershipEditor.actions.updateTemplateFeatureCustomizations(...inp))
                      `;
                      ac += `
                               <div class="editor-customizer-item__form__item__input__group__group" data-feature-group="${cc.groupId}">

@@ -2111,13 +2111,13 @@
                               }
                            })();
                            if (isGroup) {
-                              if (!window[featureKey]) {
+                              if (!window[c.key]) {
                                  window[featureKey] = {
                                     [`${customization?.type}-${customization?.property}`]:
                                        updateArgs,
                                  };
                               } else {
-                                 window[featureKey][
+                                 window[c.key][
                                     `${customization?.type}-${customization?.property}`
                                  ] = updateArgs;
                               }

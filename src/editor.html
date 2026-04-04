@@ -2778,7 +2778,6 @@
                            isTurnedOn = fItem.isTurnedOn;
                            fItem.customizations.forEach((fItemC) => {
                               if (fItemC.property === normal.customizationProperty) {
-                                 console.log(fItemC);
                                  fItemC.value = normal.value;
                               }
                            });
@@ -2786,16 +2785,6 @@
                      });
                   }
                });
-
-               // Finally we will re-sync the feature only if it is currently turned on
-               if (isTurnedOn) {
-                  previewIframeMembershipParser.actions.syncTemplateFeatureCustomizations(
-                     {
-                        featureKey: normal.featureKey,
-                        templateItemKey: normal.templateItemKey,
-                     },
-                  );
-               }
             }
 
             // Then if a global feature key is provided, we will iterate through the global settings to find and update the matching feature customization while checking if the feature is active
@@ -2807,12 +2796,22 @@
                         if (cItem.key === global.templateItemKey) {
                            cItem.features.forEach((fItem) => {
                               if (fItem.key === global.featureKey) {
-                                 console.log(fItem, "lool")
-                                 fItem.customizations.push({
-                                    name: "{{menu-text-7}}",
-                                    link: "{{menu-link-7}}",
-                                 });
-                                 // fItemC.incrementCustomization(c.customizations);
+                                 fItem.customizations.push(
+                                    {
+                                       name: "Menu Text 7",
+                                       property: "menu-text-7",
+                                       type: "text",
+                                       placeholder: "Contact",
+                                       value: "Contact",
+                                    },
+                                    {
+                                       name: "Menu Link 7",
+                                       property: "menu-link-7",
+                                       type: "text",
+                                       placeholder: "https://example.com/image",
+                                       value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
+                                    },
+                                 );
                               }
                            });
                         }

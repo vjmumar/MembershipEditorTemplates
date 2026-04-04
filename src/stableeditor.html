@@ -1,0 +1,3772 @@
+<style id="editor">
+   #app {
+      display: flex;
+   }
+
+   #app-container {
+      flex: 1;
+   }
+
+   [data-editable="true"] {
+      outline: 1px dashed rgb(7 0 255);
+      outline-offset: -1px;
+      cursor: pointer;
+   }
+
+   [data-editable="true"] iframe {
+      pointer-events: none;
+   }
+
+   [data-editable="true"]:hover {
+      outline-width: 2px;
+   }
+
+   .jscolor-wrap {
+      z-index: 9999999999 !important;
+   }
+
+   .tox-tinymce-aux {
+      z-index: 999999999999999 !important;
+   }
+
+   /* Editor */
+   .editor-customizer-sidebar {
+      background-color: #ffffff;
+   }
+
+   .editor-customizer-sidebar input[type="text"],
+   .editor-customizer-sidebar input[type="number"],
+   .editor-customizer-sidebar input[type="color"],
+   .editor-customizer-sidebar input[type="checkbox"],
+   .editor-customizer-sidebar select {
+      font-size: 14px;
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 100%;
+      outline: none;
+      text-align: left;
+      transition:
+         border-color 0.2s,
+         box-shadow 0.2s;
+   }
+
+   .editor-customizer-sidebar input::placeholder {
+      color: #999;
+      opacity: 1;
+      font-size: 12px;
+      text-align: left;
+   }
+
+   .editor-customizer-sidebar input[type="text"]:focus,
+   .editor-customizer-sidebar input[type="number"]:focus,
+   .editor-customizer-sidebar input[type="color"]:focus,
+   .editor-customizer-sidebar input[type="checkbox"]:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+   }
+
+   .editor-customizer-sidebar input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: #7c3aed;
+   }
+
+   .editor-customizer-sidebar input[type="color"] {
+      padding: 0;
+      width: 40px;
+      height: 32px;
+      cursor: pointer;
+   }
+
+   .editor-customizer-sidebar textarea {
+      width: 100%;
+      min-height: 140px;
+      padding: 10px;
+      font-size: 13px;
+      font-family: monospace;
+      line-height: 1.4;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #fafafa;
+      overflow: auto;
+      resize: vertical;
+   }
+
+   .editor-customizer-sidebar textarea::placeholder {
+      font-family: monospace;
+      opacity: 0.5;
+   }
+
+   /* Customizer */
+   .editor-customizer-sidebar {
+      width: 320px;
+      height: 100vh;
+      position: sticky;
+      display: none;
+      top: 0;
+      box-shadow: 1px 1px black;
+   }
+
+   .editor-customizer-sidebar.active {
+      display: block;
+   }
+
+   .editor-customizer-header {
+      display: flex;
+      align-items: center;
+      padding: 25px 15px;
+      background-color: white;
+      border-bottom: 1px solid #e5e7eb;
+      justify-content: space-between;
+      height: 40px;
+      position: sticky;
+      z-index: 9999;
+      top: 0;
+   }
+
+   .editor-customizer-category {
+      display: flex;
+      margin-bottom: 10px;
+   }
+
+   .editor-customizer-category__item {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f0f1f1;
+      font-size: 13px;
+      padding-block: 10px;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+   }
+
+   .editor-customizer-category__item.active {
+      border-color: #10b981;
+   }
+
+   .editor-customizer-header__global {
+      font-size: 20px;
+      color: black;
+      cursor: pointer;
+   }
+
+   .editor-customizer-header__text {
+      font-weight: 700;
+      font-size: 14px;
+      color: black;
+      text-align: center;
+   }
+
+   .editor-customizer-sidebar__content {
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+   }
+
+   .editor-customizer-form {
+      height: calc(100% - 40px);
+      overflow-y: auto;
+   }
+
+   .editor-customizer-item__form {
+      padding-inline: 10px;
+   }
+
+   .editor-customizer-item__form__item {
+      margin-bottom: 15px;
+      display: none;
+   }
+
+   .editor-customizer-item__form__item.active {
+      display: block;
+   }
+
+   .editor-customizer-item__form__item__title {
+      font-size: 13px;
+      margin-bottom: 10px;
+   }
+
+   .editor-customizer-item__form__item__input__group {
+      margin-bottom: 15px;
+   }
+
+   .editor-customizer-item__form__item__input__group__toggler {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 10px;
+      margin-top: 5px;
+   }
+
+   .editor-customizer-item__form__item__input__group__name__toggler {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 14px;
+      background-color: #f0f0f0;
+      padding: 5px;
+      border-radius: 3px;
+   }
+
+   .editor-customizer-item__form__item__input__group__name__toggler i {
+      font-size: 11px;
+   }
+
+   .editor-customizer-item__form__item__input__group.feature.active
+      .editor-customizer-item__form__item__input__group__name__toggler
+      i {
+      rotate: 90deg !important;
+   }
+
+   .editor-customizer-item__form__item__input__group__content {
+      display: none;
+   }
+
+   .editor-customizer-item__form__item__input__group.feature.active
+      .editor-customizer-item__form__item__input__group__content {
+      display: flex;
+      flex-direction: column;
+      padding-block: 10px;
+      border: 1px solid #f0f0f0;
+      padding-inline: 6px;
+      border-top: none;
+   }
+
+   /* Global */
+   .global-contents__header {
+      display: flex;
+      align-items: center;
+      padding: 25px 15px;
+      background-color: white;
+      border-bottom: 1px solid #e5e7eb;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      position: sticky;
+      top: 0;
+      height: 40px;
+      z-index: 9999;
+   }
+
+   .global-contents__header__mobile-switch {
+      font-size: 20px;
+      color: black;
+      cursor: pointer;
+   }
+
+   .global-contents__header__text {
+      font-weight: 700;
+      font-size: 14px;
+      color: black;
+   }
+
+   .global-contents__header__themes {
+      font-size: 20px;
+      color: violet;
+      cursor: pointer;
+   }
+
+   .global-contents__separator {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-inline: 10px;
+   }
+
+   .global-contents__separator::before,
+   .global-contents__separator::after {
+      content: "";
+      height: 0.5px;
+      flex: 1;
+      background-color: #364758;
+   }
+
+   .global-contents-item {
+      padding: 10px;
+      margin-bottom: 0px;
+      padding-bottom: 0;
+   }
+
+   .global-contents-item__toggler {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #8080801f;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+   }
+
+   .global-contents-item.active .global-contents-item__toggler {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+   }
+
+   .global-contents-item__toggler p {
+      font-size: 15px;
+   }
+
+   .global-contents-item__toggler i {
+      font-size: 11px;
+   }
+
+   .global-contents-item.active .global-contents-item__toggler i {
+      rotate: 90deg;
+   }
+
+   .global-contents-item__wrapper {
+      padding: 10px;
+      border: 1px solid #8080801f;
+      display: none;
+      border-radius: 5px;
+      border-top: 0;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+   }
+
+   .global-contents-item.active .global-contents-item__wrapper {
+      display: block;
+   }
+
+   .global-contents-item__item {
+      margin-bottom: 5px;
+   }
+
+   .global-contents-item__item__title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 14px;
+      background-color: #f0f0f0;
+      padding: 5px;
+      border-radius: 3px;
+   }
+
+   .global-contents-item__item.active .global-contents-item__item__title {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+   }
+
+   .global-contents-item__item.active .global-contents-item__item__title i {
+      rotate: 90deg;
+   }
+
+   .global-contents__additional-settings {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #8080801f;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 10px;
+   }
+
+   .global-contents__additional-settings p {
+      font-size: 15px;
+   }
+
+   .global-contents__additional-settings i {
+      font-size: 11px;
+   }
+
+   /* Additional Settings Header */
+   .additional-settings-header {
+      display: flex;
+      align-items: center;
+      padding: 25px 15px;
+      background-color: white;
+      border-bottom: 1px solid #e5e7eb;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      position: sticky;
+      top: 0;
+      height: 40px;
+      z-index: 9999;
+   }
+
+   .additional-settings-header__text {
+      font-weight: 700;
+      font-size: 14px;
+      color: black;
+   }
+
+   .additional-settings-header__icon {
+      font-size: 20px;
+      color: black;
+      cursor: pointer;
+   }
+
+   /* Advance settings */
+   .advance-settings__thumbnail-placeholder {
+      margin: 10px;
+   }
+
+   .advance-settings__thumbnail-placeholder__label {
+      font-size: 13px;
+      margin-bottom: 6px;
+   }
+
+   .advance-settings__thumbnail-placeholder__preview {
+      width: 100%;
+      height: 150px;
+      background-size: 100% 100%;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 6px;
+      background-position: center;
+   }
+
+   .advance-settings__thumbnail-placeholder__info {
+      font-size: 9px;
+      margin-bottom: 9px;
+   }
+
+   .advance-settings__customcss {
+      margin: 10px;
+   }
+
+   .advance-settings__customcss__label {
+      font-size: 13px;
+      margin-bottom: 6px;
+   }
+
+   .advance-settings__fonts {
+      margin: 10px;
+   }
+
+   .advance-settings__fonts__label {
+      font-size: 13px;
+      margin-bottom: 6px;
+   }
+
+   .advance-settings__fonts__info {
+      font-size: 9px;
+   }
+
+   /* Editable Pages */
+   .editable-pages__list {
+      display: flex;
+      flex-direction: column;
+      padding: 0 10px;
+      gap: 8px;
+   }
+
+   .editable-pages__list__item {
+      display: flex;
+      align-items: center;
+      background-color: #8080801f;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      gap: 10px;
+   }
+
+   .editable-pages__list__item input {
+   }
+
+   .editable-pages__list__item p {
+      font-size: 12px;
+   }
+
+   /* Sidebar Footer */
+   .editor-customizer-sidebar__footer {
+      display: flex;
+      border-top: 1px solid #e5e7eb;
+      padding: 16px;
+      gap: 8px;
+      flex-shrink: 0;
+      align-items: center;
+      height: 70px;
+   }
+
+   .editor-customizer-sidebar__footer__button {
+      flex: 1;
+      padding: 0 16px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 500;
+      min-height: 40px;
+      border-radius: 6px;
+   }
+
+   .editor-customizer-hide {
+      border: 1px solid #4b5563;
+      color: #4b5563;
+   }
+
+   .editor-customizer-exit {
+      border: 1px solid red;
+      color: red;
+   }
+
+   .editor-customizer-save {
+      background-color: #10b981;
+      color: white;
+   }
+
+   .editor-customizer-save::before {
+      content: "Save";
+   }
+
+   .editor-customizer-save.saving {
+      opacity: 0.5;
+      background-color: #10b981c0;
+      pointer-events: none;
+      cursor: none;
+   }
+
+   .editor-customizer-save::before.saving {
+      content: "Saving...";
+   }
+
+   /* Theme Selector */
+   .additional-settings-header {
+      display: flex;
+      align-items: center;
+      padding: 25px 15px;
+      background-color: white;
+      border-bottom: 1px solid #e5e7eb;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      position: sticky;
+      top: 0;
+      height: 40px;
+      z-index: 9999;
+   }
+
+   .additional-settings-header__text {
+      font-weight: 700;
+      font-size: 14px;
+      color: black;
+   }
+
+   .additional-settings-header__icon {
+      font-size: 20px;
+      color: black;
+      cursor: pointer;
+   }
+
+   .theme-selector__list {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 5px;
+      padding-inline: 10px;
+   }
+
+   .theme-selector__list__item__image {
+      width: 100%;
+      height: fit-content;
+      object-fit: contain;
+      min-height: 150px;
+   }
+
+   .theme-selector__list__item__content {
+      position: relative;
+   }
+
+   .theme-selector__list__item__title {
+      text-align: center;
+      font-size: 11px;
+      background-color: #10b98166;
+      padding-block: 5px;
+      color: black;
+      letter-spacing: 0.3px;
+   }
+
+   .theme-selector__list__item {
+      border-radius: 0px;
+      overflow: hidden;
+   }
+
+   .theme-selector__list__item__controller {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+   }
+
+   .theme-selector__list__item__controller__info {
+      font-size: 14px;
+      text-align: center;
+      padding-block: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background-color: #ededed;
+   }
+
+   .theme-selector__list__item__controller__button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 13px;
+      text-align: center;
+      width: 50%;
+      background-color: rgba(0, 0, 0, 0.07);
+      cursor: pointer;
+      flex: 1 1 0%;
+      padding-block: 7px;
+      text-decoration: none !important;
+   }
+
+   .theme-selector__list__item__controller__button.use {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 13px;
+      text-align: center;
+      width: 50%;
+      background-color: rgba(0, 0, 0, 0.07);
+      cursor: pointer;
+      flex: 1 1 0%;
+      padding-block: 7px;
+      text-decoration: none !important;
+      color: black !important;
+   }
+
+   /* Widget */
+   .widget-font-select {
+      max-width: 300px;
+      margin: 0 auto;
+      position: relative;
+   }
+
+   .widget-font-select__input {
+      width: 100%;
+      height: 38px;
+      padding: 0 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+      background: #ffffff;
+      transition:
+         border-color 0.2s,
+         box-shadow 0.2s;
+   }
+
+   .widget-font-select__input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+   }
+
+   .widget-font-select__input--has-selection::placeholder {
+      color: #374151;
+      font-weight: 500;
+   }
+
+   .widget-font-select__list {
+      list-style: none;
+      margin: 4px 0 0;
+      padding: 0;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      position: absolute;
+      width: 100%;
+      z-index: 9999999;
+      background-color: #ffffff;
+   }
+
+   .widget-font-select__list p {
+      font-size: 10px;
+      padding-inline: 7px;
+      padding-block: 5px;
+   }
+
+   .widget-font-select:focus-within .widget-font-select__list {
+      display: block;
+   }
+
+   .widget-font-select__item {
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+   }
+
+   .widget-font-select__item:hover {
+      background: #f3f4f6;
+   }
+
+   .widget-font-select__item--hidden {
+      display: none;
+   }
+
+   .widget-multi-input {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, auto);
+      gap: 8px;
+      width: 100%;
+      margin-top: 5px;
+      background: #fafafa;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #eee;
+   }
+
+   .widget-multi-input input[type="number"] {
+      padding: 8px 4px;
+      text-align: center !important;
+      font-family: monospace;
+      width: 100% !important;
+   }
+
+   .widget-multi-input input::placeholder {
+      text-align: center !important;
+   }
+
+   .widget-multi-input input:focus::placeholder {
+      color: transparent;
+   }
+
+   .widget-multi-input input[data-side="top"] {
+      grid-area: 1 / 2 / 2 / 3;
+   }
+
+   .widget-multi-input input[data-side="left"] {
+      grid-area: 2 / 1 / 3 / 2;
+   }
+
+   .widget-multi-input input[data-side="all"] {
+      grid-area: 2 / 2 / 3 / 3;
+      font-weight: bold;
+      color: #7c3aed;
+   }
+
+   .widget-multi-input input[data-side="right"] {
+      grid-area: 2 / 3 / 3 / 4;
+   }
+
+   .widget-multi-input input[data-side="bottom"] {
+      grid-area: 3 / 2 / 4 / 3;
+   }
+
+   @media (max-width: 700px) {
+      .editor-customizer-sidebar {
+         position: fixed;
+         width: 100%;
+         background-color: #ffffff;
+         z-index: 9999;
+      }
+
+      i {
+         font-family: var(--_fa-family) !important;
+      }
+   }
+</style>
+<!-- CSS for features -->
+<link
+   rel="stylesheet"
+   href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+/>
+<!-- JS for features -->
+<script src="
+    https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js
+    "></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script
+   src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js"
+   referrerpolicy="origin"
+></script>
+<script
+   src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.2/jscolor.min.js"
+   integrity="sha512-qFhMEJrjI50TwLDGZ7Oi0ksTSWnFOqTNXhlqqUgWnE65S23rWUtQOv+tMNEybkMYSXKgAc3eg/SzkX+qrtJT/g=="
+   crossorigin="anonymous"
+   referrerpolicy="no-referrer"
+></script>
+<script src="https://kit.fontawesome.com/d84a98056b.js"></script>
+<script defer>
+   class MembershipPreview {
+      constructor() {
+         this.isPreviewEditor = location.href.includes("isEditorPreview=true");
+         if (this.isPreviewEditor) {
+            this.initializers.init();
+         }
+      }
+
+      // Initializer module
+      initializers = {
+         // This method serves as the entry point for the application initialization
+         init: () => {
+            // First we will loop over all items from the activePageOnTemplate to prepare the DOM elements
+            window.MembershipParser.activePageOnTemplate.forEach((item) => {
+               document.querySelectorAll(item.elementSelector).forEach(($element) => {
+                  // First we will attach the required attributes so our editor can identify it
+                  $element?.setAttribute("data-editable", "true");
+                  $element?.setAttribute("data-editor-key", item.key);
+
+                  /**
+                   * Finally we will re-render the element by resetting its outerHTML.
+                   * This is needed because some SPA frameworks handle navigation without full page reloads.
+                   * By forcing a re-render, all existing event listeners on the element are removed,
+                   * preventing unintended navigation or stale event bindings.
+                   */
+                  if ($element) $element.outerHTML = $element.outerHTML;
+               });
+            });
+
+            // Then we will disable all anchor tags to prevent accidental navigation while editing
+            setTimeout(() => {
+               document.querySelectorAll("a").forEach((a) => {
+                  a.href = "javascript:void(0)";
+                  a.removeAttribute("download");
+               });
+            }, 1500);
+
+            /**
+             * Then we will initialize the global editor from the parent window,
+             * since this script is running inside an iframe and the editor lives outside of it
+             */
+            window.parent?.MembershipEditor?.initializers?.initializeGlobalContents();
+
+            // Finally we will attach the main click listener to detect interactions with editable elements
+            window.addEventListener("click", (e) => {
+               /**
+                * We will check if the clicked element or any of its parent elements
+                * contains the data-editable attribute.
+                * If it does, we will open the editor for that element.
+                */
+               const editableElement = e.target.closest("[data-editable]");
+               if (editableElement) {
+                  const key = editableElement.getAttribute("data-editor-key");
+                  window.parent.MembershipEditor.initializers.initializeElementEditor(
+                     key,
+                     `[data-editor-key='${key}']`,
+                  );
+               }
+            });
+         },
+      };
+
+      // Data module
+      data = {
+         // This helper method retrieve the editable pages name and url
+         getListOfEditablePages: async () => {
+            // First, we will retrieve the template schema inside the preview iframe
+            const templateSchema = window.templateCustomizationSchema;
+
+            // Then, we will request to retrieve the categories inside the course template
+            const categoriesWithPost = await window.CourseTemplate.data.fetchCategories();
+
+            // Then, we will retrieve the productId, valid category ID, and valid post ID
+            const categoryWithValidPosts = [...categoriesWithPost]
+               .filter((cat) => !cat.parentCategory)
+               .sort((a, b) => {
+                  const hasMedia = (cat) =>
+                     cat.posts?.some(
+                        (p) => p.video !== null || p.audio !== null || !!p.embedJson,
+                     );
+                  if (hasMedia(a) && !hasMedia(b)) return -1;
+                  if (!hasMedia(a) && hasMedia(b)) return 1;
+                  return (a.sequenceNo || 0) - (b.sequenceNo || 0);
+               })[0];
+            const productId = categoryWithValidPosts?.["productId"];
+            const categoryId = categoryWithValidPosts?.["id"];
+
+            const postId = (() => {
+               const rawPosts = categoryWithValidPosts?.posts || [];
+               return [...rawPosts].sort((a, b) => {
+                  const aHasMedia = a.video !== null || a.audio !== null || !!a.embedJson;
+                  const bHasMedia = b.video !== null || b.audio !== null || !!b.embedJson;
+                  if (aHasMedia && !bHasMedia) return -1;
+                  if (!aHasMedia && bHasMedia) return 1;
+                  return (a.sequenceNo || 0) - (b.sequenceNo || 0);
+               })[0]?.id;
+            })();
+
+            // Then, we will create a function that will hydrate the GHL URL regex
+            const hydrateGhlUrl = (urlRegex, pId, cId = null, poId = null) => {
+               const currentUrl = new URL(window.location.href);
+               let path = urlRegex.replace(/\\/g, "").replace(/\(\?.*\)\?\$$/, "");
+               if (pId) path = path.replace("[^/]+", pId);
+               if (cId) path = path.replace("[^/]+", cId);
+               if (poId) path = path.replace("[^/]+", poId);
+               const finalUrl = new URL(path, window.location.origin);
+               currentUrl.searchParams.forEach((value, key) => {
+                  finalUrl.searchParams.set(key, value);
+               });
+               return finalUrl.toString();
+            };
+
+            // Then, we will retrieve the pages from the template schema based on the window size
+            const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+            const pages = templateSchema[isDesktop ? "pages" : "mobilePages"];
+
+            // Then, we will format the pages and return them
+            const allPages = pages.map((page) => {
+               const fullUrl = hydrateGhlUrl(
+                  page.urlRegex,
+                  productId,
+                  categoryId,
+                  postId,
+               );
+               const isActive = (() => {
+                  const currentRegex = new RegExp(page.urlRegex);
+                  if (!currentRegex.test(location.pathname)) return false;
+                  const segmentCount = (regex) => (regex.match(/\//g) || []).length;
+                  const hasBetterMatch = pages.some((otherPage) => {
+                     if (otherPage.name === page.name) return false;
+                     const otherRegex = new RegExp(otherPage.urlRegex);
+                     return (
+                        otherRegex.test(location.pathname) &&
+                        segmentCount(otherPage.urlRegex) > segmentCount(page.urlRegex)
+                     );
+                  });
+                  return !hasBetterMatch;
+               })();
+               return { name: page.name, url: fullUrl, isActive };
+            });
+            return allPages;
+         },
+      };
+
+      // Utils module
+      utils = {
+         // This helper method retrieves the auth information
+         getAuth: () => {
+            const acatToken = $cookies.get("acat");
+            const catToken = $cookies.get("cat");
+            const data = JSON.parse(window.atob(acatToken || catToken) || "{}");
+            if (!("productId" in data)) {
+               const url = location.href
+                  ?.split("/products/")[1]
+                  .split("/")[0]
+                  .split("?")[0];
+               data.productId = url;
+            }
+            return data;
+         },
+      };
+   }
+
+   class MembershipParser {
+      constructor() {
+         // First, we define the available templates along with their metadata, such as IDs, preview images, and script sources.
+         this.templates = [];
+         this.activeTemplate = null;
+         this.activePageOnTemplate = null;
+         this.token = "";
+         this.isEdit = location.href.includes("membershipeditor=true");
+         this.isPreviewEditor = location.href.includes("isEditorPreview=true");
+         this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
+
+         // Then we will check if we are in edit mode, we stop the constructor here to prevent redundant initialization.
+         if (this.isEdit) return;
+
+         // Finally, we start the process of initializing the application and fetching the client's active templates.
+         (async () => {
+            // First, we retrieve the client's available templates from the remote source.
+            await fetch(
+               `https://membershipeditor.netlify.app/src/clientTemplates/${window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID}/templates.json`,
+            )
+               ?.then((e) => e.json())
+               ?.then((e) => {
+                  this.templates = e;
+               });
+
+            // Then, we retrieve any saved template changes from media storage and inject them into the document.
+            if (window?.savedTemplatesFileInfo?.url) {
+               await fetch(window?.savedTemplatesFileInfo?.url)
+                  ?.then((e) => e.text())
+                  ?.then((e) => {
+                     const script = document.createElement("script");
+                     script.innerHTML = e;
+                     document.body.append(script);
+                     return e;
+                  });
+            }
+
+            /**
+             * Then, we determine the currently active template by searching through the saved configurations.
+             * We dynamically load its corresponding script, falling back to the first available template
+             * if no active configuration is found.
+             */
+            const savedTemplates = window?.activeTemplatesConfig || [];
+            const activeTemplateFromSavedTemplates = savedTemplates.find(
+               (tem) => tem.isActive,
+            );
+            const currentTemplate = this.templates.find(
+               (tem) => tem.id === activeTemplateFromSavedTemplates?.id,
+            );
+            const script = document.createElement("script");
+            script.src = (
+               currentTemplate ? currentTemplate : this.templates[0]
+            )?.scriptLink;
+            document.body.append(script);
+
+            /**
+             * Finally, once the template script has finished loading, we initialize the active template configuration,
+             * resolve the default page editor state, and trigger the application initialization sequence.
+             */
+            script.onload = () => {
+               // First, we initialize the active template by merging saved data with the Master Schema where IDs match.
+               this.activeTemplate = (() => {
+                  if (activeTemplateFromSavedTemplates?.id) {
+                     if (
+                        activeTemplateFromSavedTemplates?.id ===
+                        window?.templateCustomizationSchema?.id
+                     ) {
+                        /**
+                         * First we will strip deprecated items from saved data before merging,
+                         * using the master schema as the source of truth for valid keys.
+                         */
+                        const stripDeprecated = (masterObj, savedObj) => {
+                           const result = window._.cloneDeep(savedObj);
+
+                           Object.keys(result).forEach((key) => {
+                              const masterVal = masterObj[key];
+                              const savedVal = result[key];
+
+                              if (Array.isArray(masterVal) && Array.isArray(savedVal)) {
+                                 result[key] = savedVal.filter((savedItem) =>
+                                    masterVal.some(
+                                       (masterItem) =>
+                                          savedItem.key === masterItem.key ||
+                                          savedItem.property === masterItem.property,
+                                    ),
+                                 );
+                              }
+                           });
+
+                           return result;
+                        };
+                        const cleanedSaved = window._.cloneDeep(
+                           activeTemplateFromSavedTemplates,
+                        );
+
+                        // Then we will strip deprecated items from each page's edit structure
+                        if (
+                           Array.isArray(cleanedSaved.pages) &&
+                           Array.isArray(window.templateCustomizationSchema.pages)
+                        ) {
+                           cleanedSaved.pages = cleanedSaved.pages.map((savedPage) => {
+                              const masterPage =
+                                 window.templateCustomizationSchema.pages.find(
+                                    (p) => p.key === savedPage.key,
+                                 );
+                              if (!masterPage) return savedPage;
+
+                              if (
+                                 Array.isArray(savedPage.editStructure) &&
+                                 Array.isArray(masterPage.editStructure)
+                              ) {
+                                 savedPage.editStructure = savedPage.editStructure.map(
+                                    (savedItem) => {
+                                       const masterItem = masterPage.editStructure.find(
+                                          (m) => m.key === savedItem.key,
+                                       );
+                                       if (!masterItem) return savedItem;
+                                       return stripDeprecated(masterItem, savedItem);
+                                    },
+                                 );
+                              }
+
+                              return savedPage;
+                           });
+                        }
+
+                        /**
+                         * Finally use _.mergeWith to ensure that structural fixes in our Master Schema
+                         * are applied while preserving the specific values entered by the user.
+                         */
+                        return window?._?.mergeWith(
+                           // We clone the schema to avoid mutating the "Master" object in memory.
+                           window._.cloneDeep(window?.templateCustomizationSchema),
+                           cleanedSaved,
+                           (objectValue, srcValue, key) => {
+                              // --- STEP 1: USER DATA OVERWRITES ---
+                              // Prioritize saved user data for specific visual properties.
+                              if (
+                                 [
+                                    "value",
+                                    "isTurnedOn",
+                                    "customCss",
+                                    "placeholderThumbnail",
+                                    "customFonts",
+                                    "googleFontsUsed",
+                                 ].includes(key)
+                              ) {
+                                 return srcValue;
+                              }
+
+                              // --- STEP 2: RECURSIVE DRILLING ---
+                              // If the property is an Object or Array, we return undefined to continue merging deeper.
+                              if (window._.isObject(objectValue)) {
+                                 return undefined;
+                              }
+
+                              // --- STEP 3: SCHEMA PROTECTION ---
+                              // For structural properties, we prioritize the Master Schema to ensure code updates take effect.
+                              return objectValue;
+                           },
+                        );
+                     } else {
+                        return window.templateCustomizationSchema;
+                     }
+                  } else {
+                     return window.templateCustomizationSchema;
+                  }
+               })();
+
+               // Then, we select the default page editor configuration based on the device type (Desktop or Mobile).
+               this.activePageOnTemplate =
+                  this.activeTemplate?.[
+                     this.isDesktop ? "pages" : "mobilePages"
+                  ][0]?.editor;
+
+               // Then we will sync the template customization schema to the global scope
+               window.templateCustomizationSchema = this.activeTemplate;
+
+               // Finally, we invoke the main application initializer.
+               this.initializers.init();
+            };
+
+            // Finally, we retrieve the authentication token by parsing the product data from the cookies.
+            this.token = this.utils.getAuth().tokenId;
+         })();
+      }
+
+      // Initializer module
+      initializers = {
+         // This method serves as the entry point for the application initialization
+         init: () => {
+            this.initializers.initSyncConfig();
+         },
+
+         // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution
+         initSyncConfig: () => {
+            // First we will retrieve the current URL to determine which page configuration should be applied
+            const url = window.location.href;
+
+            // Then we will sync the template's custom CSS so base styles are applied before other customizations
+            this.actions.syncTemplateCustomCss();
+
+            // Then we will sync the template's used google fonts
+            this.actions.syncTemplateGoogleFontsUsed();
+
+            // Finally we will iterate through the template pages to find the current view and process it
+            this.activeTemplate?.[this.isDesktop ? "pages" : "mobilePages"]?.forEach(
+               (page) => {
+                  /**
+                   * First we will create a RegExp instance using the page's URL pattern.
+                   * This allows us to support dynamic route matching instead of exact URL comparison.
+                   */
+                  const urlRegex = new RegExp(page?.urlRegex);
+
+                  /**
+                   * Finally we will check if the current URL matches the pattern.
+                   * If it does, we proceed with applying the corresponding page configuration.
+                   */
+                  if (urlRegex?.test(url)) {
+                     // First we will update the active page state with the editor configuration that matches the current URL
+                     this.activePageOnTemplate = page.editor;
+
+                     // Then we will invoke all synchronizers to apply CSS and element-level customizations for this page
+                     this.actions.syncTemplateCssCustomizations();
+                     this.actions.syncTemplateElementsCustomization();
+
+                     /**
+                      * Then we will delay feature customizations to ensure the DOM
+                      * and previous customizations are fully applied before executing
+                      */
+                     setTimeout(() => {
+                        this.actions.syncTemplateFeatureCustomizations(null, null, true);
+                     }, 5500);
+
+                     /**
+                      * Finally we will initialize the membership preview after a short delay.
+                      * This ensures all required elements and configurations are ready
+                      * before activating preview mode
+                      */
+                     setTimeout(() => {
+                        if (this.isPreviewEditor) {
+                           window.MembershipPreview = new MembershipPreview();
+                        }
+                     }, 2000);
+                  }
+               },
+            );
+         },
+      };
+
+      // Action module
+      actions = {
+         // This method applies the template's custom css
+         syncTemplateCustomCss: () => {
+            // First we will remove any previously rendered style tags
+            document
+               ?.querySelectorAll(".bm-template-custom-style")
+               ?.forEach((e) => e.remove());
+
+            // Then we will generate the Custom JS Style Tag
+            const customCssStyleTagHTML = `
+               <style class="bm-template-custom-style">${this.activeTemplate["customCss"]}</style>
+            `;
+
+            // Finally we will insert the fresh style tags with the updated CSS values
+            document.body.insertAdjacentHTML("beforeend", `${customCssStyleTagHTML}`);
+         },
+
+         // This method applies the template's Google Fonts used
+         syncTemplateGoogleFontsUsed: () => {
+            // First we will remove any previously rendered font style tags
+            document
+               ?.querySelectorAll(".bm-template-google-fonts-used")
+               ?.forEach((e) => e.remove());
+
+            // Then we will generate the Google Fonts used style HTML
+            const googleFontsUsed = this.activeTemplate["googleFontsUsed"]
+               ?.map(
+                  (f) =>
+                     `${f.replace(/ /g, "+")}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900`,
+               )
+               .join("&family=");
+            const googleFontsUsedStyleHTML = `
+               <style class="bm-template-google-fonts-used">
+                  @import url('https://fonts.googleapis.com/css2?family=${googleFontsUsed}&display=swap');
+               </style>
+            `;
+
+            // Finally we will insert the fresh style tag with the updated CSS values
+            document.body.insertAdjacentHTML("beforeend", `${googleFontsUsedStyleHTML}`);
+         },
+
+         // This method applies all CSS customizations from the activePageOnTemplate into the page
+         syncTemplateCssCustomizations: () => {
+            // First we will remove any previously rendered style tags
+            document?.querySelectorAll(".bm-template-style")?.forEach((e) => e.remove());
+
+            // Then we will generate the HTML strings for both the active page and global styles
+            const commonTemplateStyles = (() => {
+               return `
+                  <style class="bm-template-style">
+                  ${this.activePageOnTemplate.reduce((a, c) => {
+                     a += `
+                      ${c.elementSelector} {
+                      ${c.cssCustomizations.reduce((ac, cc) => {
+                         const important = cc?.important ? "!important" : "";
+                         if (cc.value) {
+                            ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
+                         }
+                         return ac;
+                      }, "")}
+                      }
+                      `;
+                     return a;
+                  }, "")}
+                  </style>
+               `;
+               return "";
+            })();
+            const globalTemplateStyles = (() => {
+               return `
+               <style class="bm-template-style">
+                  ${this.activeTemplate.global?.reduce((a, c) => {
+                     c.customizations?.forEach((gCustomizations) => {
+                        a += `
+                              ${gCustomizations?.elementSelector} {
+                                  ${gCustomizations?.cssCustomizations?.reduce(
+                                     (ac, cc) => {
+                                        if (cc.value) {
+                                           const important = cc?.important
+                                              ? "!important"
+                                              : "";
+                                           ac += `${cc.property}: ${cc.property === "background-image" ? `url(${cc.value})` : cc.value} ${important};`;
+                                        }
+                                        return ac;
+                                     },
+                                     "",
+                                  )}
+                              }
+                              `;
+                     });
+                     return a;
+                  }, "")}
+               </style>
+               `;
+            })();
+
+            // Finally we will insert the fresh style tags with the updated CSS values
+            document?.body?.insertAdjacentHTML(
+               "beforeend",
+               `${commonTemplateStyles}${globalTemplateStyles}`,
+            );
+         },
+
+         // This method syncs all element customizations to the actual DOM elements
+         syncTemplateElementsCustomization: () => {
+            /**
+             * First we will loop through the activePageOnTemplate because each template
+             * element may have its own customizations that need to be applied.
+             */
+            this.activePageOnTemplate.forEach((item) => {
+               if (item?.elementCustomizations?.length) {
+                  /**
+                   * We will apply each customization, either as an attribute update
+                   * or an HTML content update depending on its type.
+                   */
+                  item.elementCustomizations.forEach((elItem) => {
+                     if (elItem?.type === "attribute" && elItem?.value) {
+                        this.utils.whenElementReady(item.elementSelector, () => {
+                           document
+                              ?.querySelector(item.elementSelector)
+                              ?.setAttribute(elItem.target, elItem.value);
+                        });
+                     } else if (elItem.type === "html" && elItem.value) {
+                        this.utils.whenElementReady(item.elementSelector, () => {
+                           document.querySelector(item.elementSelector).innerHTML =
+                              elItem.value;
+                        });
+                     }
+                  });
+               }
+            });
+
+            /**
+             * Finally we will iterate through the global template settings to apply
+             * any shared element customizations to their respective targets.
+             */
+            this.activeTemplate.global.forEach((item) => {
+               item.customizations.forEach((cItem) => {
+                  if (cItem?.elementCustomizations?.length) {
+                     cItem.elementCustomizations.forEach((elementCustomizationI) => {
+                        if (
+                           elementCustomizationI?.type === "attribute" &&
+                           elementCustomizationI?.value
+                        ) {
+                           this.utils.whenElementReady(cItem.elementSelector, () => {
+                              document
+                                 ?.querySelector(cItem.elementSelector)
+                                 ?.setAttribute(
+                                    elementCustomizationI.target,
+                                    elementCustomizationI.value,
+                                 );
+                           });
+                        } else if (
+                           elementCustomizationI.type === "html" &&
+                           elementCustomizationI.value
+                        ) {
+                           this.utils.whenElementReady(cItem.elementSelector, () => {
+                              document.querySelector(cItem.elementSelector).innerHTML =
+                                 elementCustomizationI?.value;
+                           });
+                        }
+                     });
+                  }
+               });
+            });
+         },
+
+         // This method re-syncs a feature by re-inserting its CSS and JS
+         syncTemplateFeatureCustomizations: (
+            normal = { templateItemKey: "", featureKey: "" },
+            global = { name: "", templateItemKey: "", featureKey: "" },
+            forceSync = false,
+         ) => {
+            // First we will initialize placeholders for the items we need to find
+            let templateItem = null;
+            let featureItem = null;
+
+            // Then we will define a helper function to handle the actual DOM manipulation (Cleanup -> Removal -> Injection)
+            const syncFeature = (templateItemKey = "", featureKey = "") => {
+               // First we will run the cleanup script to reset any previous states before removing the feature
+               const scriptTagCleanUp = document.createElement("script");
+               scriptTagCleanUp.id = `${templateItemKey}-${featureKey}`;
+               scriptTagCleanUp.innerHTML = featureItem.cleanUpJs(
+                  featureItem.customizations,
+               );
+               document.body.append(scriptTagCleanUp);
+               setTimeout(() => {
+                  scriptTagCleanUp.remove();
+               }, 500);
+
+               // Then we will remove the existing feature style and script tags from the DOM
+               document
+                  .querySelector(`style[id = '${templateItemKey}-${featureKey}']`)
+                  ?.remove();
+               document
+                  .querySelector(`script[id = '${templateItemKey}-${featureKey}']`)
+                  ?.remove();
+
+               // Then we will re-insert the fresh style tag with the updated CSS
+               document.body.insertAdjacentHTML(
+                  "beforeend",
+                  `
+                     <style id="${templateItemKey}-${featureKey}">
+                         ${featureItem.css(featureItem.customizations)}
+                     </style>
+                  `,
+               );
+
+               // Finally we will re-insert the fresh script tag with the updated JavaScript
+               const scriptTag = document.createElement("script");
+               scriptTag.id = `${templateItemKey}-${featureKey}`;
+               scriptTag.innerHTML = featureItem.js(featureItem.customizations);
+               document.body.append(scriptTag);
+            };
+
+            // Then if a forced synchronization is requested, we will proceed to update all active features across the entire template
+            if (forceSync) {
+               // First we will iterate through the global configuration to identify and sync every feature found within the global customization settings
+               this.activeTemplate.global.forEach((e) => {
+                  e.customizations.forEach((eC) => {
+                     if (eC.features && eC.features?.length) {
+                        eC.features.forEach((fI) => {
+                           if (fI.isTurnedOn) {
+                              featureItem = fI;
+                              syncFeature(eC.key, fI.key);
+                           }
+                        });
+                     }
+                  });
+               });
+
+               // Then we will also iterate through the currently active page's elements to sync their specific features, completing the full refresh
+               this.activePageOnTemplate.forEach((e) => {
+                  if (e.features && e.features?.length) {
+                     e.features.forEach((fI) => {
+                        if (fI.isTurnedOn) {
+                           featureItem = fI;
+                           syncFeature(e.key, fI.key);
+                        }
+                     });
+                  }
+               });
+
+               // Finally we will return empty value to prevent the execution of the code below
+               return;
+            }
+
+            // Finally, depending on whether it is a global or normal update, we will determine the correct context and process the feature sync
+            if (!global.featureKey) {
+               // First, if it is a normal update, we will retrieve the template item and the specific feature directly from the active page configuration
+               templateItem = this.activePageOnTemplate.find(
+                  (item) => item.key === normal.templateItemKey,
+               );
+               featureItem = templateItem.features.find(
+                  (fI) => fI.key === normal.featureKey,
+               );
+
+               // Finally, we will invoke the helper to apply the changes to the DOM
+               syncFeature(normal.templateItemKey, normal.featureKey);
+            } else {
+               // First, otherwise if this is a global update, we will retrieve the target items from the global settings configuration
+               templateItem = this.activeTemplate.global
+                  .find((item) => item.name === global.name)
+                  .customizations.find((item) => item.key === global.templateItemKey);
+               featureItem = templateItem.features.find(
+                  (fI) => fI.key === global.featureKey,
+               );
+
+               // Finally, we will invoke the helper to apply the global changes to the DOM
+               syncFeature(global.templateItemKey, global.featureKey);
+            }
+         },
+      };
+
+      // Utils module
+      utils = {
+         whenElementReady: (
+            selector,
+            callback,
+            { timeoutMs = 7000, root = document.documentElement, once = true } = {},
+         ) => {
+            // First we will initialize our state variables to track the observation status
+            let done = false;
+            let observer = null;
+            let timeout = null;
+
+            // Then we will define the check function that verifies if the element exists and executes the callback
+            const apply = () => {
+               if (done) return;
+               const el = document.querySelector(selector);
+               if (!el) return false;
+               callback(el);
+               if (once) {
+                  done = true;
+                  observer?.disconnect();
+                  clearTimeout(timeout);
+               }
+               return true;
+            };
+
+            // Then will initialize the MutationObserver and start observing the root element for changes
+            observer = new MutationObserver(apply);
+            observer.observe(root, { childList: true, subtree: true });
+
+            // Then will also set a fallback timeout to stop observing if the element never appears
+            timeout = setTimeout(() => {
+               observer.disconnect();
+            }, timeoutMs);
+
+            // Then we will attempt an immediate check in case the element is already present in the DOM
+            apply();
+
+            // Finally return a cleanup function to allow the caller to cancel the observation manually
+            return () => {
+               done = true;
+               observer.disconnect();
+               clearTimeout(timeout);
+            };
+         },
+         // This helper method retrieves the auth information
+         getAuth: () => {
+            const acatToken = $cookies.get("acat");
+            const catToken = $cookies.get("cat");
+            const data = JSON.parse(window.atob(acatToken || catToken) || "{}");
+            if (!("productId" in data)) {
+               const url = location.href
+                  ?.split("/products/")[1]
+                  .split("/")[0]
+                  .split("?")[0];
+               data.productId = url;
+            }
+            return data;
+         },
+      };
+   }
+
+   class MembershipEditor {
+      constructor() {
+         this.isEdit = location.href.includes("membershipeditor=true");
+         this.isPreviewEditor = location.href.includes("isEditorPreview=true");
+         this.isPagePreview = sessionStorage?.is_preview === "true";
+         this.loadedGoogleFontsPreview = [];
+         this.$previewIframe = null;
+         this.$iframe = null;
+         this.isDesktop = true;
+         this.initializers.init();
+         this.token = this.utils.getAuth().tokenId;
+      }
+
+      // Initializer module
+      initializers = {
+         // This method serves as the entry point for initializing the application.
+         init: () => {
+            // First, check if the page is in preview mode; if not, exit the method.
+            if (!this.isPagePreview) return;
+
+            // Next, determine if we need to launch the full Editor or just the toggle widget.
+            if (this.isEdit) {
+               // First, retrieve the main app and app-container elements.
+               const $app = document.querySelector("#app");
+               const $appContainer = document.querySelector("#app-container");
+
+               // Then, generate and sanitize the URL for the preview.
+               const url = new URL(location.href);
+               url.searchParams.delete("isEditorPreview");
+               url.searchParams.delete("membershipeditor");
+               url.searchParams.append("isEditorPreview", "true");
+               const cleanUrl = url.toString();
+
+               // Then, clear the existing UI to make room for the iframe editor.
+               if ($appContainer) $appContainer.remove();
+
+               // Then, create an iframe to load the current page in edit mode and append it to the app.
+               this.$iframe = document.createElement("iframe");
+               this.$iframe.src = cleanUrl;
+               this.$iframe.id = "membership-editor-iframe-preview";
+               this.$iframe.style.cssText =
+                  "width:100%; height:100vh; border:none; display:block; margin-inline: auto";
+               $app.prepend(this.$iframe);
+
+               // Then we will set the body overflow to hidden
+               document.body.style.overflow = "hidden";
+
+               // Finally, wait for the iframe's internal DOM to be ready before firing the editor logic.
+               this.$iframe.onload = () => {
+                  /**
+                   * First we will check if the editor is already mounted in the current context.
+                   * This can happen when re-initializing (e.g. switching between desktop and mobile modes).
+                   */
+                  const isEditorAlreadyInserted =
+                     document.querySelector(".editor-customizer-sidebar") !== null;
+
+                  /**
+                   * Then we will decide which initializer to run:
+                   * - If the editor already exists, we call initializeEditor to re-sync and update the current state
+                   * - If not, we call initShowEditor to perform the full initialization flow
+                   */
+                  this.initializers?.[
+                     isEditorAlreadyInserted ? "initializeEditor" : "initShowEditor"
+                  ]();
+               };
+            } else {
+               // Fallback: If in preview but not in edit mode, show the floating toggle (if not already present).
+               if (!this.isPreviewEditor) {
+                  this.initializers.initFloatingWidgetToggler();
+               }
+            }
+         },
+
+         // This method is responsible for showing the floating widget that toggles the page into editing
+         initFloatingWidgetToggler: () => {
+            // First we will define the visual styles and HTML structure for the floating toggle button
+            const html = `
+                           <style>
+                           .editor-floating-toggler {
+                               position: fixed;
+                               bottom: 30px;
+                               right: 30px;
+                               width: 60px;
+                               height: 60px;
+                               background-color: white;
+                               border-radius: 50%;
+                               box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                               display: flex;
+                               align-items: center;
+                               justify-content: center;
+                               cursor: pointer;
+                               z-index: 2147483647;
+                               transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                               border: 2px solid black;
+                           }
+
+                           .editor-floating-toggler:hover {
+                               transform: scale(1.1) rotate(10deg);
+                               box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+                               background-color: black;
+                               border-color: black;
+                           }
+
+                           .editor-floating-toggler svg {
+                               width: 24px;
+                               height: 24px;
+                               color: black;
+                               stroke-width: 2px;
+                               pointer-events: none;
+                               transition: color 0.3s ease;
+                           }
+
+                           .editor-floating-toggler:hover svg {
+                               color: white;
+                           }
+                           </style>
+                           <div class="editor-floating-toggler">
+                               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                   <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                               </svg>
+                           </div>
+                       `;
+
+            // Then we will inject the floating widget into the document body
+            document.body.insertAdjacentHTML("beforeend", html);
+
+            // Finally we will attach a click listener to reload the page with the editor parameter enabled
+            setTimeout(() => {
+               document
+                  .querySelector(".editor-floating-toggler")
+                  .addEventListener("click", () => {
+                     const u = new URL(window.location);
+                     u.searchParams.set("membershipeditor", "true");
+                     location.href = u.toString();
+                  });
+            }, 500);
+         },
+
+         // This method will wait until the #app container exists before initializing the editor
+         initShowEditor: () => {
+            const interval = setInterval(() => {
+               const $container = document.querySelector("#app");
+               if ($container) {
+                  clearInterval(interval);
+                  this.initializers.initializeEditor();
+               }
+            }, 0);
+         },
+
+         initializeEditor: () => {
+            // First we will remove existing sidebar editor's
+            document.querySelector(".editor-customizer-sidebar")?.remove();
+
+            // Then, inject the customization sidebar HTML into the application container.
+            const sidebarHTML = `
+                <div class="editor-customizer-sidebar active">
+                    <div class="editor-customizer-sidebar__content">
+                        <div style="width: 100%; padding: 24px 16px;background: #f9f9f9;border-radius: 8px;border: 1px solid #eee;text-align: center;font-family: sans-serif;position: absolute;top: 0;height: 100%;z-index: 99999999;display: flex;flex-direction: column;align-items: center;">
+                           <div style="margin: 0 auto 16px auto; width: 24px; height: 24px; border: 3px solid #ddd; border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                           <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+                           <h3 style="margin: 0 0 8px 0; color: #000; font-size: 18px; font-weight: 600;">Please wait</h3>
+                           <p style="color: #444; font-size: 14px; line-height: 1.5; margin: 0;">
+                               Waiting for the configuration...
+                           </p>
+                        </div>
+                    </div>
+                    <div class="editor-customizer-sidebar__footer">
+                        <button class="editor-customizer-sidebar__footer__button editor-customizer-exit">Exit</button>
+                        <button class="editor-customizer-sidebar__footer__button editor-customizer-hide" onclick="this.closest('.editor-customizer-sidebar').classList.remove('active')">Hide</button>
+                        <button class="editor-customizer-sidebar__footer__button editor-customizer-save"></button>
+                    </div>
+                </div>
+            `;
+            document.querySelector("#app").insertAdjacentHTML("beforeend", sidebarHTML);
+
+            // Then, attach a click listener to the "Exit" button.
+            setTimeout(() => {
+               document
+                  .querySelector(".editor-customizer-exit")
+                  ?.addEventListener("click", () => {
+                     const shouldExit = confirm(
+                        "Any unsaved changes will be lost. Are you sure you want to leave?",
+                     );
+                     if (shouldExit) {
+                        const u = new URL(window.location);
+                        u.searchParams.delete("membershipeditor");
+                        location.href = u.toString();
+                     }
+                  });
+            }, 500);
+
+            // Finally, attach the event listener for the "Save" button.
+            setTimeout(() => {
+               document
+                  .querySelector(".editor-customizer-save")
+                  ?.addEventListener("click", async (e) => {
+                     e.target.classList.toggle("saving");
+                     await this.actions.saveEditsToProductsCustomJs();
+                     e.target.classList.toggle("saving");
+                  });
+            }, 500);
+         },
+
+         // This method builds and renders the customization sidebar for a specific selected element
+         initializeElementEditor: (
+            key = "",
+            selector = "",
+            isGlobal = false,
+            globalName = "",
+         ) => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will retrieve the element
+            const element = this.$iframe.contentDocument.querySelector(selector);
+
+            // Then we will retrieve the sidebar and its content container
+            const $sidebar = document.querySelector(".editor-customizer-sidebar");
+            const $sidebarContent = $sidebar.querySelector(
+               ".editor-customizer-sidebar__content",
+            );
+
+            // Then we will make sure the sidebar is visible to the user
+            $sidebar.classList.add("active");
+
+            // Then we will retrieve the specific template item data based on the clicked element's key or the global passed global name and key
+            let templateItem = (() => {
+               if (isGlobal && globalName) {
+                  return activeTemplate.global
+                     ?.find((item) => item.name === globalName)
+                     ?.customizations?.find((item) => item.key === key);
+               } else {
+                  return activePageOnTemplate.find((item) => item.key === key);
+               }
+            })();
+
+            // Then we will generate the HTML for the CSS customization inputs
+            const cssCustomizationHtml = templateItem.cssCustomizations.reduce((a, c) => {
+               const input = (() => {
+                  const propertyValue = (() => {
+                     const computedStyleValue = element
+                        ? this.$iframe?.contentWindow?.getComputedStyle(element)?.[
+                             c.property
+                          ]
+                        : "";
+                     return computedStyleValue?.replace(
+                        /^url\(["']?(.*)["']?\)$/,
+                        (match) => {
+                           return match.includes("url(")
+                              ? match.replace(/^url\(["']?|["']?\)$/g, "")
+                              : match;
+                        },
+                     );
+                  })();
+                  if (c.type === "multi") {
+                     return this?.widgets?.multiInput(
+                        templateItem.key,
+                        c?.property,
+                        c?.value || propertyValue,
+                        (updatedValue) => {
+                           const updateArgs = (() => {
+                              if (isGlobal && globalName) {
+                                 return [
+                                    {},
+                                    {
+                                       name: globalName,
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              } else {
+                                 return [
+                                    {
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              }
+                           })();
+                           this.actions.updateTemplateCustomizations(...updateArgs);
+                        },
+                     );
+                  } else if (c.type === "font") {
+                     return this?.widgets?.fontSelect(
+                        templateItem.key,
+                        c?.property,
+                        c?.value,
+                        c?.type,
+                        c?.placeholder || "",
+                        (updatedValue) => {
+                           const updateArgs = (() => {
+                              if (isGlobal && globalName) {
+                                 return [
+                                    {},
+                                    {
+                                       name: globalName,
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue?.name,
+                                    },
+                                 ];
+                              } else {
+                                 return [
+                                    {
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue?.name,
+                                    },
+                                 ];
+                              }
+                           })();
+                           this.actions.updateTemplateCustomizations(...updateArgs);
+                           if (updatedValue.type === "google") {
+                              this.actions.pushFontGoogleFontsUsed(updatedValue.name);
+                           }
+                        },
+                     );
+                  } else if (c.type === "select") {
+                     // First we will check if the type is either select or font, if font we will return the active tempaltes fonts else just the passed options
+                     return this?.widgets?.select(
+                        templateItem.key,
+                        c.property,
+                        c?.value || "",
+                        c.type,
+                        c?.placeholder || "",
+                        c.options,
+                        (updatedValue) => {
+                           const updateArgs = (() => {
+                              if (isGlobal && globalName) {
+                                 return [
+                                    {},
+                                    {
+                                       name: globalName,
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              } else {
+                                 return [
+                                    {
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              }
+                           })();
+                           this.actions.updateTemplateCustomizations(...updateArgs);
+                        },
+                     );
+                  } else {
+                     return this?.widgets?.input(
+                        templateItem.key,
+                        c.property,
+                        c?.value || propertyValue,
+                        c.type,
+                        c?.placeholder,
+                        (updatedValue) => {
+                           const updateArgs = (() => {
+                              if (isGlobal && globalName) {
+                                 return [
+                                    {},
+                                    {
+                                       name: globalName,
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              } else {
+                                 return [
+                                    {
+                                       key: templateItem.key,
+                                       property: c.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              }
+                           })();
+                           this.actions.updateTemplateCustomizations(...updateArgs);
+                        },
+                     );
+                  }
+               })();
+               a += `
+                       <div class="editor-customizer-item__form__item__input__group">
+                           <h3 class="editor-customizer-item__form__item__input__group__name">${c.name}</h3>
+                           ${input}
+                       </div>
+                   `;
+               return a;
+            }, "");
+
+            // Then we will generate the HTML for the Element customization inputs (attributes or inner HTML)
+            const elementCustomizationHTML = templateItem?.elementCustomizations?.reduce(
+               (a, c) => {
+                  const input = (() => {
+                     const value = (() => {
+                        let elementValue = "";
+                        if (c.type === "html") {
+                           const elementHTML = element?.innerHTML || "";
+                           elementValue = elementHTML;
+                        } else {
+                           const elementAttribute = element?.getAttribute(c?.target);
+                           elementValue = elementAttribute;
+                        }
+                        return c.value || elementValue;
+                     })();
+                     return this?.widgets?.input(
+                        templateItem.key,
+                        `${c?.type}-${c?.target}`,
+                        value,
+                        "text",
+                        c?.placeholder,
+                        (updatedValue) => {
+                           const updateArgs = (() => {
+                              if (isGlobal && globalName) {
+                                 return [
+                                    {},
+                                    {
+                                       name: globalName,
+                                       key: templateItem?.key,
+                                       type: c?.type,
+                                       target: c?.target,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              } else {
+                                 return [
+                                    {
+                                       key: templateItem?.key,
+                                       type: c?.type,
+                                       target: c?.target,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              }
+                           })();
+                           this.actions.updateTemplateElementCustomizations(
+                              ...updateArgs,
+                           );
+                        },
+                        c.type === "html",
+                     );
+                  })();
+                  a += `
+                           <div class="editor-customizer-item__form__item__input__group">
+                               <p class="editor-customizer-item__form__item__input__group__name">${c.name}</p>
+                               ${input}
+                           </div>
+                           `;
+                  return a;
+               },
+               "",
+            );
+
+            // Then we will generate the HTML for the Feature customization inputs
+            const featuresHTML = templateItem?.features?.reduce((a, c) => {
+               // First we will build the inputs for this specific feature's customizations
+               const customizationHTML = c.customizations?.reduce((ac, cc) => {
+                  const input = (() => {
+                     return this?.widgets?.input(
+                        templateItem.key,
+                        `${cc.type}-${cc.property}`,
+                        cc?.value,
+                        cc.type,
+                        cc?.placeholder,
+                        (updatedValue) => {
+                           const updateArgs = (() => {
+                              if (isGlobal && globalName) {
+                                 return [
+                                    {},
+                                    {
+                                       name: globalName,
+                                       templateItemKey: templateItem.key,
+                                       featureKey: c.key,
+                                       customizationProperty: cc.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              } else {
+                                 return [
+                                    {
+                                       templateItemKey: templateItem.key,
+                                       featureKey: c.key,
+                                       customizationProperty: cc.property,
+                                       value: updatedValue,
+                                    },
+                                 ];
+                              }
+                           })();
+                           this.actions.updateTemplateFeatureCustomizations(
+                              ...updateArgs,
+                           );
+                        },
+                     );
+                  })();
+                  ac += `
+                           <div class="editor-customizer-item__form__item__input__group">
+                               <p class="editor-customizer-item__form__item__input__group__name">${cc.name}</p>
+                               ${input}
+                           </div>
+                       `;
+                  return ac;
+               }, "");
+
+               // Then we will generate the inline js for toggling the feature
+               const toggleFeatureInlineJs = (() => {
+                  if (isGlobal && globalName) {
+                     return `window.MembershipEditor.actions.toggleTemplateFeature({},{name: '${globalName}',templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
+                  } else {
+                     return `window.MembershipEditor.actions.toggleTemplateFeature({templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
+                  }
+               })();
+
+               // Then we will append this feature (toggle + customizations) into the features HTML
+               a += `
+                       <div class="editor-customizer-item__form__item__input__group feature">
+                           <h3 class="editor-customizer-item__form__item__input__group__name__toggler" onClick="this.parentElement.classList.toggle('active')">
+                               ${c.name}
+                               <i class="fa-solid fa-angle-right"></i>
+                           </h3>
+                           <div class="editor-customizer-item__form__item__input__group__content">
+                               <div class="editor-customizer-item__form__item__input__group__toggler">
+                               <input
+                                   class="editor-customizer-item__form__item__input__group__input"
+                                   type="checkbox"
+                                   ${c.isTurnedOn ? "checked" : ""}
+                                   onInput="${toggleFeatureInlineJs}"
+                               />
+                               <p>Turn On Feature</p>
+                               </div>
+                               <div class="editor-customizer-item__form__item__input__group__customizations">${customizationHTML}</div>
+                           </div>
+                       </div>
+                   `;
+
+               // Finally we return the accumulator
+               return a;
+            }, "");
+
+            // Then we will generate the editor category tabs
+            const editorTabsHTML = (() => {
+               const categories = [
+                  {
+                     name: "Contents",
+                     templateItems: templateItem?.elementCustomizations,
+                  },
+                  {
+                     name: "Styles",
+                     templateItems: templateItem?.cssCustomizations,
+                  },
+                  {
+                     name: "Advance",
+                     templateItems: templateItem?.features,
+                  },
+               ];
+               const tabItems = categories.reduce((a, c) => {
+                  const js = `{ const $el = this; const $elParent = $el.parentElement; const $elContent = $elParent.parentElement; const $formItems = $elContent.querySelectorAll('.editor-customizer-item__form .editor-customizer-item__form__item', ); $elParent.querySelectorAll('p').forEach(($item,i) => { $item?.classList?.[$item === $el ? 'add' : 'remove']('active'); }); $formItems.forEach(($formItem) => { const category = $formItem.getAttribute('data-category-type'); $formItem?.classList?.[category === '${c.name.toLowerCase()}' ? 'add' : 'remove']('active'); });}`;
+                  a += `<p onclick="${js}" class="editor-customizer-category__item ${c.name === "Styles" ? "active" : ""}">${c.name}</p>`;
+                  return a;
+               }, "");
+               return `
+                       <div class="editor-customizer-category">
+                           ${tabItems}
+                       </div>
+                   `;
+            })();
+
+            // Then we will compile the entire form HTML by combining CSS, Element, and Feature sections
+            const formItemFallbackHTML = `<p style="font-size: 15px; font-style: normal; text-align: center;">- No Settings -</p>`;
+            const form = `
+                       <div class="editor-customizer-header">
+                           <i class="fa-solid fa-arrow-left editor-customizer-header__global" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
+                           <p class="editor-customizer-header__text">
+                               ${globalName ? `${globalName}<br/>` : ""}
+                               ${templateItem.label}
+                           </p>
+                           <div></div>
+                       </div>
+                       ${editorTabsHTML}
+                       <div class="editor-customizer-item__form">
+                           <div class="editor-customizer-item__form__item" data-category-type="contents">
+                               ${elementCustomizationHTML || formItemFallbackHTML}
+                           </div>
+                           <div class="editor-customizer-item__form__item active" data-category-type="styles">
+                               ${cssCustomizationHtml || formItemFallbackHTML}
+                           </div>
+                           <div class="editor-customizer-item__form__item" data-category-type="advance">
+                               ${featuresHTML || formItemFallbackHTML}
+                           </div>
+                       </div>
+                   `;
+
+            // Finally we will inject the generated form into the sidebar
+            $sidebarContent.innerHTML = form;
+         },
+
+         // This method will initialize the global contents in sidebar and render all the global elements
+         initializeGlobalContents: () => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser?.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser?.activeTemplate;
+
+            // Then we will retrieve the sidebar and its content container where we will inject the HTML
+            const $sidebar = document.querySelector(".editor-customizer-sidebar");
+            const $sidebarContent = $sidebar.querySelector(
+               ".editor-customizer-sidebar__content",
+            );
+
+            // Then we will generate the HTML structure by iterating through the global contents
+            const globalItemsHTML = activeTemplate?.global.reduce((a, c) => {
+               // First we will generate the elements of the current global item
+               const globalItemElements = c?.customizations?.reduce((ac, cc) => {
+                  // We will generate a clickable global contents item which will open the element editor in global mode
+                  ac += `
+                         <div class="global-contents-item__item" onclick="window.MembershipEditor.initializers.initializeElementEditor('${cc.key}','${cc.elementSelector}', true, '${c.name}')">
+                             <p class="global-contents-item__item__title">
+                                 ${cc.label}
+                                 <i class="fa-solid fa-angle-right"></i>
+                             </p>
+                         </div>
+                     `;
+
+                  // Finally we will return the accumulator
+                  return ac;
+               }, "");
+
+               // Finally we will push the current global item into accumulator
+               a += `
+                       <div class="global-contents-item" style="display: ${this.isDesktop || (!this.isDesktop && c.showOnMobileEditor) ? "block" : "none"}">
+                           <div class="global-contents-item__toggler" onClick="this.parentElement.classList.toggle('active')">
+                               <p>${c.name}</p>
+                               <i class="fa-solid fa-angle-right"></i>
+                           </div>
+                           <div class="global-contents-item__wrapper">${globalItemElements}</div>
+                       </div>
+                  `;
+               return a;
+            }, "");
+
+            // Finally we will render the fully generated global contents into the sidebar content area
+            $sidebarContent.innerHTML = `
+                   <div class="global-contents">
+                       <div class="global-contents__header">
+                           <i onclick="window.MembershipEditor.actions.switchEditoreMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
+                           <p class="global-contents__header__text">Global (Desktop/Mobile)</p>
+                           <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipEditor.initializers.initializeThemeSelector()"></i>
+                       </div>
+                       <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeListOfEditablePages()">
+                          <p>Switch Page</p>
+                          <i class="fa-solid fa-angle-right"></i>
+                       </div>
+                        <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeAdvanceSettings()">
+                           <p>Advance Settings</p>
+                           <i class="fa-solid fa-angle-right"></i>
+                        </div>
+                        <p class="global-contents__separator">Global Components</p>
+                       ${globalItemsHTML}
+                   </div>
+               `;
+         },
+
+         // This method will initialize the advance settings in sidebar
+         initializeAdvanceSettings: () => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will retrieve the sidebar and its content container where we will inject the HTML
+            const $sidebar = document.querySelector(".editor-customizer-sidebar");
+            const $sidebarContent = $sidebar.querySelector(
+               ".editor-customizer-sidebar__content",
+            );
+
+            // Then we will create the custom css html
+            const customCssHTML = (() => {
+               return `
+                  <div class="advance-settings__customcss">
+                     <p class="advance-settings__customcss__label">Custom Css</p>
+                     <textarea name="custom-css" oninput="window.MembershipEditor.actions.updateTemplateCustomCss(this.value || '')">${activeTemplate?.customCss || ""}</textarea>
+                  </div>
+               `;
+            })();
+
+            // Then we will create the custom fonts list html
+            const fontsListHTML = (() => {
+               return `
+                  <div class="advance-settings__fonts">
+                     <p class="advance-settings__fonts__label">Custom Fonts</p>
+                     <textarea name="customFonts" oninput="window.MembershipEditor.actions.updateTemplateCustomFonts(this.value || '')">${(activeTemplate?.customFonts || []).join(",\n")}</textarea>
+                     <p class="advance-settings__fonts__info">ⓘ Import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p>
+                  </div>
+               `;
+            })();
+
+            // Then we will create the updateTemplateThumbnailPlaceholder html
+            const templateThumbnailPlaceholderHTML = (() => {
+               return `
+                  <div class="advance-settings__thumbnail-placeholder">
+                     <p class="advance-settings__thumbnail-placeholder__label">Thumbnail Placeholder</p>
+                     <div style="background-image: url('${activeTemplate?.placeholderThumbnail || ""}')" class="advance-settings__thumbnail-placeholder__preview"></div>
+                     <input name="placeholder-thumbnail" type="text" oninput="window.MembershipEditor.actions.updateTemplateThumbnailPlaceholder(this.value || '')" value="${activeTemplate?.placeholderThumbnail || ""}" />
+                     <p class="advance-settings__thumbnail-placeholder__info">ⓘ Changes will be reflected after saving or refreshing the page</p>
+                   </div>
+               `;
+            })();
+
+            // Finally we will render the fully generated HTML into the sidebar content area
+            $sidebarContent.innerHTML = `
+                   <div class="theme-selector">
+                       <div class="additional-settings-header">
+                           <i class="fa-solid fa-arrow-left additional-settings-header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
+                           <p class="additional-settings-header__text">Advance Settings</p>
+                           <div></div>
+                       </div>
+                       ${templateThumbnailPlaceholderHTML}
+                       ${customCssHTML}
+                       ${fontsListHTML}
+                   </div>
+               `;
+         },
+
+         // This methid will intialize the page preview list selector
+         initializeListOfEditablePages: async () => {
+            // First we will retrieve the editable pages from membership preview getListOfEditablePages
+            const listOfEditablePages =
+               await this.$iframe.contentWindow?.MembershipPreview?.data?.getListOfEditablePages();
+
+            // Then we will retrieve the sidebar and its content container where we will inject the HTML
+            const $sidebar = document.querySelector(".editor-customizer-sidebar");
+            const $sidebarContent = $sidebar.querySelector(
+               ".editor-customizer-sidebar__content",
+            );
+
+            // Then we will generate the list of editable pages html
+            const listOfPagesHTML = listOfEditablePages.reduce((a, c) => {
+               const clickAction = `window.MembershipEditor.actions.switchPage('${c.url}')`;
+               a += `
+                  <div onclick="${c.isActive ? "" : clickAction}" class="editable-pages__list__item">
+                     <input ${c.isActive ? "checked" : ""} type="checkbox" style="pointer-events: none;" />
+                     <p>${c.name}</p>
+                  </div>
+               `;
+               return a;
+            }, "");
+
+            // Finally we will render the fully generated HTML into the sidebar content area
+            $sidebarContent.innerHTML = `
+                   <div class="editable-pages">
+                       <div class="additional-settings-header">
+                           <i class="fa-solid fa-arrow-left additional-settings-header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
+                           <p class="additional-settings-header__text">Switch Page</p>
+                           <div></div>
+                       </div>
+                       <div class="editable-pages__list">${listOfPagesHTML}</div>
+                   </div>
+               `;
+         },
+
+         // This method will initialize the theme selector sidebar
+         initializeThemeSelector: () => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const templates = previewIframeMembershipParser.templates;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will retrieve the sidebar and its content container where we will inject the HTML
+            const $sidebar = document.querySelector(".editor-customizer-sidebar");
+            const $sidebarContent = $sidebar.querySelector(
+               ".editor-customizer-sidebar__content",
+            );
+
+            // Then we will create the template list html
+            const themeHTML = (() => {
+               const itemHTML = templates.reduce((a, c) => {
+                  const controllerHTML = (() => {
+                     if (activeTemplate.id === c.id) {
+                        return `
+                               <div class="theme-selector__list__item__controller">
+                                   <p class="theme-selector__list__item__controller__info">Current</p>
+                               </div>
+                           `;
+                     } else {
+                        return `
+                           <div class="theme-selector__list__item__controller">
+                               <a href="#" onclick="window.MembershipEditor.actions.updateTemplateToProductsCustomJs('${c.id}', '.theme-selector__list')" class="theme-selector__list__item__controller__button">
+                                   <i class="fa-solid fa-check"></i>
+                               </a>
+                               <a href="${c.previewLink}" target="__blank" class="theme-selector__list__item__controller__button">
+                                   <i class="fa-solid fa-eye"></i>
+                               </a>
+                           </div>
+                           `;
+                     }
+                  })();
+                  a += `
+                       <div class="theme-selector__list__item">
+                           <div class="theme-selector__list__item__content">
+                               <img src="${c.imageUrl}" class="theme-selector__list__item__image" />
+                               ${controllerHTML}
+                           </div>
+                           <p class="theme-selector__list__item__title">${c.title}</p>
+                       </div>
+                       `;
+                  return a;
+               }, "");
+               return `<div class="theme-selector__list">${itemHTML}</div>`;
+            })();
+
+            // Finally we will render the fully generated HTML into the sidebar content area
+            $sidebarContent.innerHTML = `
+                   <div class="theme-selector">
+                       <div class="additional-settings-header">
+                           <i class="fa-solid fa-arrow-left additional-settings-header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
+                           <p class="additional-settings-header__text">Templates</p>
+                           <div></div>
+                       </div>
+                       ${themeHTML}
+                   </div>
+               `;
+         },
+      };
+
+      // Data module
+      data = {
+         getGoogleFonts: async () => {
+            const storageName = `google-fonts`;
+            const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+            if (Object.keys(previousData).length > 0) return previousData;
+            return await new Promise((resolved, reject) => {
+               const url = `https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAHS80BtgSVvvCpN8iEMvVyKcOBJCVOCSM`;
+               fetch(url, {
+                  headers: {
+                     accept: "application/json",
+                  },
+                  method: "GET",
+               })
+                  .then((e) => e.json())
+                  .then((e) => {
+                     resolved(e);
+                     sessionStorage.setItem(storageName, JSON.stringify(e));
+                  });
+            });
+         },
+      };
+
+      // Action module
+      actions = {
+         // This method handles enabling/disabling a feature
+         toggleTemplateFeature: (
+            normal = {
+               templateItemKey: "",
+               featureKey: "",
+               isTurnedOn: false,
+            },
+            global = {
+               name: "",
+               templateItemKey: "",
+               featureKey: "",
+               isTurnedOn: false,
+            },
+         ) => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will initialize placeholders for the items we need to find
+            let templateItem = null;
+            let featureItem = null;
+
+            // Then we will create a  helper function handles the actual DOM manipulation (CSS/JS injection)
+            const toggleFeature = (
+               isTurnedOn = false,
+               templateItemKey = "",
+               featureKey = "",
+            ) => {
+               if (isTurnedOn) {
+                  // First we will insert the feature's styles
+                  this.$iframe.contentDocument.body.insertAdjacentHTML(
+                     "beforeend",
+                     `
+                           <style id="${templateItemKey}-${featureKey}">
+                               ${featureItem.css(featureItem.customizations)}
+                           </style>
+                       `,
+                  );
+
+                  // Finally we will insert and execute the feature's JavaScript
+                  const scriptTag = this.$iframe.contentDocument.createElement("script");
+                  scriptTag.id = `${templateItemKey}-${featureKey}`;
+                  scriptTag.innerHTML = featureItem.js(featureItem.customizations);
+                  this.$iframe.contentDocument.body.append(scriptTag);
+               } else {
+                  // First we will remove the previous styles and script tags
+                  this.$iframe.contentDocument
+                     .querySelector(`style[id = '${templateItemKey}-${featureKey}']`)
+                     ?.remove();
+                  this.$iframe.contentDocument
+                     .querySelector(`script[id = '${templateItemKey}-${featureKey}']`)
+                     ?.remove();
+
+                  // Finally we will run the cleanup script to reset any side effects
+                  const scriptTag = this.$iframe.contentDocument.createElement("script");
+                  scriptTag.id = `${templateItemKey}-${featureKey}`;
+                  scriptTag.innerHTML = featureItem.cleanUpJs(featureItem.customizations);
+                  this.$iframe.contentDocument.body.append(scriptTag);
+                  setTimeout(() => {
+                     scriptTag.remove();
+                  }, 500);
+               }
+            };
+
+            // Finally depends if it is a global or normal update we will process the feature toggle accordingly
+            if (!global.featureKey) {
+               // First if it is a normal update, we will retrieve the template item and the specific feature from the active page
+               templateItem = activePageOnTemplate.find(
+                  (item) => item.key === normal.templateItemKey,
+               );
+               featureItem = templateItem.features.find(
+                  (fI) => fI.key === normal.featureKey,
+               );
+
+               // Then we will update the feature's isTurnedOn state in the data structure
+               activePageOnTemplate.forEach((item) => {
+                  if (item.key === normal.templateItemKey) {
+                     item.features.forEach((fI) => {
+                        if (fI.key === normal.featureKey) {
+                           fI.isTurnedOn = normal.isTurnedOn;
+                        }
+                     });
+                  }
+               });
+
+               // Finally we will invoke the helper to apply the changes to the DOM
+               toggleFeature(
+                  normal.isTurnedOn,
+                  normal.templateItemKey,
+                  normal.featureKey,
+               );
+            } else {
+               // First otherwise if this is a global update, we will retrieve the items from the global settings
+               templateItem = activeTemplate.global
+                  .find((item) => item.name === global.name)
+                  .customizations.find((item) => item.key === global.templateItemKey);
+               featureItem = templateItem.features.find(
+                  (fI) => fI.key === global.featureKey,
+               );
+
+               // Then we will update the feature's isTurnedOn state in the global data structure
+               activeTemplate.global.forEach((item) => {
+                  if (item.name === global.name) {
+                     item.customizations.forEach((cItem) => {
+                        if (cItem.key === global.templateItemKey) {
+                           cItem.features.forEach((fI) => {
+                              if (fI.key === global.featureKey) {
+                                 fI.isTurnedOn = global.isTurnedOn;
+                              }
+                           });
+                        }
+                     });
+                  }
+               });
+
+               // Finally we will invoke the helper to apply the global changes to the DOM
+               toggleFeature(
+                  global.isTurnedOn,
+                  global.templateItemKey,
+                  global.featureKey,
+               );
+            }
+         },
+
+         // This method updates the activePageOnTemplate's CSS customization values
+         updateTemplateCustomizations: (
+            normal = { key: "", property: "", value: "" },
+            global = { name: "", key: "", property: "", value: "" },
+         ) => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then if a normal key is provided, we will find the specific item on the active page and update its CSS value
+            if (normal?.key) {
+               activePageOnTemplate.forEach((item) => {
+                  if (item.key === normal?.key) {
+                     item.cssCustomizations.forEach((cssItem) => {
+                        if (cssItem.property === normal?.property) {
+                           cssItem.value = normal?.value;
+                        }
+                     });
+                  }
+               });
+            }
+
+            // Then if a global key is provided, we will iterate through the global settings to find and update the matching CSS property
+            if (global.name) {
+               activeTemplate.global.forEach((item) => {
+                  if (item.name === global.name) {
+                     item.customizations.forEach((itemCustomization) => {
+                        if (itemCustomization.key === global.key) {
+                           itemCustomization.cssCustomizations.forEach((cssItem) => {
+                              if (cssItem.property === global?.property) {
+                                 cssItem.value = global?.value;
+                              }
+                           });
+                        }
+                     });
+                  }
+               });
+            }
+
+            // Finally we will sync the updated CSS values with the live preview
+            previewIframeMembershipParser.actions.syncTemplateCssCustomizations();
+         },
+
+         // This method updates a specific customization for the activePageOnTemplate's element
+         updateTemplateElementCustomizations: (
+            normal = { key: "", type: "attribute", target: "", value: "" },
+            global = {
+               name: "",
+               key: "",
+               type: "attribute",
+               target: "",
+               value: "",
+            },
+         ) => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            /**
+             * Then we will locate the element customization on the active page by matching:
+             * - the element key
+             * - the customization type (attribute/html)
+             * - the customization target (attr name)
+             * When found, we will update its value
+             */
+            if (normal.key) {
+               activePageOnTemplate.forEach((item) => {
+                  if (item.key === normal.key) {
+                     item.elementCustomizations.forEach((item) => {
+                        if (item.type === normal.type && item.target === normal.target) {
+                           item.value = normal.value;
+                        }
+                     });
+                  }
+               });
+            }
+
+            /**
+             * Then if a global key is provided, we will traverse the global settings to match:
+             * - the global group name
+             * - the element key
+             * - the customization type and target
+             * When found, we will update its value
+             */
+            if (global.key) {
+               activeTemplate.global.forEach((item) => {
+                  if (item.name === global.name) {
+                     item.customizations.forEach((customizationItem) => {
+                        if (customizationItem.key === global.key) {
+                           customizationItem.elementCustomizations.forEach(
+                              (elementCustomizationI) => {
+                                 if (
+                                    elementCustomizationI.type === global.type &&
+                                    elementCustomizationI.target === global.target
+                                 ) {
+                                    elementCustomizationI.value = global.value;
+                                 }
+                              },
+                           );
+                        }
+                     });
+                  }
+               });
+            }
+
+            /**
+             * Finally we will sync the updated customizations so the UI and preview
+             * will reflect the new state
+             */
+            previewIframeMembershipParser.actions.syncTemplateElementsCustomization();
+         },
+
+         // This method updates a specific feature customization
+         updateTemplateFeatureCustomizations: (
+            normal = {
+               templateItemKey: "",
+               featureKey: "",
+               customizationProperty: "",
+               value: "",
+            },
+            global = {
+               name: "",
+               templateItemKey: "",
+               featureKey: "",
+               customizationProperty: "",
+               value: "",
+            },
+         ) => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then if a normal feature key is provided, we will traverse the active page to find and update the specific feature customization while checking if the feature is active
+            if (normal.featureKey) {
+               let isTurnedOn = false;
+               activePageOnTemplate.forEach((item) => {
+                  if (item.key === normal.templateItemKey) {
+                     item.features.forEach((fItem) => {
+                        if (fItem.key === normal.featureKey) {
+                           isTurnedOn = fItem.isTurnedOn;
+                           fItem.customizations.forEach((fItemC) => {
+                              if (fItemC.property === normal.customizationProperty) {
+                                 fItemC.value = normal.value;
+                              }
+                           });
+                        }
+                     });
+                  }
+               });
+
+               // Finally we will re-sync the feature only if it is currently turned on
+               if (isTurnedOn) {
+                  previewIframeMembershipParser.actions.syncTemplateFeatureCustomizations(
+                     {
+                        featureKey: normal.featureKey,
+                        templateItemKey: normal.templateItemKey,
+                     },
+                  );
+               }
+            }
+
+            // Then if a global feature key is provided, we will iterate through the global settings to find and update the matching feature customization while checking if the feature is active
+            if (global.featureKey) {
+               let isTurnedOn = false;
+               activeTemplate.global.forEach((item) => {
+                  if (item.name === global.name) {
+                     item.customizations.forEach((cItem) => {
+                        if (cItem.key === global.templateItemKey) {
+                           cItem.features.forEach((fItem) => {
+                              if (fItem.key === global.featureKey) {
+                                 fItem.customizations.forEach((fcItem) => {
+                                    if (
+                                       fcItem.property === global.customizationProperty
+                                    ) {
+                                       isTurnedOn = fItem.isTurnedOn;
+                                       fcItem.value = global.value;
+                                    }
+                                 });
+                              }
+                           });
+                        }
+                     });
+                  }
+               });
+
+               // Finally we will re-sync the global feature only if it is currently turned on
+               if (isTurnedOn) {
+                  previewIframeMembershipParser.actions.syncTemplateFeatureCustomizations(
+                     {},
+                     {
+                        name: global.name,
+                        featureKey: global.featureKey,
+                        templateItemKey: global.templateItemKey,
+                     },
+                  );
+               }
+            }
+         },
+
+         // This method updates the template's custom css
+         updateTemplateCustomCss: (customCss = "") => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // First we will update the active template's custom css
+            activeTemplate["customCss"] = customCss;
+
+            // Finally we will sync the updated custom CSS value with the live preview
+            previewIframeMembershipParser.actions.syncTemplateCustomCss();
+         },
+
+         // This method updates the template's fonts
+         updateTemplateCustomFonts: (stringedFonts = "") => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // First Split by comma and trim whitespace from each name
+            const formattedFontsToArray = stringedFonts
+               ?.split(",")
+               ?.map((font) => font.trim())
+               ?.filter((font) => font.length > 0);
+
+            // Finally, update the active template custom fonts with the clean array
+            activeTemplate.customFonts = formattedFontsToArray;
+         },
+
+         // This method updates the template's placeholderThumbnail
+         updateTemplateThumbnailPlaceholder: (newThumbnail = "") => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will update the background image url of the thumbnail placeholder previewer
+            document.querySelector(
+               ".advance-settings__thumbnail-placeholder__preview",
+            ).style.backgroundImage = `url(${newThumbnail})`;
+
+            // Finally, update the active template placeholderThumbnail
+            activeTemplate.placeholderThumbnail = newThumbnail;
+         },
+
+         // This method pushes a new font into the template's googleFontsUsed
+         pushFontGoogleFontsUsed: (fontName = "") => {
+            // First we will retrieve the preview iframe MembershipParser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+            const activeTemplateGoogleFontsUsed = activeTemplate.googleFontsUsed;
+
+            // Then we will check if the passed font name already exists, if it does then we will not proceed
+            if (activeTemplateGoogleFontsUsed.includes(fontName?.trim())) return;
+
+            // Then we will push the passed font name into activeTemplateGoogleFontsUsed
+            activeTemplateGoogleFontsUsed.push(fontName?.trim());
+
+            // Finally we will sync the template's Google Fonts used
+            previewIframeMembershipParser.actions.syncTemplateGoogleFontsUsed();
+         },
+
+         // This method is responsible for saving the user's edits inside the current product custom js in ghl
+         saveEditsToProductsCustomJs: async (seamlessUpdate = false) => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+            const activeTemplatesConfig =
+               this.$iframe.contentWindow.activeTemplatesConfig;
+
+            // Then we will retrieve the authentication token and extract the location and product IDs from the URL
+            const locationId = this.utils.getAuth()?.locationId;
+            const productId = this.utils.getAuth()?.productId;
+            const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
+
+            // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
+            if (this.token) {
+               try {
+                  // First we will create a variable where we will store the updated window.activeTemplatesConfig
+                  let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
+
+                  // Then, we reset the active state for all templates in the global configuration
+                  updatedActiveTemplatesConfig.forEach((tem) => {
+                     tem.isActive = false;
+                  });
+
+                  // Then we will set the current active template as active
+                  activeTemplate.isActive = true;
+
+                  // Then we will filter out the old version of the template from the array and push the newly updated active template
+                  updatedActiveTemplatesConfig = updatedActiveTemplatesConfig.filter(
+                     (tem) => tem.id !== activeTemplate.id,
+                  );
+                  updatedActiveTemplatesConfig.push(activeTemplate);
+
+                  /**
+                   * Then, we stringify the entire template configuration array and apply a replacer function
+                   * to convert executable functions into strings, allowing them to be safely stored in the database.
+                   */
+                  const stringifiedTemplateData = JSON.stringify(
+                     updatedActiveTemplatesConfig,
+                     (key, value) => {
+                        if (typeof value === "function") {
+                           return value.toString();
+                        }
+                        return value;
+                     },
+                  );
+
+                  const fileData = await this.actions.uploadTextToGHL(
+                     `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
+                     `${productId}.txt`,
+                  );
+                  if (!fileData.url) {
+                     throw "error";
+                     return;
+                  }
+                  this.$iframe.contentWindow.savedTemplatesFileInfo = fileData;
+
+                  /**
+                   * Then, we attempt to update the product configuration via a PUT request, injecting a rehydration
+                   * script into the custom JS field that will revive our stringified functions back into executable code upon page load.
+                   */
+                  await fetch(url, {
+                     method: "PUT",
+                     headers: {
+                        "authority": "services.leadconnectorhq.com",
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.9",
+                        "authorization": `Bearer ${this.token}`,
+                        "content-type": "application/json",
+                        "origin": "https://backend.memberships.apisystem.tech",
+                        "referer": "https://backend.memberships.apisystem.tech/",
+                        "source": "WEB_USER",
+                        "sourceid": locationId,
+                        "version": "2021-07-28",
+                     },
+                     body: JSON.stringify({
+                        customJs: `window.savedTemplatesFileInfo = ${JSON.stringify(fileData)}`,
+                     }),
+                     redirect: "follow",
+                  });
+
+                  // Then we will reload the preview iframe
+                  this.$iframe.src = this.$iframe.src;
+
+                  /**
+                   * Finally, we provide visual confirmation to the user that their changes have been saved successfully,
+                   * or we catch any errors to provide a helpful failure message.
+                   */
+                  if (!seamlessUpdate) {
+                     alert("✅ Your current changes for this page have been saved.");
+                  }
+               } catch (err) {
+                  alert(
+                     "❌ Oops! Something went wrong while saving. Try refreshing the page or contact support.",
+                  );
+                  console.error(err);
+               }
+            } else {
+               alert("❌ Invalid token. Please refresh the page or contact support.");
+            }
+         },
+
+         // This method is responsible for updating the user's selected theme inside the current product custom js in ghl
+         updateTemplateToProductsCustomJs: async (
+            templateId = "",
+            selectorToToggle = "",
+         ) => {
+            // First we will confirm the user's intent to switch template
+            if (
+               !confirm(
+                  "Do you want to proceed? Please save your changes before switching templates to avoid losing them.",
+               )
+            )
+               return;
+
+            // Then we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+            const templates = previewIframeMembershipParser.templates;
+            const activeTemplatesConfig =
+               this.$iframe.contentWindow.activeTemplatesConfig;
+
+            // Then we will retrieve the authentication token and extract the location and product IDs from the URL
+            const locationId = this.utils.getAuth()?.locationId;
+            const productId = this.utils.getAuth().productId;
+
+            // Then we will build the product service endpoint used to persist the selected template into the product custom JS
+            const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
+
+            // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
+            if (this.token) {
+               try {
+                  // First we will save the current changes of the current template
+                  await this.actions.saveEditsToProductsCustomJs(true);
+
+                  // Then we will toggle the selector to disabled state
+                  document.querySelector(selectorToToggle).style.cssText =
+                     "opacity: .5; pointer-events: none;";
+
+                  // Then we will locate the selected template metadata based on the provided template id
+                  const selectedTemplate = templates.find((e) => e.id === templateId);
+
+                  // Then we will create a variable where we will store the updated window?.activeTemplatesConfig
+                  let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
+
+                  // Then, we reset the active state for all templates in the global configuration
+                  updatedActiveTemplatesConfig?.forEach((tem) => {
+                     tem.isActive = false;
+                  });
+
+                  // Then we will check if it exist inside the saved templates
+                  const isExist = updatedActiveTemplatesConfig?.find(
+                     (tem) => tem.id === templateId,
+                  );
+
+                  /**
+                   * Then, depending on whether the template already exists in user's saved configurations,
+                   * we will either initialize a new entry with empty defaults or mark the existing
+                   * template as the active selection.
+                   */
+                  if (!isExist) {
+                     updatedActiveTemplatesConfig.push({
+                        id: selectedTemplate.id,
+                        isActive: true,
+                        ...selectedTemplate,
+                     });
+                  } else {
+                     updatedActiveTemplatesConfig.forEach((tem) => {
+                        if (tem.id === templateId) {
+                           tem.isActive = true;
+                        }
+                     });
+                  }
+
+                  // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
+                  const stringifiedTemplateData = JSON.stringify(
+                     updatedActiveTemplatesConfig,
+                     (key, value) => {
+                        if (typeof value === "function") {
+                           return value?.toString();
+                        }
+                        return value;
+                     },
+                  );
+
+                  const fileData = await this.actions.uploadTextToGHL(
+                     `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
+                     `${productId}.txt`,
+                  );
+                  this.$iframe.contentWindow.savedTemplatesFileInfo = fileData;
+
+                  // Then we will attempt to update the product configuration by sending a PUT request with a rehydration script embedded in customJs
+                  await fetch(url, {
+                     method: "PUT",
+                     headers: {
+                        "authority": "services.leadconnectorhq.com",
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.9",
+                        "authorization": `Bearer ${this.token}`,
+                        "content-type": "application/json",
+                        "origin": "https://backend.memberships.apisystem.tech",
+                        "referer": "https://backend.memberships.apisystem.tech/",
+                        "source": "WEB_USER",
+                        "sourceid": locationId,
+                        "version": "2021-07-28",
+                     },
+                     body: JSON.stringify({
+                        customJs: `window.savedTemplatesFileInfo = ${JSON.stringify(fileData)}`,
+                     }),
+                     redirect: "follow",
+                  });
+
+                  // Finally we will show a success message and reload the preview iframe
+                  alert("✅ Done! You’ve switched to a new template.");
+                  this.$iframe.src = this.$iframe.src;
+               } catch (err) {
+                  // Finally we will notify the user and log the error for debugging if saving fails for any reason
+                  alert(
+                     "❌ Oops! Something went wrong while saving. Try refreshing the page or contact support.",
+                  );
+                  console.error(err);
+               } finally {
+                  document.querySelector(selectorToToggle).style.cssText =
+                     "opacity: 1; pointer-events: all;";
+               }
+            } else {
+               // Finally we will block the save action and instruct the user to refresh or contact support when no valid token is available
+               alert("❌ Invalid token. Please refresh the page or contact support.");
+            }
+         },
+
+         // This function uploads image to ghl media
+         uploadTextToGHL: async (textContent = "", fileName = "", parentFolder = "") => {
+            const locationId = this.utils.getAuth()?.locationId;
+            const blob = new Blob([textContent], { type: "text/plain" });
+            const size = blob.size;
+            let isError = false;
+            try {
+               // First  we will retrieve the preview iframe membership
+               const previewIframeMembershipSavedTemplatesFileInfo =
+                  this.$iframe.contentWindow.savedTemplatesFileInfo;
+
+               // Then we will upload the new configuration
+               const registerResponse = await fetch(
+                  "https://services.leadconnectorhq.com/medias/files/",
+                  {
+                     method: "POST",
+                     headers: {
+                        "Version": "2021-07-28",
+                        "Source": "WEB_USER",
+                        "Channel": "APP",
+                        "Content-Type": "application/json",
+                        "token-id": this.token,
+                     },
+                     body: JSON.stringify({
+                        name: fileName,
+                        contentType: "text/plain",
+                        parentId: parentFolder,
+                        altType: "location",
+                        altId: String(locationId),
+                        size: size,
+                        mode: "public",
+                     }),
+                  },
+               );
+               const registerJSON = await registerResponse.json();
+               await fetch(registerJSON.url, {
+                  method: "PUT",
+                  headers: {
+                     "Content-Type": "text/plain",
+                  },
+                  body: blob,
+               });
+               const validateResponse = await fetch(
+                  "https://services.leadconnectorhq.com/medias/files/verify",
+                  {
+                     method: "POST",
+                     headers: {
+                        "Version": "2021-07-28",
+                        "Source": "WEB_USER",
+                        "Channel": "APP",
+                        "Content-Type": "application/json",
+                        "token-id": this.token,
+                     },
+                     body: JSON.stringify({
+                        altId: String(locationId),
+                        altType: "location",
+                        id: registerJSON.aknId,
+                        mode: "public",
+                     }),
+                  },
+               );
+               const validateJSON = await validateResponse.json();
+
+               // Then we will remove the previous configuration
+               fetch("https://services.leadconnectorhq.com/medias/delete-files", {
+                  method: "PUT",
+                  headers: {
+                     "Version": "2021-07-28",
+                     "Source": "WEB_USER",
+                     "Channel": "APP",
+                     "Content-Type": "application/json",
+                     "token-id": this.token,
+                  },
+                  body: JSON.stringify({
+                     altId: String(previewIframeMembershipSavedTemplatesFileInfo?.altId),
+                     altType: previewIframeMembershipSavedTemplatesFileInfo?.altType,
+                     mode: "public",
+                     status: "trashed",
+                     filesToBeDeleted: [
+                        {
+                           _id: String(previewIframeMembershipSavedTemplatesFileInfo?.id),
+                           altId: String(
+                              previewIframeMembershipSavedTemplatesFileInfo?.altId,
+                           ),
+                           altType:
+                              previewIframeMembershipSavedTemplatesFileInfo?.altType,
+                           parentId: "",
+                           name: previewIframeMembershipSavedTemplatesFileInfo?.name,
+                           url: previewIframeMembershipSavedTemplatesFileInfo?.url,
+                           size: previewIframeMembershipSavedTemplatesFileInfo?.size,
+                           contentType: "text/plain",
+                           isPrivate: false,
+                        },
+                     ],
+                  }),
+               });
+
+               // Finally return the new file information
+               return {
+                  id: validateJSON._id,
+                  altId: validateJSON.altId,
+                  altType: validateJSON.altType,
+                  name: validateJSON.name,
+                  url: validateJSON.url,
+                  size: validateJSON.size,
+               };
+            } catch (err) {
+               isError = true;
+               alert("Something went wrong, please reload or try again.");
+            }
+         },
+
+         // This method toggles the editor view between desktop and mobile modes.
+         switchEditoreMode: async (isDesktop = true) => {
+            // First we will ask the user to confirm their decision to open the mobile customizer
+            const isConfirm = confirm(
+               `Please save your changes before switching to another view. If you have already saved, you may continue; otherwise, we advise saving now so your changes are not lost.`,
+            );
+
+            // Then we will check the user's decision and if they did not agree then we will not proceed
+            if (!isConfirm) return;
+
+            // Then we will update the iframe
+            this.isDesktop = isDesktop;
+            this.$iframe.src = this.$iframe.src.replace(
+               /(\/courses\/products\/[^/]+\/).*?(\?.*)?$/,
+               "$1$2",
+            );
+            setTimeout(() => {
+               this.$iframe.style.width = isDesktop ? "100%" : "500px";
+            }, 500);
+
+            // Finally we will add a loading indicator inside the sidebar editor
+            document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(
+               "beforeend",
+               `
+               <div style="padding: 24px 16px;background: #f9f9f9;border-radius: 8px;border: 1px solid #eee;text-align: center;font-family: sans-serif;position: absolute;top: 0;height: 100%;z-index: 99999999;display: flex;flex-direction: column;align-items: center;">
+                  <div style="margin: 0 auto 16px auto; width: 24px; height: 24px; border: 3px solid #ddd; border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                  <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+                  <h3 style="margin: 0 0 8px 0; color: #000; font-size: 18px; font-weight: 600;">Changing View</h3>
+                  <p style="color: #444; font-size: 14px; line-height: 1.5; margin: 0;">
+                      Please wait while we are changing the view...
+                  </p>
+               </div>
+            `,
+            );
+         },
+
+         // This method update the page of the preview url with the passed page url.
+         switchPage: async (page = "") => {
+            // First we will ask the user to confirm their decision to switch page
+            const isConfirm = confirm(
+               `Please save your changes before switching to another page. If you have already saved, you may continue; otherwise, we advise saving now so your changes are not lost.`,
+            );
+
+            // Then we will check the user's decision and if they did not agree then we will not proceed
+            if (!isConfirm) return;
+
+            // Then we will update the iframe
+            this.$iframe.src = page;
+
+            // Finally we will add a loading indicator inside the sidebar editor
+            document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(
+               "beforeend",
+               `
+               <div style="padding: 24px 16px;background: #f9f9f9;border-radius: 8px;border: 1px solid #eee;text-align: center;font-family: sans-serif;position: absolute;top: 0;height: 100%;z-index: 99999999;display: flex;flex-direction: column;align-items: center;">
+                  <div style="margin: 0 auto 16px auto; width: 24px; height: 24px; border: 3px solid #ddd; border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                  <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+                  <h3 style="margin: 0 0 8px 0; color: #000; font-size: 18px; font-weight: 600;">Switching Page</h3>
+                  <p style="color: #444; font-size: 14px; line-height: 1.5; margin: 0;">
+                      Please wait while we are switching the page...
+                  </p>
+               </div>
+            `,
+            );
+         },
+      };
+
+      // Widgets module
+      widgets = {
+         multiInput: (templateKey, property, value = "", onChange = () => {}) => {
+            // First we will create a helper function to interpret a CSS spacing string (e.g. "10px 20px")
+            const parseValue = (val) => {
+               if (!val || val.trim() === "0")
+                  return { top: "", right: "", bottom: "", left: "", all: "" };
+               const parts = val
+                  .split(/\s+/)
+                  .filter((v) => v.trim() !== "" && v.trim() !== "0");
+               if (parts.length === 1)
+                  return { top: "", right: "", bottom: "", left: "", all: parts[0] };
+               if (parts.length === 2)
+                  return {
+                     top: parts[0],
+                     right: parts[1],
+                     bottom: parts[0],
+                     left: parts[1],
+                     all: "",
+                  };
+               if (parts.length === 3)
+                  return {
+                     top: parts[0],
+                     right: parts[1],
+                     bottom: parts[2],
+                     left: parts[1],
+                     all: "",
+                  };
+               if (parts.length >= 4)
+                  return {
+                     top: parts[0],
+                     right: parts[1],
+                     bottom: parts[2],
+                     left: parts[3],
+                     all: "",
+                  };
+               return { top: "", right: "", bottom: "", left: "", all: "" };
+            };
+
+            // Then we will parse initial incoming value (for pre-filling inputs)
+            const { top, right, bottom, left, all } = parseValue(value);
+
+            // Then we will create a listener for ANY input change inside the widget
+            const listenerId = `${templateKey}-${property}`;
+            const listenerFunction = (e) => {
+               // First we will retrieve the closest multi input widget
+               const $targetElement = e.target.closest(`.widget-multi-input`);
+
+               // Finally if there is a closest multi input widget then we will process the input
+               if ($targetElement) {
+                  // First we will retrieve the widget template key and property
+                  const widgetTemplateKey =
+                     $targetElement.getAttribute("data-template-key");
+                  const widgetProperty = $targetElement.getAttribute("data-property");
+
+                  // Finally we will only update if this widget matches the expected template + property
+                  if (widgetTemplateKey === templateKey && widgetProperty === property) {
+                     // First we will retrieve the  input side and the input value
+                     const inputSide = e.target.getAttribute("data-side");
+                     const inputValue = e.target.value;
+
+                     // Then if the input side is "all", we will mirror it's value to all of the input
+                     if (inputSide === "all") {
+                        Array.from($targetElement.querySelectorAll("input"))
+                           ?.filter((e) => e.getAttribute("data-side") !== "all")
+                           ?.forEach((e) => {
+                              e.value = inputValue;
+                           });
+                     }
+
+                     // Then we will build final CSS value string: "top right bottom left"
+                     const finalValue = ["top", "right", "bottom", "left"].reduce(
+                        (a, c) => {
+                           const value =
+                              $targetElement.querySelector(`input[data-side=${c}]`)
+                                 ?.value || 0;
+                           a += `${value}px `;
+                           return a;
+                        },
+                        "",
+                     );
+
+                     // Finallyy we will invoke the passed onchange value
+                     onChange?.(finalValue);
+                  }
+               }
+            };
+            if (!window._multiInputListeners) {
+               window._multiInputListeners = {};
+            }
+            if (listenerId in window?._multiInputListeners) {
+               window.removeEventListener(
+                  "input",
+                  window._multiInputListeners[listenerId],
+               );
+            }
+            window.addEventListener("input", listenerFunction);
+            window._multiInputListeners[listenerId] = listenerFunction;
+
+            // Finally return the actual HTML for the widget
+            return `
+               <div class="widget-multi-input" data-template-key="${templateKey}" data-property="${property}">
+                   <input type="number" placeholder="Top" data-side="top" value="${top.replace("px", "")}">
+                   <input type="number" placeholder="Right" data-side="right" value="${right.replace("px", "")}">
+                   <input type="number" placeholder="Bottom" data-side="bottom" value="${bottom.replace("px", "")}">
+                   <input type="number" placeholder="Left" data-side="left" value="${left.replace("px", "")}">
+                   <input type="number" placeholder="All" data-side="all" value="${all.replace("px", "")}">
+               </div>
+             `;
+         },
+         input: (
+            templateKey,
+            property,
+            value = "",
+            type = "text",
+            placeholder = "",
+            onChange = () => {},
+            isTextArea = false,
+         ) => {
+            // First we will create a listener for ANY input change inside the widget
+            const listenerId = `${templateKey}-${property}`;
+            const listenerFunction = (e) => {
+               const $targetElement = e.target;
+               if (
+                  $targetElement.classList.contains(`editor-customizer-form__item__input`)
+               ) {
+                  const widgetTemplateKey =
+                     $targetElement.getAttribute("data-template-key");
+                  const widgetProperty = $targetElement.getAttribute(
+                     "data-template-property",
+                  );
+                  if (widgetTemplateKey === templateKey && widgetProperty === property) {
+                     onChange?.(e.target.value);
+                  }
+               }
+            };
+
+            // Then we will manage the event listeners using a global registry to prevent duplication
+            if (!window._input) {
+               window._input = {};
+            }
+            if (listenerId in window?._input) {
+               window.removeEventListener("input", window._input[listenerId]);
+            }
+            window.addEventListener("input", listenerFunction);
+            window._input[listenerId] = listenerFunction;
+
+            // Then if this is a text area, we will initialize the TinyMCE rich text editor
+            if (isTextArea) {
+               // First we will remove any existing instances to prevent conflicts
+               if (tinymce) {
+                  tinymce.remove(".rich-text");
+               }
+
+               // Finally we will initialize the editor and setup event synchronization with the original textarea
+               setTimeout(() => {
+                  tinymce.init({
+                     selector: ".rich-text",
+                     base_url: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2",
+                     suffix: ".min",
+                     menubar: false,
+                     branding: false,
+                     promotion: false,
+                     statusbar: true,
+                     elementpath: false,
+                     forced_root_block: "",
+                     valid_elements: "*[*]",
+                     valid_children: "+body[style]",
+                     verify_html: false,
+                     plugins: ["advlist", "lists", "code", "fullscreen"],
+                     toolbar:
+                        "code | bold italic | bullist numlist | removeformat | undo redo",
+                     height: 300,
+                     setup: function (editor) {
+                        editor.on("input change keyup", function () {
+                           editor.save();
+                           const originalTextarea = editor.getElement();
+                           const value = originalTextarea.value.replace(
+                              /^<p>(.*)<\/p>$/s,
+                              "$1",
+                           );
+                           originalTextarea.value = value;
+                           const event = new Event("input", { bubbles: true });
+                           originalTextarea.dispatchEvent(event);
+                        });
+                     },
+                  });
+               }, 1000);
+            }
+
+            // Then if the type passed is color then we will initialize jscolor library
+            if (type === "color" && typeof jscolor !== "undefined") {
+               setTimeout(() => {
+                  jscolor?.install();
+               }, 500);
+            }
+
+            // Finally return the actual HTML for the widget
+            return isTextArea
+               ? `
+                      <textarea
+                      data-template-key=${templateKey}
+                      data-template-property=${property}
+                      id="${templateKey}${property}"
+                      class="editor-customizer-form__item__input rich-text">${value}</textarea>
+                  `
+               : `
+                     <input
+                     class="editor-customizer-form__item__input"
+                     data-template-key=${templateKey}
+                     data-template-property=${property}
+                     type="${type === "color" ? "text" : type || "text"}"
+                     value="${value}"
+                     ${type === "color" ? `data-jscolor='{"alphaChannel":true,"format":"hexa"}'` : ""}
+                     placeholder="${placeholder}"
+                     />
+                  `;
+         },
+         select: (
+            templateKey,
+            property,
+            value = "",
+            type = "select",
+            placeholder = "",
+            options = [],
+            onChange = () => {},
+         ) => {
+            // First we will create a listener for ANY input change inside the widget
+            const listenerId = `${templateKey}-${property}`;
+            const listenerFunction = (e) => {
+               const $targetElement = e.target;
+               if (
+                  $targetElement.classList.contains(`editor-customizer-form__item__input`)
+               ) {
+                  const widgetTemplateKey =
+                     $targetElement.getAttribute("data-template-key");
+                  const widgetProperty = $targetElement.getAttribute(
+                     "data-template-property",
+                  );
+                  if (widgetTemplateKey === templateKey && widgetProperty === property) {
+                     onChange?.(e.target.value);
+                  }
+               }
+            };
+
+            // Then we will manage the event listeners using a global registry to prevent duplication
+            if (!window._input) {
+               window._input = {};
+            }
+            if (listenerId in window?._input) {
+               window.removeEventListener("input", window._input[listenerId]);
+            }
+            window.addEventListener("input", listenerFunction);
+            window._input[listenerId] = listenerFunction;
+
+            // Finally return the actual HTML for the widget
+            const optionsHTML = options.reduce((a, c) => {
+               const isSelected = c === value;
+               a += `<option value="${c}" ${isSelected ? "selected" : ""}>${c?.toUpperCase()}</option>`;
+               return a;
+            }, "");
+            return `
+               <select
+                 data-template-key=${templateKey}
+                 data-template-property=${property}
+                 id="${templateKey}${property}"
+                 class="editor-customizer-form__item__input select"
+               >
+                  <option value="">Select</option>
+                  ${optionsHTML}
+               </select>
+            `;
+         },
+         fontSelect: (
+            templateKey,
+            property,
+            value = "",
+            type = "font",
+            placeholder = "",
+            onChange = () => {},
+         ) => {
+            console.log(value)
+            // First we will create a function that will be responsible for showing and filtering the font options
+            const showFontSelectOptions = (filterText = "") => {
+               // We will retrieve the Google Fonts and process them along with the custom fonts
+               this.data.getGoogleFonts().then((gFontRes) => {
+                  // First we will retrieve the option list
+                  const $selectList = document.querySelector(
+                     `.${templateKey}${property}-list`,
+                  );
+
+                  // Then we will generate the Google Fonts options HTML
+                  const gFontsOptionsHTML = (() => {
+                     // First we will retrieve the fonts
+                     let gFonts = [];
+                     if (!filterText) {
+                        function getInitialFonts(fonts) {
+                           return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                              .split("")
+                              .flatMap((l) =>
+                                 fonts.filter((f) => f.family.startsWith(l)).slice(0, 5),
+                              );
+                        }
+                        gFonts = getInitialFonts(gFontRes?.items);
+                     } else {
+                        gFonts = gFontRes?.items
+                           ?.filter((gFont) =>
+                              gFont?.family
+                                 ?.toLowerCase()
+                                 .includes(filterText.toLocaleLowerCase()),
+                           )
+                           ?.slice(0, 100);
+                     }
+
+                     // Then we will insert the Google Font families in chunks so that users will see the preview of each font
+                     (() => {
+                        // First we will create a variable that will hold all of the chunks
+                        const fontChunks = [];
+
+                        // Then we will slice the fonts array into groups of 10 and push each group into the fontChunks array
+                        for (let i = 0; i < gFonts.length; i += 10) {
+                           fontChunks.push(gFonts?.slice(i, i + 10));
+                        }
+
+                        // Finally we will iterate over all the fontChunks and conditionally insert the font family using @import
+                        fontChunks.forEach((chunk) => {
+                           // First we will filter out fonts that have already been injected to avoid duplicate requests
+                           const filteredChunk = chunk?.filter(
+                              (f) => !this.loadedGoogleFontsPreview.includes(f.family),
+                           );
+
+                           // Then we will skip this chunk entirely if all fonts have already been loaded
+                           if (!filteredChunk.length) return;
+
+                           // Then we will build the Google Fonts URL by mapping each font family to its full axis string
+                           const googleFontsUsed = filteredChunk
+                              ?.map(
+                                 (f) =>
+                                    `${f.family.replace(/ /g, "+")}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900`,
+                              )
+                              .join("&family=");
+                           const googleFontsUsedStyleHTML = `
+                              <style class="bm-editor-fonts-preview">
+                                 @import url('https://fonts.googleapis.com/css2?family=${googleFontsUsed}&display=swap');
+                              </style>
+                           `;
+
+                           // Then we will insert the style tag into the DOM so the fonts are available for preview
+                           document.body.insertAdjacentHTML(
+                              "beforeend",
+                              `${googleFontsUsedStyleHTML}`,
+                           );
+
+                           // Finally we will mark each font as loaded so it is never injected again
+                           chunk.forEach((e) => {
+                              this.loadedGoogleFontsPreview.push(e.family);
+                           });
+                        });
+                     })();
+
+                     // Then we will generate the HTML for each font option with its font family applied for preview
+                     const optionsHTML = gFonts.reduce((a, c) => {
+                        a += `<li style="font-family: ${c?.family}" class="widget-font-select__item" onmousedown="(function(){const $i = document.getElementById('${templateKey}${property}');$i.value = '${c?.family}';$i.setAttribute('data-type', 'google');$i.dispatchEvent(new Event('input', { bubbles: true }));})();">${c?.family}</li>`;
+                        return a;
+                     }, ``);
+
+                     // Finally we will return the options HTML wrapped in a label, or an empty string if there are no results
+                     return optionsHTML ? `<p>Google Fonts</p>${optionsHTML}` : "";
+                  })();
+
+                  // Then we will generate the custom fonts options HTML
+                  const customFontsOptionsHTML = (() => {
+                     const optionsHTML =
+                        this.$iframe.contentWindow.MembershipParser?.activeTemplate[
+                           "customFonts"
+                        ]
+                           ?.filter((cFont) =>
+                              cFont
+                                 ?.toLowerCase()
+                                 .includes(filterText.toLocaleLowerCase()),
+                           )
+                           ?.reduce((a, c) => {
+                              a += `<li class="widget-font-select__item" onmousedown="(function(){const $i = document.getElementById('${templateKey}${property}');$i.value = '${c}';$i.setAttribute('data-type', 'custom');$i.dispatchEvent(new Event('input', { bubbles: true }));})();">${c}</li>`;
+                              return a;
+                           }, ``);
+                     return optionsHTML ? `<p>Custom Fonts</p>${optionsHTML}` : "";
+                  })();
+
+                  // Finally we will replace the select list inner HTML with the new filtered options
+                  $selectList.innerHTML = `
+                     <li class="widget-font-select__item" onmousedown="(function(){const $i = document.getElementById('${templateKey}${property}');$i.value = '';$i.setAttribute('data-type', 'custom');$i.dispatchEvent(new Event('input', { bubbles: true }));})();">Select</li>
+                     ${customFontsOptionsHTML}
+                     ${gFontsOptionsHTML}
+                  `;
+               });
+            };
+
+            // Then we will create a listener for ANY input change inside the widget
+            const listenerId = `${templateKey}-${property}`;
+            const listenerFunction = (e) => {
+               const $targetElement = e.target;
+               // First we will listen for the select option list input change and filter the options
+               if (
+                  $targetElement.classList.contains(`${templateKey}${property}-search`)
+               ) {
+                  showFontSelectOptions(e.target.value);
+               }
+
+               // Finally we will listen for changes in the hidden input inside the select where we store the selected option value
+               if (
+                  $targetElement.classList.contains(`editor-customizer-form__item__input`)
+               ) {
+                  const widgetTemplateKey =
+                     $targetElement.getAttribute("data-template-key");
+                  const widgetProperty = $targetElement.getAttribute(
+                     "data-template-property",
+                  );
+                  if (widgetTemplateKey === templateKey && widgetProperty === property) {
+                     // First we will retrieve the data type e.g(google, custom)
+                     const type = e.target.getAttribute("data-type");
+
+                     // Then we will update the value and font family of the search input
+                     const $filterInput = document.querySelector(
+                        `.${templateKey}${property}-search`,
+                     );
+                     $filterInput.value = e.target.value;
+                     $filterInput.style.fontFamily = e.target.value;
+
+                     // Finally we will invoke the onChange callback
+                     onChange?.({
+                        name: e.target.value,
+                        type,
+                     });
+                  }
+               }
+            };
+
+            // Then we will manage the event listeners using a global registry to prevent duplication
+            if (!window._input) {
+               window._input = {};
+            }
+            if (listenerId in window?._input) {
+               window.removeEventListener("input", window._input[listenerId]);
+            }
+            window.addEventListener("input", listenerFunction);
+            window._input[listenerId] = listenerFunction;
+
+            // Then we will initialize the font select options
+            showFontSelectOptions();
+
+            // Finally we will return the font selection HTML
+            return `
+               <div class="widget-font-select ${templateKey}${property}-select">
+                   <input type="text" value="${value}" style="font-family: ${value}" class="widget-font-select__input ${templateKey}${property}-search" placeholder="${value || `Search fonts...`}" autocomplete="off">
+                   <ul class="widget-font-select__list ${templateKey}${property}-list">
+                       <li class="widget-font-select__item" data-value="">Loading...</li>
+                   </ul>
+                   <input type="hidden" data-template-key=${templateKey} data-template-property=${property} id="${templateKey}${property}" name="font_family" class="widget-font-select__value editor-customizer-form__item__input" >
+               </div>
+            `;
+         },
+      };
+
+      // Utils module
+      utils = {
+         // This helper method waits for a DOM element to appear matching the selector
+         whenElementReady: (
+            selector,
+            callback,
+            { timeoutMs = 7000, root = document.documentElement, once = true } = {},
+         ) => {
+            // First we will initialize our state variables to track the observation status
+            let done = false;
+            let observer = null;
+            let timeout = null;
+
+            // Then we will define the check function that verifies if the element exists and executes the callback
+            const apply = () => {
+               if (done) return;
+               const el = document.querySelector(selector);
+               if (!el) return false;
+               callback(el);
+               if (once) {
+                  done = true;
+                  observer?.disconnect();
+                  clearTimeout(timeout);
+               }
+               return true;
+            };
+
+            // Then will initialize the MutationObserver and start observing the root element for changes
+            observer = new MutationObserver(apply);
+            observer.observe(root, { childList: true, subtree: true });
+
+            // Then will also set a fallback timeout to stop observing if the element never appears
+            timeout = setTimeout(() => {
+               observer.disconnect();
+            }, timeoutMs);
+
+            // Then we will attempt an immediate check in case the element is already present in the DOM
+            apply();
+
+            // Finally return a cleanup function to allow the caller to cancel the observation manually
+            return () => {
+               done = true;
+               observer.disconnect();
+               clearTimeout(timeout);
+            };
+         },
+
+         // This helper method retrieves the snapshot of an element
+         getElementSnapshot: (el) => {
+            if (!el) return null;
+            const attributes = {};
+            if (el.hasAttributes()) {
+               for (const attr of el.attributes) {
+                  attributes[attr.name] = attr.value;
+               }
+            }
+            const styles = {};
+            const computed = window.getComputedStyle(el);
+            for (let i = 0; i < computed.length; i++) {
+               const propName = computed[i];
+               styles[propName] = computed.getPropertyValue(propName);
+            }
+            return {
+               tagName: el.tagName.toLowerCase(),
+               innerHTML: el.innerHTML,
+               innerText: el.innerText,
+               attributes: attributes,
+               computedStyle: styles,
+            };
+         },
+
+         // This helper method retrieves the auth information
+         getAuth: () => {
+            const acatToken = $cookies.get("acat");
+            const catToken = $cookies.get("cat");
+            const data = JSON.parse(window.atob(acatToken || catToken) || "{}");
+            if (!("productId" in data)) {
+               const url = location.href
+                  ?.split("/products/")[1]
+                  .split("/")[0]
+                  .split("?")[0];
+               data.productId = url;
+            }
+            return data;
+         },
+      };
+   }
+
+   window.MembershipParser = new MembershipParser();
+   window.MembershipEditor = new MembershipEditor();
+</script>

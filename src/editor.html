@@ -2060,18 +2060,10 @@
                   }
                })();
 
-               const incrementttt = (() => {
-                  if (isGlobal && globalName) {
-                     return `window.MembershipEditor.actions.incrementTemplateFeatureCustomizations({},{name: '${globalName}',templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
-                  } else {
-                     return `window.MembershipEditor.actions.incrementTemplateFeatureCustomizations({templateItemKey: '${templateItem.key}',featureKey: '${c.key}',isTurnedOn: this.checked})`;
-                  }
-               })();
-
                // Then we will append this feature (toggle + customizations) into the features HTML
                a += `
-                       <div class="editor-customizer-item__form__item__input__group feature" data-feature-key="${c.key}">
-                           <h3 class="editor-customizer-item__form__item__input__group__name__toggler" onclick="this.parentElement.classList.toggle('active')">
+                       <div class="editor-customizer-item__form__item__input__group feature">
+                           <h3 class="editor-customizer-item__form__item__input__group__name__toggler" onClick="this.parentElement.classList.toggle('active')">
                                ${c.name}
                                <i class="fa-solid fa-angle-right"></i>
                            </h3>
@@ -2086,7 +2078,6 @@
                                <p>Turn On Feature</p>
                                </div>
                                <div class="editor-customizer-item__form__item__input__group__customizations">${customizationHTML}</div>
-                               <button onclick="${incrementttt}">Increment</button>
                            </div>
                        </div>
                    `;
@@ -2742,121 +2733,6 @@
                      },
                   );
                }
-            }
-         },
-
-         // Test
-         incrementTemplateFeatureCustomizations: (
-            normal = {
-               templateItemKey: "",
-               featureKey: "",
-               customizationProperty: "",
-               value: "",
-            },
-            global = {
-               name: "",
-               templateItemKey: "",
-               featureKey: "",
-               customizationProperty: "",
-               value: "",
-            },
-         ) => {
-            // First we will retrieve the preview iframe membership parser and the necessary variables
-            const previewIframeMembershipParser =
-               this.$iframe.contentWindow.MembershipParser;
-            const activePageOnTemplate =
-               previewIframeMembershipParser.activePageOnTemplate;
-            const activeTemplate = previewIframeMembershipParser.activeTemplate;
-            console.log("lol", global, normal, activeTemplate);
-
-            let feature = (() => {
-               if (global.name) {
-                  return activeTemplate.global
-                     ?.find((item) => item.name === global.name)
-                     ?.customizations?.find((item) => item.key === global.templateItemKey)
-                     ?.features?.find((item) => item.key === global.featureKey);
-               } else {
-                  // return activePageOnTemplate.find(
-                  //    (item) => item.key === normal.featureKey,
-                  // );
-               }
-            })();
-
-            console.log(feature);
-
-            // Then we will generate the HTML for the Feature customization inputs
-            const updateFeatureCustomizations = () => {
-               document
-                  .querySelector(
-                     `.editor-customizer-item__form__item__input__group.feature[data-feature-key="${feature.key}"]`,
-                  )
-                  .querySelector(
-                     ".editor-customizer-item__form__item__input__group__customizations",
-                  )
-                  .insertAdjacentHTML(
-                     "beforeend",
-                     `
-                  <div class="editor-customizer-item__form__item__input__group">
-                               <p class="editor-customizer-item__form__item__input__group__name">Menu Link ${feature.customizations.length}</p>
-                               
-                     <input class="editor-customizer-form__item__input" data-template-key="template-navbar-content-nav-links" data-template-property="text-menu-link-${feature.customizations.length}" type="text" value="https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg" placeholder="https://example.com/image">
-                  
-                           </div>
-                  `,
-                  );
-            };
-
-            // Then if a normal feature key is provided, we will traverse the active page to find and update the specific feature customization while checking if the feature is active
-            if (normal.featureKey) {
-               let isTurnedOn = false;
-               activePageOnTemplate.forEach((item) => {
-                  if (item.key === normal.templateItemKey) {
-                     item.features.forEach((fItem) => {
-                        if (fItem.key === normal.featureKey) {
-                           isTurnedOn = fItem.isTurnedOn;
-                           fItem.customizations.forEach((fItemC) => {
-                              if (fItemC.property === normal.customizationProperty) {
-                                 fItemC.value = normal.value;
-                              }
-                           });
-                        }
-                     });
-                  }
-               });
-            }
-
-            // Then if a global feature key is provided, we will iterate through the global settings to find and update the matching feature customization while checking if the feature is active
-            if (global.featureKey) {
-               let isTurnedOn = false;
-               activeTemplate.global.forEach((item) => {
-                  if (item.name === global.name) {
-                     item.customizations.forEach((cItem) => {
-                        if (cItem.key === global.templateItemKey) {
-                           cItem.features.forEach((fItem) => {
-                              if (fItem.key === global.featureKey) {
-                                 fItem.customizations.push(
-                                    {
-                                       name: "Menu Text 7",
-                                       property: "menu-text-7",
-                                       type: "text",
-                                       placeholder: "Contact",
-                                       value: "Contact",
-                                    },
-                                    {
-                                       name: "Menu Link 7",
-                                       property: "menu-link-7",
-                                       type: "text",
-                                       placeholder: "https://example.com/image",
-                                       value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
-                                    },
-                                 );
-                                 updateFeatureCustomizations();
-                              }
-                           });
-                        }
-                     });
-                  }
-               });
             }
          },
 
@@ -3621,6 +3497,7 @@
             placeholder = "",
             onChange = () => {},
          ) => {
+            console.log(value)
             // First we will create a function that will be responsible for showing and filtering the font options
             const showFontSelectOptions = (filterText = "") => {
                // We will retrieve the Google Fonts and process them along with the custom fonts

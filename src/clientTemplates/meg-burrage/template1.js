@@ -332,12 +332,6 @@ window.templateCustomizationSchema = {
                         });
                         return js;
                      },
-                     incrementCustomization: (customizations = []) => {
-                        customizations.push({
-                           name: "{{menu-text-7}}",
-                           link: "{{menu-link-7}}",
-                        });
-                     },
                   },
                ],
                cssCustomizations: [

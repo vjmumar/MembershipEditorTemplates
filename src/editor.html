@@ -2807,27 +2807,18 @@
                      item.customizations.forEach((cItem) => {
                         if (cItem.key === global.templateItemKey) {
                            cItem.features.forEach((fItem) => {
-                              console.log(fItem);
                               if (fItem.key === global.featureKey) {
-                                 fItemC.incrementCustomization(c.customizations);
+                                 fItemC.customizations.push({
+                                    name: "{{menu-text-7}}",
+                                    link: "{{menu-link-7}}",
+                                 });
+                                 // fItemC.incrementCustomization(c.customizations);
                               }
                            });
                         }
                      });
                   }
                });
-
-               // Finally we will re-sync the global feature only if it is currently turned on
-               if (isTurnedOn) {
-                  previewIframeMembershipParser.actions.syncTemplateFeatureCustomizations(
-                     {},
-                     {
-                        name: global.name,
-                        featureKey: global.featureKey,
-                        templateItemKey: global.templateItemKey,
-                     },
-                  );
-               }
             }
          },
 

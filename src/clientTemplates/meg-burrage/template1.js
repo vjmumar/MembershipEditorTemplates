@@ -178,7 +178,7 @@ window.templateCustomizationSchema = {
                      isTurnedOn: false,
                      customizations: [
                         {
-                           name: "Menu Text 1",
+                           name: "Label",
                            property: "menu-text-1",
                            type: "text",
                            placeholder: "Home",
@@ -187,7 +187,7 @@ window.templateCustomizationSchema = {
                            groupLabel: "Menu 1",
                         },
                         {
-                           name: "Menu Link 1",
+                           name: "Link",
                            property: "menu-link-1",
                            type: "text",
                            placeholder: "https://example.com/image",
@@ -195,7 +195,7 @@ window.templateCustomizationSchema = {
                            group: "menu-1",
                         },
                         {
-                           name: "Menu Text 2",
+                           name: "Label",
                            property: "menu-text-2",
                            type: "text",
                            placeholder: "What's New",
@@ -204,7 +204,7 @@ window.templateCustomizationSchema = {
                            groupLabel: "Menu 2",
                         },
                         {
-                           name: "Menu Link 2",
+                           name: "Link",
                            property: "menu-link-2",
                            type: "text",
                            placeholder: "https://example.com/image",
@@ -212,7 +212,7 @@ window.templateCustomizationSchema = {
                            group: "menu-2",
                         },
                         {
-                           name: "Menu Text 3",
+                           name: "Label",
                            property: "menu-text-3",
                            type: "text",
                            placeholder: "Favorites",
@@ -221,7 +221,7 @@ window.templateCustomizationSchema = {
                            groupLabel: "Menu 3",
                         },
                         {
-                           name: "Menu Link 3",
+                           name: "Link",
                            property: "menu-link-3",
                            type: "text",
                            placeholder: "https://example.com/image",
@@ -229,7 +229,7 @@ window.templateCustomizationSchema = {
                            group: "menu-3",
                         },
                         {
-                           name: "Menu Text 4",
+                           name: "Label",
                            property: "menu-text-4",
                            type: "text",
                            placeholder: "Announcements",
@@ -238,7 +238,7 @@ window.templateCustomizationSchema = {
                            groupLabel: "Menu 4",
                         },
                         {
-                           name: "Menu Link 4",
+                           name: "Link",
                            property: "menu-link-4",
                            type: "text",
                            placeholder: "https://example.com/image",
@@ -246,7 +246,7 @@ window.templateCustomizationSchema = {
                            group: "menu-4",
                         },
                         {
-                           name: "Menu Text 5",
+                           name: "Label",
                            property: "menu-text-5",
                            type: "text",
                            placeholder: "Pilates",
@@ -255,7 +255,7 @@ window.templateCustomizationSchema = {
                            groupLabel: "Menu 5",
                         },
                         {
-                           name: "Menu Link 5",
+                           name: "Link",
                            property: "menu-link-5",
                            type: "text",
                            placeholder: "https://example.com/image",
@@ -263,7 +263,7 @@ window.templateCustomizationSchema = {
                            group: "menu-5",
                         },
                         {
-                           name: "Menu Text 6",
+                           name: "Label",
                            property: "menu-text-6",
                            type: "text",
                            placeholder: "Contact",
@@ -272,7 +272,7 @@ window.templateCustomizationSchema = {
                            groupLabel: "Menu 6",
                         },
                         {
-                           name: "Menu Link 6",
+                           name: "Link",
                            property: "menu-link-6",
                            type: "text",
                            placeholder: "https://example.com/image",

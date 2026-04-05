@@ -2174,7 +2174,7 @@
                         "",
                      );
                      const cancenButtonJs = `this.parentElement.parentElement.parentElement.classList.remove('active');delete window['${c.key}'];`;
-                     const saveButtonJs = `Object.values(window['${c.key}']).forEach((inp) => window.MembershipEditor.actions.updateTemplateFeatureCustomizations(...inp));delete window['${c.key}'];this.parentElement.parentElement.parentElement.classList.remove('active');`;
+                     const saveButtonJs = `Object.values(window['${c.key}'] || {}).forEach((inp) => window.MembershipEditor.actions.updateTemplateFeatureCustomizations(...inp));delete window['${c.key}'];this.parentElement.parentElement.parentElement.classList.remove('active');`;
                      ac += `
                               <div class="editor-customizer-item__form__item__input__group__group" data-feature-group="${cc.groupId}">
                                   <div class="editor-customizer-item__form__item__input__group__group__header" onclick="this.parentElement.classList.toggle('active')">

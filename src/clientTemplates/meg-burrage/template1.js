@@ -3795,6 +3795,7 @@ class CourseTemplate {
       init: async () => {
          // First we will retrieve the current URL
          const url = window.location.href;
+         document.body.classList.add("template-ready");
 
          // Then we will insert the font-awesome script into the head
          const fScript = document.createElement("script");
@@ -3806,7 +3807,6 @@ class CourseTemplate {
 
          // Then we will append a class to the body indicating that the template is ready
          setTimeout(() => {
-            document.body.classList.add("template-ready");
          },500)
 
          // Then we will check the URL against regex patterns to determine which page view to load

@@ -4950,6 +4950,7 @@ class CourseTemplate {
          const productId = this.utils.getAuth()?.productId;
          const locationId = this.utils.getAuth()?.locationId;
          const token = this.utils.getAuth()?.tokenId;
+         console.log("categoriers", token)
          const contactId = this.utils.getAuth()?.contactId;
          const userId = this.utils.getAuth()?.externalUserId;
          const storageName = `${productId}-categories`;

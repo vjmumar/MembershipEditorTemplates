@@ -3802,6 +3802,7 @@ class CourseTemplate {
          document.head.append(fScript);
 
          // Then we will show the loader
+         console.log("isLoading")
          this.globalInitializers.initLoading(true);
 
          // Then we will append a class to the body indicating that the template is ready

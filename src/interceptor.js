@@ -83,7 +83,7 @@ export default {
             : "";
          html = html.replace(
             "<head>",
-            `<head>${request.headers.get("Cookie") || ""}${css}${script}`,
+            `<head>${css}${script}`,
          );
          return new Response(html, {
             status: ghlResponse.status,

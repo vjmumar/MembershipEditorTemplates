@@ -4858,6 +4858,7 @@ class CourseTemplate {
    // This object holds data fetching and state management logic
    data = {
       fetchProduct: async () => {
+         console.log(this.utils.getAuth())
          const productId = this.utils.getAuth()?.productId;
          const locationId = this.utils.getAuth()?.locationId;
          const token = this.utils.getAuth()?.tokenId;
@@ -5241,7 +5242,6 @@ class CourseTemplate {
          } else {
             return window.savedAuth || data
          }
-         return data
          } catch (err) {
             console.log(err);
          }

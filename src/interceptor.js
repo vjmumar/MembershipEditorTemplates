@@ -32,7 +32,7 @@ export default {
                            clearInterval(interval)
                            res(data);
                         }
-                     }, 0);
+                     }, 100);
                   });
                };
                const fetchProduct = async () => {

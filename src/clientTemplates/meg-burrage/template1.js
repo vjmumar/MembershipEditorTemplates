@@ -5259,9 +5259,10 @@ class CourseTemplate {
                   if (!("tokenId" in data)) {
                      data.tokenId = data.token;
                   }
+                  clearInterval(interval);
                   res(data);
                }
-            }, 0);
+            }, 500);
          });
       },
       getDeepSequencedPosts: (categories = []) => {

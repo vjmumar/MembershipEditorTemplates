@@ -4970,6 +4970,7 @@ class CourseTemplate {
                })
                   .then((e) => e.json())
                   .then((e) => {
+                     console.log(e)
                      resolved(e.categories);
                      sessionStorage.setItem(storageName, JSON.stringify(e.categories));
                   });

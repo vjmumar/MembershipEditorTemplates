@@ -5231,14 +5231,16 @@ class CourseTemplate {
          try {
          const acatToken = $cookies.get("acat");
          const catToken = $cookies.get("cat");
-         const catData = window.atob(catToken) && JSON.parse(window.atob(catToken) || "{}");
-         const acatData = window.atob(catToken) && JSON.parse(window.atob(catToken) || "{}");
          const data =  JSON.parse(window.atob(catToken || acatToken) || "{}");
          if (!("productId" in data)) {
             const url = location.href?.split("/products/")[1].split("/")[0].split("?")[0];
             data.productId = url;
          }
-         conosole.log(catData, acatData)
+         if("tokenId" in data) {
+            window.savedAuth = data;
+         } else {
+            return window.savedAuth || data
+         }
          return data
          } catch (err) {
             console.log(err);

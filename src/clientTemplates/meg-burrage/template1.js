@@ -5242,7 +5242,6 @@ class CourseTemplate {
                }
                console.log("waiting for ", elementSelector);
             }, 0);
-
             if (timeout) {
                setTimeout(() => {
                   res(true);
@@ -5270,7 +5269,7 @@ class CourseTemplate {
                   clearInterval(interval);
                   res(data);
                }
-            }, 500);
+            }, 1000);
          });
       },
       getDeepSequencedPosts: (categories = []) => {

@@ -3893,7 +3893,6 @@ class CourseTemplate {
       },
 
       initCategoryPostPage: async () => {
-         console.log("hello worldss")
          // First we will wait for the product container
          const $container = await this.utils.waitForElement("#app-container", 100);
 
@@ -3902,7 +3901,7 @@ class CourseTemplate {
             const $el = await this.utils.waitForElement(
                "#product-breadcrumbs, #breadcrumb-container",
                0,
-               50000,
+               5000,
             );
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;
@@ -4013,7 +4012,7 @@ class CourseTemplate {
             const $el = await this.utils.waitForElement(
                "#product-breadcrumbs, #breadcrumb-container",
                0,
-               50000,
+               5000,
             );
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;
@@ -5245,7 +5244,6 @@ class CourseTemplate {
                console.log("waiting for ", elementSelector);
             }, 200);
             if (timeout) {
-               console.log(timeout)
                setTimeout(() => {
                   clearInterval(interval);
                   res(true);

@@ -3854,7 +3854,6 @@ class CourseTemplate {
                this.data.fetchCategories(),
                this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
-            console.log(userData, userProductProgress, productCategories, completedPosts);
 
          // Then we will process the categories data
          const categories = productCategories
@@ -5279,6 +5278,6 @@ class CourseTemplate {
    };
 }
 
-if (!window.CourseTemplate) {
+// if (!window.CourseTemplate) {
    window.CourseTemplate = new CourseTemplate();
 }

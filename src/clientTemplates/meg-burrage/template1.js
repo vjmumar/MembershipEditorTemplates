@@ -3893,6 +3893,7 @@ class CourseTemplate {
       },
 
       initCategoryPostPage: async () => {
+         console.log("hello worldss")
          // First we will wait for the product container
          const $container = await this.utils.waitForElement("#app-container", 100);
 

@@ -1276,7 +1276,7 @@
                       * before activating preview mode
                       */
                      setTimeout(() => {
-                        if (this.isPreviewEditor) {
+                        if (this.isPreviewEditor && !window.MembershipPreview) {
                            window.MembershipPreview = new MembershipPreview();
                         }
                      }, 2000);

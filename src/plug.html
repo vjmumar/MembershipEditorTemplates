@@ -1,18 +1,14 @@
 <script>
   if (!window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID) {
-    window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID="meg-burrage";
-    if(location.href.includes('/courses/products/')){
-      document.head.insertAdjacentHTML('beforeend',`<style>body:not(.template-ready){opacity:0!important}</style>`);
-      setTimeout(()=>document.body.classList.add("template-ready"),60000);
-    }
-    fetch("https://membershipeditor.netlify.app/src/editor").then(r=>r.text()).then(h=>{
-      let d=document.createElement('div');d.innerHTML=h;
-      d.querySelectorAll('style,link,div,section').forEach(e=>document.head.append(e));
-      d.querySelectorAll('script').forEach(s=>{
-        let sc=document.createElement('script');
-        sc.src=s.src||URL.createObjectURL(new Blob([s.textContent],{type:'text/javascript'}));
+    window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID = "meg-burrage";
+    fetch("https://membershipeditor.netlify.app/src/editor").then(r => r.text()).then(h => {
+      let d = document.createElement('div'); d.innerHTML = h;
+      d.querySelectorAll('style,link,div,section').forEach(e => document.head.append(e));
+      d.querySelectorAll('script').forEach(s => {
+        let sc = document.createElement('script');
+        sc.src = s.src || URL.createObjectURL(new Blob([s.textContent], { type: 'text/javascript' }));
         document.head.append(sc);
       });
     });
-  };
+  }
 </script>

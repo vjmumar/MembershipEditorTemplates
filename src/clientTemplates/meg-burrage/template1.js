@@ -5232,6 +5232,7 @@ class CourseTemplate {
          const acatToken = $cookies.get("acat");
          const catToken = $cookies.get("cat");
          const data =  JSON.parse(window.atob(catToken || acatToken) || "{}");
+         console.log(data)
          if (!("productId" in data)) {
             const url = location.href?.split("/products/")[1].split("/")[0].split("?")[0];
             data.productId = url;

@@ -278,7 +278,7 @@ window.templateCustomizationSchema = {
                            placeholder: "https://example.com/image",
                            value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
                            group: "menu-6",
-                        }
+                        },
                      ],
                      css: (customizations = []) => {
                         let css = ``;
@@ -3807,7 +3807,7 @@ class CourseTemplate {
          // Then we will append a class to the body indicating that the template is ready
          setTimeout(() => {
             document.body.classList.add("template-ready");
-         },500)
+         }, 500);
 
          // Then we will check the URL against regex patterns to determine which page view to load
          if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
@@ -3855,7 +3855,7 @@ class CourseTemplate {
                this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
 
-            console.log(productCategories);
+         console.log(productCategories);
 
          // Then we will process the categories data
          const categories = productCategories
@@ -4187,7 +4187,7 @@ class CourseTemplate {
          // Then we will append a class to the body indicating that the template is ready
          setTimeout(() => {
             document.body.classList.add("template-ready");
-         },500)
+         }, 500);
 
          // Then we will check the URL against regex patterns to determine which page view to load
          if (/\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url)) {
@@ -4860,11 +4860,12 @@ class CourseTemplate {
    // This object holds data fetching and state management logic
    data = {
       fetchProduct: async () => {
-         const productId = this.utils.getAuth()?.productId;
-         const locationId = this.utils.getAuth()?.locationId;
-         const token = this.utils.getAuth()?.tokenId;
-         const contactId = this.utils.getAuth()?.contactId;
-         const userId = this.utils.getAuth()?.externalUserId;
+         const auth = await this.utils.getAuth();
+         const productId = auth?.productId;
+         const locationId = auth?.locationId;
+         const token = auth?.tokenId;
+         const contactId = auth?.contactId;
+         const userId = auth?.externalUserId;
          const storageName = `${productId}-product`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0 && previousData?.id === productId)
@@ -4893,11 +4894,12 @@ class CourseTemplate {
          });
       },
       fetchCategory: async (catId = "") => {
-         const productId = this.utils.getAuth()?.productId;
-         const locationId = this.utils.getAuth()?.locationId;
-         const token = this.utils.getAuth()?.tokenId;
-         const contactId = this.utils.getAuth()?.contactId;
-         const userId = this.utils.getAuth()?.externalUserId;
+         const auth = await this.utils.getAuth();
+         const productId = auth?.productId;
+         const locationId = auth?.locationId;
+         const token = auth?.tokenId;
+         const contactId = auth?.contactId;
+         const userId = auth?.externalUserId;
          const storageName = `${productId}-category`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0 && previousData?.category?.id === catId)
@@ -4947,12 +4949,13 @@ class CourseTemplate {
          });
       },
       fetchCategories: async () => {
-         const productId = this.utils.getAuth()?.productId;
-         const locationId = this.utils.getAuth()?.locationId;
-         const token = this.utils.getAuth()?.tokenId;
-         console.log("categoriers", token)
-         const contactId = this.utils.getAuth()?.contactId;
-         const userId = this.utils.getAuth()?.externalUserId;
+         const auth = await this.utils.getAuth();
+         const productId = auth?.productId;
+         const locationId = auth?.locationId;
+         const token = auth?.tokenId;
+         console.log("categoriers", token);
+         const contactId = auth?.contactId;
+         const userId = auth?.externalUserId;
          const storageName = `${productId}-categories`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "[]");
          if (previousData.length > 0) return previousData;
@@ -4972,7 +4975,10 @@ class CourseTemplate {
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e.categories);
-                     sessionStorage.setItem(storageName, JSON.stringify(e.categories || []));
+                     sessionStorage.setItem(
+                        storageName,
+                        JSON.stringify(e.categories || []),
+                     );
                   });
             } else {
                console.log("No Token Found! Categories!");
@@ -4980,11 +4986,12 @@ class CourseTemplate {
          });
       },
       fetchPost: async (pId = "") => {
-         const productId = this.utils.getAuth()?.productId;
-         const locationId = this.utils.getAuth()?.locationId;
-         const token = this.utils.getAuth()?.tokenId;
-         const contactId = this.utils.getAuth()?.contactId;
-         const userId = this.utils.getAuth()?.externalUserId;
+         const auth = await this.utils.getAuth();
+         const productId = auth?.productId;
+         const locationId = auth?.locationId;
+         const token = auth?.tokenId;
+         const contactId = auth?.contactId;
+         const userId = auth?.externalUserId;
          return await new Promise((resolved, reject) => {
             const postId =
                pId || location.href.split("/posts/")[1].split("?")[0].split("/")[0];
@@ -5010,11 +5017,12 @@ class CourseTemplate {
          });
       },
       fetchCompletedPosts: async () => {
-         const productId = this.utils.getAuth()?.productId;
-         const locationId = this.utils.getAuth()?.locationId;
-         const token = this.utils.getAuth()?.tokenId;
-         const contactId = this.utils.getAuth()?.contactId;
-         const userId = this.utils.getAuth()?.externalUserId;
+         const auth = await this.utils.getAuth();
+         const productId = auth?.productId;
+         const locationId = auth?.locationId;
+         const token = auth?.tokenId;
+         const contactId = auth?.contactId;
+         const userId = auth?.externalUserId;
          const storageName = `${productId}-completed-post`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;
@@ -5042,10 +5050,11 @@ class CourseTemplate {
          });
       },
       fetchUserProductProgress: async (cId = "") => {
-         const productId = this.utils.getAuth()?.productId;
-         const locationId = this.utils.getAuth()?.locationId;
-         const token = this.utils.getAuth()?.tokenId;
-         const contactId = this.utils.getAuth()?.contactId;
+         const auth = await this.utils.getAuth();
+         const productId = auth?.productId;
+         const locationId = auth?.locationId;
+         const token = auth?.tokenId;
+         const contactId = auth?.contactId;
          const storageName = `${productId}-product-progress`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;
@@ -5081,10 +5090,11 @@ class CourseTemplate {
          });
       },
       fetchCategoryProgress: async () => {
-         const productId = this.utils.getAuth()?.productId;
-         const locationId = this.utils.getAuth()?.locationId;
-         const token = this.utils.getAuth()?.tokenId;
-         const contactId = this.utils.getAuth()?.contactId;
+         const auth = await this.utils.getAuth();
+         const productId = auth?.productId;
+         const locationId = auth?.locationId;
+         const token = auth?.tokenId;
+         const contactId = auth?.contactId;
          const storageName = `${productId}-category-progress`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;
@@ -5118,11 +5128,12 @@ class CourseTemplate {
          });
       },
       fetchUser: async () => {
-         const productId = this.utils.getAuth()?.productId;
-         const locationId = this.utils.getAuth()?.locationId;
-         const token = this.utils.getAuth()?.tokenId;
-         const contactId = this.utils.getAuth()?.contactId;
-         const userId = this.utils.getAuth()?.userId;
+         const auth = await this.utils.getAuth();
+         const productId = auth?.productId;
+         const locationId = auth?.locationId;
+         const token = auth?.tokenId;
+         const contactId = auth?.contactId;
+         const userId = auth?.userId;
          const storageName = `${productId}-user`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
          if (Object.keys(previousData).length > 0) return previousData;
@@ -5161,11 +5172,12 @@ class CourseTemplate {
    // This object holds actions methods
    actions = {
       markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {
-         const productId = this.utils.getAuth()?.productId;
-         const locationId = this.utils.getAuth()?.locationId;
-         const token = this.utils.getAuth()?.tokenId;
-         const contactId = this.utils.getAuth()?.contactId;
-         const userId = this.utils.getAuth()?.externalUserId;
+         const auth = await this.utils.getAuth();
+         const productId = auth?.productId;
+         const locationId = auth?.locationId;
+         const token = auth?.tokenId;
+         const contactId = auth?.contactId;
+         const userId = auth?.externalUserId;
          let req = null;
          try {
             if (isComplete) {
@@ -5230,22 +5242,27 @@ class CourseTemplate {
             }, 0);
          });
       },
-      getAuth: () => {
-         try {
-         const acatToken = $cookies.get("acat");
-         const catToken = $cookies.get("cat");
-         const data =  JSON.parse(window.atob(catToken || acatToken) || "{}");
-         if (!("productId" in data)) {
-            const url = location.href?.split("/products/")[1].split("/")[0].split("?")[0];
-            data.productId = url;
-         }
-         if (!("tokenId" in data)) {
-            data.tokenId = data.token;
-         }
-         return data
-         } catch (err) {
-            console.log(err);
-         }
+      getAuth: async () => {
+         return new Promise((res) => {
+            const interval = setInterval(() => {
+               if (document.querySelector(".product-container")) {
+                  const acatToken = $cookies.get("acat");
+                  const catToken = $cookies.get("cat");
+                  const data = JSON.parse(window.atob(catToken || acatToken) || "{}");
+                  if (!("productId" in data)) {
+                     const url = location.href
+                        ?.split("/products/")[1]
+                        .split("/")[0]
+                        .split("?")[0];
+                     data.productId = url;
+                  }
+                  if (!("tokenId" in data)) {
+                     data.tokenId = data.token;
+                  }
+                  res(data);
+               }
+            }, 0);
+         });
       },
       getDeepSequencedPosts: (categories = []) => {
          return categories

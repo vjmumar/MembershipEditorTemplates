@@ -5238,6 +5238,7 @@ class CourseTemplate {
             data.productId = url;
          }
          if("tokenId" in data) {
+            console.log(data);
             window.savedAuth = data;
             return data;
          } else {

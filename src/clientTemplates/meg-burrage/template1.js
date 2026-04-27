@@ -4955,7 +4955,6 @@ class CourseTemplate {
          const userId = this.utils.getAuth()?.externalUserId;
          const storageName = `${productId}-categories`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "[]");
-         console.log(previousData)
          if (previousData.length > 0) return previousData;
          return await new Promise((resolved, reject) => {
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-purchase/categories?product_id=${productId}`;
@@ -4973,7 +4972,7 @@ class CourseTemplate {
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e.categories);
-                     sessionStorage.setItem(storageName, JSON.stringify(e.categories));
+                     sessionStorage.setItem(storageName, JSON.stringify(e.categories || []));
                   });
             } else {
                console.log("No Token Found! Categories!");

@@ -3847,12 +3847,12 @@ class CourseTemplate {
          const $container = await this.utils.waitForElement(".product-container", 0);
 
          // Then we will retrieve the necessary data
-         const [userData, userProductProgress, completedPosts, productCategories] =
+         const [userData, userProductProgress, productCategories, completedPosts] =
             await Promise.allSettled([
                this.data.fetchUser(),
                this.data.fetchUserProductProgress(),
-               this.data.fetchCompletedPosts(),
                this.data.fetchCategories(),
+               this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
 
          // Then we will process the categories data

@@ -1276,8 +1276,10 @@
                       * before activating preview mode
                       */
                      setTimeout(() => {
-                        if (this.isPreviewEditor && !window.MembershipPreview) {
-                           window.MembershipPreview = new MembershipPreview();
+                        if (this.isPreviewEditor) {
+                           if (!window.MembershipPreview) {
+                              window.MembershipPreview = new MembershipPreview();
+                           }
                         }
                      }, 2000);
                   }

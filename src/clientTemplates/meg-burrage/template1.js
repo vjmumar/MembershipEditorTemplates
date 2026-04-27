@@ -5115,7 +5115,6 @@ class CourseTemplate {
          });
       },
       fetchUser: async () => {
-         console.log(this.utils.getAuth());
          const productId = this.utils.getAuth()?.productId;
          const locationId = this.utils.getAuth()?.locationId;
          const token = this.utils.getAuth()?.tokenId;
@@ -5239,6 +5238,7 @@ class CourseTemplate {
          }
          if("tokenId" in data) {
             window.savedAuth = data;
+            return data;
          } else {
             return window.savedAuth || data
          }

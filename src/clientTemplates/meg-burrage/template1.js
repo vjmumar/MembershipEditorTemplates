@@ -3899,7 +3899,8 @@ class CourseTemplate {
 
          // Then we will fetch the category data and prepare the breadcrumbs
          const breadCrumbs = await (async () => {
-            const $el = await this.utils.waitForElement(
+           try {
+             const $el = await this.utils.waitForElement(
                "#product-breadcrumbs, #breadcrumb-container",
                0,
                50000,
@@ -3908,6 +3909,10 @@ class CourseTemplate {
                e.href = `/courses${e.getAttribute("href")}`;
             });
             return $el?.innerHTML;
+           } catch (err) {
+            console.log(err)
+            return ""
+           }
          })();
          const category = await this.data.fetchCategory();
          console.log(category);

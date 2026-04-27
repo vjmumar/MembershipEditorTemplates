@@ -4951,7 +4951,6 @@ class CourseTemplate {
          const productId = auth?.productId;
          const locationId = auth?.locationId;
          const token = auth?.tokenId;
-         console.log("categoriers", token);
          const contactId = auth?.contactId;
          const userId = auth?.externalUserId;
          const storageName = `${productId}-categories`;
@@ -5266,7 +5265,7 @@ class CourseTemplate {
                   clearInterval(interval);
                   res(data);
                }
-            }, 500);
+            }, 200);
          });
       },
       getDeepSequencedPosts: (categories = []) => {

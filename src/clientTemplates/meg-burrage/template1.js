@@ -5240,6 +5240,7 @@ class CourseTemplate {
             acatData.productId = url;
             catData.productId = url;
          }
+         console.log(acatData, catData);
          return acatData?.tokenId ? acatData : catData?.tokenId ? catData : randomData;
       },
       getDeepSequencedPosts: (categories = []) => {

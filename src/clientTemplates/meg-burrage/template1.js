@@ -5231,12 +5231,16 @@ class CourseTemplate {
       getAuth: () => {
          const acatToken = $cookies.get("acat");
          const catToken = $cookies.get("cat");
-         const data = JSON.parse(window.atob(catToken || acatToken) || "{}");
-         if (!("productId" in data)) {
+         const acatData = JSON.parse(window.atob(acatToken) || "{}");
+         const catData =  JSON.parse(window.atob(catToken) || "{}");
+         const randomData =  JSON.parse(window.atob(catToken || acatToken) || "{}");
+         if (!("productId" in randomData)) {
             const url = location.href?.split("/products/")[1].split("/")[0].split("?")[0];
-            data.productId = url;
+            randomData.productId = url;
+            acatData.productId = url;
+            catData.productId = url;
          }
-         return data;
+         return acatData?.tokenId ? acatData : catData?.tokenId ? catData : randomData;
       },
       getDeepSequencedPosts: (categories = []) => {
          return categories

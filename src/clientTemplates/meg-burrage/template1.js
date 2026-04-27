@@ -3901,6 +3901,7 @@ class CourseTemplate {
             const $el = await this.utils.waitForElement(
                "#product-breadcrumbs, #breadcrumb-container",
                0,
+               50000,
             );
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;
@@ -4010,6 +4011,7 @@ class CourseTemplate {
             const $el = await this.utils.waitForElement(
                "#product-breadcrumbs, #breadcrumb-container",
                0,
+               50000,
             );
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;
@@ -5228,7 +5230,7 @@ class CourseTemplate {
 
    // This object holds utility methods
    utils = {
-      waitForElement: (elementSelector = "", resolveDelay = 1000) => {
+      waitForElement: (elementSelector = "", resolveDelay = 1000, timeout = null) => {
          return new Promise((res) => {
             const interval = setInterval(() => {
                const $element = document.querySelector(elementSelector);
@@ -5240,12 +5242,18 @@ class CourseTemplate {
                }
                console.log("waiting for ", elementSelector);
             }, 0);
+
+            if (timeout) {
+               setTimeout(() => {
+                  res(true);
+               }, timeout);
+            }
          });
       },
       getAuth: async () => {
          return new Promise((res) => {
             const interval = setInterval(() => {
-               if (document.querySelector(".product-container, #app-container")) {
+               if (document.querySelector(".product-container")) {
                   const acatToken = $cookies.get("acat");
                   const catToken = $cookies.get("cat");
                   const data = JSON.parse(window.atob(catToken || acatToken) || "{}");

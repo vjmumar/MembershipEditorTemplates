@@ -3855,8 +3855,6 @@ class CourseTemplate {
                this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
          
-         console.log(productCategories);
-
          // Then we will process the categories data
          const categories = productCategories
             ?.filter((cat) => !cat?.parentCategory)
@@ -5250,7 +5248,7 @@ class CourseTemplate {
       getAuth: async () => {
          return new Promise((res) => {
             const interval = setInterval(() => {
-               if (document.querySelector(".product-container, #app-container")) {
+               if (document.querySelector(".product-container, #app-container") && window.$cookies) {
                   const acatToken = $cookies.get("acat");
                   const catToken = $cookies.get("cat");
                   const data = JSON.parse(window.atob(catToken || acatToken) || "{}");

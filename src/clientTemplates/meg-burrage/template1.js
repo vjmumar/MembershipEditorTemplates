@@ -4954,7 +4954,7 @@ class CourseTemplate {
          const contactId = this.utils.getAuth()?.contactId;
          const userId = this.utils.getAuth()?.externalUserId;
          const storageName = `${productId}-categories`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "[]");
          console.log(previousData, "cool")
          if (JSON.parse(previousData || []).length > 0) return previousData;
          return await new Promise((resolved, reject) => {

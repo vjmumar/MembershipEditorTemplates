@@ -6,7 +6,7 @@ export default {
          method: request.method,
          headers: {
             ...Object.fromEntries(request.headers),
-            host: "datkpik46teouarhlbpy.app.clientclub.net",
+            host: ghlOrigin,
          },
       });
       const contentType = ghlResponse.headers.get("content-type") || "";
@@ -14,6 +14,7 @@ export default {
          let html = await ghlResponse.text();
          let script = `
             <script>
+               const url = "${url.href}";
                const getAuth = () => {
                   return new Promise((res) => {
                      const interval = setInterval(() => {
@@ -31,7 +32,7 @@ export default {
                            clearInterval(interval)
                            res(data);
                         }
-                     }, 500);
+                     }, 0);
                   });
                };
                const fetchProduct = async () => {
@@ -39,8 +40,6 @@ export default {
                      const productId = auth?.productId;
                      const locationId = auth?.locationId;
                      const token = auth?.tokenId;
-                     const contactId = auth?.contactId;
-                     const userId = auth?.externalUserId;
                      return await new Promise((resolved, reject) => {
                         const url = \`https://services.leadconnectorhq.com/membership/locations/\${locationId}/products/\${productId}\`;
                         if (token) {
@@ -63,22 +62,28 @@ export default {
                         }
                      });
                   };
-               setTimeout(()=>document.body.classList.add("template-ready"),20000);
-               fetchProduct().then((data) => {
-                   const parser = new DOMParser();
-                   const doc = parser.parseFromString(data.customHeader, 'text/html');
-                   const parsed = doc.querySelector('script');
-                   const $headerScript = document.createElement('script');
-                   const $customJsScript = document.createElement('script');
-                   $headerScript.innerHTML = parsed.innerHTML;
-                   $customJsScript.innerHTML = data.customJs;
-                   document.body.append($customJsScript,$headerScript);
-               });
+               if (url.includes('/products/')) {               
+                  setTimeout(()=>document.body.classList.add("template-ready"),60000);
+                  fetchProduct().then((data) => {
+                      const parser = new DOMParser();
+                      const doc = parser.parseFromString(data.customHeader, 'text/html');
+                      const parsed = doc.querySelector('script');
+                      const $headerScript = document.createElement('script');
+                      const $customJsScript = document.createElement('script');
+                      $headerScript.innerHTML = parsed.innerHTML;
+                      $customJsScript.innerHTML = data.customJs;
+                      document.body.append($customJsScript,$headerScript);
+                      console.log('-');
+                  });
+               }
             </script>
          `;
+         const css = url.href.includes("/products/")
+            ? `<style>body:not(.template-ready){opacity:0!important}</style>`
+            : "";
          html = html.replace(
-            "<body>",
-            `<body><style>body:not(.template-ready){opacity:0!important}</style>${script}`,
+            "<head>",
+            `<head>${request.headers.get("Cookie") || ""}${css}${script}`,
          );
          return new Response(html, {
             status: ghlResponse.status,

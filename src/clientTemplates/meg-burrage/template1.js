@@ -4108,7 +4108,7 @@ class CourseTemplate {
                      }
                   }
                });
-               const postInsideCompletedPost = completedPosts.find(
+               const postInsideCompletedPost = completedPosts?.find(
                   (e) => e.postId === currentPost.id,
                );
                if (!postInsideCompletedPost) {

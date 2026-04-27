@@ -3802,7 +3802,6 @@ class CourseTemplate {
          document.head.append(fScript);
 
          // Then we will show the loader
-         console.log("isLoading")
          this.globalInitializers.initLoading(true);
 
          // Then we will append a class to the body indicating that the template is ready
@@ -3856,8 +3855,6 @@ class CourseTemplate {
                this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
 
-         console.log(productCategories);
-
          // Then we will process the categories data
          const categories = productCategories
             ?.filter((cat) => !cat?.parentCategory)
@@ -3896,8 +3893,7 @@ class CourseTemplate {
       initCategoryPostPage: async () => {
          // First we will wait for the product container
          const $container = await this.utils.waitForElement("#app-container", 100);
-   const category = await this.data.fetchCategory();
-         console.log(category);
+         const category = await this.data.fetchCategory();
 
          // Then we will fetch the category data and prepare the breadcrumbs
          const breadCrumbs = await (async () => {
@@ -3910,7 +3906,7 @@ class CourseTemplate {
             });
             return $el?.innerHTML;
          })();
-      
+
          // Then we will helper function to map posts to our data structure
          const generatePosts = (posts = []) => {
             return posts?.map((post) => ({
@@ -5270,7 +5266,7 @@ class CourseTemplate {
                   clearInterval(interval);
                   res(data);
                }
-            }, 1000);
+            }, 500);
          });
       },
       getDeepSequencedPosts: (categories = []) => {

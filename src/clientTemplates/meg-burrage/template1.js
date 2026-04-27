@@ -5007,6 +5007,7 @@ class CourseTemplate {
          });
       },
       fetchCompletedPosts: async () => {
+         console.log(this.utils.getAuth());
          const productId = this.utils.getAuth()?.productId;
          const locationId = this.utils.getAuth()?.locationId;
          const token = this.utils.getAuth()?.tokenId;

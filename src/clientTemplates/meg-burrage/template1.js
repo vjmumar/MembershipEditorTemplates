@@ -3834,7 +3834,7 @@ class CourseTemplate {
          setTimeout(() => {
             this.globalInitializers.initLoading(false);
          }, 1000);
-      },
+      }, 
 
       initStyles: () => {
          // !Note: Use https://unminify.com/ to uncompress the styles, and use https://www.textfixer.com/html/compress-html-compression.php to compress again
@@ -5248,9 +5248,9 @@ class CourseTemplate {
       getAuth: async () => {
          return new Promise((res) => {
             const interval = setInterval(() => {
-               if (document.querySelector(".product-container, #app-container") && window.$cookies) {
-                  const acatToken = $cookies.get("acat");
-                  const catToken = $cookies.get("cat");
+               if (document.querySelector(".product-container, #app-container") && window?.$cookies) {
+                  const acatToken = window?.$cookies?.get("acat");
+                  const catToken = window?.$cookies?.get("cat");
                   const data = JSON.parse(window.atob(catToken || acatToken) || "{}");
                   if (!("productId" in data)) {
                      const url = location.href

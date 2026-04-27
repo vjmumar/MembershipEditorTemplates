@@ -5241,9 +5241,10 @@ class CourseTemplate {
                   }, resolveDelay);
                }
                console.log("waiting for ", elementSelector);
-            }, 0);
+            }, 200);
             if (timeout) {
                setTimeout(() => {
+                  clearInterval(interval);
                   res(true);
                }, timeout);
             }

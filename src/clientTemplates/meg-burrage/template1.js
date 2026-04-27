@@ -5228,7 +5228,8 @@ class CourseTemplate {
          });
       },
       getAuth: () => {
-         const acatToken = $cookies.get("acat");
+         try {
+            const acatToken = $cookies.get("acat");
          const catToken = $cookies.get("cat");
          const catData = parse(window.atob(catToken) || "{}");
          const acatData = parse(window.atob(catToken) || "{}");
@@ -5239,6 +5240,9 @@ class CourseTemplate {
          }
          conosole.log(catData, acatData)
          return data
+         } catch (err) {
+            console.log(err);
+         }
       },
       getDeepSequencedPosts: (categories = []) => {
          return categories

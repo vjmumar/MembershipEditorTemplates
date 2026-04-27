@@ -3854,6 +3854,7 @@ class CourseTemplate {
                this.data.fetchCategories(),
                this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
+            console.log(userData, userProductProgress, productCategories, completedPosts);
 
          // Then we will process the categories data
          const categories = productCategories
@@ -5232,7 +5233,6 @@ class CourseTemplate {
          const acatToken = $cookies.get("acat");
          const catToken = $cookies.get("cat");
          const data =  JSON.parse(window.atob(catToken || acatToken) || "{}");
-         console.log(data)
          if (!("productId" in data)) {
             const url = location.href?.split("/products/")[1].split("/")[0].split("?")[0];
             data.productId = url;

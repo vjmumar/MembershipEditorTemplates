@@ -5271,4 +5271,6 @@ class CourseTemplate {
    };
 }
 
-window.CourseTemplate = new CourseTemplate();
+if (!window.CourseTemplate) {
+   window.CourseTemplate = new CourseTemplate();
+}

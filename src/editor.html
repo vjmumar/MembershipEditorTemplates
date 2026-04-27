@@ -3917,6 +3917,11 @@
       };
    }
 
-   window.MembershipParser = new MembershipParser();
-   window.MembershipEditor = new MembershipEditor();
+   if (!window.MembershipParser) {
+      window.MembershipParser = new MembershipParser();
+   }
+
+   if (!window.MembershipEditor) {
+      window.MembershipEditor = new MembershipEditor();
+   }
 </script>

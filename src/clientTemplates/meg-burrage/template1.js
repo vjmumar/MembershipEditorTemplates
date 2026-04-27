@@ -3909,6 +3909,7 @@ class CourseTemplate {
             return $el?.innerHTML;
          })();
          const category = await this.data.fetchCategory();
+         console.log(category);
 
          // Then we will helper function to map posts to our data structure
          const generatePosts = (posts = []) => {

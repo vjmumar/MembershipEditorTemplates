@@ -4886,7 +4886,7 @@ class CourseTemplate {
                      sessionStorage.setItem(storageName, JSON.stringify(e));
                   });
             } else {
-               console.log("No Token Found!");
+               console.log("No Token Found! Product!");
             }
          });
       },
@@ -4940,7 +4940,7 @@ class CourseTemplate {
                      sessionStorage.setItem(storageName, JSON.stringify(e));
                   });
             } else {
-               console.log("No Token Found!");
+               console.log("No Token Found! Category!");
             }
          });
       },
@@ -4972,7 +4972,7 @@ class CourseTemplate {
                      sessionStorage.setItem(storageName, JSON.stringify(e.categories));
                   });
             } else {
-               console.log("No Token Found!");
+               console.log("No Token Found! Categories!");
             }
          });
       },
@@ -5002,7 +5002,7 @@ class CourseTemplate {
                      resolved(e);
                   });
             } else {
-               console.log("No Token Found!");
+               console.log("No Token Found! Post!");
             }
          });
       },
@@ -5034,7 +5034,7 @@ class CourseTemplate {
                      sessionStorage.setItem(storageName, JSON.stringify(e));
                   });
             } else {
-               console.log("No Token Found!");
+               console.log("No Token Found! Completed Posts!");
             }
          });
       },
@@ -5073,7 +5073,7 @@ class CourseTemplate {
                      resolved(e);
                   });
             } else {
-               console.log("No Token Found!");
+               console.log("No Token Found! Product Progress!");
             }
          });
       },
@@ -5110,7 +5110,7 @@ class CourseTemplate {
                      resolved(e);
                   });
             } else {
-               console.log("No Token Found!");
+               console.log("No Token Found! Category Progress!");
             }
          });
       },
@@ -5149,7 +5149,7 @@ class CourseTemplate {
                      sessionStorage.setItem(storageName, JSON.stringify(e));
                   });
             } else {
-               console.log("No Token Found!");
+               console.log("No Token Found! User!");
             }
          });
       },
@@ -5235,7 +5235,6 @@ class CourseTemplate {
             const url = location.href?.split("/products/")[1].split("/")[0].split("?")[0];
             data.productId = url;
          }
-         console.log(data, "tada");
          return data;
       },
       getDeepSequencedPosts: (categories = []) => {

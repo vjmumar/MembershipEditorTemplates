@@ -5007,7 +5007,6 @@ class CourseTemplate {
          });
       },
       fetchCompletedPosts: async () => {
-         console.log(this.utils.getAuth());
          const productId = this.utils.getAuth()?.productId;
          const locationId = this.utils.getAuth()?.locationId;
          const token = this.utils.getAuth()?.tokenId;
@@ -5237,6 +5236,7 @@ class CourseTemplate {
             const url = location.href?.split("/products/")[1].split("/")[0].split("?")[0];
             data.productId = url;
          }
+         console.log(acatToken, catToken)
          if("tokenId" in data) {
             console.log(data);
             window.savedAuth = data;

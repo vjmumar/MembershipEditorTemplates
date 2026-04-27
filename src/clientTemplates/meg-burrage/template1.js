@@ -5245,7 +5245,7 @@ class CourseTemplate {
       getAuth: async () => {
          return new Promise((res) => {
             const interval = setInterval(() => {
-               if (document.querySelector(".product-container")) {
+               if (document.querySelector(".product-container, #app-container")) {
                   const acatToken = $cookies.get("acat");
                   const catToken = $cookies.get("cat");
                   const data = JSON.parse(window.atob(catToken || acatToken) || "{}");

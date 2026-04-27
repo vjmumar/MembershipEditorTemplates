@@ -1,6 +1,5 @@
 <script>
   if (!window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID) {
-    console.log("test")
     window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID="meg-burrage";
     if(location.href.includes('/courses/products/')){
       document.head.insertAdjacentHTML('beforeend',`<style>body:not(.template-ready){opacity:0!important}</style>`);

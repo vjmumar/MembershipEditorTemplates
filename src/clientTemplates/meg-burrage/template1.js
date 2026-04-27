@@ -5236,14 +5236,10 @@ class CourseTemplate {
             const url = location.href?.split("/products/")[1].split("/")[0].split("?")[0];
             data.productId = url;
          }
-         console.log(acatToken, catToken, data)
-         if("tokenId" in data) {
-            console.log(data);
-            window.savedAuth = data;
-            return data;
-         } else {
-            return window.savedAuth || data
+         if (!("tokenId" in data)) {
+            data.tokenId = data.token;
          }
+         return data
          } catch (err) {
             console.log(err);
          }

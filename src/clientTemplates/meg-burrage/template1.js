@@ -3895,22 +3895,21 @@ class CourseTemplate {
       initCategoryPostPage: async () => {
          // First we will wait for the product container
          const $container = await this.utils.waitForElement("#app-container", 100);
+   const category = await this.data.fetchCategory();
+         console.log(category);
 
          // Then we will fetch the category data and prepare the breadcrumbs
          const breadCrumbs = await (async () => {
             const $el = await this.utils.waitForElement(
                "#product-breadcrumbs, #breadcrumb-container",
                0,
-               5000,
             );
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;
             });
             return $el?.innerHTML;
          })();
-         const category = await this.data.fetchCategory();
-         console.log(category);
-
+      
          // Then we will helper function to map posts to our data structure
          const generatePosts = (posts = []) => {
             return posts?.map((post) => ({
@@ -4012,7 +4011,6 @@ class CourseTemplate {
             const $el = await this.utils.waitForElement(
                "#product-breadcrumbs, #breadcrumb-container",
                0,
-               5000,
             );
             $el?.querySelectorAll("a").forEach((e) => {
                e.href = `/courses${e.getAttribute("href")}`;

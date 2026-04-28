@@ -42,7 +42,7 @@ export default {
             const token = acat || cat;
             const parsedToken = decodeToken(token);
             script = `
-            script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.10/dist/dotlottie-wc.js" type="module"></script>
+            <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.10/dist/dotlottie-wc.js" type="module"></script>
             <script>
                const url = '${url.href}';
                const fetchProduct = async () => {
@@ -82,9 +82,7 @@ export default {
             </script>
          `;
          }
-         const css = url.href.includes("/courses/products/")
-            ? `<style>body:not(.template-ready){opacity:0!important}</style>`
-            : "";
+         const css = "";
          const loader = `
             <div
               class="template-loader"
@@ -92,7 +90,7 @@ export default {
             >
               <dotlottie-wc
                 src="https://lottie.host/5947091c-caae-4663-94b5-a68817f9e24e/Tkb1qTZsPV.lottie"
-                style="width:200px;height:200px"
+                style="width:150px;height:150px"
                 autoplay
                 loop
               ></dotlottie-wc>

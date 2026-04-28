@@ -3520,12 +3520,10 @@ class CourseTemplate {
       },
       initNavBar: async ($container = null) => {
          // First we will fetch the necessary data
-         // const [userData, product] = await Promise.allSettled([
-         //    this.data.fetchUser(),
-         //    this.data.fetchProduct(),
-         // ]).then((res) => res.map((e) => e.value));
-         let userData = {};
-         let product = {};
+         const [userData, product] = await Promise.allSettled([
+            this.data.fetchUser(),
+            this.data.fetchProduct(),
+         ]).then((res) => res.map((e) => e.value));
 
          // Then we will create the default variables
          const logo =
@@ -3567,7 +3565,7 @@ class CourseTemplate {
                         <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
                     </header>
                 `;
-         document.body?.insertAdjacentHTML("afterbegin", html);
+         $container?.insertAdjacentHTML("afterbegin", html);
       },
       initSidebar: async ($container = null) => {
          // First we will fetch all necessary data
@@ -3841,7 +3839,7 @@ class CourseTemplate {
 
       initLandingPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app");
+         const $container = await this.utils.waitForElement("#app", 0);
 
          this.globalInitializers.initNavBar($container);
          this.globalInitializers.initSidebar($container);

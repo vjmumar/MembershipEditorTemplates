@@ -87,12 +87,12 @@ export default {
          const loader = `
             <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.10/dist/dotlottie-wc.js" type="module"></script>
             <div
-              id="template-loader"
+              class="template-loader"
               style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:2147483647;display:grid;place-items:center;background:#fff;"
             >
               <dotlottie-wc
                 src="https://lottie.host/5947091c-caae-4663-94b5-a68817f9e24e/Tkb1qTZsPV.lottie"
-                style="width:300px;height:300px"
+                style="width:200px;height:200px"
                 autoplay
                 loop
               ></dotlottie-wc>

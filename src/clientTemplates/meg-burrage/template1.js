@@ -3839,10 +3839,8 @@ class CourseTemplate {
 
       initLandingPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app", 0);
+         const $container = await this.utils.waitForElement("#app");
 
-         this.globalInitializers.initNavBar($container);
-         this.globalInitializers.initSidebar($container);
          // Then we will retrieve the necessary data
          const [userData, userProductProgress, productCategories, completedPosts] =
             await Promise.allSettled([
@@ -3881,10 +3879,12 @@ class CourseTemplate {
          `;
 
          // Finally we will invoke the necessary initializers
-         this.desktopInitializers.initStyles();
-         this.globalInitializers.initNavBar($container);
-         this.globalInitializers.initSidebar($container);
-         document.body.classList.add("page-dashboard");
+         setTimeout(() => {
+            this.desktopInitializers.initStyles();
+            this.globalInitializers.initNavBar($container);
+            this.globalInitializers.initSidebar($container);
+            document.body.classList.add("page-dashboard");
+         });
       },
 
       initCategoryPostPage: async () => {

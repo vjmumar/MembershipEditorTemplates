@@ -3520,11 +3520,12 @@ class CourseTemplate {
       },
       initNavBar: async ($container = null) => {
          // First we will fetch the necessary data
-         const [userData, product] = await Promise.allSettled([
+         const [ Promise,  Promise] = await Promise.allSettled([
             this.data.fetchUser(),
             this.data.fetchProduct(),
          ]).then((res) => res.map((e) => e.value));
-         conosole.log(userData, product)
+
+         console.log($container)
 
          // Then we will create the default variables
          const logo =

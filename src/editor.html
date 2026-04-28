@@ -3232,7 +3232,7 @@
             // First we will confirm the user's intent to switch template
             if (
                !confirm(
-                  "Do you want to proceed resetting the current template to default?",
+                  "Do you want to proceed with restoring the current template to default?",
                )
             )
                return;
@@ -3243,12 +3243,8 @@
             const activePageOnTemplate =
                previewIframeMembershipParser.activePageOnTemplate;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
-             const templates = previewIframeMembershipParser.templates;
-            const defaultConfigOfCurrentTemplate = templates.find((e) => e.id === activeTemplate.id);
             const activeTemplatesConfig =
                this.$iframe.contentWindow.activeTemplatesConfig;
-               console.log(defaultConfigOfCurrentTemplate);
-               return;
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
             const auth = await this.utils.getAuth();
@@ -3267,14 +3263,13 @@
 
                   // Then we will create a variable where we will store the updated window?.activeTemplatesConfig
                   let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
-
+                  console.log(activeTemplate)
                   // Then we will reset
                   updatedActiveTemplatesConfig.forEach((template) => {
                      if (template.id === activePageOnTemplate.id) {
                         template = {
                            id: selectedTemplate.id,
-                           isActive: true,
-                           ...defaultConfigOfCurrentTemplate
+                           
                         };
                      }
                   });

@@ -1692,7 +1692,7 @@
                };
             } else {
                // Fallback: If in preview but not in edit mode, show the floating toggle (if not already present).
-               if (!this.isPreviewEditor && location.href.includes("token")) {
+               if (!this.isPreviewEditor) {
                   this.initializers.initFloatingWidgetToggler();
                }
             }
@@ -3924,10 +3924,8 @@
 
    if (!window.MembershipEditor) {
       const membershipEditorInterval = setInterval(() => {
-         console.log('ASD',sessionStorage?.is_preview)
          if (sessionStorage?.is_preview) {
             clearInterval(membershipEditorInterval);
-            console.log("waiting...");
             window.MembershipEditor = new MembershipEditor();
          }
       },500);

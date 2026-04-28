@@ -3742,7 +3742,7 @@ class CourseTemplate {
                             position: fixed;
                             top: 0; 
                             left: 0; 
-                            display: flex;
+                            display: flex !important;
                             width: 100vw; 
                             height: 100vh;
                             background-color: #ffffff;
@@ -3805,9 +3805,9 @@ class CourseTemplate {
          this.globalInitializers.initLoading(true);
 
          // Then we will append a class to the body indicating that the template is ready
-         // setTimeout(() => {
-         //    document.body.classList.add("template-ready");
-         // }, 500);
+         setTimeout(() => {
+            document.body.classList.add("template-ready");
+         }, 500);
 
          // Then we will check the URL against regex patterns to determine which page view to load
          if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {

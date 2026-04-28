@@ -3839,7 +3839,7 @@ class CourseTemplate {
 
       initLandingPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#product-container");
+         const $container = await this.utils.waitForElement(".product-container");
 
          // Then we will retrieve the necessary data
          const [userData, userProductProgress, productCategories, completedPosts] =

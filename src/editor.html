@@ -1069,8 +1069,8 @@
             await fetch(
                `https://membershipeditor.netlify.app/src/clientTemplates/${window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID}/templates.json`,
                {
-                  priority: "high"
-               }
+                  priority: "high",
+               },
             )
                ?.then((e) => e.json())
                ?.then((e) => {
@@ -1079,11 +1079,9 @@
 
             // Then, we retrieve any saved template changes from media storage and inject them into the document.
             if (window?.savedTemplatesFileInfo?.url) {
-               await fetch(window?.savedTemplatesFileInfo?.url, 
-                  {
-                     priority: "high"
-                  }
-               )
+               await fetch(window?.savedTemplatesFileInfo?.url, {
+                  priority: "high",
+               })
                   ?.then((e) => e.text())
                   ?.then((e) => {
                      const script = document.createElement("script");
@@ -1685,7 +1683,6 @@
                // First, retrieve the main app and app-container elements.
                const $app = document.querySelector("#app");
                const $appContainer = await this.utils.waitForElement("#app-container", 0);
-               console.log($appContainer);
 
                // Then, generate and sanitize the URL for the preview.
                const url = new URL(location.href);
@@ -1696,6 +1693,9 @@
 
                // Then, clear the existing UI to make room for the iframe editor.
                if ($appContainer) $appContainer.remove();
+
+               // Then, clear the template loader
+               document.querySelector(".template-loader")?.remove();
 
                // Then, create an iframe to load the current page in edit mode and append it to the app.
                this.$iframe = document.createElement("iframe");
@@ -2581,6 +2581,7 @@
                   headers: {
                      accept: "application/json",
                   },
+                  priority: "high",
                   method: "GET",
                })
                   .then((e) => e.json())
@@ -3073,6 +3074,7 @@
                         "sourceid": locationId,
                         "version": "2021-07-28",
                      },
+                     priority: "high",
                      body: JSON.stringify({
                         customJs: `window.savedTemplatesFileInfo = ${JSON.stringify(fileData)}`,
                      }),
@@ -3208,6 +3210,7 @@
                         "sourceid": locationId,
                         "version": "2021-07-28",
                      },
+                     priority: "high",
                      body: JSON.stringify({
                         customJs: `window.savedTemplatesFileInfo = ${JSON.stringify(fileData)}`,
                      }),
@@ -3257,6 +3260,7 @@
                         "Content-Type": "application/json",
                         "token-id": this.token,
                      },
+                     priority: "high",
                      body: JSON.stringify({
                         name: fileName,
                         contentType: "text/plain",
@@ -3274,6 +3278,7 @@
                   headers: {
                      "Content-Type": "text/plain",
                   },
+                  priority: "high",
                   body: blob,
                });
                const validateResponse = await fetch(
@@ -3287,6 +3292,7 @@
                         "Content-Type": "application/json",
                         "token-id": this.token,
                      },
+                     priority: "high",
                      body: JSON.stringify({
                         altId: String(locationId),
                         altType: "location",
@@ -3307,6 +3313,7 @@
                      "Content-Type": "application/json",
                      "token-id": this.token,
                   },
+                  priority: "high",
                   body: JSON.stringify({
                      altId: String(previewIframeMembershipSavedTemplatesFileInfo?.altId),
                      altType: previewIframeMembershipSavedTemplatesFileInfo?.altType,

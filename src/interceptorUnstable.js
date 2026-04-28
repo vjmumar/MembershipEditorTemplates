@@ -16,11 +16,16 @@ export default {
             const cookie = request.headers.get("Cookie");
             return cookie
                ?.split(";")
-               ?.find((e) => e.includes(`${name}=`))
-               ?.split("=")[1]
+               ?.map((part) => part.trim())
+               ?.find((part) => part.split("=")[0] === name)
+               ?.split("=")
+               ?.slice(1)
+               ?.join("=")
                ?.trim();
          };
-         const token = getCookie("cat");
+         const acat = getCookie("acat");
+         const cat = getCookie("cat");
+         const token = getCookie("cat") || getCookie("acat");
          const productId = getCookie("productId");
          const locationId = getCookie("locationId");
          let script = "";
@@ -45,7 +50,7 @@ export default {
                return productRes;
             })();
             script = `
-            <script>window.cookieStore.set("acat",'${token}');</script>
+            <script>window.cookieStore.set("acat",'${acat}'); window.cookieStore.set("cat",'${cat}');</script>
             <script>${product.customJs}</script>
             ${product.customHeader}
             <script>

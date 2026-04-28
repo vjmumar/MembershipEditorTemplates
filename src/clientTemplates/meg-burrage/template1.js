@@ -3690,10 +3690,8 @@ class CourseTemplate {
                 `;
 
          // Finally we will inject the sidebar and attach event listeners for interactivity
-         ($container || document.querySelector("#app")).insertAdjacentHTML(
-            "beforebegin",
-            html,
-         );
+         console.log($container)
+         $container.insertAdjacentHTML("beforebegin", html);
          setTimeout(() => {
             document.body.addEventListener("click", (e) => {
                if (

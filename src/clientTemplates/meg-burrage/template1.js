@@ -9,64 +9,6 @@ window.templateCustomizationSchema = {
       "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
    global: [
       {
-         name: "Loading Overlay",
-         showOnMobileEditor: true,
-         customizations: [
-            {
-               elementSelector: ".template-loader-overlay",
-               label: "Container",
-               key: "loading-overlay-container",
-               cssCustomizations: [
-                  {
-                     name: "Display",
-                     property: "display",
-                     type: "select",
-                     options: ["flex", "none"],
-                     important: true,
-                     value: "none",
-                  },
-                  {
-                     name: "Background Color",
-                     property: "background-color",
-                     type: "color",
-                     important: true,
-                     placeholder: "#FEFEFF",
-                     value: "",
-                  },
-               ],
-            },
-            {
-               elementSelector: ".template-loader-overlay__logo",
-               label: "Logo",
-               key: "loading-overlay-logo",
-               cssCustomizations: [
-                  {
-                     name: "Width",
-                     property: "width",
-                     type: "text",
-                     placeholder: "E.g: 500px",
-                     value: "",
-                  },
-                  {
-                     name: "Height",
-                     property: "height",
-                     type: "text",
-                     placeholder: "E.g: 500px",
-                     value: "",
-                  },
-               ],
-               elementCustomizations: [
-                  {
-                     name: "Image Src",
-                     type: "attribute",
-                     target: "src",
-                     value: "",
-                  },
-               ],
-            },
-         ],
-      },
-      {
          name: "Navbar",
          showOnMobileEditor: true,
          customizations: [
@@ -3726,68 +3668,6 @@ class CourseTemplate {
             });
          }, 500);
       },
-      initLoading: (shouldShow = true) => {
-         // First we will generate the css
-         const css = `
-                    <style id="loader-styles">
-                        .template-loader {
-                           display: none;
-                        }
-
-                        .template-loader.active {
-                           display: block !important;
-                        }
-                           
-                        .template-loader-overlay {
-                            position: fixed;
-                            top: 0; 
-                            left: 0; 
-                            display: flex;
-                            width: 100vw; 
-                            height: 100vh;
-                            background-color: #ffffff;
-                            z-index: 2147483647;
-                            align-items: center;
-                            justify-content: center;
-                            transition: opacity 0.5s ease-out, visibility 0.5s;
-                        }
-
-                        .template-loader-overlay__logo {
-                            width: 150px;
-                            height: auto;
-                            animation: breathe-animation 3s infinite ease-in-out;
-                        }
-
-                        @keyframes breathe-animation {
-                            0% { transform: scale(1); opacity: 0.5; }
-                            50% { transform: scale(1.1); opacity: 1; }
-                            100% { transform: scale(1); opacity: 0.5; }
-                        }
-                    </style>
-                `;
-
-         // Then we will generate the html
-         const html = `
-                    <div class="template-loader-overlay">
-                        <img src="https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png" class="template-loader-overlay__logo" alt="Loading..." />
-                    </div>
-                `;
-
-         // Then we will inject the css and js
-         if (!document.querySelector(".template-loader")) {
-            document.body.insertAdjacentHTML(
-               "beforeend",
-               `<div class="template-loader active">${css}${html}</div>`,
-            );
-         }
-
-         // Finally we will conditionally show/hide the loader
-         setTimeout(() => {
-            document
-               .querySelector(".template-loader")
-               .classList[shouldShow ? "add" : "remove"]("active");
-         }, 0);
-      },
    };
 
    // This object holds desktop related initializers
@@ -3800,9 +3680,6 @@ class CourseTemplate {
          const fScript = document.createElement("script");
          fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
          document.head.append(fScript);
-
-         // Then we will show the loader
-         this.globalInitializers.initLoading(true);
 
          // Then we will append a class to the body indicating that the template is ready
          setTimeout(() => {
@@ -3830,9 +3707,9 @@ class CourseTemplate {
             console.log("No page found");
          }
 
-         // Finally we will hide the loader
+         // Finally we will remove the intial loader
          setTimeout(() => {
-            this.globalInitializers.initLoading(false);
+            document.querySelector(".template-loader")?.remove();
          }, 1000);
       },
 
@@ -4179,9 +4056,6 @@ class CourseTemplate {
          fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
          document.head.append(fScript);
 
-         // Then we will show the loader
-         this.globalInitializers.initLoading(true);
-
          // Then we will append a class to the body indicating that the template is ready
          setTimeout(() => {
             document.body.classList.add("template-ready");
@@ -4198,9 +4072,9 @@ class CourseTemplate {
             await this.mobileInitializers.initPostPage();
          }
 
-         // Finally we will hide the loader
+         // Finally we will remove the intial loader
          setTimeout(() => {
-            this.globalInitializers.initLoading(false);
+            document.querySelector(".template-loader")?.remove();
          }, 1000);
       },
 

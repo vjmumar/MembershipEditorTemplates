@@ -42,6 +42,7 @@ export default {
             const token = acat || cat;
             const parsedToken = decodeToken(token);
             script = `
+            script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.10/dist/dotlottie-wc.js" type="module"></script>
             <script>
                const url = '${url.href}';
                const fetchProduct = async () => {
@@ -85,7 +86,6 @@ export default {
             ? `<style>body:not(.template-ready){opacity:0!important}</style>`
             : "";
          const loader = `
-            <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.10/dist/dotlottie-wc.js" type="module"></script>
             <div
               class="template-loader"
               style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:2147483647;display:grid;place-items:center;background:#fff;"

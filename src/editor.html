@@ -3923,6 +3923,8 @@
    }
 
    if (!window.MembershipEditor) {
-      window.MembershipEditor = new MembershipEditor();
+      setTimeout(() => {
+         window.MembershipEditor = new MembershipEditor();
+      },2000);
    }
 </script>

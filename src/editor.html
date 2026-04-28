@@ -1681,6 +1681,7 @@
                 await this.utils.whenElementReady("#app-container", () => {});
                const $app = document.querySelector("#app");
                const $appContainer = document.querySelector("#app-container");
+               console.log($appContainer)
 
                // Then, generate and sanitize the URL for the preview.
                const url = new URL(location.href);

@@ -3923,6 +3923,15 @@
    }
 
    if (!window.MembershipEditor) {
-      window.MembershipEditor = new MembershipEditor();
+      const membershipEditorInterval = setInterval(() => {
+         if (sessionStorage?.is_preview) {
+            clearInterval(membershipEditorInterval);
+            console.log("waiting...");
+            window.MembershipEditor = new MembershipEditor();
+         }
+      },500);
+      setTimeout(() => {
+         clearInterval(membershipEditorInterval)
+      },5000);
    }
 </script>

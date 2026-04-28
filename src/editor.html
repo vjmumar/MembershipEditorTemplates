@@ -2322,12 +2322,10 @@
                        <div class="editor-customizer-item__form">
                            <div class="editor-customizer-item__form__item" data-category-type="contents">
                                ${elementCustomizationHTML || formItemFallbackHTML}
+                               ${featuresHTML}
                            </div>
                            <div class="editor-customizer-item__form__item active" data-category-type="styles">
                                ${cssCustomizationHtml || formItemFallbackHTML}
-                           </div>
-                           <div class="editor-customizer-item__form__item" data-category-type="advance">
-                               ${featuresHTML || formItemFallbackHTML}
                            </div>
                        </div>
                    `;
@@ -2391,7 +2389,7 @@
                            <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipEditor.initializers.initializeThemeSelector()"></i>
                        </div>
                        <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeListOfEditablePages()">
-                          <p>Switch Page</p>
+                          <p>Switch Level</p>
                           <i class="fa-solid fa-angle-right"></i>
                        </div>
                         <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeAdvanceSettings()">

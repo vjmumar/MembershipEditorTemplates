@@ -3922,7 +3922,7 @@
       window.MembershipParser = new MembershipParser();
    }
 
-   if (!window.MembershipEditor) {
+   window.addEventListener("load", () => {
       window.MembershipEditor = new MembershipEditor();
-   }
+   });
 </script>

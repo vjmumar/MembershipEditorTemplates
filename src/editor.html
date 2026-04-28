@@ -1055,7 +1055,6 @@
          this.templates = [];
          this.activeTemplate = null;
          this.activePageOnTemplate = null;
-         this.token = "";
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
          this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
@@ -1235,11 +1234,6 @@
                // Finally, we invoke the main application initializer.
                this.initializers.init();
             };
-
-            // Finally, we retrieve the authentication token by parsing the product data from the cookies.
-            this.utils.getAuth().then((e) => {
-               this.token = e.tokenId;
-            });
          })();
       }
 
@@ -1668,7 +1662,6 @@
          this.$iframe = null;
          this.isDesktop = true;
          this.initializers.init();
-         this.token = "";
       }
 
       // Initializer module
@@ -1678,7 +1671,7 @@
             // First, check if the page is in preview mode; if not, exit the method.
             if (!this.isPagePreview) return;
 
-            // Then, determine if we need to launch the full Editor or just the toggle widget.
+            // Finally, determine if we need to launch the full Editor or just the toggle widget.
             if (this.isEdit) {
                // First, retrieve the main app and app-container elements.
                const $app = document.querySelector("#app");
@@ -1732,12 +1725,6 @@
                   this.initializers.initFloatingWidgetToggler();
                }
             }
-
-            // Finally we will retrieve the token
-            this.utils.getAuth().then((e) => {
-               console.log(e)
-               this.token = e.tokenId;
-            });
          },
 
          // This method is responsible for showing the floating widget that toggles the page into editing
@@ -3017,7 +3004,7 @@
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
 
             // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
-            if (this.token) {
+            if (auth?.tokenId) {
                try {
                   // First we will create a variable where we will store the updated window.activeTemplatesConfig
                   let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
@@ -3070,7 +3057,7 @@
                         "authority": "services.leadconnectorhq.com",
                         "accept": "application/json, text/plain, */*",
                         "accept-language": "en-US,en;q=0.9",
-                        "authorization": `Bearer ${this.token}`,
+                        "authorization": `Bearer ${auth?.tokenId}`,
                         "content-type": "application/json",
                         "origin": "https://backend.memberships.apisystem.tech",
                         "referer": "https://backend.memberships.apisystem.tech/",
@@ -3138,7 +3125,7 @@
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
 
             // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
-            if (this.token) {
+            if (auth?.tokenId) {
                try {
                   // First we will save the current changes of the current template
                   await this.actions.saveEditsToProductsCustomJs(true);
@@ -3206,7 +3193,7 @@
                         "authority": "services.leadconnectorhq.com",
                         "accept": "application/json, text/plain, */*",
                         "accept-language": "en-US,en;q=0.9",
-                        "authorization": `Bearer ${this.token}`,
+                        "authorization": `Bearer ${auth?.tokenId}`,
                         "content-type": "application/json",
                         "origin": "https://backend.memberships.apisystem.tech",
                         "referer": "https://backend.memberships.apisystem.tech/",
@@ -3270,7 +3257,7 @@
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
 
             // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
-            if (this.token) {
+            if (auth?.tokenId) {
                try {
                   // Then we will toggle the selector to disabled state
                   document.querySelector(selectorToToggle).style.cssText =
@@ -3310,7 +3297,7 @@
                         "authority": "services.leadconnectorhq.com",
                         "accept": "application/json, text/plain, */*",
                         "accept-language": "en-US,en;q=0.9",
-                        "authorization": `Bearer ${this.token}`,
+                        "authorization": `Bearer ${auth?.tokenId}`,
                         "content-type": "application/json",
                         "origin": "https://backend.memberships.apisystem.tech",
                         "referer": "https://backend.memberships.apisystem.tech/",
@@ -3366,7 +3353,7 @@
                         "Source": "WEB_USER",
                         "Channel": "APP",
                         "Content-Type": "application/json",
-                        "token-id": this.token,
+                        "token-id": auth?.tokenId,
                      },
                      priority: "high",
                      body: JSON.stringify({
@@ -3398,7 +3385,7 @@
                         "Source": "WEB_USER",
                         "Channel": "APP",
                         "Content-Type": "application/json",
-                        "token-id": this.token,
+                        "token-id": auth?.tokenId,
                      },
                      priority: "high",
                      body: JSON.stringify({
@@ -3419,7 +3406,7 @@
                      "Source": "WEB_USER",
                      "Channel": "APP",
                      "Content-Type": "application/json",
-                     "token-id": this.token,
+                     "token-id": auth?.tokenId,
                   },
                   priority: "high",
                   body: JSON.stringify({

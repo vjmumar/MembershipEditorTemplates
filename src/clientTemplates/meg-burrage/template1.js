@@ -3524,6 +3524,7 @@ class CourseTemplate {
             this.data.fetchUser(),
             this.data.fetchProduct(),
          ]).then((res) => res.map((e) => e.value));
+         conosole.log(userData, product)
 
          // Then we will create the default variables
          const logo =
@@ -3839,7 +3840,7 @@ class CourseTemplate {
 
       initLandingPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app", 500)
+         const $container = await this.utils.waitForElement("#app");
 
          this.globalInitializers.initNavBar($container);
          this.globalInitializers.initSidebar($container);

@@ -2999,6 +2999,7 @@
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
             const auth = await this.utils.getAuth();
+            console.log(auth)
             const locationId = auth?.locationId;
             const productId = auth?.productId;
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
@@ -4089,7 +4090,6 @@
                         data.tokenId = data.token;
                      }
                      clearInterval(interval);
-                     console.log(data);
                      res(data);
                   }
                }, 0);

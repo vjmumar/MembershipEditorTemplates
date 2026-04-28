@@ -25,26 +25,36 @@ export default {
                   ?.join("=")
                   ?.trim();
             };
+            const decodeToken = (token) => {
+               if (!token) return null;
+               try {
+                  const decoded = atob(decodeURIComponent(token));
+                  return JSON.parse(decoded);
+               } catch (error) {
+                  console.error("Invalid token cookie", error);
+                  return null;
+               }
+            };
             const acat = getCookie("acat");
             const cat = getCookie("cat");
             const locationId = getCookie("locationId");
             const productId = url.href.split("/courses/products/")[1].split("?")[0];
             const token = acat || cat;
-            const parsedToken = JSON.parse(atob(token));
+            const parsedToken = decodeToken(token);
             script = `
             <script>
                const url = '${url.href}';
                const fetchProduct = async () => {
                      return await new Promise((resolved, reject) => {
-                        const url = 'https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}';
+                        const url = 'https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}?test=true';
                         fetch(url, {
                               headers: {
                                  "accept": "application/json, text/plain, */*",
                                  "accept-language": "en-US,en;q=0.6",
-                                 "authorization": 'Bearer ${parsedToken.tokenId}',
+                                 "authorization": 'Bearer ${parsedToken?.tokenId}',
                                  "channel": "APP",
                               },
-                              priority: 'high',
+                              "priority": 'high',
                               body: null,
                               method: "GET",
                            })
@@ -74,7 +84,24 @@ export default {
          const css = url.href.includes("/courses/products/")
             ? `<style>body:not(.template-ready){opacity:0!important}</style>`
             : "";
-         html = html.replace("<head>", `<head>${css}${script}`);
+         const loader = `
+            <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.10/dist/dotlottie-wc.js" type="module"></script>
+            <div
+              id="template-loader"
+              style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:2147483647;display:grid;place-items:center;background:#fff;"
+            >
+              <dotlottie-wc
+                src="https://lottie.host/5947091c-caae-4663-94b5-a68817f9e24e/Tkb1qTZsPV.lottie"
+                style="width:300px;height:300px"
+                autoplay
+                loop
+              ></dotlottie-wc>
+            </div>
+
+         `;
+         html = html
+            .replace("<head>", `<head>${css}${script}`)
+            .replace("<body>", `<body>${loader}`);
          return new Response(html, {
             status: ghlResponse.status,
             headers: { "content-type": "text/html" },

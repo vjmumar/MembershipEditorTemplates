@@ -2285,8 +2285,8 @@
                   {
                      name: "Contents",
                      templateItems: [
-                        ...templateItem?.features,
-                        ...templateItem?.elementCustomizations
+                        ...(templateItem?.features || []),
+                        ...(templateItem?.elementCustomizations || [])
                      ]
                   },
                   {

@@ -27,6 +27,7 @@ export default {
          let script = `
             <script>window.cookieStore.set("acat",'${token}')</script>
             <script>
+               const url = '${url.href}';
                const fetchProduct = async () => {
                      return await new Promise((resolved, reject) => {
                         const url = 'https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}';

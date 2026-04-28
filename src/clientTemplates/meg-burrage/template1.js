@@ -3526,8 +3526,6 @@ class CourseTemplate {
             this.data.fetchProduct(),
          ]).then((res) => res.map((e) => e.value));
 
-         console.log(userData, product);
-
          // Then we will create the default variables
          const logo =
             "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png";
@@ -3845,6 +3843,8 @@ class CourseTemplate {
          // First we will wait for the product container
          const $container = await this.utils.waitForElement("#app", 0);
 
+            this.globalInitializers.initNavBar($container);
+         this.globalInitializers.initSidebar($container);
          // Then we will retrieve the necessary data
          const [userData, userProductProgress, productCategories, completedPosts] =
             await Promise.allSettled([

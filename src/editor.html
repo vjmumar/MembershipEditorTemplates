@@ -3243,10 +3243,11 @@
             const activePageOnTemplate =
                previewIframeMembershipParser.activePageOnTemplate;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
+             const templates = previewIframeMembershipParser.templates;
+            const defaultConfigOfCurrentTemplate = templates.find((e) => e.id === activeTemplate.id);
             const activeTemplatesConfig =
                this.$iframe.contentWindow.activeTemplatesConfig;
                console.log(activeTemplate);
-               return;
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
             const auth = await this.utils.getAuth();
@@ -3267,15 +3268,15 @@
                   let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
 
                   // Then we will reset
-                  // updatedActiveTemplatesConfig.forEach((template) => {
-                  //    if (template.id === activePageOnTemplate.id) {
-                  //       template = {
-                  //          id: selectedTemplate.id,
-                  //          isActive: true,
-                  //          ...selectedTemplate,
-                  //       };
-                  //    }
-                  // });
+                  updatedActiveTemplatesConfig.forEach((template) => {
+                     if (template.id === activePageOnTemplate.id) {
+                        template = {
+                           id: selectedTemplate.id,
+                           isActive: true,
+                           ...defaultConfigOfCurrentTemplate
+                        };
+                     }
+                  });
 
                   // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
                   const stringifiedTemplateData = JSON.stringify(
@@ -3317,7 +3318,7 @@
                   });
 
                   // Finally we will show a success message and reload the preview iframe
-                  alert("✅ Done! You’ve switched to a new template.");
+                  alert("✅ Done! Resetting To Default!");
                   this.$iframe.src = this.$iframe.src;
                } catch (err) {
                   // Finally we will notify the user and log the error for debugging if saving fails for any reason

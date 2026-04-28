@@ -3880,7 +3880,7 @@ class CourseTemplate {
 
          // Finally we will invoke the necessary initializers
          setInterval(() => {
-            console.log("lol", $container);
+            console.log("lol", $con);
             this.desktopInitializers.initStyles();
             this.globalInitializers.initNavBar($container);
             this.globalInitializers.initSidebar($container);

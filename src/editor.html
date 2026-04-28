@@ -2387,7 +2387,7 @@
                        <div class="global-contents__header">
                            <i onclick="window.MembershipEditor.actions.switchEditoreMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
                            <p class="global-contents__header__text">Global (Desktop/Mobile)</p>
-                           <i class="fa-solid fa-rotate-right global-contents__header__reset"></i>
+                           <i onclick="window.MembershipEditor.actions.resetTemplateToDefaultInCustomJs('.global-contents')" class="fa-solid fa-rotate-right global-contents__header__reset"></i>
                        </div>
                        <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeListOfEditablePages()">
                           <p>Switch Level</p>
@@ -3180,6 +3180,110 @@
                         }
                      });
                   }
+
+                  // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
+                  const stringifiedTemplateData = JSON.stringify(
+                     updatedActiveTemplatesConfig,
+                     (key, value) => {
+                        if (typeof value === "function") {
+                           return value?.toString();
+                        }
+                        return value;
+                     },
+                  );
+
+                  const fileData = await this.actions.uploadTextToGHL(
+                     `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
+                     `${productId}.txt`,
+                  );
+                  this.$iframe.contentWindow.savedTemplatesFileInfo = fileData;
+
+                  // Then we will attempt to update the product configuration by sending a PUT request with a rehydration script embedded in customJs
+                  await fetch(url, {
+                     method: "PUT",
+                     headers: {
+                        "authority": "services.leadconnectorhq.com",
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.9",
+                        "authorization": `Bearer ${this.token}`,
+                        "content-type": "application/json",
+                        "origin": "https://backend.memberships.apisystem.tech",
+                        "referer": "https://backend.memberships.apisystem.tech/",
+                        "source": "WEB_USER",
+                        "sourceid": locationId,
+                        "version": "2021-07-28",
+                     },
+                     priority: "high",
+                     body: JSON.stringify({
+                        customJs: `window.savedTemplatesFileInfo = ${JSON.stringify(fileData)}`,
+                     }),
+                     redirect: "follow",
+                  });
+
+                  // Finally we will show a success message and reload the preview iframe
+                  alert("✅ Done! You’ve switched to a new template.");
+                  this.$iframe.src = this.$iframe.src;
+               } catch (err) {
+                  // Finally we will notify the user and log the error for debugging if saving fails for any reason
+                  alert(
+                     "❌ Oops! Something went wrong while saving. Try refreshing the page or contact support.",
+                  );
+                  console.error(err);
+               } finally {
+                  document.querySelector(selectorToToggle).style.cssText =
+                     "opacity: 1; pointer-events: all;";
+               }
+            } else {
+               // Finally we will block the save action and instruct the user to refresh or contact support when no valid token is available
+               alert("❌ Invalid token. Please refresh the page or contact support.");
+            }
+         },
+
+         // This method is responsible for resetting the user's current template to default --- need to double check
+         resetTemplateToDefaultInCustomJs: async (
+            selectorToToggle = "",
+         ) => {
+            // First we will confirm the user's intent to switch template
+            if (
+               !confirm(
+                  "Do you want to proceed resetting the current template to default?",
+               )
+            )
+               return;
+
+            // Then we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+            const activeTemplatesConfig =
+               this.$iframe.contentWindow.activeTemplatesConfig;
+
+            // Then we will retrieve the authentication token and extract the location and product IDs from the URL
+            const auth = this.utils.getAuth();
+            const locationId = auth?.locationId;
+            const productId = auth?.productId;
+
+            // Then we will build the product service endpoint used to persist the selected template into the product custom JS
+            const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
+
+            // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
+            if (this.token) {
+               try {
+                  // Then we will toggle the selector to disabled state
+                  document.querySelector(selectorToToggle).style.cssText =
+                     "opacity: .5; pointer-events: none;";
+
+                  // Then we will create a variable where we will store the updated window?.activeTemplatesConfig
+                  let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
+
+                  // Then we will reset
+                   updatedActiveTemplatesConfig.push({
+                        id: selectedTemplate.id,
+                        isActive: true,
+                        ...selectedTemplate,
+                     });
 
                   // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
                   const stringifiedTemplateData = JSON.stringify(

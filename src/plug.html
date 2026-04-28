@@ -1,6 +1,9 @@
 <script>
   if (!window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID) {
     window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID = "meg-burrage";
+    if (location.href.includes('membershipeditor=true')) {
+      document.body.classList.add("template-ready");
+    }
     fetch("https://membershipeditor.netlify.app/src/editor").then(r => r.text()).then(h => {
       let d = document.createElement('div'); d.innerHTML = h;
       d.querySelectorAll('style,link,div,section').forEach(e => document.head.append(e));

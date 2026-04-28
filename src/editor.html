@@ -1672,7 +1672,7 @@
          // This method serves as the entry point for initializing the application.
          init: () => {
             // First, check if the page is in preview mode; if not, exit the method.
-            if (!this.isPagePreview) return;
+            if (!this.isPagePreview && !this.isEdit) return;
 
             // Then, determine if we need to launch the full Editor or just the toggle widget.
             if (this.isEdit) {

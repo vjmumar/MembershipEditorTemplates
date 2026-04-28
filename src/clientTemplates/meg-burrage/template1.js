@@ -3834,7 +3834,7 @@ class CourseTemplate {
          setTimeout(() => {
             this.globalInitializers.initLoading(false);
          }, 1000);
-      }, 
+      },
 
       initStyles: () => {
          // !Note: Use https://unminify.com/ to uncompress the styles, and use https://www.textfixer.com/html/compress-html-compression.php to compress again
@@ -3854,7 +3854,7 @@ class CourseTemplate {
                this.data.fetchCategories(),
                this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
-         
+
          // Then we will process the categories data
          const categories = productCategories
             ?.filter((cat) => !cat?.parentCategory)
@@ -5021,8 +5021,8 @@ class CourseTemplate {
          const contactId = auth?.contactId;
          const userId = auth?.externalUserId;
          const storageName = `${productId}-completed-post`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0) return previousData;
+         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "[]");
+         if (previousData.length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             if (token) {
                const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`;
@@ -5248,7 +5248,10 @@ class CourseTemplate {
       getAuth: async () => {
          return new Promise((res) => {
             const interval = setInterval(() => {
-               if (document.querySelector(".product-container, #app-container") && window?.$cookies) {
+               if (
+                  document.querySelector(".product-container, #app-container") &&
+                  window?.$cookies
+               ) {
                   const acatToken = window?.$cookies?.get("acat");
                   const catToken = window?.$cookies?.get("cat");
                   const data = JSON.parse(window.atob(catToken || acatToken) || "{}");

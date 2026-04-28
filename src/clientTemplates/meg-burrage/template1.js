@@ -5272,7 +5272,7 @@ class CourseTemplate {
                   clearInterval(interval);
                   res(data);
                }
-            }, 200);
+            }, 0);
          });
       },
       getDeepSequencedPosts: (categories = []) => {

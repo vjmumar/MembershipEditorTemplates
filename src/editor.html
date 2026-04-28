@@ -1020,18 +1020,31 @@
       // Utils module
       utils = {
          // This helper method retrieves the auth information
-         getAuth: () => {
-            const acatToken = window?.$cookies?.get("acat");
-            const catToken = window?.$cookies?.get("cat");
-            const data = JSON.parse(window.atob(acatToken || catToken) || "{}");
-            if (!("productId" in data)) {
-               const url = location.href
-                  ?.split("/products/")[1]
-                  .split("/")[0]
-                  .split("?")[0];
-               data.productId = url;
-            }
-            return data;
+         getAuth: async () => {
+            return new Promise((res) => {
+               const interval = setInterval(() => {
+                  if (
+                     document.querySelector(".product-container, #app-container") &&
+                     window?.$cookies
+                  ) {
+                     const acatToken = window?.$cookies?.get("acat");
+                     const catToken = window?.$cookies?.get("cat");
+                     const data = JSON.parse(window.atob(catToken || acatToken) || "{}");
+                     if (!("productId" in data)) {
+                        const url = location.href
+                           ?.split("/products/")[1]
+                           .split("/")[0]
+                           .split("?")[0];
+                        data.productId = url;
+                     }
+                     if (!("tokenId" in data)) {
+                        data.tokenId = data.token;
+                     }
+                     clearInterval(interval);
+                     res(data);
+                  }
+               }, 0);
+            });
          },
       };
    }
@@ -1219,7 +1232,9 @@
             };
 
             // Finally, we retrieve the authentication token by parsing the product data from the cookies.
-            this.token = this.utils.getAuth().tokenId;
+            this.utils.getAuth().then((e) => {
+               this.token = e.tokenId;
+            });
          })();
       }
 
@@ -1609,18 +1624,31 @@
             };
          },
          // This helper method retrieves the auth information
-         getAuth: () => {
-            const acatToken = window?.$cookies?.get("acat");
-            const catToken = window?.$cookies?.get("cat");
-            const data = JSON.parse(window.atob(acatToken || catToken) || "{}");
-            if (!("productId" in data)) {
-               const url = location.href
-                  ?.split("/products/")[1]
-                  .split("/")[0]
-                  .split("?")[0];
-               data.productId = url;
-            }
-            return data;
+         getAuth: async () => {
+            return new Promise((res) => {
+               const interval = setInterval(() => {
+                  if (
+                     document.querySelector(".product-container, #app-container") &&
+                     window?.$cookies
+                  ) {
+                     const acatToken = window?.$cookies?.get("acat");
+                     const catToken = window?.$cookies?.get("cat");
+                     const data = JSON.parse(window.atob(catToken || acatToken) || "{}");
+                     if (!("productId" in data)) {
+                        const url = location.href
+                           ?.split("/products/")[1]
+                           .split("/")[0]
+                           .split("?")[0];
+                        data.productId = url;
+                     }
+                     if (!("tokenId" in data)) {
+                        data.tokenId = data.token;
+                     }
+                     clearInterval(interval);
+                     res(data);
+                  }
+               }, 0);
+            });
          },
       };
    }
@@ -1629,13 +1657,14 @@
       constructor() {
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
-         this.isPagePreview = sessionStorage?.is_preview === "true" || location.href?.includes("token=");
+         this.isPagePreview =
+            sessionStorage?.is_preview === "true" || location.href?.includes("token=");
          this.loadedGoogleFontsPreview = [];
          this.$previewIframe = null;
          this.$iframe = null;
          this.isDesktop = true;
          this.initializers.init();
-         this.token = this.utils.getAuth().tokenId;
+         this.token = "";
       }
 
       // Initializer module
@@ -1645,7 +1674,7 @@
             // First, check if the page is in preview mode; if not, exit the method.
             if (!this.isPagePreview) return;
 
-            // Next, determine if we need to launch the full Editor or just the toggle widget.
+            // Then, determine if we need to launch the full Editor or just the toggle widget.
             if (this.isEdit) {
                // First, retrieve the main app and app-container elements.
                const $app = document.querySelector("#app");
@@ -1696,6 +1725,11 @@
                   this.initializers.initFloatingWidgetToggler();
                }
             }
+
+            // Finally we will retrieve the token
+            this.utils.getAuth().then((e) => {
+               this.token = e.tokenId;
+            });
          },
 
          // This method is responsible for showing the floating widget that toggles the page into editing
@@ -2965,8 +2999,9 @@
                this.$iframe.contentWindow.activeTemplatesConfig;
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
-            const locationId = this.utils.getAuth()?.locationId;
-            const productId = this.utils.getAuth()?.productId;
+            const auth = this.utils.getAuth();
+            const locationId = auth?.locationId;
+            const productId = auth?.productId;
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
 
             // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
@@ -3082,8 +3117,9 @@
                this.$iframe.contentWindow.activeTemplatesConfig;
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
-            const locationId = this.utils.getAuth()?.locationId;
-            const productId = this.utils.getAuth().productId;
+            const auth = this.utils.getAuth()
+            const locationId = auth?.locationId;
+            const productId = auth?.productId;
 
             // Then we will build the product service endpoint used to persist the selected template into the product custom JS
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
@@ -3192,7 +3228,8 @@
 
          // This function uploads image to ghl media
          uploadTextToGHL: async (textContent = "", fileName = "", parentFolder = "") => {
-            const locationId = this.utils.getAuth()?.locationId;
+            const auth = await this.utils.getAuth();
+            const locationId = auth?.locationId;
             const blob = new Blob([textContent], { type: "text/plain" });
             const size = blob.size;
             let isError = false;
@@ -3902,18 +3939,31 @@
          },
 
          // This helper method retrieves the auth information
-         getAuth: () => {
-            const acatToken = window?.$cookies?.get("acat");
-            const catToken = window?.$cookies?.get("cat");
-            const data = JSON.parse(window.atob(acatToken || catToken) || "{}");
-            if (!("productId" in data)) {
-               const url = location.href
-                  ?.split("/products/")[1]
-                  .split("/")[0]
-                  .split("?")[0];
-               data.productId = url;
-            }
-            return data;
+         getAuth: async () => {
+            return new Promise((res) => {
+               const interval = setInterval(() => {
+                  if (
+                     document.querySelector(".product-container, #app-container") &&
+                     window?.$cookies
+                  ) {
+                     const acatToken = window?.$cookies?.get("acat");
+                     const catToken = window?.$cookies?.get("cat");
+                     const data = JSON.parse(window.atob(catToken || acatToken) || "{}");
+                     if (!("productId" in data)) {
+                        const url = location.href
+                           ?.split("/products/")[1]
+                           .split("/")[0]
+                           .split("?")[0];
+                        data.productId = url;
+                     }
+                     if (!("tokenId" in data)) {
+                        data.tokenId = data.token;
+                     }
+                     clearInterval(interval);
+                     res(data);
+                  }
+               }, 0);
+            });
          },
       };
    }
@@ -3928,9 +3978,9 @@
             clearInterval(membershipEditorInterval);
             window.MembershipEditor = new MembershipEditor();
          }
-      },500);
+      }, 500);
       setTimeout(() => {
-         clearInterval(membershipEditorInterval)
-      },5000);
+         clearInterval(membershipEditorInterval);
+      }, 5000);
    }
 </script>

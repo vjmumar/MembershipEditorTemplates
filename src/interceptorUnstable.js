@@ -38,6 +38,7 @@ export default {
                               "authorization": `Bearer ${tokenJson?.tokenId}`,
                               "channel": "APP",
                            },
+                           priority: 'high',
                            body: null,
                            method: "GET",
                         })

@@ -3247,7 +3247,8 @@
             const defaultConfigOfCurrentTemplate = templates.find((e) => e.id === activeTemplate.id);
             const activeTemplatesConfig =
                this.$iframe.contentWindow.activeTemplatesConfig;
-               console.log(activeTemplate);
+               console.log(defaultConfigOfCurrentTemplate);
+               return;
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
             const auth = await this.utils.getAuth();

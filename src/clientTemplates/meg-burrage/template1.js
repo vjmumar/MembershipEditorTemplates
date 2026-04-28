@@ -3565,7 +3565,9 @@ class CourseTemplate {
                         <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
                     </header>
                 `;
-         $container?.insertAdjacentHTML("afterbegin", html);
+         (
+            $container || document.querySelector(".product-container, #app-container")
+         ).insertAdjacentHTML("afterbegin", html);
       },
       initSidebar: async ($container = null) => {
          // First we will fetch all necessary data
@@ -3687,7 +3689,10 @@ class CourseTemplate {
                 `;
 
          // Finally we will inject the sidebar and attach event listeners for interactivity
-         $container.insertAdjacentHTML("beforebegin", html);
+         ($container || document.querySelector(".product-container")).insertAdjacentHTML(
+            "beforebegin",
+            html,
+         );
          setTimeout(() => {
             document.body.addEventListener("click", (e) => {
                if (
@@ -3833,13 +3838,13 @@ class CourseTemplate {
 
       initStyles: () => {
          // !Note: Use https://unminify.com/ to uncompress the styles, and use https://www.textfixer.com/html/compress-html-compression.php to compress again
-         const styles = `<style id="template-styles">#app{display: block !important;} /* Dashboard */ .page-dashboard .product-container { width: 100%; max-width: calc(100% - 35px); margin-left: auto; min-height: 100vh; } .dashboard__wrapper { padding: 50px 75px; min-height: 100vh; position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url(https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774398511/Sales_Page_Background_Image_1__page-0001_1_zfvd0i.jpg); --dashboard-overlay-bg: #f6ebe7; --dashboard-overlay-opacity: 0.5; } .dashboard__wrapper::before { content: ""; position: absolute; width: 100%; height: 100%; background-color: var(--dashboard-overlay-bg); opacity: var(--dashboard-overlay-opacity); left: 0; top: 0; z-index: 0; } .dashboard__wrapper * { z-index: 1; position: relative; } .dashboard__categories { margin-top: 30px; } .dashboard__categories__title { padding: 20px 40px 0px; color: #000000; font-size: 31.5px; line-height: 44.1px; font-weight: 600; } /* Category Posts */ .page-category-posts #app { width: 100%; max-width: calc(100% - 40px); margin-left: auto; } .template-category-post-title { background: #e0c5ba; box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.05); padding: 20px 50px; font-size: 30px; line-height: 42px; font-weight: 700; text-align: center; color: #000000; } .template-category-post { background-color: #e8f0f1; padding: 50px; min-height: 100vh; position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url(https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774398511/Sales_Page_Background_Image_1__page-0001_1_zfvd0i.jpg); --category-post-overlay-bg: #f6ebe7; --category-post-overlay-opacity: 0.5; } .template-category-post * { z-index: 1; position: relative; } .template-category-post::before { content: ""; position: absolute; width: 100%; height: 100%; background-color: var(--category-post-overlay-bg); opacity: var(--category-post-overlay-opacity); left: 0; top: 0; z-index: 0; } .template-category-post__breadcrumbs { display: flex; justify-content: center; align-items: center; gap: 5px; color: #000000; font-size: 12px; line-height: 18px; font-weight: 400; } .template-category-post__sub-categories__item { margin-top: 40px; } .template-category-post__sub-categories__item__title { font-size: 30px; font-weight: 700; color: #000000; } .template-category-post__sub-categories__item .template-post { padding-top: 20px; } /* Categories */ .page-categories #app { width: 100%; max-width: calc(100% - 40px); margin-left: auto; } .template-categories-title { background: #e0c5ba; box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.05); padding: 20px 50px; font-size: 30px; line-height: 42px; font-weight: 700; text-align: center; color: #000000; } .template-categories__list { background-color: #f6ebe7; padding: 50px; min-height: 100vh; position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url(https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774398511/Sales_Page_Background_Image_1__page-0001_1_zfvd0i.jpg); --categories-overlay-bg: #f6ebe7; --categories-overlay-opacity: 0.5; } .template-categories__list * { z-index: 1; position: relative; } .template-categories__list::before { content: ""; position: absolute; width: 100%; height: 100%; background-color: #ecf2f2e6; left: 0; top: 0; z-index: 0; background-color: var(--categories-overlay-bg); opacity: var(--categories-overlay-opacity); } .template-categories__sub-categories__item { margin-top: 40px; } .template-categories__sub-categories__item__title { font-size: 33px; font-weight: 700; } .template-categories__sub-categories__item .template-post { padding-top: 20px; } /* Post */ .page-post #app { width: 100%; max-width: calc(100% - 35px); margin-left: auto; } .template-post-page-header { background: #e0c5ba; box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.05); padding: 15px 50px; display: flex; align-items: center; justify-content: center; gap: 10px; } .template-post-page-header__mark-as-complete { font-size: 16px; padding: 8px 10px; border-radius: 4px; border: 1px solid #000000; color: #000000; font-weight: 700; opacity: 1; cursor: pointer; transition-duration: 0.3s; } .template-post-page-header__mark-as-complete:hover { transition-duration: 0.3s; opacity: 1; } .template-post-page-header__arrow { font-size: 32px; opacity: 1; color: #000000 !important; transition-duration: 0.3s; display: flex; align-items: center; } .template-post-page-header__arrow.prev { rotate: 180deg; } .template-post-page-header__arrow:hover { opacity: 1 !important; transition-duration: 0.3s; text-decoration: none; } .template-post-page { background-color: #f6ebe7; padding: 50px; min-height: 100vh; position: relative; } .template-post-page__breadcrumbs { display: flex; justify-content: center; align-items: center; gap: 5px; color: #000000; font-size: 12px; line-height: 18px; font-weight: 400; } .template-post-page__title { font-size: 45px; font-weight: 600; text-align: center; margin-top: 30px; margin-bottom: 20px; color: #000000; } .template-post-page__video, .template-post-page__audio { max-width: 75%; margin-inline: auto; } .template-post-page__description { max-width: 60%; word-wrap: break-word; margin-inline: auto; margin-top: 40px; margin-bottom: 40px; } .template-post-page__description p { margin-bottom: 16px; } .template-post-page__comments { max-width: 60%; margin-inline: auto; } @media (max-width: 1024px) { /* Dashboard */ .page-dashboard .product-container { width: 100%; max-width: calc(100% - 35px); } /* Post */ .page-post #app { width: 100%; max-width: calc(100% - 35px); } /* Categories */ .page-categories #app { width: 100%; max-width: calc(100% - 35px); } /* Category Posts */ .page-category-posts #app { width: 100%; max-width: calc(100% - 35px); } .template-category-post__breadcrumbs { font-size: 13px; } .template-category-post { padding: 10px; } .template-categories-title { padding: 10px 15px; font-size: 23px; } .template-categories__list { padding: 10px; } } </style>`;
+         const styles = `<style id="template-styles">/* Dashboard */ .page-dashboard .product-container { width: 100%; max-width: calc(100% - 35px); margin-left: auto; min-height: 100vh; } .dashboard__wrapper { padding: 50px 75px; min-height: 100vh; position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url(https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774398511/Sales_Page_Background_Image_1__page-0001_1_zfvd0i.jpg); --dashboard-overlay-bg: #f6ebe7; --dashboard-overlay-opacity: 0.5; } .dashboard__wrapper::before { content: ""; position: absolute; width: 100%; height: 100%; background-color: var(--dashboard-overlay-bg); opacity: var(--dashboard-overlay-opacity); left: 0; top: 0; z-index: 0; } .dashboard__wrapper * { z-index: 1; position: relative; } .dashboard__categories { margin-top: 30px; } .dashboard__categories__title { padding: 20px 40px 0px; color: #000000; font-size: 31.5px; line-height: 44.1px; font-weight: 600; } /* Category Posts */ .page-category-posts #app-container { width: 100%; max-width: calc(100% - 40px); margin-left: auto; } .template-category-post-title { background: #e0c5ba; box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.05); padding: 20px 50px; font-size: 30px; line-height: 42px; font-weight: 700; text-align: center; color: #000000; } .template-category-post { background-color: #e8f0f1; padding: 50px; min-height: 100vh; position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url(https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774398511/Sales_Page_Background_Image_1__page-0001_1_zfvd0i.jpg); --category-post-overlay-bg: #f6ebe7; --category-post-overlay-opacity: 0.5; } .template-category-post * { z-index: 1; position: relative; } .template-category-post::before { content: ""; position: absolute; width: 100%; height: 100%; background-color: var(--category-post-overlay-bg); opacity: var(--category-post-overlay-opacity); left: 0; top: 0; z-index: 0; } .template-category-post__breadcrumbs { display: flex; justify-content: center; align-items: center; gap: 5px; color: #000000; font-size: 12px; line-height: 18px; font-weight: 400; } .template-category-post__sub-categories__item { margin-top: 40px; } .template-category-post__sub-categories__item__title { font-size: 30px; font-weight: 700; color: #000000; } .template-category-post__sub-categories__item .template-post { padding-top: 20px; } /* Categories */ .page-categories #app-container { width: 100%; max-width: calc(100% - 40px); margin-left: auto; } .template-categories-title { background: #e0c5ba; box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.05); padding: 20px 50px; font-size: 30px; line-height: 42px; font-weight: 700; text-align: center; color: #000000; } .template-categories__list { background-color: #f6ebe7; padding: 50px; min-height: 100vh; position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url(https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774398511/Sales_Page_Background_Image_1__page-0001_1_zfvd0i.jpg); --categories-overlay-bg: #f6ebe7; --categories-overlay-opacity: 0.5; } .template-categories__list * { z-index: 1; position: relative; } .template-categories__list::before { content: ""; position: absolute; width: 100%; height: 100%; background-color: #ecf2f2e6; left: 0; top: 0; z-index: 0; background-color: var(--categories-overlay-bg); opacity: var(--categories-overlay-opacity); } .template-categories__sub-categories__item { margin-top: 40px; } .template-categories__sub-categories__item__title { font-size: 33px; font-weight: 700; } .template-categories__sub-categories__item .template-post { padding-top: 20px; } /* Post */ .page-post #app-container { width: 100%; max-width: calc(100% - 35px); margin-left: auto; } .template-post-page-header { background: #e0c5ba; box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.05); padding: 15px 50px; display: flex; align-items: center; justify-content: center; gap: 10px; } .template-post-page-header__mark-as-complete { font-size: 16px; padding: 8px 10px; border-radius: 4px; border: 1px solid #000000; color: #000000; font-weight: 700; opacity: 1; cursor: pointer; transition-duration: 0.3s; } .template-post-page-header__mark-as-complete:hover { transition-duration: 0.3s; opacity: 1; } .template-post-page-header__arrow { font-size: 32px; opacity: 1; color: #000000 !important; transition-duration: 0.3s; display: flex; align-items: center; } .template-post-page-header__arrow.prev { rotate: 180deg; } .template-post-page-header__arrow:hover { opacity: 1 !important; transition-duration: 0.3s; text-decoration: none; } .template-post-page { background-color: #f6ebe7; padding: 50px; min-height: 100vh; position: relative; } .template-post-page__breadcrumbs { display: flex; justify-content: center; align-items: center; gap: 5px; color: #000000; font-size: 12px; line-height: 18px; font-weight: 400; } .template-post-page__title { font-size: 45px; font-weight: 600; text-align: center; margin-top: 30px; margin-bottom: 20px; color: #000000; } .template-post-page__video, .template-post-page__audio { max-width: 75%; margin-inline: auto; } .template-post-page__description { max-width: 60%; word-wrap: break-word; margin-inline: auto; margin-top: 40px; margin-bottom: 40px; } .template-post-page__description p {margin-bottom: 16px;} .template-post-page__comments { max-width: 60%; margin-inline: auto; } @media (max-width: 1024px) { /* Dashboard */ .page-dashboard .product-container { width: 100%; max-width: calc(100% - 35px); } /* Post */ .page-post #app-container { width: 100%; max-width: calc(100% - 35px); } /* Categories */ .page-categories #app-container { width: 100%; max-width: calc(100% - 35px); } /* Category Posts */ .page-category-posts #app-container { width: 100%; max-width: calc(100% - 35px); } .template-category-post__breadcrumbs { font-size: 13px; } .template-category-post { padding: 10px; } .template-categories-title { padding: 10px 15px; font-size: 23px; } .template-categories__list { padding: 10px; } }</style >`;
          document.body.insertAdjacentHTML("afterbegin", styles);
       },
 
       initLandingPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement(".product-container");
+         const $container = await this.utils.waitForElement(".product-container", 0);
 
          // Then we will retrieve the necessary data
          const [userData, userProductProgress, productCategories, completedPosts] =
@@ -3879,18 +3884,15 @@ class CourseTemplate {
          `;
 
          // Finally we will invoke the necessary initializers
-         setInterval(() => {
-            console.log("lol", $con);
-            this.desktopInitializers.initStyles();
-            this.globalInitializers.initNavBar($container);
-            this.globalInitializers.initSidebar($container);
-            document.body.classList.add("page-dashboard");
-         }, 1000);
+         this.desktopInitializers.initStyles();
+         this.globalInitializers.initNavBar($container);
+         this.globalInitializers.initSidebar($container);
+         document.body.classList.add("page-dashboard");
       },
 
       initCategoryPostPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app", 0);
+         const $container = await this.utils.waitForElement("#app-container", 100);
          const category = await this.data.fetchCategory();
 
          // Then we will fetch the category data and prepare the breadcrumbs
@@ -3955,7 +3957,7 @@ class CourseTemplate {
 
       initCategoriesPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app", 0);
+         const $container = await this.utils.waitForElement("#app-container", 100);
 
          // Then we will fetch all categories and filter out subcategories
          const categories = await (async () => {
@@ -3992,7 +3994,7 @@ class CourseTemplate {
 
       initPostPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app", 0);
+         const $container = await this.utils.waitForElement("#app-container", 100);
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [completedPosts, currentPost, categories] = await Promise.allSettled([
@@ -4210,7 +4212,7 @@ class CourseTemplate {
 
       initLandingPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app", 0);
+         const $container = await this.utils.waitForElement("#app-container", 100);
 
          // Then we will retrieve the necessary data
          const [
@@ -4255,7 +4257,7 @@ class CourseTemplate {
 
       initPostPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app", 0);
+         const $container = await this.utils.waitForElement("#app-container", 100);
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [product, completedPosts, currentPost, categories] =
@@ -5003,8 +5005,8 @@ class CourseTemplate {
                      "channel": "APP",
                   },
                   body: null,
-                  priority: "high",
                   method: "GET",
+                  priority: "high",
                })
                   .then((e) => e.json())
                   .then((e) => {

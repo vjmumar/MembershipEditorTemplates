@@ -29,7 +29,7 @@ export default {
             const cat = getCookie("cat");
             const locationId = getCookie("locationId");
             const productId = url.href.split("/courses/products/")[1].split("?")[0];
-            const token = cat || acat;
+            const token = acat || cat;
             const parsedToken = JSON.parse(atob(token));
             script = `
             <script>
@@ -43,8 +43,8 @@ export default {
                                  "accept-language": "en-US,en;q=0.6",
                                  "authorization": 'Bearer ${parsedToken.tokenId}',
                                  "channel": "APP",
-                                 "priority": 'high',
                               },
+                              priority: 'high',
                               body: null,
                               method: "GET",
                            })

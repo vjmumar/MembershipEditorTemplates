@@ -967,7 +967,7 @@ window.templateCustomizationSchema = {
                ],
                elementCustomizations: [
                   {
-                     name: "Content Embed",
+                     name: "Embed",
                      type: "html",
                      target: "",
                      value: "",

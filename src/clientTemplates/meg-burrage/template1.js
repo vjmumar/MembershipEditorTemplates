@@ -3880,11 +3880,12 @@ class CourseTemplate {
 
          // Finally we will invoke the necessary initializers
          setTimeout(() => {
+            console.log("lol");
             this.desktopInitializers.initStyles();
             this.globalInitializers.initNavBar($container);
             this.globalInitializers.initSidebar($container);
             document.body.classList.add("page-dashboard");
-         },1000);
+         }, 2000);
       },
 
       initCategoryPostPage: async () => {

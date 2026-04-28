@@ -4971,10 +4971,10 @@ class CourseTemplate {
                })
                   .then((e) => e.json())
                   .then((e) => {
-                     resolved(e.categories);
+                     resolved(e?.categories || []);
                      sessionStorage.setItem(
                         storageName,
-                        JSON.stringify(e.categories || []),
+                        JSON.stringify(e?.categories || []),
                      );
                   });
             } else {
@@ -5038,8 +5038,12 @@ class CourseTemplate {
                })
                   .then((e) => e.json())
                   .then((e) => {
-                     resolved(e);
-                     sessionStorage.setItem(storageName, JSON.stringify(e));
+                     const isArray = Array.isArray(e);
+                     resolved(isArray ? e : []);
+                     sessionStorage.setItem(
+                        storageName,
+                        JSON.stringify(isArray ? e : []),
+                     );
                   });
             } else {
                console.log("No Token Found! Completed Posts!");

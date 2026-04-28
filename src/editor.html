@@ -3245,6 +3245,8 @@
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
             const activeTemplatesConfig =
                this.$iframe.contentWindow.activeTemplatesConfig;
+               console.log(activeTemplate);
+               return;
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
             const auth = await this.utils.getAuth();
@@ -3265,11 +3267,15 @@
                   let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
 
                   // Then we will reset
-                  updatedActiveTemplatesConfig.push({
-                     id: selectedTemplate.id,
-                     isActive: true,
-                     ...selectedTemplate,
-                  });
+                  // updatedActiveTemplatesConfig.forEach((template) => {
+                  //    if (template.id === activePageOnTemplate.id) {
+                  //       template = {
+                  //          id: selectedTemplate.id,
+                  //          isActive: true,
+                  //          ...selectedTemplate,
+                  //       };
+                  //    }
+                  // });
 
                   // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
                   const stringifiedTemplateData = JSON.stringify(

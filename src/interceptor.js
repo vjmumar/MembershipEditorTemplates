@@ -9,23 +9,29 @@ export default {
             host: ghlOrigin,
          },
       });
-      const getCookie = (name = "") => {
-         const cookie = request.headers.get("Cookie");
-         return cookie
-            ?.split(";")
-            ?.find((e) => e.includes(`${name}=`))
-            ?.split("=")[1]
-            ?.trim();
-      };
-      const token = getCookie("cat");
-      const productId = url.href.split("/courses/products/")[1].split("?")[0];
-      const locationId = getCookie("locationId");
       const contentType = ghlResponse.headers.get("content-type") || "";
       if (contentType.includes("text/html")) {
          let html = await ghlResponse.text();
-         let parsedToken = JSON.parse(atob(token));
-         let script = `
-            <script>window.cookieStore.set("acat",'${token}')</script>
+         let script = "";
+         if (url.href.includes("/course/products")) {
+            const getCookie = (name = "") => {
+               const cookie = request.headers.get("Cookie");
+               return cookie
+                  ?.split(";")
+                  ?.map((part) => part.trim())
+                  ?.find((part) => part.split("=")[0] === name)
+                  ?.split("=")
+                  ?.slice(1)
+                  ?.join("=")
+                  ?.trim();
+            };
+            const acat = getCookie("acat");
+            const cat = getCookie("cat");
+            const locationId = getCookie("locationId");
+            const productId = url.href.split("/courses/products/")[1].split("?")[0];
+            const token = cat || acat;
+            const parsedToken = JSON.parse(atob(token));
+            script = `
             <script>
                const url = '${url.href}';
                const fetchProduct = async () => {
@@ -64,7 +70,8 @@ export default {
                }
             </script>
          `;
-         const css = url.href.includes("/products/")
+         }
+         const css = url.href.includes("/courses/products/")
             ? `<style>body:not(.template-ready){opacity:0!important}</style>`
             : "";
          html = html.replace("<head>", `<head>${css}${script}`);

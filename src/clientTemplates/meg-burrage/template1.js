@@ -18,12 +18,6 @@ window.templateCustomizationSchema = {
                key: "navigation-bar-container",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     value: "",
-                  },
-                  {
                      name: "Background Image",
                      property: "background-image",
                      placeholder: "E.g: https://www.sampleimage.com",
@@ -71,20 +65,6 @@ window.templateCustomizationSchema = {
                      placeholder: "E.g: 500px",
                      value: "",
                   },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "10px 10px 10px 10px",
-                     value: "",
-                  },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "10px 10px 10px 10px",
-                     value: "",
-                  },
                ],
                elementCustomizations: [
                   {
@@ -99,15 +79,7 @@ window.templateCustomizationSchema = {
                elementSelector: ".template-navbar__content__nav-links",
                label: "Menu",
                key: "template-navbar-nab-links-wrapper",
-               cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "50px 75px",
-                     value: "",
-                  },
-               ],
+               cssCustomizations: [],
             },
             {
                elementSelector: ".template-navbar__content__nav-links a",
@@ -309,20 +281,6 @@ window.templateCustomizationSchema = {
                      important: true,
                      value: "",
                   },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "10px 10px 10px 10px",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "10px 10px 10px 10px",
-                     value: "",
-                  },
                ],
             },
             {
@@ -344,20 +302,6 @@ window.templateCustomizationSchema = {
                      placeholder: "E.g: 500px",
                      value: "",
                   },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "10px 10px 10px 10px",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "10px 10px 10px 10px",
-                     value: "",
-                  },
                ],
             },
          ],
@@ -375,12 +319,6 @@ window.templateCustomizationSchema = {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
-                     value: "",
-                  },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
                      value: "",
                   },
                ],
@@ -415,18 +353,6 @@ window.templateCustomizationSchema = {
                      property: "height",
                      type: "text",
                      placeholder: "E.g: 500px",
-                     value: "",
-                  },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
                      value: "",
                   },
                ],
@@ -488,12 +414,6 @@ window.templateCustomizationSchema = {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
-                     value: "",
-                  },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
                      value: "",
                   },
                   {
@@ -569,18 +489,6 @@ window.templateCustomizationSchema = {
                      type: "text",
                      value: "",
                   },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     value: "",
-                  },
                ],
             },
             {
@@ -621,18 +529,6 @@ window.templateCustomizationSchema = {
                      type: "text",
                      value: "",
                   },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     value: "",
-                  },
                ],
             },
             {
@@ -644,12 +540,6 @@ window.templateCustomizationSchema = {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
-                     value: "",
-                  },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
                      value: "",
                   },
                ],
@@ -709,18 +599,6 @@ window.templateCustomizationSchema = {
                key: "template-sidebar-image",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -741,12 +619,6 @@ window.templateCustomizationSchema = {
                label: "Bottom Image",
                key: "template-sidebar-image-img",
                cssCustomizations: [
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     value: "",
-                  },
                   {
                      name: "Width",
                      property: "width",
@@ -866,13 +738,6 @@ window.templateCustomizationSchema = {
                      important: true,
                      value: "",
                   },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                ],
             },
             {
@@ -884,13 +749,6 @@ window.templateCustomizationSchema = {
                      name: "Color",
                      property: "color",
                      type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
                      placeholder: "",
                      value: "",
                   },
@@ -926,7 +784,6 @@ window.templateCustomizationSchema = {
                      name: "Font Size",
                      property: "font-size",
                      type: "text",
-                     placeholder: "E.g: 20px",
                      placeholder: "",
                      value: "",
                   },
@@ -958,21 +815,6 @@ window.templateCustomizationSchema = {
                      placeholder: "E.g: 20px",
                      value: "",
                   },
-
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -987,13 +829,6 @@ window.templateCustomizationSchema = {
                label: "Dashboard Container",
                key: "dashboard-container",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Mininum Height",
                      property: "min-height",
@@ -1051,20 +886,6 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -1085,27 +906,6 @@ window.templateCustomizationSchema = {
                label: "Community Embed",
                key: "template-community-embed",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -1136,20 +936,6 @@ window.templateCustomizationSchema = {
                key: "template-hero-left",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -1171,20 +957,6 @@ window.templateCustomizationSchema = {
                label: "Dashboard Info Video",
                key: "template-hero-right",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -1274,20 +1046,6 @@ window.templateCustomizationSchema = {
                      important: true,
                      value: "",
                   },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                ],
                elementCustomizations: [
                   {
@@ -1304,27 +1062,6 @@ window.templateCustomizationSchema = {
                key: "template-categories-card",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -1338,13 +1075,6 @@ window.templateCustomizationSchema = {
                label: "Dasboard Category Card Info",
                key: "template-categories-info",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -1415,13 +1145,6 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -1435,13 +1158,6 @@ window.templateCustomizationSchema = {
                label: "Category Post Container",
                key: "template-category-post",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Mininum Height",
                      property: "min-height",
@@ -1506,20 +1222,6 @@ window.templateCustomizationSchema = {
                key: "template-category-post-posts",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Mininum Height",
                      property: "min-height",
                      type: "text",
@@ -1541,27 +1243,6 @@ window.templateCustomizationSchema = {
                key: "template-post__card",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -1575,13 +1256,6 @@ window.templateCustomizationSchema = {
                label: "Category Posts Post Card Info",
                key: "template-post-info",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -1639,13 +1313,6 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Text Color",
                      property: "color",
                      type: "color",
@@ -1687,13 +1354,6 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -1707,13 +1367,6 @@ window.templateCustomizationSchema = {
                label: "Category Post Container",
                key: "template-categories-list",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Mininum Height",
                      property: "min-height",
@@ -1750,20 +1403,6 @@ window.templateCustomizationSchema = {
                key: "template-category-post-posts",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Mininum Height",
                      property: "min-height",
                      type: "text",
@@ -1785,27 +1424,6 @@ window.templateCustomizationSchema = {
                key: "template-categories-card",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -1819,13 +1437,6 @@ window.templateCustomizationSchema = {
                label: "Categories Category Card Info",
                key: "template-categories-info",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -1875,13 +1486,6 @@ window.templateCustomizationSchema = {
                key: "template-post-page",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -1902,13 +1506,6 @@ window.templateCustomizationSchema = {
                label: "Post Header",
                key: "template-post-page-header",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -1938,13 +1535,6 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -1955,13 +1545,6 @@ window.templateCustomizationSchema = {
                      name: "Border Color",
                      property: "border-color",
                      type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
                      placeholder: "",
                      value: "",
                   },
@@ -2064,13 +1647,6 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -2081,13 +1657,6 @@ window.templateCustomizationSchema = {
                      name: "Border Color",
                      property: "border-color",
                      type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
                      placeholder: "",
                      value: "",
                   },
@@ -2111,13 +1680,6 @@ window.templateCustomizationSchema = {
                      property: "font-size",
                      type: "text",
                      placeholder: "E.g: 20px",
-                     value: "",
-                  },
-                  {
-                     name: "margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
                      value: "",
                   },
                ],
@@ -2177,13 +1739,6 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -2234,12 +1789,6 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -2266,14 +1815,6 @@ window.templateCustomizationSchema = {
                      type: "color",
                      value: "",
                      important: true,
-                  },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     important: true,
-                     value: "",
                   },
                ],
             },
@@ -2331,13 +1872,6 @@ window.templateCustomizationSchema = {
                      placeholder: "E.g: 20px",
                      value: "",
                   },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                ],
             },
             {
@@ -2349,13 +1883,6 @@ window.templateCustomizationSchema = {
                      name: "Color",
                      property: "color",
                      type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
                      placeholder: "",
                      value: "",
                   },
@@ -2391,7 +1918,6 @@ window.templateCustomizationSchema = {
                      name: "Font Size",
                      property: "font-size",
                      type: "text",
-                     placeholder: "E.g: 20px",
                      placeholder: "",
                      value: "",
                   },
@@ -2421,20 +1947,6 @@ window.templateCustomizationSchema = {
                      property: "font-size",
                      type: "text",
                      placeholder: "E.g: 20px",
-                     value: "",
-                  },
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
                      value: "",
                   },
                   {
@@ -2473,20 +1985,6 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -2507,27 +2005,6 @@ window.templateCustomizationSchema = {
                label: "Community Embed",
                key: "template-community-embed",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -2558,20 +2035,6 @@ window.templateCustomizationSchema = {
                key: "template-hero-left",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -2593,20 +2056,6 @@ window.templateCustomizationSchema = {
                label: "Dashboard Info Video",
                key: "template-hero-right",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -2683,20 +2132,6 @@ window.templateCustomizationSchema = {
                key: "template-cwd",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -2738,20 +2173,6 @@ window.templateCustomizationSchema = {
                label: "CWD Category Item",
                key: "template-cwd-category-item-title",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -2806,7 +2227,6 @@ window.templateCustomizationSchema = {
                      name: "Font Size",
                      property: "font-size",
                      type: "text",
-                     placeholder: "E.g: 20px",
                      placeholder: "",
                      value: "",
                   },
@@ -2852,7 +2272,6 @@ window.templateCustomizationSchema = {
                      name: "Font Size",
                      property: "font-size",
                      type: "text",
-                     placeholder: "E.g: 20px",
                      placeholder: "",
                      value: "",
                   },
@@ -2874,7 +2293,6 @@ window.templateCustomizationSchema = {
                      name: "Font Size",
                      property: "font-size",
                      type: "text",
-                     placeholder: "E.g: 20px",
                      placeholder: "",
                      value: "",
                   },
@@ -2924,7 +2342,6 @@ window.templateCustomizationSchema = {
                      name: "Font Size",
                      property: "font-size",
                      type: "text",
-                     placeholder: "E.g: 20px",
                      placeholder: "",
                      value: "",
                   },
@@ -2968,7 +2385,6 @@ window.templateCustomizationSchema = {
                      name: "Font Size",
                      property: "font-size",
                      type: "text",
-                     placeholder: "E.g: 20px",
                      placeholder: "",
                      value: "",
                   },
@@ -3019,7 +2435,6 @@ window.templateCustomizationSchema = {
                      name: "Font Size",
                      property: "font-size",
                      type: "text",
-                     placeholder: "E.g: 20px",
                      placeholder: "",
                      value: "",
                   },
@@ -3065,7 +2480,6 @@ window.templateCustomizationSchema = {
                      name: "Font Size",
                      property: "font-size",
                      type: "text",
-                     placeholder: "E.g: 20px",
                      placeholder: "",
                      value: "",
                   },
@@ -3087,7 +2501,6 @@ window.templateCustomizationSchema = {
                      name: "Font Size",
                      property: "font-size",
                      type: "text",
-                     placeholder: "E.g: 20px",
                      placeholder: "",
                      value: "",
                   },
@@ -3104,13 +2517,6 @@ window.templateCustomizationSchema = {
                label: "Post Container",
                key: "template-post-page",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -3133,13 +2539,6 @@ window.templateCustomizationSchema = {
                key: "template-post-page-header",
                cssCustomizations: [
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -3153,13 +2552,6 @@ window.templateCustomizationSchema = {
                label: "Downloads Button",
                key: "template-downloads-button",
                cssCustomizations: [
-                  {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -3178,13 +2570,6 @@ window.templateCustomizationSchema = {
                      name: "Border Color",
                      property: "border-color",
                      type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
                      placeholder: "",
                      value: "",
                   },
@@ -3294,13 +2679,6 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Padding",
-                     property: "padding",
-                     type: "multi",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
                      name: "Background Color",
                      property: "background-color",
                      type: "color",
@@ -3311,13 +2689,6 @@ window.templateCustomizationSchema = {
                      name: "Border Color",
                      property: "border-color",
                      type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Border Radius",
-                     property: "border-radius",
-                     type: "multi",
                      placeholder: "",
                      value: "",
                   },
@@ -3340,13 +2711,6 @@ window.templateCustomizationSchema = {
                      property: "font-size",
                      type: "text",
                      placeholder: "E.g: 20px",
-                     value: "",
-                  },
-                  {
-                     name: "margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
                      value: "",
                   },
                ],
@@ -3403,13 +2767,6 @@ window.templateCustomizationSchema = {
                      property: "font-size",
                      type: "text",
                      placeholder: "E.g: 20px",
-                     value: "",
-                  },
-                  {
-                     name: "Margin",
-                     property: "margin",
-                     type: "multi",
-                     placeholder: "",
                      value: "",
                   },
                   {

@@ -347,9 +347,9 @@
       color: black;
    }
 
-   .global-contents__header__themes {
+   .global-contents__header__reset {
       font-size: 20px;
-      color: violet;
+      color: black;
       cursor: pointer;
    }
 
@@ -2387,10 +2387,14 @@
                        <div class="global-contents__header">
                            <i onclick="window.MembershipEditor.actions.switchEditoreMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
                            <p class="global-contents__header__text">Global (Desktop/Mobile)</p>
-                           <i class="fa-solid fa-shirt global-contents__header__themes" onclick="window.MembershipEditor.initializers.initializeThemeSelector()"></i>
+                           <i class="fa-solid fa-rotate-right global-contents__header__reset"></i>
                        </div>
                        <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeListOfEditablePages()">
                           <p>Switch Level</p>
+                          <i class="fa-solid fa-angle-right"></i>
+                       </div>
+                       <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeThemeSelector()">
+                          <p>Switch Template</p>
                           <i class="fa-solid fa-angle-right"></i>
                        </div>
                         <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeAdvanceSettings()">

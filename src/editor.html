@@ -2290,10 +2290,10 @@
                      name: "Styles",
                      templateItems: templateItem?.cssCustomizations,
                   },
-                  {
-                     name: "Advance",
-                     templateItems: templateItem?.features,
-                  },
+                  // {
+                  //    name: "Advance",
+                  //    templateItems: templateItem?.features,
+                  // },
                ];
                const tabItems = categories.reduce((a, c) => {
                   const js = `{ const $el = this; const $elParent = $el.parentElement; const $elContent = $elParent.parentElement; const $formItems = $elContent.querySelectorAll('.editor-customizer-item__form .editor-customizer-item__form__item', ); $elParent.querySelectorAll('p').forEach(($item,i) => { $item?.classList?.[$item === $el ? 'add' : 'remove']('active'); }); $formItems.forEach(($formItem) => { const category = $formItem.getAttribute('data-category-type'); $formItem?.classList?.[category === '${c.name.toLowerCase()}' ? 'add' : 'remove']('active'); });}`;
@@ -2321,7 +2321,7 @@
                        ${editorTabsHTML}
                        <div class="editor-customizer-item__form">
                            <div class="editor-customizer-item__form__item" data-category-type="contents">
-                               ${elementCustomizationHTML || formItemFallbackHTML}
+                               ${elementCustomizationHTML}
                                ${featuresHTML}
                            </div>
                            <div class="editor-customizer-item__form__item active" data-category-type="styles">

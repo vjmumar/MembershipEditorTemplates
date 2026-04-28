@@ -1735,6 +1735,7 @@
 
             // Finally we will retrieve the token
             this.utils.getAuth().then((e) => {
+               console.log(e)
                this.token = e.tokenId;
             });
          },
@@ -2321,9 +2322,9 @@
                        <div class="editor-customizer-item__form">
                            <div class="editor-customizer-item__form__item" data-category-type="contents">
                               <p style="display: ${templateItem?.features?.length ? "block" : "none"}; margin-bottom: 5px; font-size: 12px;">Features</p>
-                              ${featuresHTML}
+                              ${featuresHTML || ""}
                               <p style="display: ${templateItem?.elementCustomizations?.length ? "block" : "none"}; margin-bottom: 5px; margin-top: 5px; font-size: 12px;">Content</p>
-                              ${elementCustomizationHTML}
+                              ${elementCustomizationHTML || ""}
                            </div>
                            <div class="editor-customizer-item__form__item active" data-category-type="styles">
                                ${cssCustomizationHtml || formItemFallbackHTML}

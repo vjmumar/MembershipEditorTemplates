@@ -2284,10 +2284,10 @@
                const categories = [
                   {
                      name: "Contents",
-                     templateItems:[
-                        ...templateItem?.elementCustomizations,
-                        ...templateItem?.features
-                     ],
+                     templateItems:{
+                        features: templateItem?.features,
+                        contents: templateItem?.elementCustomizations
+                     }
                   },
                   {
                      name: "Styles",
@@ -2305,7 +2305,7 @@
                        </div>
                    `;
             })();
-
+            console.log(templateItem)
             // Then we will compile the entire form HTML by combining CSS, Element, and Feature sections
             const formItemFallbackHTML = `<p style="font-size: 15px; font-style: normal; text-align: center;">- No Settings -</p>`;
             const form = `
@@ -2320,8 +2320,10 @@
                        ${editorTabsHTML}
                        <div class="editor-customizer-item__form">
                            <div class="editor-customizer-item__form__item" data-category-type="contents">
-                              ${elementCustomizationHTML}
+                              <p>Features</p>
                               ${featuresHTML}
+                              <p>Content</p>
+                              ${elementCustomizationHTML}
                            </div>
                            <div class="editor-customizer-item__form__item active" data-category-type="styles">
                                ${cssCustomizationHtml || formItemFallbackHTML}

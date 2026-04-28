@@ -3519,12 +3519,14 @@ class CourseTemplate {
          document.body.insertAdjacentHTML("afterbegin", styles);
       },
       initNavBar: async ($container = null) => {
-         console.log($container)
+         console.log($container);
          // First we will fetch the necessary data
          const [userData, product] = await Promise.allSettled([
             this.data.fetchUser(),
             this.data.fetchProduct(),
          ]).then((res) => res.map((e) => e.value));
+
+         console.log(userData, product);
 
          // Then we will create the default variables
          const logo =

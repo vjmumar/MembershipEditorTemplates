@@ -3240,11 +3240,14 @@
             // Then we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;
+            const currentTemplateDefaultSchema = this.$iframe.contentWindow.templateCustomizationSchema;
             const activePageOnTemplate =
                previewIframeMembershipParser.activePageOnTemplate;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
             const activeTemplatesConfig =
                this.$iframe.contentWindow.activeTemplatesConfig;
+               console.log(currentTemplateDefaultSchema);
+               return;
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
             const auth = await this.utils.getAuth();
@@ -3269,7 +3272,9 @@
                      if (template.id === activePageOnTemplate.id) {
                         template = {
                            id: selectedTemplate.id,
-                           
+                           global: [],
+                           pages: [],
+                           mobilePages: [],
                         };
                      }
                   });

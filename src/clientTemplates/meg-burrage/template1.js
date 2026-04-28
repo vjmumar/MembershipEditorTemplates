@@ -5244,7 +5244,7 @@ class CourseTemplate {
             if (timeout) {
                setTimeout(() => {
                   clearInterval(interval);
-                  res(true);
+                  res(null);
                }, timeout);
             }
          });

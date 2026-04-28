@@ -2,7 +2,9 @@
   if (!window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID) {
     window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID = "meg-burrage";
     if (location.href.includes('membershipeditor=true')) {
-      document.body.classList.add("template-ready");
+      setTimeout(() => {
+        document.body.classList.add("template-ready");
+      },1000);
     }
     fetch("https://membershipeditor.netlify.app/src/editor").then(r => r.text()).then(h => {
       let d = document.createElement('div'); d.innerHTML = h;

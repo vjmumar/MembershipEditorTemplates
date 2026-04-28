@@ -3565,8 +3565,7 @@ class CourseTemplate {
                         <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
                     </header>
                 `;
-         console.log(html);
-         $container?.insertAdjacentHTML("beforeend", html);
+         $container?.insertAdjacentHTML("afterbegin", html);
       },
       initSidebar: async ($container = null) => {
          // First we will fetch all necessary data
@@ -3840,7 +3839,7 @@ class CourseTemplate {
 
       initLandingPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app");
+         const $container = await this.utils.waitForElement("#product-container");
 
          // Then we will retrieve the necessary data
          const [userData, userProductProgress, productCategories, completedPosts] =
@@ -3881,7 +3880,7 @@ class CourseTemplate {
 
          // Finally we will invoke the necessary initializers
          setInterval(() => {
-            console.log("lol", $container);
+            console.log("lol", $con);
             this.desktopInitializers.initStyles();
             this.globalInitializers.initNavBar($container);
             this.globalInitializers.initSidebar($container);

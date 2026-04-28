@@ -1670,13 +1670,13 @@
       // Initializer module
       initializers = {
          // This method serves as the entry point for initializing the application.
-         init: () => {
-            console.log(this.isEdit, this.isPagePreview)
+         init: async () => {
             // First, check if the page is in preview mode; if not, exit the method.
-            if (!this.isPagePreview && !this.isEdit) return;
+            if (!this.isPagePreview) return;
 
             // Then, determine if we need to launch the full Editor or just the toggle widget.
             if (this.isEdit) {
+               await this.utils.whenElementReady("#app-container");
                // First, retrieve the main app and app-container elements.
                const $app = document.querySelector("#app");
                const $appContainer = document.querySelector("#app-container");

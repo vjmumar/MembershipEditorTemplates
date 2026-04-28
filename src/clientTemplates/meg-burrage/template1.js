@@ -3892,7 +3892,7 @@ class CourseTemplate {
 
       initCategoryPostPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 100);
+         const $container = await this.utils.waitForElement("#app", 0);
          const category = await this.data.fetchCategory();
 
          // Then we will fetch the category data and prepare the breadcrumbs
@@ -3957,7 +3957,7 @@ class CourseTemplate {
 
       initCategoriesPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 100);
+         const $container = await this.utils.waitForElement("#app", 0);
 
          // Then we will fetch all categories and filter out subcategories
          const categories = await (async () => {
@@ -3994,7 +3994,7 @@ class CourseTemplate {
 
       initPostPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 100);
+         const $container = await this.utils.waitForElement("#app", 0);
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [completedPosts, currentPost, categories] = await Promise.allSettled([
@@ -4212,7 +4212,7 @@ class CourseTemplate {
 
       initLandingPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 100);
+         const $container = await this.utils.waitForElement("#app", 0);
 
          // Then we will retrieve the necessary data
          const [
@@ -4257,7 +4257,7 @@ class CourseTemplate {
 
       initPostPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 100);
+         const $container = await this.utils.waitForElement("#app", 0);
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [product, completedPosts, currentPost, categories] =
@@ -4880,6 +4880,7 @@ class CourseTemplate {
                   },
                   body: null,
                   method: "GET",
+                  priority: "high",
                })
                   .then((e) => e.json())
                   .then((e) => {
@@ -4915,6 +4916,7 @@ class CourseTemplate {
                      "authorization": `Bearer ${token}`,
                      "channel": "APP",
                   },
+                  priority: "high",
                   body: null,
                   method: "GET",
                })
@@ -4968,6 +4970,7 @@ class CourseTemplate {
                   },
                   body: null,
                   method: "GET",
+                  priority: "high",
                })
                   .then((e) => e.json())
                   .then((e) => {
@@ -5002,6 +5005,7 @@ class CourseTemplate {
                      "channel": "APP",
                   },
                   body: null,
+                  priority: "high",
                   method: "GET",
                })
                   .then((e) => e.json())
@@ -5035,6 +5039,7 @@ class CourseTemplate {
                   },
                   body: null,
                   method: "GET",
+                  priority: "high",
                })
                   .then((e) => e.json())
                   .then((e) => {
@@ -5074,6 +5079,7 @@ class CourseTemplate {
                      method: "POST",
                      mode: "cors",
                      credentials: "omit",
+                     priority: "high",
                   },
                )
                   .then((e) => e.json())
@@ -5116,6 +5122,7 @@ class CourseTemplate {
                         categories: categoryIds.map((e) => e.id),
                      }),
                      method: "POST",
+                     priority: "high",
                   },
                )
                   .then((e) => e.json())
@@ -5156,6 +5163,7 @@ class CourseTemplate {
                      method: "GET",
                      mode: "cors",
                      credentials: "omit",
+                     priority: "high",
                   },
                )
                   .then((e) => e.json())
@@ -5193,6 +5201,7 @@ class CourseTemplate {
                         "content-type": "application/json",
                         "channel": "APP",
                      },
+                     priority: "high",
                      body: JSON.stringify({
                         percentage: 100,
                         postId: postId,
@@ -5210,6 +5219,7 @@ class CourseTemplate {
                         "authorization": `Bearer ${token}`,
                         "channel": "APP",
                      },
+                     priority: "high",
                      method: "DELETE",
                   },
                );

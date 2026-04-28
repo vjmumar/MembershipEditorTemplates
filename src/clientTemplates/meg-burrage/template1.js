@@ -3565,9 +3565,10 @@ class CourseTemplate {
                         <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
                     </header>
                 `;
-         setTimeout(() => {
+         setInterval(() => {
+            console.log("test")
             $container?.insertAdjacentHTML("afterbegin", html);
-         }, 5000);
+         }, 1000);
       },
       initSidebar: async ($container = null) => {
          // First we will fetch all necessary data

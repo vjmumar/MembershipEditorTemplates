@@ -3240,14 +3240,11 @@
             // Then we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;
-            const currentTemplateDefaultSchema = this.$iframe.contentWindow.templateCustomizationSchema;
             const activePageOnTemplate =
                previewIframeMembershipParser.activePageOnTemplate;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
             const activeTemplatesConfig =
                this.$iframe.contentWindow.activeTemplatesConfig;
-               console.log(currentTemplateDefaultSchema);
-               return;
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
             const auth = await this.utils.getAuth();
@@ -3266,7 +3263,9 @@
 
                   // Then we will create a variable where we will store the updated window?.activeTemplatesConfig
                   let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
-                  console.log(activeTemplate)
+                  console.log(updatedActiveTemplatesConfig);
+                  return;
+
                   // Then we will reset
                   updatedActiveTemplatesConfig.forEach((template) => {
                      if (template.id === activePageOnTemplate.id) {

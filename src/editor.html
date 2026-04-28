@@ -1658,7 +1658,7 @@
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
          this.isPagePreview =
-            sessionStorage?.is_preview === "true" || location.href?.includes("token=");
+            sessionStorage?.is_preview === "true";
          this.loadedGoogleFontsPreview = [];
          this.$previewIframe = null;
          this.$iframe = null;
@@ -3974,7 +3974,6 @@
 
    if (!window.MembershipEditor) {
       const membershipEditorInterval = setInterval(() => {
-         console.log(sessionStorage?.is_preview)
          if (sessionStorage?.is_preview) {
             clearInterval(membershipEditorInterval);
             window.MembershipEditor = new MembershipEditor();

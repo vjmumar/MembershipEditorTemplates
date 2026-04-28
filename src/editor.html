@@ -3924,6 +3924,7 @@
 
    if (!window.MembershipEditor) {
       const membershipEditorInterval = setInterval(() => {
+         console.log(sessionStorage?.is_preview)
          if (sessionStorage?.is_preview) {
             clearInterval(membershipEditorInterval);
             console.log("waiting...");

@@ -3884,7 +3884,7 @@ class CourseTemplate {
             this.globalInitializers.initNavBar($container);
             this.globalInitializers.initSidebar($container);
             document.body.classList.add("page-dashboard");
-         });
+         },1000);
       },
 
       initCategoryPostPage: async () => {

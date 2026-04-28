@@ -1657,8 +1657,7 @@
       constructor() {
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
-         this.isPagePreview =
-            sessionStorage?.is_preview === "true";
+         this.isPagePreview = sessionStorage?.is_preview === "true";
          this.loadedGoogleFontsPreview = [];
          this.$previewIframe = null;
          this.$iframe = null;
@@ -1676,12 +1675,10 @@
 
             // Then, determine if we need to launch the full Editor or just the toggle widget.
             if (this.isEdit) {
-               
                // First, retrieve the main app and app-container elements.
-                await this.utils.whenElementReady("#app-container", () => {});
                const $app = document.querySelector("#app");
-               const $appContainer = document.querySelector("#app-container");
-               console.log($appContainer)
+               const $appContainer = await this.utils.waitForElement("#app-container", 0);
+               console.log($appContainer);
 
                // Then, generate and sanitize the URL for the preview.
                const url = new URL(location.href);
@@ -3120,7 +3117,7 @@
                this.$iframe.contentWindow.activeTemplatesConfig;
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
-            const auth = this.utils.getAuth()
+            const auth = this.utils.getAuth();
             const locationId = auth?.locationId;
             const productId = auth?.productId;
 
@@ -3916,7 +3913,27 @@
                clearTimeout(timeout);
             };
          },
-
+         // Then method waits for the element and return it
+         waitForElement: (elementSelector = "", resolveDelay = 1000, timeout = null) => {
+            return new Promise((res) => {
+               const interval = setInterval(() => {
+                  const $element = document.querySelector(elementSelector);
+                  if ($element) {
+                     clearInterval(interval);
+                     setTimeout(() => {
+                        res($element);
+                     }, resolveDelay);
+                  }
+                  console.log("waiting for ", elementSelector);
+               }, 200);
+               if (timeout) {
+                  setTimeout(() => {
+                     clearInterval(interval);
+                     res(null);
+                  }, timeout);
+               }
+            });
+         },
          // This helper method retrieves the snapshot of an element
          getElementSnapshot: (el) => {
             if (!el) return null;

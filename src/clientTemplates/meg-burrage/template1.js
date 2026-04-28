@@ -3519,6 +3519,7 @@ class CourseTemplate {
          document.body.insertAdjacentHTML("afterbegin", styles);
       },
       initNavBar: async ($container = null) => {
+         console.log($container)
          // First we will fetch the necessary data
          const [userData, product] = await Promise.allSettled([
             this.data.fetchUser(),
@@ -3565,7 +3566,7 @@ class CourseTemplate {
                         <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
                     </header>
                 `;
-         document.body?.insertAdjacentHTML("afterbegin", html);
+         $container?.insertAdjacentHTML("afterbegin", html);
       },
       initSidebar: async ($container = null) => {
          // First we will fetch all necessary data

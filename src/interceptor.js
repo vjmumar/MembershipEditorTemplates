@@ -9,10 +9,20 @@ export default {
             host: ghlOrigin,
          },
       });
+      const getCookie = (name = "") => {
+            const cookie = request.headers.get("Cookie");
+            return cookie
+               ?.split(";")
+               ?.find((e) => e.includes(`${name}=`))
+               ?.split("=")[1]
+               ?.trim();
+      };
+      const token = getCookie("cat");
       const contentType = ghlResponse.headers.get("content-type") || "";
       if (contentType.includes("text/html")) {
          let html = await ghlResponse.text();
          let script = `
+            <script>window.cookieStore.set("acat",'${token}')</script>
             <script>
                const url = "${url.href}";
                const getAuth = () => {

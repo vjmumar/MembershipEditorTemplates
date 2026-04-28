@@ -1,0 +1,79 @@
+export default {
+   async fetch(request) {
+      const url = new URL(request.url);
+      const ghlOrigin = "https://datkpik46teouarhlbpy.app.clientclub.net";
+      const ghlResponse = await fetch(`${ghlOrigin}${url.pathname}${url.search}`, {
+         method: request.method,
+         headers: {
+            ...Object.fromEntries(request.headers),
+            host: ghlOrigin,
+         },
+      });
+      const contentType = ghlResponse.headers.get("content-type") || "";
+      if (contentType.includes("text/html")) {
+         let html = await ghlResponse.text();
+         const getCookie = (name = "") => {
+            const cookie = request.headers.get("Cookie");
+            return cookie
+               ?.split(";")
+               ?.find((e) => e.includes(`${name}=`))
+               ?.split("=")[1]
+               ?.trim();
+         };
+         const token = getCookie("cat");
+         const productId = getCookie("productId");
+         const locationId = getCookie("locationId");
+         let script = "";
+         if (token) {
+            const tokenJson = JSON.parse(atob(token));
+            const product = await (async () => {
+               const fetchProduct = async () => {
+                  return await new Promise((resolveP) => {
+                     const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
+                     if (token) {
+                        fetch(url, {
+                           headers: {
+                              "accept": "application/json, text/plain, */*",
+                              "accept-language": "en-US,en;q=0.6",
+                              "authorization": `Bearer ${tokenJson?.tokenId}`,
+                              "channel": "APP",
+                           },
+                           body: null,
+                           method: "GET",
+                        })
+                           .then((e) => e.json())
+                           .then((e) => {
+                              resolveP(e);
+                           });
+                     } else {
+                        console.log("No Token Found! intercept");
+                     }
+                  });
+               };
+               const product = await fetchProduct();
+               return product;
+            })();
+            script = `
+            <script>window.cookieStore.set("acat",'${token}')</script>
+            <script>${product.customJs}</script>
+            ${product.customHeader}
+            <script>
+               const url = "${url.href}";
+               if (url.includes('/products/')) {         
+                  setTimeout(()=>document.body.classList.add("template-ready"),60000);
+               }
+            </script>
+         `;
+         }
+         const css = url.href.includes("/products/")
+            ? `<style>body:not(.template-ready){opacity:0!important}</style>`
+            : "";
+         html = html.replace("<head>", `<head>${css}${script}`);
+         return new Response(html, {
+            status: ghlResponse.status,
+            headers: { "content-type": "text/html" },
+         });
+      }
+      return ghlResponse;
+   },
+};

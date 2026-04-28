@@ -3690,7 +3690,7 @@ class CourseTemplate {
                 `;
 
          // Finally we will inject the sidebar and attach event listeners for interactivity
-         console.log($container)
+         console.log($container);
          $container.insertAdjacentHTML("beforebegin", html);
          setTimeout(() => {
             document.body.addEventListener("click", (e) => {
@@ -3883,9 +3883,11 @@ class CourseTemplate {
          `;
 
          // Finally we will invoke the necessary initializers
-         this.desktopInitializers.initStyles();
-         this.globalInitializers.initNavBar($container);
-         this.globalInitializers.initSidebar($container);
+         setTimeout(() => {
+            this.desktopInitializers.initStyles();
+            this.globalInitializers.initNavBar($container);
+            this.globalInitializers.initSidebar($container);
+         }, 500);
          document.body.classList.add("page-dashboard");
       },
 

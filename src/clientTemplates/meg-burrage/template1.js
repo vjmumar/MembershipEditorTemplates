@@ -3519,32 +3519,31 @@ class CourseTemplate {
          document.body.insertAdjacentHTML("afterbegin", styles);
       },
       initNavBar: async ($container = null) => {
-         try {
-            // First we will fetch the necessary data
-            const [userData, product] = await Promise.allSettled([
-               this.data.fetchUser(),
-               this.data.fetchProduct(),
-            ]).then((res) => res.map((e) => e.value));
+         // First we will fetch the necessary data
+         const [userData, product] = await Promise.allSettled([
+            this.data.fetchUser(),
+            this.data.fetchProduct(),
+         ]).then((res) => res.map((e) => e.value));
 
-            // Then we will create the default variables
-            const logo =
-               "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png";
-            const defaultLinks = [
-               { text: "Home", url: "/" },
-               { text: "Library", url: "/courses/library-v2" },
-               { text: "Favorites", url: "/favorites" },
-               { text: "Announcements", url: "/announcements" },
-               { text: "Contact", url: "/contact" },
-            ];
+         // Then we will create the default variables
+         const logo =
+            "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png";
+         const defaultLinks = [
+            { text: "Home", url: "/" },
+            { text: "Library", url: "/courses/library-v2" },
+            { text: "Favorites", url: "/favorites" },
+            { text: "Announcements", url: "/announcements" },
+            { text: "Contact", url: "/contact" },
+         ];
 
-            // Then we will generate the nav links HTML
-            const linksHTML = defaultLinks.reduce((a, c) => {
-               a += `<a href="${c.url}" class="template-navbar__link">${c.text}</a>`;
-               return a;
-            }, "");
+         // Then we will generate the nav links HTML
+         const linksHTML = defaultLinks.reduce((a, c) => {
+            a += `<a href="${c.url}" class="template-navbar__link">${c.text}</a>`;
+            return a;
+         }, "");
 
-            // Finally we will render the Navbar
-            const html = `
+         // Finally we will render the Navbar
+         const html = `
                     <header class="template-navbar-wrapper" id="custom-navbar">
                         <a href="/courses/products/${product.id}" class="template-navbar__logo-link"><img src="${logo}" /></a>
                         <!-- Center: Navigation Links -->
@@ -3566,10 +3565,7 @@ class CourseTemplate {
                         <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
                     </header>
                 `;
-            $container?.insertAdjacentHTML("afterbegin", html);
-         } catch (err) {
-            console.log(err);
-         }
+         document.body?.insertAdjacentHTML("afterbegin", html);
       },
       initSidebar: async ($container = null) => {
          // First we will fetch all necessary data

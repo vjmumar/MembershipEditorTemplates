@@ -3268,7 +3268,7 @@
                   updatedActiveTemplatesConfig.forEach((template) => {
                      if (template.id === activePageOnTemplate.id) {
                         template = {
-                           id: selectedTemplate.id,
+                           id: template.id,
                            global: [],
                            pages: [],
                            mobilePages: [],
@@ -3294,6 +3294,7 @@
                      `${productId}.txt`,
                   );
                   this.$iframe.contentWindow.savedTemplatesFileInfo = fileData;
+                  
 
                   // Then we will attempt to update the product configuration by sending a PUT request with a rehydration script embedded in customJs
                   await fetch(url, {

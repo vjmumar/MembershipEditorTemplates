@@ -3520,7 +3520,7 @@ class CourseTemplate {
       },
       initNavBar: async ($container = null) => {
          // First we will fetch the necessary data
-         const [ Promise,  Promise] = await Promise.allSettled([
+         const [user,  Promise] = await Promise.allSettled([
             this.data.fetchUser(),
             this.data.fetchProduct(),
          ]).then((res) => res.map((e) => e.value));

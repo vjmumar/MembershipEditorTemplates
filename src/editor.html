@@ -2998,12 +2998,10 @@
                this.$iframe.contentWindow.activeTemplatesConfig;
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
-            const auth = this.utils.getAuth();
+            const auth = await this.utils.getAuth();
             const locationId = auth?.locationId;
             const productId = auth?.productId;
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
-
-            console.log(auth)
 
             // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
             if (auth?.tokenId) {
@@ -3119,7 +3117,7 @@
                this.$iframe.contentWindow.activeTemplatesConfig;
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
-            const auth = this.utils.getAuth();
+            const auth = await this.utils.getAuth();
             const locationId = auth?.locationId;
             const productId = auth?.productId;
 
@@ -3251,7 +3249,7 @@
                this.$iframe.contentWindow.activeTemplatesConfig;
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
-            const auth = this.utils.getAuth();
+            const auth = await this.utils.getAuth();
             const locationId = auth?.locationId;
             const productId = auth?.productId;
 

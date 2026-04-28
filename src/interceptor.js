@@ -59,6 +59,7 @@ export default {
                                  "accept-language": "en-US,en;q=0.6",
                                  "authorization": \`Bearer \${token}\`,
                                  "channel": "APP",
+                                 "priority": 'high',
                               },
                               body: null,
                               method: "GET",

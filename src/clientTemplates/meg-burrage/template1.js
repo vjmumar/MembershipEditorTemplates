@@ -3519,6 +3519,7 @@ class CourseTemplate {
          document.body.insertAdjacentHTML("afterbegin", styles);
       },
       initNavBar: async ($container = null) => {
+         console.log($container)
          // First we will fetch the necessary data
          const [userData, product] = await Promise.allSettled([
             this.data.fetchUser(),
@@ -3883,7 +3884,7 @@ class CourseTemplate {
          `;
 
          // Finally we will invoke the necessary initializers
-         // this.desktopInitializers.initStyles();
+         this.desktopInitializers.initStyles();
          this.globalInitializers.initNavBar($container);
          this.globalInitializers.initSidebar($container);
          document.body.classList.add("page-dashboard");

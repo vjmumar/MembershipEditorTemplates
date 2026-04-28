@@ -3883,11 +3883,9 @@ class CourseTemplate {
          `;
 
          // Finally we will invoke the necessary initializers
-         setTimeout(() => {
-            this.desktopInitializers.initStyles();
-            this.globalInitializers.initNavBar($container);
-            this.globalInitializers.initSidebar($container);
-         }, 500);
+         // this.desktopInitializers.initStyles();
+         this.globalInitializers.initNavBar($container);
+         this.globalInitializers.initSidebar($container);
          document.body.classList.add("page-dashboard");
       },
 

@@ -3519,7 +3519,6 @@ class CourseTemplate {
          document.body.insertAdjacentHTML("afterbegin", styles);
       },
       initNavBar: async ($container = null) => {
-         console.log($container);
          // First we will fetch the necessary data
          const [userData, product] = await Promise.allSettled([
             this.data.fetchUser(),
@@ -3688,7 +3687,6 @@ class CourseTemplate {
                 `;
 
          // Finally we will inject the sidebar and attach event listeners for interactivity
-         console.log($container);
          $container.insertAdjacentHTML("beforebegin", html);
          setTimeout(() => {
             document.body.addEventListener("click", (e) => {
@@ -3841,9 +3839,9 @@ class CourseTemplate {
 
       initLandingPage: async () => {
          // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app", 0);
+         const $container = await this.utils.waitForElement("#app", 500)
 
-            this.globalInitializers.initNavBar($container);
+         this.globalInitializers.initNavBar($container);
          this.globalInitializers.initSidebar($container);
          // Then we will retrieve the necessary data
          const [userData, userProductProgress, productCategories, completedPosts] =

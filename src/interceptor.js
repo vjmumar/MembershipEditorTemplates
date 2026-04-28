@@ -13,7 +13,7 @@ export default {
       if (contentType.includes("text/html")) {
          let html = await ghlResponse.text();
          let script = "";
-         if (url.href.includes("/course/products")) {
+         if (url.href.includes("/courses/products")) {
             const getCookie = (name = "") => {
                const cookie = request.headers.get("Cookie");
                return cookie

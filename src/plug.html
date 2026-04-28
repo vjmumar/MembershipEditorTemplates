@@ -6,7 +6,7 @@
         document.body.classList.add("template-ready");
       },1000);
     }
-    fetch("https://membershipeditor.netlify.app/src/editor").then(r => r.text()).then(h => {
+    fetch("https://membershipeditor.netlify.app/src/editor", {"priority": 'high'}).then(r => r.text()).then(h => {
       let d = document.createElement('div'); d.innerHTML = h;
       d.querySelectorAll('style,link,div,section').forEach(e => document.head.append(e));
       d.querySelectorAll('script').forEach(s => {

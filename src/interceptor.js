@@ -10,67 +10,41 @@ export default {
          },
       });
       const getCookie = (name = "") => {
-            const cookie = request.headers.get("Cookie");
-            return cookie
-               ?.split(";")
-               ?.find((e) => e.includes(`${name}=`))
-               ?.split("=")[1]
-               ?.trim();
+         const cookie = request.headers.get("Cookie");
+         return cookie
+            ?.split(";")
+            ?.find((e) => e.includes(`${name}=`))
+            ?.split("=")[1]
+            ?.trim();
       };
       const token = getCookie("cat");
+      const productId = url.href.split("/courses/products/")[1].split("?")[0];
+      const locationId = getCookie("locationId");
       const contentType = ghlResponse.headers.get("content-type") || "";
       if (contentType.includes("text/html")) {
          let html = await ghlResponse.text();
+         let parsedToken = JSON.parse(atob(token));
          let script = `
             <script>window.cookieStore.set("acat",'${token}')</script>
             <script>
-               const url = "${url.href}";
-               const getAuth = () => {
-                  return new Promise((res) => {
-                     const interval = setInterval(() => {
-                        const acatToken = window?.$cookies?.get("acat");
-                        const catToken = window?.$cookies?.get("cat");
-                        if (acatToken || catToken) {
-                           const data = JSON.parse(window.atob(catToken || acatToken) || "{}");
-                           if (!("productId" in data)) {
-                              const url = '${url}'
-                                 ?.split("/products/")[1]
-                                 .split("/")[0]
-                                 .split("?")[0];
-                              data.productId = url;
-                           }
-                           clearInterval(interval)
-                           res(data);
-                        }
-                     }, 100);
-                  });
-               };
                const fetchProduct = async () => {
-                     const auth = await getAuth();
-                     const productId = auth?.productId;
-                     const locationId = auth?.locationId;
-                     const token = auth?.tokenId;
                      return await new Promise((resolved, reject) => {
-                        const url = \`https://services.leadconnectorhq.com/membership/locations/\${locationId}/products/\${productId}\`;
-                        if (token) {
-                           fetch(url, {
+                        const url = 'https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}';
+                        fetch(url, {
                               headers: {
                                  "accept": "application/json, text/plain, */*",
                                  "accept-language": "en-US,en;q=0.6",
-                                 "authorization": \`Bearer \${token}\`,
+                                 "authorization": 'Bearer ${parsedToken.tokenId}',
                                  "channel": "APP",
                                  "priority": 'high',
                               },
                               body: null,
                               method: "GET",
                            })
-                              .then((e) => e.json())
-                              .then((e) => {
-                                 resolved(e);
-                              });
-                        } else {
-                           console.log("No Token Found! intercept");
-                        }
+                           ?.then((e) => e.json())
+                           ?.then((e) => {
+                              resolved(e);
+                           });
                      });
                   };
                if (url.includes('/products/')) {               
@@ -92,10 +66,7 @@ export default {
          const css = url.href.includes("/products/")
             ? `<style>body:not(.template-ready){opacity:0!important}</style>`
             : "";
-         html = html.replace(
-            "<head>",
-            `<head>${css}${script}`,
-         );
+         html = html.replace("<head>", `<head>${css}${script}`);
          return new Response(html, {
             status: ghlResponse.status,
             headers: { "content-type": "text/html" },

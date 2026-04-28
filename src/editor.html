@@ -2274,13 +2274,13 @@
                      name: "Contents",
                      templateItems: [
                         ...(templateItem?.features || []),
-                        ...(templateItem?.elementCustomizations || [])
-                     ]
+                        ...(templateItem?.elementCustomizations || []),
+                     ],
                   },
                   {
                      name: "Styles",
                      templateItems: templateItem?.cssCustomizations,
-                  }
+                  },
                ];
                const tabItems = categories.reduce((a, c) => {
                   const js = `{ const $el = this; const $elParent = $el.parentElement; const $elContent = $elParent.parentElement; const $formItems = $elContent.querySelectorAll('.editor-customizer-item__form .editor-customizer-item__form__item', ); $elParent.querySelectorAll('p').forEach(($item,i) => { $item?.classList?.[$item === $el ? 'add' : 'remove']('active'); }); $formItems.forEach(($formItem) => { const category = $formItem.getAttribute('data-category-type'); $formItem?.classList?.[category === '${c.name.toLowerCase()}' ? 'add' : 'remove']('active'); });}`;
@@ -2999,7 +2999,6 @@
 
             // Then we will retrieve the authentication token and extract the location and product IDs from the URL
             const auth = await this.utils.getAuth();
-            console.log(auth)
             const locationId = auth?.locationId;
             const productId = auth?.productId;
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
@@ -3229,9 +3228,7 @@
          },
 
          // This method is responsible for resetting the user's current template to default --- need to double check
-         resetTemplateToDefaultInCustomJs: async (
-            selectorToToggle = "",
-         ) => {
+         resetTemplateToDefaultInCustomJs: async (selectorToToggle = "") => {
             // First we will confirm the user's intent to switch template
             if (
                !confirm(
@@ -3268,11 +3265,11 @@
                   let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
 
                   // Then we will reset
-                   updatedActiveTemplatesConfig.push({
-                        id: selectedTemplate.id,
-                        isActive: true,
-                        ...selectedTemplate,
-                     });
+                  updatedActiveTemplatesConfig.push({
+                     id: selectedTemplate.id,
+                     isActive: true,
+                     ...selectedTemplate,
+                  });
 
                   // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
                   const stringifiedTemplateData = JSON.stringify(
@@ -4072,10 +4069,7 @@
          getAuth: async () => {
             return new Promise((res) => {
                const interval = setInterval(() => {
-                  if (
-                     document.querySelector(".product-container, #app-container") &&
-                     window?.$cookies
-                  ) {
+                  if (window?.$cookies) {
                      const acatToken = window?.$cookies?.get("acat");
                      const catToken = window?.$cookies?.get("cat");
                      const data = JSON.parse(window.atob(catToken || acatToken) || "{}");

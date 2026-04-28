@@ -3263,8 +3263,6 @@
 
                   // Then we will create a variable where we will store the updated window?.activeTemplatesConfig
                   let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
-                  console.log(updatedActiveTemplatesConfig);
-                  return;
 
                   // Then we will reset
                   updatedActiveTemplatesConfig.forEach((template) => {
@@ -3274,6 +3272,8 @@
                            global: [],
                            pages: [],
                            mobilePages: [],
+                           customCss: "",
+                           googleFontsUsed: []
                         };
                      }
                   });

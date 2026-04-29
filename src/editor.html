@@ -1466,25 +1466,28 @@
                    * or an HTML content update depending on its type.
                    */
                   item.elementCustomizations.forEach((elItem) => {
-                     if (elItem?.type === "attribute" && elItem?.value) {
+                     if (elItem?.type === "attribute") {
                         const currentAttributeValue = document
                            ?.querySelector(cItem.elementSelector)
                            ?.setAttribute(elementCustomizationI.target);
+                        const value = elItem.value || currentAttributeValue;
+                        elItem.value = value;
                         this.utils.whenElementReady(item.elementSelector, () => {
                            document
                               ?.querySelector(item.elementSelector)
                               ?.setAttribute(
                                  elItem.target,
-                                 elItem.value || currentAttributeValue,
+                                 value,
                               );
                         });
-                     } else if (elItem.type === "html" && elItem.value) {
+                     } else if (elItem.type === "html") {
                         this.utils.whenElementReady(item.elementSelector, () => {
                            const currentHTML = document.querySelector(
                               item.elementSelector,
                            ).innerHTML;
-                           document.querySelector(item.elementSelector).innerHTML =
-                              elItem.value || currentHTML;
+                           const value = elItem.value || currentHTML
+                           elItem.value = value;
+                           document.querySelector(item.elementSelector).innerHTML = value;
                         });
                      }
                   });

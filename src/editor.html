@@ -2675,7 +2675,7 @@
             });
 
             // Then we will keep only the latest 5 snapshots in the undo stack
-            this.templateUndoStack = this.templateUndoStack.slice(0, 5);
+            this.templateUndoStack = this.templateUndoStack;
 
             // Finally we will enable the undo button
             document.querySelector(".undo")?.classList?.remove("disabled");
@@ -3218,6 +3218,10 @@
                      }),
                      redirect: "follow",
                   });
+
+                  // Then we will clear the undo stack
+                  this.templateUndoStack = [];
+                  document.querySelector(".undo")?.classList?.add("disabled");
 
                   // Then we will reload the preview iframe
                   this.$iframe.src = this.$iframe.src;

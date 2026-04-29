@@ -2638,10 +2638,10 @@
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
             // First we will clone the active template
-            const clonedTemplate =  window._.cloneDeep(activeTemplate);
+            const clonedTemplateSchema =  window._.cloneDeep(activeTemplate);
 
             // Then we will push the active template to undo stack
-            this.templateUndoStack.unshift(clonedTemplate);
+            this.templateUndoStack.unshift(clonedTemplateSchema);
 
              // Then we will keep only the latest 5 snapshots in the undo stack
             this.templateUndoStack = this.templateUndoStack.slice(0,5);

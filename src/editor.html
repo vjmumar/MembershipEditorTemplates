@@ -2646,7 +2646,7 @@
             this.templateUndoStack.unshift(clonedTemplate);
 
              // Then we will keep only the latest 5 snapshots in the undo stack
-            this.templateUndoStack = this.templateUndoStack(0,5);
+            this.templateUndoStack = this.templateUndoStack.slice(0,5);
 
             // Finally we will enable the undo button
             document.querySelector(".undo")?.classList?.remove("disabled");

@@ -1285,7 +1285,7 @@
          },
 
          // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution
-         initSyncConfig: () => {
+         initSyncConfig: (immediateSync = false) => {
             // First we will retrieve the current URL to determine which page configuration should be applied
             const url = window.location.href;
 
@@ -1322,7 +1322,7 @@
                       */
                      setTimeout(() => {
                         this.actions.syncTemplateFeatureCustomizations(null, null, true);
-                     }, 5500);
+                     }, immediateSync ? 0 : 5500);
 
                      /**
                       * Finally we will initialize the membership preview after a short delay.
@@ -1330,7 +1330,7 @@
                       * before activating preview mode
                       */
                      setTimeout(() => {
-                        if (this.isPreviewEditor) {
+                        if (this.isPreviewEditor && !immediateSync) {
                            if (!window.MembershipPreview) {
                               window.MembershipPreview = new MembershipPreview();
                            }
@@ -2636,12 +2636,18 @@
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
+            const activePageOnTemplate =
+               previewIframeMembershipParser.activePageOnTemplate;
 
             // First we will clone the active template
             const clonedTemplateSchema = window._.cloneDeep(activeTemplate);
+            const clonedActivePageOnTemplate = window._.cloneDeep(activePageOnTemplate);
 
             // Then we will push the active template to undo stack
-            this.templateUndoStack.unshift(clonedTemplateSchema);
+            this.templateUndoStack.unshift({
+               wholeSchema: clonedTemplateSchema,
+               activePageOnTemplate: clonedActivePageOnTemplate
+            });
 
             // Then we will keep only the latest 5 snapshots in the undo stack
             this.templateUndoStack = this.templateUndoStack.slice(0, 5);
@@ -2664,10 +2670,11 @@
             if (!undoTemplate) return;
 
             // Then we will restore the active template using the retrieved template snapshot
-            this.$iframe.contentWindow.MembershipParser.activeTemplate = undoTemplate;
+            this.$iframe.contentWindow.MembershipParser.activeTemplate = undoTemplate.wholeSchema;
+            this.$iframe.contentWindow.MembershipParser.activePageOnTemplate = undoTemplate.activePageOnTemplate;
 
             // Then we will sync the previou schanges
-            this.$iframe.contentWindow.MembershipParser.initializers.initSyncConfig();
+            this.$iframe.contentWindow.MembershipParser.initializers.initSyncConfig(true);
 
             // Finally we will disable the undo button if there are no more template snapshots in the undo stack
             if (!this.templateUndoStack.length) {

@@ -703,13 +703,6 @@ window.templateCustomizationSchema = {
                      placeholder: "5px 10px #888888",
                      value: "",
                   },
-                  {
-                     name: "Mininum Height",
-                     property: "min-height",
-                     type: "text",
-                     placeholder: "E.g: 400px",
-                     value: "",
-                  },
                ],
             },
             {
@@ -829,13 +822,6 @@ window.templateCustomizationSchema = {
                label: "Dashboard Container",
                key: "dashboard-container",
                cssCustomizations: [
-                  {
-                     name: "Mininum Height",
-                     property: "min-height",
-                     type: "text",
-                     placeholder: "E.g: 400px",
-                     value: "",
-                  },
                   {
                      name: "Background Image",
                      property: "background-image",
@@ -1159,13 +1145,6 @@ window.templateCustomizationSchema = {
                key: "template-category-post",
                cssCustomizations: [
                   {
-                     name: "Mininum Height",
-                     property: "min-height",
-                     type: "text",
-                     placeholder: "E.g: 400px",
-                     value: "",
-                  },
-                  {
                      name: "Background Image",
                      property: "background-image",
                      type: "text",
@@ -1221,13 +1200,6 @@ window.templateCustomizationSchema = {
                label: "Category Posts Post Container",
                key: "template-category-post-posts",
                cssCustomizations: [
-                  {
-                     name: "Mininum Height",
-                     property: "min-height",
-                     type: "text",
-                     placeholder: "E.g: 400px",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -1368,13 +1340,6 @@ window.templateCustomizationSchema = {
                key: "template-categories-list",
                cssCustomizations: [
                   {
-                     name: "Mininum Height",
-                     property: "min-height",
-                     type: "text",
-                     placeholder: "E.g: 400px",
-                     value: "",
-                  },
-                  {
                      name: "Background Image",
                      property: "background-image",
                      type: "text",
@@ -1402,13 +1367,6 @@ window.templateCustomizationSchema = {
                label: "Categories Category Item Containers",
                key: "template-category-post-posts",
                cssCustomizations: [
-                  {
-                     name: "Mininum Height",
-                     property: "min-height",
-                     type: "text",
-                     placeholder: "E.g: 400px",
-                     value: "",
-                  },
                   {
                      name: "Background Color",
                      property: "background-color",
@@ -1835,13 +1793,6 @@ window.templateCustomizationSchema = {
                      property: "box-shadow",
                      type: "text",
                      placeholder: "5px 10px #888888",
-                     value: "",
-                  },
-                  {
-                     name: "Mininum Height",
-                     property: "min-height",
-                     type: "text",
-                     placeholder: "E.g: 400px",
                      value: "",
                   },
                ],

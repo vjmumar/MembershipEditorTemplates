@@ -1467,12 +1467,12 @@
                    */
                   item.elementCustomizations.forEach((elItem) => {
                      if (elItem?.type === "attribute") {
-                        const currentAttributeValue = document
-                           ?.querySelector(cItem.elementSelector)
-                           ?.setAttribute(elementCustomizationI.target);
-                        const value = elItem.value || currentAttributeValue;
-                        elItem.value = value;
                         this.utils.whenElementReady(item.elementSelector, () => {
+                           const currentAttributeValue = document
+                              ?.querySelector(cItem.elementSelector)
+                              ?.setAttribute(elementCustomizationI.target);
+                           const value = elItem.value || currentAttributeValue;
+                           elItem.value = value;
                            document
                               ?.querySelector(item.elementSelector)
                               ?.setAttribute(elItem.target, value);
@@ -1499,15 +1499,14 @@
                item.customizations.forEach((cItem) => {
                   if (cItem?.elementCustomizations?.length) {
                      cItem.elementCustomizations.forEach((elementCustomizationI) => {
-                        if (
-                           elementCustomizationI?.type === "attribute"
-                        ) {
-                           const currentAttributeValue = document
-                              ?.querySelector(cItem.elementSelector)
-                              ?.setAttribute(elementCustomizationI.target);
-                           const value = elementCustomizationI.value || currentAttributeValue;
-                           elementCustomizationI.value = value;
+                        if (elementCustomizationI?.type === "attribute") {
                            this.utils.whenElementReady(cItem.elementSelector, () => {
+                              const currentAttributeValue = document
+                                 ?.querySelector(cItem.elementSelector)
+                                 ?.setAttribute(elementCustomizationI.target);
+                              const value =
+                                 elementCustomizationI.value || currentAttributeValue;
+                              elementCustomizationI.value = value;
                               document
                                  ?.querySelector(cItem.elementSelector)
                                  ?.setAttribute(elementCustomizationI.target, value);

@@ -2295,7 +2295,7 @@
                                    class="editor-customizer-item__form__item__input__group__input"
                                    type="checkbox"
                                    ${c.isTurnedOn ? "checked" : ""}
-                                   onBlur="${toggleFeatureInlineJs}"
+                                   onInput="${toggleFeatureInlineJs}"
                                />
                                <p>Turn On Feature</p>
                                </div>
@@ -2459,7 +2459,7 @@
                return `
                   <div class="advance-settings__customcss">
                      <p class="advance-settings__customcss__label">Custom Css</p>
-                     <textarea name="custom-css" onBlur="window.MembershipEditor.actions.updateTemplateCustomCss(this.value || '')">${activeTemplate?.customCss || ""}</textarea>
+                     <textarea name="custom-css" oninput="window.MembershipEditor.actions.updateTemplateCustomCss(this.value || '')">${activeTemplate?.customCss || ""}</textarea>
                   </div>
                `;
             })();
@@ -2469,7 +2469,7 @@
                return `
                   <div class="advance-settings__fonts">
                      <p class="advance-settings__fonts__label">Custom Fonts</p>
-                     <textarea name="customFonts" onBlur="window.MembershipEditor.actions.updateTemplateCustomFonts(this.value || '')">${(activeTemplate?.customFonts || []).join(",\n")}</textarea>
+                     <textarea name="customFonts" oninput="window.MembershipEditor.actions.updateTemplateCustomFonts(this.value || '')">${(activeTemplate?.customFonts || []).join(",\n")}</textarea>
                      <p class="advance-settings__fonts__info">ⓘ Import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p>
                   </div>
                `;
@@ -2481,7 +2481,7 @@
                   <div class="advance-settings__thumbnail-placeholder">
                      <p class="advance-settings__thumbnail-placeholder__label">Thumbnail Placeholder</p>
                      <div style="background-image: url('${activeTemplate?.placeholderThumbnail || ""}')" class="advance-settings__thumbnail-placeholder__preview"></div>
-                     <input name="placeholder-thumbnail" type="text" inBlur="window.MembershipEditor.actions.updateTemplateThumbnailPlaceholder(this.value || '')" value="${activeTemplate?.placeholderThumbnail || ""}" />
+                     <input name="placeholder-thumbnail" type="text" oninput="window.MembershipEditor.actions.updateTemplateThumbnailPlaceholder(this.value || '')" value="${activeTemplate?.placeholderThumbnail || ""}" />
                      <p class="advance-settings__thumbnail-placeholder__info">ⓘ Changes will be reflected after saving or refreshing the page</p>
                    </div>
                `;
@@ -2631,7 +2631,7 @@
       // Action module
       actions = {
          // This method sav's current template to undoStack
-         saveTemplateSnapshotToUndoStack: () => {
+         saveTemlplateSnapshotToUndoStack: () => {
             // First we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;
@@ -2672,7 +2672,7 @@
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
             // Then we will save the current template snapshot to undoStack
-            this.actions.saveTemplateSnapshotToUndoStack();
+            this.actions.saveTemlplateSnapshotToUndoStack();
 
             // Then we will initialize placeholders for the items we need to find
             let templateItem = null;
@@ -2793,7 +2793,7 @@
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
             // Then we will save the current template snapshot to undoStack
-            this.actions.saveTemplateSnapshotToUndoStack();
+            this.actions.saveTemlplateSnapshotToUndoStack();
 
             // Then if a normal key is provided, we will find the specific item on the active page and update its CSS value
             if (normal?.key) {
@@ -2848,7 +2848,7 @@
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
             // Then we will save the current template snapshot to undoStack
-            this.actions.saveTemplateSnapshotToUndoStack();
+            this.actions.saveTemlplateSnapshotToUndoStack();
 
             /**
              * Then we will locate the element customization on the active page by matching:
@@ -2928,7 +2928,7 @@
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
             // Then we will save the current template snapshot to undoStack
-            this.actions.saveTemplateSnapshotToUndoStack();
+            this.actions.saveTemlplateSnapshotToUndoStack();
 
             // Then if a normal feature key is provided, we will traverse the active page to find and update the specific feature customization while checking if the feature is active
             if (normal.featureKey) {
@@ -3005,7 +3005,7 @@
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
             // Then we will save the current template snapshot to undoStack
-            this.actions.saveTemplateSnapshotToUndoStack();
+            this.actions.saveTemlplateSnapshotToUndoStack();
 
             // First we will update the active template's custom css
             activeTemplate["customCss"] = customCss;
@@ -3022,7 +3022,7 @@
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
             // Then we will save the current template snapshot to undoStack
-            this.actions.saveTemplateSnapshotToUndoStack();
+            this.actions.saveTemlplateSnapshotToUndoStack();
 
             // First Split by comma and trim whitespace from each name
             const formattedFontsToArray = stringedFonts
@@ -3042,7 +3042,7 @@
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
             // Then we will save the current template snapshot to undoStack
-            this.actions.saveTemplateSnapshotToUndoStack();
+            this.actions.saveTemlplateSnapshotToUndoStack();
 
             // Then we will update the background image url of the thumbnail placeholder previewer
             document.querySelector(
@@ -3062,7 +3062,7 @@
             const activeTemplateGoogleFontsUsed = activeTemplate.googleFontsUsed;
 
             // Then we will save the current template snapshot to undoStack
-            this.actions.saveTemplateSnapshotToUndoStack();
+            this.actions.saveTemlplateSnapshotToUndoStack();
 
             // Then we will check if the passed font name already exists, if it does then we will not proceed
             if (activeTemplateGoogleFontsUsed.includes(fontName?.trim())) return;
@@ -3674,7 +3674,7 @@
 
                      // Then if the input side is "all", we will mirror it's value to all of the input
                      if (inputSide === "all") {
-                        Array.from($targetElement.querySelectorAll("blur"))
+                        Array.from($targetElement.querySelectorAll("input"))
                            ?.filter((e) => e.getAttribute("data-side") !== "all")
                            ?.forEach((e) => {
                               e.value = inputValue;
@@ -3703,11 +3703,11 @@
             }
             if (listenerId in window?._multiInputListeners) {
                window.removeEventListener(
-                  "blue",
+                  "input",
                   window._multiInputListeners[listenerId],
                );
             }
-            window.addEventListener("blur", listenerFunction);
+            window.addEventListener("input", listenerFunction);
             window._multiInputListeners[listenerId] = listenerFunction;
 
             // Finally return the actual HTML for the widget
@@ -3753,9 +3753,9 @@
                window._input = {};
             }
             if (listenerId in window?._input) {
-               window.removeEventListener("blur", window._input[listenerId]);
+               window.removeEventListener("change", window._input[listenerId]);
             }
-            window.addEventListener("blur", listenerFunction);
+            window.addEventListener("change", listenerFunction);
             window._input[listenerId] = listenerFunction;
 
             // Then if this is a text area, we will initialize the TinyMCE rich text editor
@@ -3793,7 +3793,7 @@
                               "$1",
                            );
                            originalTextarea.value = value;
-                           const event = new Event("blur", { bubbles: true });
+                           const event = new Event("input", { bubbles: true });
                            originalTextarea.dispatchEvent(event);
                         });
                      },
@@ -3802,7 +3802,7 @@
             }
 
             // Then if the type passed is color then we will initialize jscolor library
-            if (type === "color" && typeof jscolor !== "undefined") {
+            if (type === "color" && typeof jscolor !== "undefined") {   
                setTimeout(() => {
                   jscolor?.install();
                }, 500);
@@ -3861,9 +3861,9 @@
                window._input = {};
             }
             if (listenerId in window?._input) {
-               window.removeEventListener("blur", window._input[listenerId]);
+               window.removeEventListener("input", window._input[listenerId]);
             }
-            window.addEventListener("blur", listenerFunction);
+            window.addEventListener("input", listenerFunction);
             window._input[listenerId] = listenerFunction;
 
             // Finally return the actual HTML for the widget

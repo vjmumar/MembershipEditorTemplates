@@ -1320,9 +1320,16 @@
                       * Then we will delay feature customizations to ensure the DOM
                       * and previous customizations are fully applied before executing
                       */
-                     setTimeout(() => {
-                        this.actions.syncTemplateFeatureCustomizations(null, null, true);
-                     }, immediateSync ? 0 : 5500);
+                     setTimeout(
+                        () => {
+                           this.actions.syncTemplateFeatureCustomizations(
+                              null,
+                              null,
+                              true,
+                           );
+                        },
+                        immediateSync ? 0 : 5500,
+                     );
 
                      /**
                       * Finally we will initialize the membership preview after a short delay.
@@ -1452,7 +1459,6 @@
              * First we will loop through the activePageOnTemplate because each template
              * element may have its own customizations that need to be applied.
              */
-            console.log(this.activePageOnTemplate);
             this.activePageOnTemplate.forEach((item) => {
                if (item?.elementCustomizations?.length) {
                   /**
@@ -1461,15 +1467,24 @@
                    */
                   item.elementCustomizations.forEach((elItem) => {
                      if (elItem?.type === "attribute" && elItem?.value) {
+                        const currentAttributeValue = document
+                           ?.querySelector(cItem.elementSelector)
+                           ?.setAttribute(elementCustomizationI.target);
                         this.utils.whenElementReady(item.elementSelector, () => {
                            document
                               ?.querySelector(item.elementSelector)
-                              ?.setAttribute(elItem.target, elItem.value);
+                              ?.setAttribute(
+                                 elItem.target,
+                                 elItem.value || currentAttributeValue,
+                              );
                         });
                      } else if (elItem.type === "html" && elItem.value) {
                         this.utils.whenElementReady(item.elementSelector, () => {
+                           const currentHTML = document.querySelector(
+                              item.elementSelector,
+                           ).innerHTML;
                            document.querySelector(item.elementSelector).innerHTML =
-                              elItem.value;
+                              elItem.value || currentHTML;
                         });
                      }
                   });
@@ -1488,12 +1503,15 @@
                            elementCustomizationI?.type === "attribute" &&
                            elementCustomizationI?.value
                         ) {
+                           const currentAttributeValue = document
+                              ?.querySelector(cItem.elementSelector)
+                              ?.setAttribute(elementCustomizationI.target);
                            this.utils.whenElementReady(cItem.elementSelector, () => {
                               document
                                  ?.querySelector(cItem.elementSelector)
                                  ?.setAttribute(
                                     elementCustomizationI.target,
-                                    elementCustomizationI.value,
+                                    elementCustomizationI.value || currentAttributeValue,
                                  );
                            });
                         } else if (
@@ -1501,8 +1519,11 @@
                            elementCustomizationI.value
                         ) {
                            this.utils.whenElementReady(cItem.elementSelector, () => {
+                              const currentHTML = document.querySelector(
+                                 cItem.elementSelector,
+                              ).innerHTML;
                               document.querySelector(cItem.elementSelector).innerHTML =
-                                 elementCustomizationI?.value;
+                                 currentHTML || elementCustomizationI?.value;
                            });
                         }
                      });
@@ -2647,7 +2668,7 @@
             // Then we will push the active template to undo stack
             this.templateUndoStack.unshift({
                wholeSchema: clonedTemplateSchema,
-               activePageOnTemplate: clonedActivePageOnTemplate
+               activePageOnTemplate: clonedActivePageOnTemplate,
             });
 
             // Then we will keep only the latest 5 snapshots in the undo stack
@@ -2671,8 +2692,10 @@
             if (!undoTemplate) return;
 
             // Then we will restore the active template using the retrieved template snapshot
-            this.$iframe.contentWindow.MembershipParser.activeTemplate = undoTemplate.wholeSchema;
-            this.$iframe.contentWindow.MembershipParser.activePageOnTemplate = undoTemplate.activePageOnTemplate;
+            this.$iframe.contentWindow.MembershipParser.activeTemplate =
+               undoTemplate.wholeSchema;
+            this.$iframe.contentWindow.MembershipParser.activePageOnTemplate =
+               undoTemplate.activePageOnTemplate;
 
             // Then we will sync the previou schanges
             this.$iframe.contentWindow.MembershipParser.initializers.initSyncConfig(true);

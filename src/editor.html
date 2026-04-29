@@ -3810,7 +3810,7 @@
                         "code | bold italic | bullist numlist | removeformat | undo redo",
                      height: 300,
                      setup: function (editor) {
-                        editor.on("change keyup", function () {
+                        editor.on("change", function () {
                            editor.save();
                            const originalTextarea = editor.getElement();
                            const value = originalTextarea.value.replace(

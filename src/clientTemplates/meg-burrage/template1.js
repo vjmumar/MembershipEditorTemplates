@@ -4515,7 +4515,7 @@ class CourseTemplate {
                   clearInterval(interval);
                   res(data);
                }
-            }, 0);
+            }, 500);
          });
       },
       getDeepSequencedPosts: (categories = []) => {

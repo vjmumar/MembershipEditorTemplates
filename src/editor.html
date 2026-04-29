@@ -3267,19 +3267,15 @@
                   // Then we will reset
                   updatedActiveTemplatesConfig.forEach((template) => {
                      if (template.id === activeTemplate.id) {
-                        template = {
-                           id: template.id,
-                           global: [],
-                           pages: [],
-                           mobilePages: [],
-                           customCss: "",
-                           googleFontsUsed: []
-                        };
+                        template.global = [];
+                        template.pages = [];
+                        template.mobilePages = [];
+                        template.customCss = "";
+                        template.googleFontsUsed = []
                      }
                   });
-                  
-                  console.log(updatedActiveTemplatesConfig, activeTemplate)
-                  return;
+
+                  console.log(updatedActiveTemplatesConfig)
 
                   // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
                   const stringifiedTemplateData = JSON.stringify(

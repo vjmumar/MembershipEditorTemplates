@@ -3100,6 +3100,8 @@ class CourseTemplate {
                url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
             }));
 
+         console.log(categories)
+
          // Then we will inject the Dashboard HTML and initialize the navigation components
          $container.innerHTML = `
          <div class='template-container'>

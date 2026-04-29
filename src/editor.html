@@ -1475,17 +1475,14 @@
                         this.utils.whenElementReady(item.elementSelector, () => {
                            document
                               ?.querySelector(item.elementSelector)
-                              ?.setAttribute(
-                                 elItem.target,
-                                 value,
-                              );
+                              ?.setAttribute(elItem.target, value);
                         });
                      } else if (elItem.type === "html") {
                         this.utils.whenElementReady(item.elementSelector, () => {
                            const currentHTML = document.querySelector(
                               item.elementSelector,
                            ).innerHTML;
-                           const value = elItem.value || currentHTML
+                           const value = elItem.value || currentHTML;
                            elItem.value = value;
                            document.querySelector(item.elementSelector).innerHTML = value;
                         });
@@ -1503,30 +1500,27 @@
                   if (cItem?.elementCustomizations?.length) {
                      cItem.elementCustomizations.forEach((elementCustomizationI) => {
                         if (
-                           elementCustomizationI?.type === "attribute" &&
-                           elementCustomizationI?.value
+                           elementCustomizationI?.type === "attribute"
                         ) {
                            const currentAttributeValue = document
                               ?.querySelector(cItem.elementSelector)
                               ?.setAttribute(elementCustomizationI.target);
+                           const value = elementCustomizationI.value || currentAttributeValue;
+                           elementCustomizationI.value = value;
                            this.utils.whenElementReady(cItem.elementSelector, () => {
                               document
                                  ?.querySelector(cItem.elementSelector)
-                                 ?.setAttribute(
-                                    elementCustomizationI.target,
-                                    elementCustomizationI.value || currentAttributeValue,
-                                 );
+                                 ?.setAttribute(elementCustomizationI.target, value);
                            });
-                        } else if (
-                           elementCustomizationI.type === "html" &&
-                           elementCustomizationI.value
-                        ) {
+                        } else if (elementCustomizationI.type === "html") {
                            this.utils.whenElementReady(cItem.elementSelector, () => {
                               const currentHTML = document.querySelector(
                                  cItem.elementSelector,
                               ).innerHTML;
+                              const value = elementCustomizationI.value || currentHTML;
+                              elementCustomizationI.value = value;
                               document.querySelector(cItem.elementSelector).innerHTML =
-                                 elementCustomizationI?.value || currentHTML;
+                                 value;
                            });
                         }
                      });

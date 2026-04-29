@@ -1109,15 +1109,17 @@
             )?.scriptLink;
             document.body.append(script);
 
-
-
             /**
              * Finally, once the template script has finished loading, we initialize the active template configuration,
              * resolve the default page editor state, and trigger the application initialization sequence.
              */
             script.onload = () => {
-               this.originalTemplateCustomizationSchema = window?.templateCustomizationSchema;
-               // First, we initialize the active template by merging saved data with the Master Schema where IDs match.
+               // First we will assign the this.originalTemplateCustomizationSchema to the current templates schema so that we have a clean copy of template schema
+               this.originalTemplateCustomizationSchema = window._.cloneDeep(
+                  window?.templateCustomizationSchema,
+               );
+
+               // Then, we initialize the active template by merging saved data with the Master Schema where IDs match.
                this.activeTemplate = (() => {
                   if (activeTemplateFromSavedTemplates?.id) {
                      if (
@@ -2379,7 +2381,7 @@
                        <div class="global-contents__header">
                            <i onclick="window.MembershipEditor.actions.switchEditoreMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
                            <p class="global-contents__header__text">Global (Desktop/Mobile)</p>
-                           <i onclick="window.MembershipEditor.actions.resetTemplateToDefaultInCustomJs('.global-contents')" class="fa-solid fa-rotate-right global-contents__header__reset"></i>
+                           <i onclick="window.MembershipEditor.actions.resetTemplateToDefaultInCustomJs('.editor-customizer-sidebar')" class="fa-solid fa-rotate-right global-contents__header__reset"></i>
                        </div>
                        <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeListOfEditablePages()">
                           <p>Switch Level</p>
@@ -3135,8 +3137,10 @@
                   await this.actions.saveEditsToProductsCustomJs(true);
 
                   // Then we will toggle the selector to disabled state
-                  document.querySelector(selectorToToggle).style.cssText =
+                  if (selectorToToggle) {
+                     document.querySelector(selectorToToggle).style.cssText =
                      "opacity: .5; pointer-events: none;";
+                  }
 
                   // Then we will locate the selected template metadata based on the provided template id
                   const selectedTemplate = templates.find((e) => e.id === templateId);
@@ -3222,8 +3226,10 @@
                   );
                   console.error(err);
                } finally {
-                  document.querySelector(selectorToToggle).style.cssText =
+                  if (selectorToToggle) {
+                     document.querySelector(selectorToToggle).style.cssText =
                      "opacity: 1; pointer-events: all;";
+                  }
                }
             } else {
                // Finally we will block the save action and instruct the user to refresh or contact support when no valid token is available
@@ -3231,9 +3237,9 @@
             }
          },
 
-         // This method is responsible for resetting the user's current template to default --- need to double check
+         // This method is responsible for restoring the user's current template to its default configuration
          resetTemplateToDefaultInCustomJs: async (selectorToToggle = "") => {
-            // First we will confirm the user's intent to switch template
+            // First we will confirm the user's intent to restore the current template to default
             if (
                !confirm(
                   "Do you want to proceed with restoring the current template to default?",
@@ -3241,45 +3247,46 @@
             )
                return;
 
-            // Then we will retrieve the preview iframe membership parser and the necessary variables
+            // Then we will retrieve the preview iframe membership parser and the necessary template variables
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;
             const activePageOnTemplate =
                previewIframeMembershipParser.activePageOnTemplate;
-            const originalTemplateCustomizationSchema = previewIframeMembershipParser.originalTemplateCustomizationSchema;
+            const originalTemplateCustomizationSchema =
+               previewIframeMembershipParser.originalTemplateCustomizationSchema;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
             const activeTemplatesConfig =
                this.$iframe.contentWindow.activeTemplatesConfig;
 
-            // Then we will retrieve the authentication token and extract the location and product IDs from the URL
+            // Then we will retrieve the authentication token and extract the location and product IDs from the current auth context
             const auth = await this.utils.getAuth();
             const locationId = auth?.locationId;
             const productId = auth?.productId;
 
-            // Then we will build the product service endpoint used to persist the selected template into the product custom JS
+            // Then we will build the product service endpoint used to persist the restored template configuration into the product custom JS
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`;
 
-            // Finally if a valid token exists, we will serialize the template data ensuring functions are preserved as strings
+            // Finally if a valid token exists, we will restore the active template to its original default schema and save it
             if (auth?.tokenId) {
                try {
-                  // Then we will toggle the selector to disabled state
+                  // First we will toggle the selector to disabled state while the restore process is running
                   document.querySelector(selectorToToggle).style.cssText =
                      "opacity: .5; pointer-events: none;";
 
                   // Then we will create a variable where we will store the updated window?.activeTemplatesConfig
                   let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
 
-                  // Then we will reset
+                  // Then we will replace the currently active template with the original default template customization schema
                   updatedActiveTemplatesConfig.forEach((template, templateIndex) => {
                      if (template.id === activeTemplate.id) {
                         updatedActiveTemplatesConfig[templateIndex] = {
                            isActive: true,
                            ...originalTemplateCustomizationSchema,
-                        }
+                        };
                      }
                   });
 
-                  // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
+                  // Then we will stringify the updated template configuration while converting functions into strings for safe transport/storage
                   const stringifiedTemplateData = JSON.stringify(
                      updatedActiveTemplatesConfig,
                      (key, value) => {
@@ -3290,14 +3297,14 @@
                      },
                   );
 
+                  // Then we will upload the restored template configuration to GHL and include function rehydration logic for when it is loaded again
                   const fileData = await this.actions.uploadTextToGHL(
                      `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
                      `${productId}.txt`,
                   );
                   this.$iframe.contentWindow.savedTemplatesFileInfo = fileData;
-                  
 
-                  // Then we will attempt to update the product configuration by sending a PUT request with a rehydration script embedded in customJs
+                  // Then we will attempt to update the product configuration by saving the uploaded template file reference into customJs
                   await fetch(url, {
                      method: "PUT",
                      headers: {
@@ -3320,20 +3327,21 @@
                   });
 
                   // Finally we will show a success message and reload the preview iframe
-                  alert("✅ Done! Resetting To Default!");
+                  alert("✅ Done! Restored to default.");
                   this.$iframe.src = this.$iframe.src;
                } catch (err) {
-                  // Finally we will notify the user and log the error for debugging if saving fails for any reason
+                  // Finally we will notify the user and log the error for debugging if restoring the template fails for any reason
                   alert(
                      "❌ Oops! Something went wrong while saving. Try refreshing the page or contact support.",
                   );
                   console.error(err);
                } finally {
+                  // Finally we will restore the selector to enabled state
                   document.querySelector(selectorToToggle).style.cssText =
                      "opacity: 1; pointer-events: all;";
                }
             } else {
-               // Finally we will block the save action and instruct the user to refresh or contact support when no valid token is available
+               // Finally we will block the restore action and instruct the user to refresh or contact support when no valid token is available
                alert("❌ Invalid token. Please refresh the page or contact support.");
             }
          },

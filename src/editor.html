@@ -3270,14 +3270,12 @@
                   let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
 
                   // Then we will reset
-                  updatedActiveTemplatesConfig.forEach((template) => {
+                  updatedActiveTemplatesConfig.forEach((template, templateIndex) => {
                      if (template.id === activeTemplate.id) {
-                        template.global = originalTemplateCustomizationSchema.global;
-                        template.pages = originalTemplateCustomizationSchema.pages;
-                        template.mobilePages = originalTemplateCustomizationSchema.mobilePages;
-                        template.customCss = originalTemplateCustomizationSchema.customCss;
-                        template.googleFontsUsed = originalTemplateCustomizationSchema.googleFontsUsed;
-                        template.customFonts = originalTemplateCustomizationSchema.customFonts;
+                        updatedActiveTemplatesConfig[templateIndex] = {
+                           isActive: true,
+                           ...originalTemplateCustomizationSchema,
+                        }
                      }
                   });
 

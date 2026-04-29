@@ -3104,7 +3104,6 @@
             templateId = "",
             selectorToToggle = "",
          ) => {
-            console.log(selectorToToggle)
             // First we will confirm the user's intent to switch template
             if (
                !confirm(
@@ -3145,6 +3144,7 @@
 
                   // Then we will locate the selected template metadata based on the provided template id
                   const selectedTemplate = templates.find((e) => e.id === templateId);
+                  console.log(selectedTemplate)
 
                   // Then we will create a variable where we will store the updated window?.activeTemplatesConfig
                   let updatedActiveTemplatesConfig = activeTemplatesConfig || [];

@@ -1469,8 +1469,8 @@
                      if (elItem?.type === "attribute") {
                         this.utils.whenElementReady(item.elementSelector, () => {
                            const currentAttributeValue = document
-                              ?.querySelector(cItem.elementSelector)
-                              ?.setAttribute(elementCustomizationI.target);
+                              ?.querySelector(elItem.elementSelector)
+                              ?.getAttribute(elItem.target);
                            const value = elItem.value || currentAttributeValue;
                            elItem.value = value;
                            document
@@ -1502,8 +1502,8 @@
                         if (elementCustomizationI?.type === "attribute") {
                            this.utils.whenElementReady(cItem.elementSelector, () => {
                               const currentAttributeValue = document
-                                 ?.querySelector(cItem.elementSelector)
-                                 ?.setAttribute(elementCustomizationI.target);
+                                 ?.querySelector(elementCustomizationI.elementSelector)
+                                 ?.getAttribute(elementCustomizationI.target);
                               const value =
                                  elementCustomizationI.value || currentAttributeValue;
                               elementCustomizationI.value = value;

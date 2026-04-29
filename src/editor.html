@@ -2417,7 +2417,7 @@
                            <i onclick="window.MembershipEditor.actions.switchEditoreMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
                            <p class="global-contents__header__text">Global</p>
                            <div class="global-contents__header__control">
-                              <i onclick="window.MembershipEditor.actions.undoChanges" class="fa-solid fa-rotate-left ${this.templateUndoStack?.length ? "" : "disabled"} undo"></i>
+                              <i onclick="window.MembershipEditor.actions.undoChanges()" class="fa-solid fa-rotate-left ${this.templateUndoStack?.length ? "" : "disabled"} undo"></i>
                               <i onclick="window.MembershipEditor.actions.resetTemplateToDefaultInCustomJs('.editor-customizer-sidebar')" class="fa-solid fa-arrows-rotate"></i>   
                            </div>
                        </div>

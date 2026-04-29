@@ -3266,7 +3266,7 @@
 
                   // Then we will reset
                   updatedActiveTemplatesConfig.forEach((template) => {
-                     if (template.id === activePageOnTemplate.id) {
+                     if (template.id === activeTemplate.id) {
                         template = {
                            id: template.id,
                            global: [],
@@ -3278,9 +3278,6 @@
                      }
                   });
                   
-                  console.log(updatedActiveTemplatesConfig, activePageOnTemplate)
-                  return;
-
                   // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
                   const stringifiedTemplateData = JSON.stringify(
                      updatedActiveTemplatesConfig,

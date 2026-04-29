@@ -364,7 +364,7 @@
 
    .global-contents__header__control i.disabled {
       pointer-events: none;
-      opacity: .5;
+      opacity: 0.5;
    }
 
    .global-contents__header__control i:hover {
@@ -911,7 +911,7 @@
          if (this.isPreviewEditor) {
             setTimeout(() => {
                this.initializers.init();
-            },1000)
+            }, 1000);
          }
       }
 
@@ -2417,7 +2417,7 @@
                            <i onclick="window.MembershipEditor.actions.switchEditoreMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
                            <p class="global-contents__header__text">Global</p>
                            <div class="global-contents__header__control">
-                              <i class="fa-solid fa-rotate-left ${this.templateUndoStack?.length ? "" : "disabled"} undo"></i>
+                              <i onclick="window.MembershipEditor.actions.undoChanges" class="fa-solid fa-rotate-left ${this.templateUndoStack?.length ? "" : "disabled"} undo"></i>
                               <i onclick="window.MembershipEditor.actions.resetTemplateToDefaultInCustomJs('.editor-customizer-sidebar')" class="fa-solid fa-arrows-rotate"></i>   
                            </div>
                        </div>
@@ -2630,7 +2630,7 @@
 
       // Action module
       actions = {
-         // This method sav's current template to undoStack
+         // This method save's current template to undoStack
          saveTemlplateSnapshotToUndoStack: () => {
             // First we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
@@ -2638,16 +2638,41 @@
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
 
             // First we will clone the active template
-            const clonedTemplateSchema =  window._.cloneDeep(activeTemplate);
+            const clonedTemplateSchema = window._.cloneDeep(activeTemplate);
 
             // Then we will push the active template to undo stack
             this.templateUndoStack.unshift(clonedTemplateSchema);
 
-             // Then we will keep only the latest 5 snapshots in the undo stack
-            this.templateUndoStack = this.templateUndoStack.slice(0,5);
+            // Then we will keep only the latest 5 snapshots in the undo stack
+            this.templateUndoStack = this.templateUndoStack.slice(0, 5);
 
             // Finally we will enable the undo button
             document.querySelector(".undo")?.classList?.remove("disabled");
+         },
+
+         // This method is responsible for undoing the latest template change from the undo stack
+         undoChanges: () => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will retrieve and remove the latest template snapshot from the undo stack
+            const undoTemplate = this.templateUndoStack.shift();
+
+            // Then we will stop the undo process if there is no template snapshot to restore
+            if (!undoTemplate) return;
+
+            // Then we will restore the active template using the retrieved template snapshot
+            this.$iframe.contentWindow.MembershipParser.activeTemplate = undoTemplate;
+
+            // Then we will sync the previou schanges
+            this.$iframe.contentWindow.MembershipParser.initializers.initSyncConfig();
+
+            // Finally we will disable the undo button if there are no more template snapshots in the undo stack
+            if (!this.templateUndoStack.length) {
+               document.querySelector(".undo")?.classList?.add("disabled");
+            }
          },
 
          // This method handles enabling/disabling a feature
@@ -3802,7 +3827,7 @@
             }
 
             // Then if the type passed is color then we will initialize jscolor library
-            if (type === "color" && typeof jscolor !== "undefined") {   
+            if (type === "color" && typeof jscolor !== "undefined") {
                setTimeout(() => {
                   jscolor?.install();
                }, 500);

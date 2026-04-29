@@ -3384,6 +3384,7 @@
                   },
                );
                const registerJSON = await registerResponse.json();
+               console.log(registerJSON)
                await fetch(registerJSON.url, {
                   method: "PUT",
                   headers: {

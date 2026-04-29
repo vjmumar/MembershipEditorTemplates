@@ -3159,8 +3159,6 @@
                      (tem) => tem.id === templateId,
                   );
 
-                  console.log(updatedActiveTemplatesConfig, selectedTemplate, isExist)
-
                   /**
                    * Then, depending on whether the template already exists in user's saved configurations,
                    * we will either initialize a new entry with empty defaults or mark the existing
@@ -3180,8 +3178,6 @@
                      });
                   }
 
-                  console.log(updatedActiveTemplatesConfig, "cool")
-
                   // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
                   const stringifiedTemplateData = JSON.stringify(
                      updatedActiveTemplatesConfig,
@@ -3192,6 +3188,8 @@
                         return value;
                      },
                   );
+
+                  console.log(stringifiedTemplateData)
 
                   const fileData = await this.actions.uploadTextToGHL(
                      `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,

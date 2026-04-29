@@ -4188,7 +4188,6 @@ class CourseTemplate {
          const userId = auth?.externalUserId;
          const storageName = `${productId}-categories`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "[]");
-         console.log(previousData, "cool");
          if (previousData.length > 0) return previousData;
          return await new Promise((resolved, reject) => {
             const url = `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-purchase/categories?product_id=${productId}`;
@@ -4206,7 +4205,6 @@ class CourseTemplate {
                })
                   .then((e) => e.json())
                   .then((e) => {
-                     console.log(e,"stick")
                      resolved(e?.categories || []);
                      sessionStorage.setItem(
                         storageName,

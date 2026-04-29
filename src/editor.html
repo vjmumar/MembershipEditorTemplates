@@ -4109,9 +4109,9 @@
                window._input = {};
             }
             if (listenerId in window?._input) {
-               window.removeEventListener("change", window._input[listenerId]);
+               window.removeEventListener("input", window._input[listenerId]);
             }
-            window.addEventListener("change", listenerFunction);
+            window.addEventListener("input", listenerFunction);
             window._input[listenerId] = listenerFunction;
 
             // Then we will initialize the font select options

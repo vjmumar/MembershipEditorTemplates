@@ -2380,8 +2380,11 @@
                    <div class="global-contents">
                        <div class="global-contents__header">
                            <i onclick="window.MembershipEditor.actions.switchEditoreMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
-                           <p class="global-contents__header__text">Global (Desktop/Mobile)</p>
-                           <i onclick="window.MembershipEditor.actions.resetTemplateToDefaultInCustomJs('.editor-customizer-sidebar')" class="fa-solid fa-rotate-right global-contents__header__reset"></i>
+                           <p class="global-contents__header__text">Global</p>
+                           <div class="global-contents__header__control">
+                              <i class="fa-solid fa-rotate-left"></i>
+                              <i onclick="window.MembershipEditor.actions.resetTemplateToDefaultInCustomJs('.editor-customizer-sidebar')" class="fa-solid fa-arrows-rotate"></i>   
+                           </div>
                        </div>
                        <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeListOfEditablePages()">
                           <p>Switch Level</p>
@@ -3192,7 +3195,6 @@
                      `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,
                      `${productId}.txt`,
                   );
-                  console.log(fileData)
                   this.$iframe.contentWindow.savedTemplatesFileInfo = fileData;
 
                   // Then we will attempt to update the product configuration by sending a PUT request with a rehydration script embedded in customJs
@@ -3413,7 +3415,6 @@
                   },
                );
                const validateJSON = await validateResponse.json();
-               console.log(validateJSON, "update")
 
                // Then we will remove the previous configuration
                fetch("https://services.leadconnectorhq.com/medias/delete-files", {

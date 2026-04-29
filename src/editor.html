@@ -1526,7 +1526,7 @@
                                  cItem.elementSelector,
                               ).innerHTML;
                               document.querySelector(cItem.elementSelector).innerHTML =
-                                 currentHTML || elementCustomizationI?.value;
+                                 elementCustomizationI?.value || currentHTML;
                            });
                         }
                      });

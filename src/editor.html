@@ -2667,11 +2667,7 @@
             this.$iframe.contentWindow.MembershipParser.activeTemplate = undoTemplate;
 
             // Then we will sync the previou schanges
-            // let v = new MembershipParser();
-            this.$iframe.contentWindow.MembershipParser.actions.syncTemplateCssCustomizations();
-            this.$iframe.contentWindow.MembershipParser.actions.syncTemplateElementsCustomization();
-            this.$iframe.contentWindow.MembershipParser.actions.syncTemplateGoogleFontsUsed();
-            this.$iframe.contentWindow.MembershipParser.actions.syncTemplateFeatureCustomizations(null, null, true);
+            this.$iframe.contentWindow.MembershipParser.initSyncConfig();
 
             // Finally we will disable the undo button if there are no more template snapshots in the undo stack
             if (!this.templateUndoStack.length) {

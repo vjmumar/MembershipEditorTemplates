@@ -1084,10 +1084,10 @@
                })
                   ?.then((e) => e.text())
                   ?.then((e) => {
+                     console.log(e)
                      const script = document.createElement("script");
                      script.innerHTML = e;
                      document.body.append(script);
-                     return e;
                   });
             }
 
@@ -3144,7 +3144,6 @@
 
                   // Then we will locate the selected template metadata based on the provided template id
                   const selectedTemplate = templates.find((e) => e.id === templateId);
-                  console.log(selectedTemplate)
 
                   // Then we will create a variable where we will store the updated window?.activeTemplatesConfig
                   let updatedActiveTemplatesConfig = activeTemplatesConfig || [];
@@ -3188,8 +3187,6 @@
                         return value;
                      },
                   );
-
-                  console.log(stringifiedTemplateData)
 
                   const fileData = await this.actions.uploadTextToGHL(
                      `var s = ${stringifiedTemplateData}; window.activeTemplatesConfig = JSON.parse(JSON.stringify(s), (key, value) => { if (typeof value === "string") { const isFunction = value.startsWith("function") || value.startsWith("(customizations = []) =>") || value.startsWith("(e=[])=>"); if (isFunction) { try { return new Function("return " + value)(); } catch (err) { console.error("Error reviving function for key:", key, err); return value; } } } return value;});`,

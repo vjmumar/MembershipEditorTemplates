@@ -1053,6 +1053,7 @@
       constructor() {
          // First, we define the available templates along with their metadata, such as IDs, preview images, and script sources.
          this.templates = [];
+         this.originalTemplateCustomizationSchema = null;
          this.activeTemplate = null;
          this.activePageOnTemplate = null;
          this.isEdit = location.href.includes("membershipeditor=true");
@@ -1108,11 +1109,14 @@
             )?.scriptLink;
             document.body.append(script);
 
+
+
             /**
              * Finally, once the template script has finished loading, we initialize the active template configuration,
              * resolve the default page editor state, and trigger the application initialization sequence.
              */
             script.onload = () => {
+               this.originalTemplateCustomizationSchema = window?.templateCustomizationSchema;
                // First, we initialize the active template by merging saved data with the Master Schema where IDs match.
                this.activeTemplate = (() => {
                   if (activeTemplateFromSavedTemplates?.id) {
@@ -3242,6 +3246,7 @@
                this.$iframe.contentWindow.MembershipParser;
             const activePageOnTemplate =
                previewIframeMembershipParser.activePageOnTemplate;
+            const originalTemplateCustomizationSchema = previewIframeMembershipParser.originalTemplateCustomizationSchema;
             const activeTemplate = previewIframeMembershipParser.activeTemplate;
             const activeTemplatesConfig =
                this.$iframe.contentWindow.activeTemplatesConfig;
@@ -3267,15 +3272,14 @@
                   // Then we will reset
                   updatedActiveTemplatesConfig.forEach((template) => {
                      if (template.id === activeTemplate.id) {
-                        template.global = [];
-                        template.pages = [];
-                        template.mobilePages = [];
-                        template.customCss = "";
-                        template.googleFontsUsed = []
+                        template.global = originalTemplateCustomizationSchema.global;
+                        template.pages = originalTemplateCustomizationSchema.pages;
+                        template.mobilePages = originalTemplateCustomizationSchema.mobilePages;
+                        template.customCss = originalTemplateCustomizationSchema.customCss;
+                        template.googleFontsUsed = originalTemplateCustomizationSchema.googleFontsUsed;
+                        template.customFonts = originalTemplateCustomizationSchema.customFonts;
                      }
                   });
-
-                  console.log(updatedActiveTemplatesConfig)
 
                   // Then we will stringify the selected template configuration while converting functions into strings for safe transport/storage
                   const stringifiedTemplateData = JSON.stringify(

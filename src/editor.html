@@ -3674,7 +3674,7 @@
 
                      // Then if the input side is "all", we will mirror it's value to all of the input
                      if (inputSide === "all") {
-                        Array.from($targetElement.querySelectorAll("input"))
+                        Array.from($targetElement.querySelectorAll("blur"))
                            ?.filter((e) => e.getAttribute("data-side") !== "all")
                            ?.forEach((e) => {
                               e.value = inputValue;
@@ -3703,11 +3703,11 @@
             }
             if (listenerId in window?._multiInputListeners) {
                window.removeEventListener(
-                  "input",
+                  "blue",
                   window._multiInputListeners[listenerId],
                );
             }
-            window.addEventListener("input", listenerFunction);
+            window.addEventListener("blur", listenerFunction);
             window._multiInputListeners[listenerId] = listenerFunction;
 
             // Finally return the actual HTML for the widget
@@ -3753,9 +3753,9 @@
                window._input = {};
             }
             if (listenerId in window?._input) {
-               window.removeEventListener("input", window._input[listenerId]);
+               window.removeEventListener("blur", window._input[listenerId]);
             }
-            window.addEventListener("input", listenerFunction);
+            window.addEventListener("blur", listenerFunction);
             window._input[listenerId] = listenerFunction;
 
             // Then if this is a text area, we will initialize the TinyMCE rich text editor
@@ -3793,7 +3793,7 @@
                               "$1",
                            );
                            originalTextarea.value = value;
-                           const event = new Event("input", { bubbles: true });
+                           const event = new Event("blur", { bubbles: true });
                            originalTextarea.dispatchEvent(event);
                         });
                      },
@@ -3861,9 +3861,9 @@
                window._input = {};
             }
             if (listenerId in window?._input) {
-               window.removeEventListener("input", window._input[listenerId]);
+               window.removeEventListener("blur", window._input[listenerId]);
             }
-            window.addEventListener("input", listenerFunction);
+            window.addEventListener("blur", listenerFunction);
             window._input[listenerId] = listenerFunction;
 
             // Finally return the actual HTML for the widget

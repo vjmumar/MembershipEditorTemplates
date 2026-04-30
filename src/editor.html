@@ -3827,10 +3827,10 @@
                         valid_elements: "*[*]",
                         valid_children: "+body[style]",
                         verify_html: false,
-                        plugins: ["advlist", "lists", "code", "fullscreen", "font-family"],
-                        font_family_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; My Custom Font=my-custom-font,sans-serif',
+                        plugins: ["advlist", "lists", "code", "fullscreen"],
                         toolbar:
-                           "code | bold italic | bullist numlist | removeformat | undo redo",
+                           "code | bold italic | bullist numlist | removeformat | undo redo | fontfamily",
+                        font_family_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; My Custom Font=my-custom-font,sans-serif',
                         height: 300,
                         setup: function (editor) {
                            editor.on("change", function () {

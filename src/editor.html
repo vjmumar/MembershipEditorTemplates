@@ -3811,9 +3811,10 @@
 
             // Then if this is a text area, we will initialize the TinyMCE rich text editor
             if (isTextArea) {
-               setTimeout(() => {
-                  document.querySelectorAll(".rich-text").forEach(($richText) => {
-                     tinymce.remove($richText);
+               while (!tinymce.get(".rich-text")) {
+                  if (tinymce.get(".rich-text")) {
+                     tinymce.remove(".rich-text");
+                  } else {
                      tinymce.init({
                         selector: $richText,
                         base_url: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2",
@@ -3845,8 +3846,8 @@
                            });
                         },
                      });
-                  });
-               }, 1000);
+                  }
+               }
             }
 
             // Then if the type passed is color then we will initialize jscolor library

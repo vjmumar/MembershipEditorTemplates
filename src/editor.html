@@ -3812,37 +3812,39 @@
             // Then if this is a text area, we will initialize the TinyMCE rich text editor
             if (isTextArea) {
                setTimeout(() => {
-                  tinymce.remove(".rich-text");
-                  tinymce.init({
-                     selector: ".rich-text",
-                     base_url: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2",
-                     suffix: ".min",
-                     menubar: false,
-                     branding: false,
-                     promotion: false,
-                     statusbar: true,
-                     elementpath: false,
-                     forced_root_block: "",
-                     valid_elements: "*[*]",
-                     valid_children: "+body[style]",
-                     verify_html: false,
-                     plugins: ["advlist", "lists", "code", "fullscreen"],
-                     toolbar:
-                        "code | bold italic | bullist numlist | removeformat | undo redo",
-                     height: 300,
-                     setup: function (editor) {
-                        editor.on("change", function () {
-                           editor.save();
-                           const originalTextarea = editor.getElement();
-                           const value = originalTextarea.value.replace(
-                              /^<p>(.*)<\/p>$/s,
-                              "$1",
-                           );
-                           originalTextarea.value = value;
-                           const event = new Event("change", { bubbles: true });
-                           originalTextarea.dispatchEvent(event);
-                        });
-                     },
+                  document.querySelectorAll(".rich-text").forEach(($richText) => {
+                     tinymce.remove(".rich-text");
+                     tinymce.init({
+                        selector: ".rich-text",
+                        base_url: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2",
+                        suffix: ".min",
+                        menubar: false,
+                        branding: false,
+                        promotion: false,
+                        statusbar: true,
+                        elementpath: false,
+                        forced_root_block: "",
+                        valid_elements: "*[*]",
+                        valid_children: "+body[style]",
+                        verify_html: false,
+                        plugins: ["advlist", "lists", "code", "fullscreen"],
+                        toolbar:
+                           "code | bold italic | bullist numlist | removeformat | undo redo",
+                        height: 300,
+                        setup: function (editor) {
+                           editor.on("change", function () {
+                              editor.save();
+                              const originalTextarea = editor.getElement();
+                              const value = originalTextarea.value.replace(
+                                 /^<p>(.*)<\/p>$/s,
+                                 "$1",
+                              );
+                              originalTextarea.value = value;
+                              const event = new Event("change", { bubbles: true });
+                              originalTextarea.dispatchEvent(event);
+                           });
+                        },
+                     });
                   });
                }, 1000);
             }

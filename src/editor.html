@@ -3811,11 +3811,8 @@
 
             // Then if this is a text area, we will initialize the TinyMCE rich text editor
             if (isTextArea) {
-               // First we will remove any existing instances to prevent conflicts
-               tinymce.remove(".rich-text");
-
-               // Finally we will initialize the editor and setup event synchronization with the original textarea
                setTimeout(() => {
+                  tinymce.remove(".rich-text");
                   tinymce.init({
                      selector: ".rich-text",
                      base_url: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2",

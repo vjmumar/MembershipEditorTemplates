@@ -3812,9 +3812,7 @@
             // Then if this is a text area, we will initialize the TinyMCE rich text editor
             if (isTextArea) {
                // First we will remove any existing instances to prevent conflicts
-               if (tinymce) {
-                  tinymce.remove(".rich-text");
-               }
+               tinymce.remove(".rich-text");
 
                // Finally we will initialize the editor and setup event synchronization with the original textarea
                setTimeout(() => {

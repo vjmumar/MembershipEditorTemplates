@@ -3813,9 +3813,9 @@
             if (isTextArea) {
                setTimeout(() => {
                   document.querySelectorAll(".rich-text").forEach(($richText) => {
-                     tinymce.remove(".rich-text");
+                     tinymce.remove($richText);
                      tinymce.init({
-                        selector: ".rich-text",
+                        selector: $richText,
                         base_url: "https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2",
                         suffix: ".min",
                         menubar: false,

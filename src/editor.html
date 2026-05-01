@@ -3638,12 +3638,13 @@
 
             // Then we will update the iframe
             this.isDesktop = isDesktop;
-            this.$iframe.src = this.$iframe.src.replace(
-               /(\/courses\/products\/[^/]+\/).*?(\?.*)?$/,
-               "$1$2",
-            );
+            this.$iframe.style.width = isDesktop ? "100%" : "500px";
+            this.$iframe.contentDocument.body.style.display = "none";
             setTimeout(() => {
-               this.$iframe.style.width = isDesktop ? "100%" : "500px";
+               this.$iframe.src = this.$iframe.src.replace(
+                  /(\/courses\/products\/[^/]+\/).*?(\?.*)?$/,
+                  "$1$2",
+               );
             }, 500);
 
             // Finally we will add a loading indicator inside the sidebar editor
@@ -3961,7 +3962,9 @@
                                  text: "Font Family",
                                  onAction: (api) => {
                                     const node = editor.selection.getNode();
-                                    const fontFamily = editor.dom.getStyle(node, "font-family")?.replace(/^['"]|['"]$/g, "");
+                                    const fontFamily = editor.dom
+                                       .getStyle(node, "font-family")
+                                       ?.replace(/^['"]|['"]$/g, "");
                                     const popup = this.widgets.popup(
                                        this.widgets.fontSelect(
                                           templateKey,
@@ -3978,7 +3981,9 @@
                                                 font?.name,
                                              );
                                              if (font.type === "google") {
-                                                this.actions.pushFontGoogleFontsUsed(font.name);
+                                                this.actions.pushFontGoogleFontsUsed(
+                                                   font.name,
+                                                );
                                              }
                                           },
                                        ),
@@ -4384,9 +4389,9 @@
       };
    }
 
-   // if (!window.MembershipParser) {
+   if (!window.MembershipParser) {
       window.MembershipParser = new MembershipParser();
-   // }
+   }
 
    if (!window.MembershipEditor) {
       const membershipEditorInterval = setInterval(() => {

@@ -3642,10 +3642,10 @@
             this.$iframe.contentDocument.body.style.display = "none";
             setTimeout(() => {
                this.$iframe.src = this.$iframe.src.replace(
-                  /(\/courses\/products\/[^/]+\/).*?(\?.*)?$/,
-                  "$1$2",
+                  /(\/courses\/products\/[^/?]+)\/?(\?.*)?$/,
+                  "$1/categories$2",
                );
-            }, 4000);
+            }, 500);
 
             // Finally we will add a loading indicator inside the sidebar editor
             document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(

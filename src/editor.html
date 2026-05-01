@@ -1446,7 +1446,10 @@
 
             // Then we will generate the Custom JS Style Tag
             const brandingCssStyleTagHTML = (() => {
-               const branding = this.activeTemplate.branding.flatMap((brandingItem) => brandingItem.customizations).map((customizationItem) => {
+               const branding = this.activeTemplate.branding
+               ?.flatMap((brandingItem) => brandingItem.customizations)
+               ?.filter((customizationItem) => customizationItem.value)
+               ?.map((customizationItem) => {
                   return `--${customizationItem.property}: ${customizationItem.value}`
                });
                return  `

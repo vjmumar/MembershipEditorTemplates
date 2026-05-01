@@ -29,6 +29,27 @@
       z-index: 999999999999999 !important;
    }
 
+   .tox .tox-editor-header,
+   .tox .tox-toolbar,
+   .tox .tox-toolbar__group,
+   .tox .tox-tbtn,
+   .tox .tox-tbtn--select,
+   .tox .tox-listbox,
+   .tox .tox-collection,
+   .tox .tox-menu,
+   .tox.tox-tinymce {
+      border-radius: 0 !important;
+   }
+
+   .tox.tox-tinymce {
+      border: 1px solid #d0d0d0 !important;
+      box-shadow: none !important;
+   }
+
+   .tox .tox-tbtn {
+      box-shadow: none !important;
+   }
+
    /* Editor */
    .editor-customizer-sidebar {
       background-color: #ffffff;
@@ -3830,8 +3851,10 @@
                         plugins: ["advlist", "lists", "code", "fullscreen"],
                         toolbar:
                            "code | bold italic | bullist numlist | removeformat | undo redo | fontfamily",
-                        font_family_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; My Custom Font=my-custom-font,sans-serif',
+                        font_family_formats:
+                           "Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; My Custom Font=my-custom-font,sans-serif",
                         height: 300,
+                        content_css: 'https://googleapis.com',
                         setup: function (editor) {
                            editor.on("change", function () {
                               editor.save();

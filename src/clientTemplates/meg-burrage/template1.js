@@ -2744,9 +2744,7 @@ window.templateCustomizationSchema = {
 class CourseTemplate {
    constructor() {
       this.isMobile = window.matchMedia("(max-width: 768px)").matches;
-    setTimeout(() => {
-        this.init();
-    },3000)
+      this.init();
    }
 
    // This method initialize the script

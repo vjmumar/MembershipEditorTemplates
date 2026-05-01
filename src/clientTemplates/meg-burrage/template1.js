@@ -2974,7 +2974,6 @@ class CourseTemplate {
    // This object holds desktop related initializers
    desktopInitializers = {
       init: async () => {
-          console.log("desktop");
          // First we will retrieve the current URL
          const url = window.location.href;
 
@@ -3363,7 +3362,6 @@ class CourseTemplate {
             document.body.classList.add("template-ready");
          }, 500);
 
-         console.log("mobile");
          // Then we will check the URL against regex patterns to determine which page view to load
          if (/\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url)) {
             await this.mobileInitializers.initLandingPage();
@@ -3373,6 +3371,8 @@ class CourseTemplate {
             )
          ) {
             await this.mobileInitializers.initPostPage();
+         } else {
+            await this.mobileInitializers.initLandingPage();
          }
 
          // Finally we will remove the intial loader

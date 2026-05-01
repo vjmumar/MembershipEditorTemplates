@@ -3961,8 +3961,7 @@
                                  text: "Font Family",
                                  onAction: (api) => {
                                     const node = editor.selection.getNode();
-                                    const fontFamily = editor.dom.getStyle(node, "font-family");
-                                    console.log(node, fontFamily);
+                                    const fontFamily = editor.dom.getStyle(node, "font-family")?.replace(/^['"]|['"]$/g, "");
                                     const popup = this.widgets.popup(
                                        this.widgets.fontSelect(
                                           templateKey,

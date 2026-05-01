@@ -3351,6 +3351,7 @@ class CourseTemplate {
       init: async () => {
          // First we will retrieve the current URL
          const url = window.location.href;
+         console.log(url);
 
          // Then we will insert the font-awesome script into the head
          const fScript = document.createElement("script");
@@ -3364,7 +3365,7 @@ class CourseTemplate {
 
          // Then we will check the URL against regex patterns to determine which page view to load
          if (/\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url)) {
-            console.log("hrehirhwer")
+            console.log("hrehirhwer");
             await this.mobileInitializers.initLandingPage();
          } else if (
             /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/posts\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(

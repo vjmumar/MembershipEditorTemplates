@@ -3965,17 +3965,23 @@
                                           templateKey,
                                           property,
                                           "",
-                                          "",
+                                          "tinymce",
                                           "",
                                           (font) => {
                                              popup.remove();
-                                             console.log(font);
-                                                editor.focus();
-                                                editor.execCommand("FontName", false, font?.name);
+                                             editor.focus();
+                                             editor.execCommand(
+                                                "FontName",
+                                                false,
+                                                font?.name,
+                                             );
+                                             if (font.type === "google") {
+                                                this.actions.pushFontGoogleFontsUsed(updatedValue.name);
+                                             }
                                           },
                                        ),
                                        true,
-                                       "visible"
+                                       "visible",
                                     );
                                  },
                               });

@@ -1362,6 +1362,9 @@
             // Then we will sync the template's used google fonts
             this.actions.syncTemplateGoogleFontsUsed();
 
+            // Then we will sync the template's branding styles
+            this.actions.syncTemplateBrandingCss();
+
             // Finally we will iterate through the template pages to find the current view and process it
             this.activeTemplate?.[this.isDesktop ? "pages" : "mobilePages"]?.forEach(
                (page) => {
@@ -1432,6 +1435,28 @@
 
             // Finally we will insert the fresh style tags with the updated CSS values
             document.body.insertAdjacentHTML("beforeend", `${customCssStyleTagHTML}`);
+         },
+
+         // This method applies the template's branding css
+         syncTemplateBrandingCss: () => {
+            // First we will remove any previously rendered style tags
+            document
+               ?.querySelectorAll(".bm-template-branding-style")
+               ?.forEach((e) => e.remove());
+
+            // Then we will generate the Custom JS Style Tag
+            const brandingCssStyleTagHTML = (() => {
+               const branding = this.activeTemplate.branding.flatMap((brandingItem) => brandingItem.customizations).map((customizationItem) => {
+                  return `--${customizationItem.property}: ${customizationItem.value}`
+               });
+               return  `
+               <style class="bm-template-branding-style">
+                  ::root {${branding.join(";")}}
+               </style>`;
+            })()
+
+            // Finally we will insert the fresh style tags with the updated CSS values
+            document.head.insertAdjacentHTML("beforeend", `${brandingCssStyleTagHTML}`);
          },
 
          // This method applies the template's Google Fonts used
@@ -3144,6 +3169,7 @@
             });
 
             // Finally we will sync the changes
+            previewIframeMembershipParser.actions.syncTemplateBrandingCss();
          },
 
          // This method updates a specific feature customization

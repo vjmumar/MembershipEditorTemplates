@@ -2457,7 +2457,7 @@
             $sidebarContent.innerHTML = `
                    <div class="global-contents">
                        <div class="global-contents__header">
-                           <i onclick="window.MembershipEditor.actions.switchEditoreMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
+                           <i onclick="window.MembershipEditor.actions.switchEditorMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
                            <p class="global-contents__header__text">Global</p>
                            <div class="global-contents__header__control">
                               <i onclick="window.MembershipEditor.actions.undoChanges()" class="fa-solid fa-rotate-left ${this.templateUndoStack?.length ? "" : "disabled"} undo"></i>
@@ -3627,7 +3627,7 @@
          },
 
          // This method toggles the editor view between desktop and mobile modes.
-         switchEditoreMode: async (isDesktop = true) => {
+         switchEditorMode: async (isDesktop = true) => {
             // First we will ask the user to confirm their decision to open the mobile customizer
             const isConfirm = confirm(
                `Please save your changes before switching to another view. If you have already saved, you may continue; otherwise, we advise saving now so your changes are not lost.`,
@@ -3644,7 +3644,7 @@
             );
             setTimeout(() => {
                this.$iframe.style.width = isDesktop ? "100%" : "500px";
-            }, 500);
+            }, 0);
 
             // Finally we will add a loading indicator inside the sidebar editor
             document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(

@@ -3362,7 +3362,7 @@ class CourseTemplate {
          setTimeout(() => {
             document.body.classList.add("template-ready");
          }, 500);
-
+         console.log("lol", /\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url))
          // Then we will check the URL against regex patterns to determine which page view to load
          if (/\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url)) {
             await this.mobileInitializers.initLandingPage();

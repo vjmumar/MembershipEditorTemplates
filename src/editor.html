@@ -1363,9 +1363,7 @@
                       */
                      setTimeout(() => {
                         if (this.isPreviewEditor && !immediateSync) {
-                           if (!window.MembershipPreview) {
-                              window.MembershipPreview = new MembershipPreview();
-                           }
+                           window.MembershipPreview = new MembershipPreview();
                         }
                      }, 2000);
                   }

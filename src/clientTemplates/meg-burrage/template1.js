@@ -2749,6 +2749,7 @@ class CourseTemplate {
 
    // This method initialize the script
    init = async () => {
+      console.log(this.isMobile, "isMobule?")
       this?.[this.isMobile ? "mobileInitializers" : "desktopInitializers"]?.init();
       this?.globalInitializers.initStyles();
       this?.widgets.initStyles();

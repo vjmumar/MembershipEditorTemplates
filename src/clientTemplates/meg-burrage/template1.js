@@ -400,6 +400,7 @@ window.templateCustomizationSchema = {
                   {
                      name: "Content",
                      type: "html",
+                     hideName: true,
                      target: "",
                      value: "",
                   },

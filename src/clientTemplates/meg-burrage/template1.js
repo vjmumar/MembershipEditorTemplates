@@ -398,9 +398,8 @@ window.templateCustomizationSchema = {
                ],
                elementCustomizations: [
                   {
-                     name: "Content",
+                     name: "HTML Content",
                      type: "html",
-                     hideName: true,
                      target: "",
                      value: "",
                   },

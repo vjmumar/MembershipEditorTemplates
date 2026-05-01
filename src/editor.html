@@ -2709,37 +2709,37 @@
             // Then we will generate the branding list html
             const html = activeTemplate.branding.reduce((a, c) => {
                const customizationsHTML = c.customizations.reduce((aa, cc) => {
-                 const input = (() => {
-                  if (c.type === "font") {
-                     return this?.widgets?.fontSelect(
-                        c.key,
-                        cc?.property,
-                        cc?.value,
-                        cc?.type,
-                        "E.g: 20px",
-                        (updatedValue) => {
-                           console.log(updatedValue)
-                           // this.actions.updateTemplateCustomizations(...updateArgs);
-                           // if (updatedValue.type === "google") {
-                           //    this.actions.pushFontGoogleFontsUsed(updatedValue.name);
-                           // }
-                        },
-                     );
-                  } else {
-                     return this?.widgets?.input(
-                        c.key,
-                        cc.property,
-                        cc?.value,
-                        cc.type,
-                        cc?.placeholder,
-                        (updatedValue) => {
-                          console.log(value)
-                           // this.actions.updateTemplateCustomizations(...updateArgs);
-                        },
-                     );
-                  }
-                 })();
-                 
+                  const input = (() => {
+                     if (cc.type === "font") {
+                        return this?.widgets?.fontSelect(
+                           c.key,
+                           cc?.property,
+                           cc?.value,
+                           cc?.type,
+                           "E.g: 20px",
+                           (updatedValue) => {
+                              console.log(updatedValue)
+                              // this.actions.updateTemplateCustomizations(...updateArgs);
+                              // if (updatedValue.type === "google") {
+                              //    this.actions.pushFontGoogleFontsUsed(updatedValue.name);
+                              // }
+                           },
+                        );
+                     } else {
+                        return this?.widgets?.input(
+                           c.key,
+                           cc?.property,
+                           cc?.value,
+                           cc?.type,
+                           "",
+                           (updatedValue) => {
+                           console.log(value)
+                              // this.actions.updateTemplateCustomizations(...updateArgs);
+                           },
+                        );
+                     }
+                  })();
+
                   aa += `
                   <div class="editor-customizer-item__form__item__input__group">
                       <h3 class="editor-customizer-item__form__item__input__group__name">${c.name}</h3>

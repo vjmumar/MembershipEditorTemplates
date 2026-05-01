@@ -792,6 +792,7 @@
    .widget-font-select__input--has-selection::placeholder {
       color: #374151;
       font-weight: 500;
+      font-size: 14px;
    }
 
    .widget-font-select__list {
@@ -3712,11 +3713,14 @@
                         position: relative;
                         z-index: 1;
                         width: min(420px, 100%);
-                        min-height: 160px;
+                        min-height: 50vh;
                         max-height: calc(100vh - 32px);
                         overflow: auto;
                         background: #ffffff;
                         border: 1px solid #e5e7eb;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
                         border-radius: 6px;
                         box-shadow: 0 18px 45px rgba(15, 23, 42, 0.22);
                      }

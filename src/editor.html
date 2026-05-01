@@ -3849,6 +3849,8 @@
                            fontChunks.push(fonts?.slice(i, i + 10));
                         }
 
+                        console.log(fontChunks)
+
                         // Finally we will iterate over all the fontChunks and conditionally insert the font family using @import
                         fontChunks.forEach((chunk) => {
                            // First we will filter out fonts that have already been injected to avoid duplicate requests

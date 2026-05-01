@@ -3836,7 +3836,6 @@
                   // We will retrieve the Google Fonts and process them along with the custom fonts
                   this.data.getGoogleFonts().then((gFontRes) => {
                      const fonts = [];
-                     console.log(gFontRes);
                      gFontRes.items.map((font) => {
                         fonts.push(`${font.family}=${font?.variants?.join(",")}`);
                      });
@@ -3859,7 +3858,7 @@
                            plugins: ["advlist", "lists", "code", "fullscreen"],
                            toolbar:
                               "code | bold italic | bullist numlist | removeformat | undo redo | fontfamily",
-                           font_family_formats: fontFamilies,
+                           font_family_formats: fonts.join(";"),
                            content_css: "https://googleapis.com",
                            height: 300,
                            setup: function (editor) {

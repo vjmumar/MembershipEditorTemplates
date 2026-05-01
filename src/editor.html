@@ -3960,13 +3960,14 @@
                               editor.ui.registry.addButton("fontwidget", {
                                  text: "Fonts",
                                  onAction: (api) => {
-                                    this.widgets.popup(
+                                    const popup = this.widgets.popup(
                                        this.widgets.fontSelect(
                                           templateKey,
                                           property,
                                           "",
                                           "",
                                           (font) => {
+                                             popup.remove();
                                              console.log(font);
                                           },
                                        ),

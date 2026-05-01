@@ -784,6 +784,13 @@
          box-shadow 0.2s;
    }
 
+   .widget-font-select__input::placeholder {
+      color: #374151;
+      font-weight: 500;
+      font-size: 14px;
+      text-align: left;
+   }
+
    .widget-font-select__input:focus {
       border-color: #3b82f6;
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
@@ -793,6 +800,7 @@
       color: #374151;
       font-weight: 500;
       font-size: 14px;
+      text-align: left;
    }
 
    .widget-font-select__list {
@@ -3686,7 +3694,7 @@
 
       // Widgets module
       widgets = {
-         popup: (content = "") => {
+         popup: (content = "", isFit = false, overFlow = "hidden") => {
             document.querySelector("[data-widget-popup-root]")?.remove();
             const popupHTML = `
                <div data-widget-popup-root>
@@ -3712,10 +3720,10 @@
                      .widget-popup__panel {
                         position: relative;
                         z-index: 1;
-                        width: min(420px, 100%);
-                        min-height: 50vh;
+                        width: ${isFit ? "fit-content" : "min(420px, 100%)"};
+                        min-height: ${isFit ? "fit-content" : "50vh"};
                         max-height: calc(100vh - 32px);
-                        overflow: auto;
+                        overflow: ${overFlow};
                         background: #ffffff;
                         border: 1px solid #e5e7eb;
                         display: flex;
@@ -3952,15 +3960,19 @@
                               editor.ui.registry.addButton("fontwidget", {
                                  text: "Fonts",
                                  onAction: (api) => {
-                                    this.widgets.popup(this.widgets.fontSelect(
-                                       templateKey,
-                                       property,
-                                       "",
-                                       "",
-                                       (font) => {
-                                          console.log(font);
-                                       },
-                                    ))
+                                    this.widgets.popup(
+                                       this.widgets.fontSelect(
+                                          templateKey,
+                                          property,
+                                          "",
+                                          "",
+                                          (font) => {
+                                             console.log(font);
+                                          },
+                                       ),
+                                       true,
+                                       "visible"
+                                    );
                                  },
                               });
                            },

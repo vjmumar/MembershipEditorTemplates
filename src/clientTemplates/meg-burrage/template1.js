@@ -4495,7 +4495,7 @@ class CourseTemplate {
 }
 
 if (!window.CourseTemplate) {
-   window.addEventListener("load", () => {
+   window.addEventListener("DOMContentLoaded", () => {
       window.CourseTemplate = new CourseTemplate();
    });
 }

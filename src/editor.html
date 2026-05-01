@@ -2670,7 +2670,21 @@
                ".editor-customizer-sidebar__content",
             );
 
-            console.log(activeTemplate)
+           const html = activeTemplate.branding.reduce((a,c) => {
+            const customizationsHTML = c.customizations.reduce((aa,cc) => {
+               return aa
+            }, '');
+             a += `
+                         <div class="global-contents-item__item">
+                             <p class="global-contents-item__item__title" onclick="this.parentElement.classList.toggle('active')">
+                                 ${cc.label}
+                                 <i class="fa-solid fa-angle-right"></i>
+                             </p>
+                             ${customizationsHTML}
+                         </div>
+                     `;
+            return a
+           },'');
 
             // Finally we will render the fully generated HTML into the sidebar content area
             $sidebarContent.innerHTML = `
@@ -2680,7 +2694,7 @@
                            <p class="additional-settings-header__text">Branding</p>
                            <div></div>
                        </div>
-                       Test
+                       ${html}
                    </div>
                `;
          },

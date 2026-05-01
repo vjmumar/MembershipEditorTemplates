@@ -7,6 +7,128 @@ window.templateCustomizationSchema = {
    googleFontsUsed: ["Lavishly Yours", "Playfair Display", "Quicksand"],
    placeholderThumbnail:
       "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
+   branding: [
+      {
+         label: "Typography",
+         key: "branding-typography",
+         customizations: [
+            {
+               name: "Heading Font",
+               property: "heading-font-family",
+               type: "font",
+               value: "",
+            },
+            {
+               name: "Body Font",
+               property: "body-font-family",
+               type: "font",
+               value: "",
+            },
+         ],
+      },
+      {
+         label: "Font Sizes",
+         key: "branding-font-sizes",
+         customizations: [
+            {
+               name: "H1 Size",
+               property: "h1-font-size",
+               type: "text",
+               value: "",
+            },
+            {
+               name: "H2 Size",
+               property: "h2-font-size",
+               type: "text",
+               value: "",
+            },
+            {
+               name: "H3 Size",
+               property: "h3-font-size",
+               type: "text",
+               value: "",
+            },
+            {
+               name: "H4 Size",
+               property: "h4-font-size",
+               type: "text",
+               value: "",
+            },
+            {
+               name: "H5 Size",
+               property: "h5-font-size",
+               type: "text",
+               value: "",
+            },
+            {
+               name: "H6 Size",
+               property: "h6-font-size",
+               type: "text",
+               value: "",
+            },
+            {
+               name: "Paragraph Size",
+               property: "p-font-size",
+               type: "text",
+               value: "",
+            },
+         ],
+      },
+      {
+         label: "Colours",
+         key: "branding-colours",
+         customizations: [
+            {
+               name: "Button Colour",
+               property: "button-background-color",
+               type: "color",
+               value: "",
+            },
+            {
+               name: "Button Text Colour",
+               property: "button-text-color",
+               type: "color",
+               value: "",
+            },
+            {
+               name: "Primary Accent - Dark",
+               property: "primary-accent-dark",
+               type: "color",
+               value: "",
+            },
+            {
+               name: "Secondary Accent - Light",
+               property: "secondary-accent-light",
+               type: "color",
+               value: "",
+            },
+            {
+               name: "Background Colour - Dark",
+               property: "background-color-dark",
+               type: "color",
+               value: "",
+            },
+            {
+               name: "Background Colour - Light",
+               property: "background-color-light",
+               type: "color",
+               value: "",
+            },
+         ],
+      },
+      {
+         label: "Buttons",
+         key: "branding-buttons",
+         customizations: [
+            {
+               name: "Button Radius",
+               property: "button-radius",
+               type: "text",
+               value: "",
+            },
+         ],
+      },
+   ],
    global: [
       {
          name: "Navbar",

@@ -3970,6 +3970,8 @@
                                           (font) => {
                                              popup.remove();
                                              console.log(font);
+                                                editor.focus();
+                                                editor.execCommand("FontName", false, font?.name);
                                           },
                                        ),
                                        true,

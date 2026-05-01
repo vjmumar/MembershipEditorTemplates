@@ -3638,13 +3638,14 @@
 
             // Then we will update the iframe
             this.isDesktop = isDesktop;
+            this.$iframe.contentWindow.location.reload();
             this.$iframe.src = this.$iframe.src.replace(
                /(\/courses\/products\/[^/]+\/).*?(\?.*)?$/,
                "$1$2",
             );
             setTimeout(() => {
                this.$iframe.style.width = isDesktop ? "100%" : "500px";
-            }, 0);
+            }, 500);
 
             // Finally we will add a loading indicator inside the sidebar editor
             document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(

@@ -3835,10 +3835,10 @@
                setTimeout(() => {
                   const fontFamilies = (() => {
                      const fonts = [];
-               // We will retrieve the Google Fonts and process them along with the custom fonts
-               this.data.getGoogleFonts().then((gFontRes) => {
-                     console.log(gFontRes)
-               });
+                     // We will retrieve the Google Fonts and process them along with the custom fonts
+                     this.data.getGoogleFonts().then((gFontRes) => {
+                        fonts.push(`${gFontRes.family}=${gFontRes.variants.join(",")}`);
+                     });
                   })();
                   document.querySelectorAll(".rich-text").forEach(($richText) => {
                      tinymce.remove(".rich-text");
@@ -3858,8 +3858,7 @@
                         plugins: ["advlist", "lists", "code", "fullscreen"],
                         toolbar:
                            "code | bold italic | bullist numlist | removeformat | undo redo | fontfamily",
-                        font_family_formats:
-                           "Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; My Custom Font=my-custom-font,sans-serif",
+                        font_family_formats: fontFamilies,
                         height: 300,
                         setup: function (editor) {
                            editor.on("change", function () {

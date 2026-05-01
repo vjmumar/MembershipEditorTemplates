@@ -3371,8 +3371,6 @@ class CourseTemplate {
             )
          ) {
             await this.mobileInitializers.initPostPage();
-         } else {
-            await this.mobileInitializers.initLandingPage();
          }
 
          // Finally we will remove the intial loader

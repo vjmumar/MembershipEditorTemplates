@@ -909,7 +909,7 @@ window.templateCustomizationSchema = {
                ],
                elementCustomizations: [
                   {
-                     name: "Content",
+                     name: "HTML Content",
                      type: "html",
                      target: "",
                      value: "",
@@ -931,7 +931,7 @@ window.templateCustomizationSchema = {
                ],
                elementCustomizations: [
                   {
-                     name: "Content",
+                     name: "HTML Content",
                      type: "html",
                      target: "",
                      value: "",
@@ -1035,7 +1035,7 @@ window.templateCustomizationSchema = {
                ],
                elementCustomizations: [
                   {
-                     name: "Content",
+                     name: "HTML Content",
                      type: "html",
                      target: "",
                      value: "",
@@ -1973,7 +1973,7 @@ window.templateCustomizationSchema = {
                ],
                elementCustomizations: [
                   {
-                     name: "Content",
+                     name: "HTML Content",
                      type: "html",
                      target: "",
                      value: "",
@@ -1995,7 +1995,7 @@ window.templateCustomizationSchema = {
                ],
                elementCustomizations: [
                   {
-                     name: "Content",
+                     name: "HTML Content",
                      type: "html",
                      target: "",
                      value: "",
@@ -2017,7 +2017,7 @@ window.templateCustomizationSchema = {
                ],
                elementCustomizations: [
                   {
-                     name: "Content",
+                     name: "HTML Content",
                      type: "html",
                      target: "",
                      value: "",

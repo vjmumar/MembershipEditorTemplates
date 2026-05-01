@@ -3837,7 +3837,7 @@
                   this.data.getGoogleFonts().then((gFontRes) => {
                      const fonts = [];
                      gFontRes.items.map((font) => {
-                        fonts.push(`${font.family}=${font?.variants?.join(",")}`);
+                        fonts.push(`${font.family}`);
                      });
                       // Then we will insert the Google Font families in chunks so that users will see the preview of each font
                      (() => {

@@ -689,12 +689,8 @@
       padding: 10px;
    }
 
-   .branding-customizer.active .branding-customizer__item__wrapper {
-      display: block;
-   }
-
    .branding-customizer__item {
-      margin-bottom: 5px;
+      margin-bottom: 8px;
    }
 
    .branding-customizer__item__title {
@@ -702,9 +698,9 @@
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 15px;
       background-color: #f0f0f0;
-      padding: 5px;
+      padding: 6px;
       border-radius: 3px;
    }
 
@@ -715,6 +711,10 @@
 
    .branding-customizer__item.active .branding-customizer__item__title i {
       rotate: 90deg;
+   }
+
+   .branding-customizer__item.active .branding-customizer__item__wrapper {
+      display: block;
    }
 
    .branding-customizer__item__wrapper {
@@ -2719,7 +2719,7 @@
                            cc?.type,
                            "E.g: 20px",
                            (updatedValue) => {
-                              console.log(updatedValue)
+                              console.log(updatedValue);
                               // this.actions.updateTemplateCustomizations(...updateArgs);
                               // if (updatedValue.type === "google") {
                               //    this.actions.pushFontGoogleFontsUsed(updatedValue.name);
@@ -2734,7 +2734,7 @@
                            cc?.type,
                            "",
                            (updatedValue) => {
-                           console.log(value)
+                              console.log(value);
                               // this.actions.updateTemplateCustomizations(...updateArgs);
                            },
                         );

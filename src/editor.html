@@ -3960,11 +3960,13 @@
                               editor.ui.registry.addButton("fontwidget", {
                                  text: "Font Family",
                                  onAction: (api) => {
+                                    const node = editor.selection.getNode();
+                                    const fontFamily = editor.dom.getStyle(node, "font-family");
                                     const popup = this.widgets.popup(
                                        this.widgets.fontSelect(
                                           templateKey,
                                           property,
-                                          "",
+                                          fontFamily,
                                           "tinymce",
                                           "",
                                           (font) => {

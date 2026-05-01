@@ -685,7 +685,37 @@
    }
 
    /* Branding Customizer */
+   .branding-customizer {
+      padding: 10px;
+   }
 
+   .branding-customizer__item.active .branding-customizer__item__wrapper {
+      display: block;
+   }
+
+   .branding-customizer__item {
+      margin-bottom: 5px;
+   }
+
+   .branding-customizer__item__title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 14px;
+      background-color: #f0f0f0;
+      padding: 5px;
+      border-radius: 3px;
+   }
+
+   .branding-customizer__item.active .branding-customizer__item__title {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+   }
+
+   .branding-customizer__item.active .branding-customizer__item__title i {
+      rotate: 90deg;
+   }
 
    /* Theme Selector */
    .theme-selector__list {
@@ -2670,17 +2700,21 @@
                ".editor-customizer-sidebar__content",
             );
 
+            // Then we will generate the branding list html
            const html = activeTemplate.branding.reduce((a,c) => {
             const customizationsHTML = c.customizations.reduce((aa,cc) => {
+               aa += `cool`
                return aa
             }, '');
              a += `
-                         <div data class="global-contents-item__item">
-                             <p class="global-contents-item__item__title" onclick="this.parentElement.classList.toggle('active')">
+                         <div data class="branding-customizer__item">
+                             <p class="branding-customizer__item__title" onclick="this.parentElement.classList.toggle('active')">
                                  ${c.label}
                                  <i class="fa-solid fa-angle-right"></i>
                              </p>
-                             ${customizationsHTML}
+                             <div class="branding-customizer__item__wrapper">
+                                 ${customizationsHTML}
+                             </div>
                          </div>
                      `;
             return a

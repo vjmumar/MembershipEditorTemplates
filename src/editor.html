@@ -3841,6 +3841,7 @@
                      });
                      return fonts.join(";")
                   })();
+                  console.log(fontFamilies)
                   document.querySelectorAll(".rich-text").forEach(($richText) => {
                      tinymce.remove(".rich-text");
                      tinymce.init({

@@ -3838,7 +3838,9 @@
                      // We will retrieve the Google Fonts and process them along with the custom fonts
                      this.data.getGoogleFonts().then((gFontRes) => {
                         console.log(gFontRes)
-                        fonts.push(`${gFontRes.family}=${gFontRes?.variants?.join(",")}`);
+                        gFontRes.items.map((font) => {
+                           fonts.push(`${font.family}=${font?.variants?.join(",")}`);
+                        })
                      });
                      return fonts.join(";")
                   })();

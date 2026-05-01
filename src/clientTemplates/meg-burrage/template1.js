@@ -3729,7 +3729,7 @@ class CourseTemplate {
                         </div>
                         <!-- Right Column: Video Embed -->
                         <div class="template-hero__right" style="padding-bottom;">
-                            <!-- Embed HTML provided by the customizer is injected here -->
+                            <!-- Add the iframe embed code from your video hosting platform - e.g. YouTube -->
                             ${defaultEmbed || embedHTML} 
                         </div>
                     </div>

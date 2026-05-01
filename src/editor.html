@@ -2719,11 +2719,15 @@
                            cc?.type,
                            "",
                            (updatedValue) => {
-                              console.log(updatedValue);
-                              // this.actions.updateTemplateCustomizations(...updateArgs);
-                              // if (updatedValue.type === "google") {
-                              //    this.actions.pushFontGoogleFontsUsed(updatedValue.name);
-                              // }
+                              this.actions.updateTemplateBranding({
+                                 key: c.key,
+                                 property: cc.property,
+                                 type: cc.type,
+                                 value: updatedValue.family,
+                              });
+                              if (updatedValue.type === "google") {
+                                 this.actions.pushFontGoogleFontsUsed(updatedValue.name);
+                              }
                            },
                         );
                      } else {
@@ -2734,13 +2738,16 @@
                            cc?.type,
                            cc?.placeholder || "",
                            (updatedValue) => {
-                              console.log(value);
-                              // this.actions.updateTemplateCustomizations(...updateArgs);
+                              this.actions.updateTemplateBranding({
+                                 key: c.key,
+                                 property: cc.property,
+                                 type: cc.type,
+                                 value: updatedValue,
+                              });
                            },
                         );
                      }
                   })();
-
                   aa += `
                      <div class="editor-customizer-item__form__item__input__group">
                          <h3 class="editor-customizer-item__form__item__input__group__name">${cc.name}</h3>
@@ -3110,6 +3117,33 @@
              * will reflect the new state
              */
             previewIframeMembershipParser.actions.syncTemplateElementsCustomization();
+         },
+
+         // This method updates the template's branding
+         updateTemplateBranding: ({ key = "", property = "", type = "", value = "" }) => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will save the current template snapshot to undoStack
+            this.actions.saveTemlplateSnapshotToUndoStack();
+
+            // Then we will update the active template's branding
+            activeTemplate.branding.forEach((brandingItem) => {
+               if (brandingItem.key === key) {
+                  brandingItem.customizations.forEach((customizationItem) => {
+                     if (
+                        customizationItem.property === property &&
+                        customizationItem.type === type
+                     ) {
+                        customizationItem.value = value;
+                     }
+                  });
+               }
+            });
+
+            // Finally we will sync the changes
          },
 
          // This method updates a specific feature customization

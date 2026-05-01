@@ -3835,59 +3835,6 @@
                setTimeout(() => {
                   // We will retrieve the Google Fonts and process them along with the custom fonts
                   this.data.getGoogleFonts().then((gFontRes) => {
-                     const fonts = [];
-                     gFontRes.items.map((font) => {
-                        fonts.push(`${font.family}`);
-                     });
-                     
-                      // Then we will insert the Google Font families in chunks so that users will see the preview of each font
-                     (() => {
-                        // First we will create a variable that will hold all of the chunks
-                        const fontChunks = [];
-
-                        // Then we will slice the fonts array into groups of 10 and push each group into the fontChunks array
-                        for (let i = 0; i < gFontRes.items.length; i += 10) {
-                           fontChunks.push(gFontRes.items?.slice(i, i + 10));
-                        }
-
-
-                        // Finally we will iterate over all the fontChunks and conditionally insert the font family using @import
-                        fontChunks.forEach((chunk) => {
-                           // First we will filter out fonts that have already been injected to avoid duplicate requests
-                           const filteredChunk = chunk?.filter(
-                              (f) => !this.loadedGoogleFontsPreview.includes(f.family),
-                           );
-
-                           // Then we will skip this chunk entirely if all fonts have already been loaded
-                           if (!filteredChunk.length) return;
-
-                           // Then we will build the Google Fonts URL by mapping each font family to its full axis string
-                           const googleFontsUsed = filteredChunk
-                              ?.map(
-                                 (f) =>
-                                    `${f.family.replace(/ /g, "+")}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900`,
-                              )
-                              .join("&family=");
-                           const googleFontsUsedStyleHTML = `
-                              <style class="bm-editor-fonts-preview">
-                                 @import url('https://fonts.googleapis.com/css2?family=${googleFontsUsed}&display=swap');
-                              </style>
-                           `;
-
-                           // Then we will insert the style tag into the DOM so the fonts are available for preview
-                           document.body.insertAdjacentHTML(
-                              "beforeend",
-                              `${googleFontsUsedStyleHTML}`,
-                           );
-
-                           // Finally we will mark each font as loaded so it is never injected again
-                           chunk.forEach((e) => {
-                              this.loadedGoogleFontsPreview.push(e.family);
-                              this.actions.pushFontGoogleFontsUsed(e.family);
-                           });
-                        });
-                     })();
-
                      document.querySelectorAll(".rich-text").forEach(($richText) => {
                         tinymce.remove(".rich-text");
                         tinymce.init({
@@ -3908,9 +3855,10 @@
                            toolbar:
                               "code | bold italic | bullist numlist | removeformat | undo redo | fontfamily",
                            font_family_formats: fonts.join(";"),
-                           content_style: "@import url('https://googleapis.com')",
+                           content_css: "https://googleapis.com",
                            height: 300,
-                           setup: function (editor) {
+                           setup: (editor) => {
+                              // On Change
                               editor.on("change", function () {
                                  editor.save();
                                  const originalTextarea = editor.getElement();
@@ -3921,6 +3869,23 @@
                                  originalTextarea.value = value;
                                  const event = new Event("change", { bubbles: true });
                                  originalTextarea.dispatchEvent(event);
+                              });
+
+                              // Font Selector
+                              editor.ui.registry.addButton("fontwidget", {
+                                 text: "Fonts",
+                                 onAction: (api) => {
+                                    bookmark = editor.selection.getBookmark(2, true);
+                                    this.widgets.fontSelect(
+                                       templateKey,
+                                       property,
+                                       "",
+                                       "",
+                                       (font) => {
+                                          console.log(font);
+                                       },
+                                    );
+                                 },
                               });
                            },
                         });
@@ -3937,7 +3902,7 @@
             }
 
             // Finally return the actual HTML for the widget
-            return isTextArea    
+            return isTextArea
                ? `
                       <textarea
                       data-template-key=${templateKey}

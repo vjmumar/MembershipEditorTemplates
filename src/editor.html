@@ -2192,7 +2192,7 @@
                   })();
                   a += `
                            <div class="editor-customizer-item__form__item__input__group">
-                               <p class="editor-customizer-item__form__item__input__group__name">${c.name}</p>
+                               <p style="display: ${c.hideName ? "none" : "flex"}" class="editor-customizer-item__form__item__input__group__name">${c.name}</p>
                                ${input}
                            </div>
                            `;

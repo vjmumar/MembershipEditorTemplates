@@ -2717,7 +2717,7 @@
                            cc?.property,
                            cc?.value,
                            cc?.type,
-                           "E.g: 20px",
+                           "",
                            (updatedValue) => {
                               console.log(updatedValue);
                               // this.actions.updateTemplateCustomizations(...updateArgs);
@@ -2732,7 +2732,7 @@
                            cc?.property,
                            cc?.value,
                            cc?.type,
-                           "",
+                           cc?.placeholder || "",
                            (updatedValue) => {
                               console.log(value);
                               // this.actions.updateTemplateCustomizations(...updateArgs);
@@ -2742,25 +2742,25 @@
                   })();
 
                   aa += `
-                  <div class="editor-customizer-item__form__item__input__group">
-                      <h3 class="editor-customizer-item__form__item__input__group__name">${cc.name}</h3>
-                      ${input}
-                  </div>
+                     <div class="editor-customizer-item__form__item__input__group">
+                         <h3 class="editor-customizer-item__form__item__input__group__name">${cc.name}</h3>
+                         ${input}
+                     </div>
                   `;
                   return aa;
                }, "");
 
                a += `
-                         <div data class="branding-customizer__item">
-                             <p class="branding-customizer__item__title" onclick="this.parentElement.classList.toggle('active')">
-                                 ${c.label}
-                                 <i class="fa-solid fa-angle-right"></i>
-                             </p>
-                             <div class="branding-customizer__item__wrapper">
-                                 ${customizationsHTML}
-                             </div>
-                         </div>
-                     `;
+                  <div data class="branding-customizer__item">
+                      <p class="branding-customizer__item__title" onclick="this.parentElement.classList.toggle('active')">
+                          ${c.label}
+                          <i class="fa-solid fa-angle-right"></i>
+                      </p>
+                      <div class="branding-customizer__item__wrapper">
+                          ${customizationsHTML}
+                      </div>
+                  </div>
+               `;
                return a;
             }, "");
 

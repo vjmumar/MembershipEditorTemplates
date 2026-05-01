@@ -3639,11 +3639,11 @@
             // Then we will update the iframe
             this.isDesktop = isDesktop;
             this.$iframe.contentWindow.location.reload();
-            this.$iframe.src = this.$iframe.src.replace(
-               /(\/courses\/products\/[^/]+\/).*?(\?.*)?$/,
-               "$1$2",
-            );
             setTimeout(() => {
+               this.$iframe.src = this.$iframe.src.replace(
+                  /(\/courses\/products\/[^/]+\/).*?(\?.*)?$/,
+                  "$1$2",
+               );
                this.$iframe.style.width = isDesktop ? "100%" : "500px";
             }, 500);
 

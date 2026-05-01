@@ -2749,7 +2749,6 @@ class CourseTemplate {
 
    // This method initialize the script
    init = async () => {
-      console.log(this.isMobile, "isMobule?")
       this?.[this.isMobile ? "mobileInitializers" : "desktopInitializers"]?.init();
       this?.globalInitializers.initStyles();
       this?.widgets.initStyles();
@@ -3352,7 +3351,7 @@ class CourseTemplate {
       init: async () => {
          // First we will retrieve the current URL
          const url = window.location.href;
-         console.log(url);
+         console.log(url, /\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url));
 
          // Then we will insert the font-awesome script into the head
          const fScript = document.createElement("script");

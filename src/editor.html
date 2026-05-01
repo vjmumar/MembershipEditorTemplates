@@ -3845,11 +3845,10 @@
                         const fontChunks = [];
 
                         // Then we will slice the fonts array into groups of 10 and push each group into the fontChunks array
-                        for (let i = 0; i < fonts.length; i += 10) {
-                           fontChunks.push(fonts?.slice(i, i + 10));
+                        for (let i = 0; i < gFontRes.items.length; i += 10) {
+                           fontChunks.push(gFontRes.items?.slice(i, i + 10));
                         }
 
-                        console.log(fontChunks)
 
                         // Finally we will iterate over all the fontChunks and conditionally insert the font family using @import
                         fontChunks.forEach((chunk) => {

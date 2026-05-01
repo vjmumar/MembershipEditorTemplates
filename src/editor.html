@@ -1362,7 +1362,6 @@
                       * before activating preview mode
                       */
                      setTimeout(() => {
-                        console.log(this.isPreviewEditor, immediateSync)
                         if (this.isPreviewEditor && !immediateSync) {
                            if (!window.MembershipPreview) {
                               window.MembershipPreview = new MembershipPreview();

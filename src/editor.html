@@ -658,7 +658,7 @@
    }
 
    /* Additional Settings */
-      .additional-settings-header {
+   .additional-settings-header {
       display: flex;
       align-items: center;
       padding: 25px 15px;
@@ -689,7 +689,7 @@
       padding: 10px;
    }
 
-   .branding-customizer__item.active .branding-customizer__item__wrapper {
+   .branding-customizer.active .branding-customizer__item__wrapper {
       display: block;
    }
 
@@ -715,6 +715,12 @@
 
    .branding-customizer__item.active .branding-customizer__item__title i {
       rotate: 90deg;
+   }
+
+   .branding-customizer__item__wrapper {
+      padding: 8px;
+      border: 1px solid #f0f0f0;
+      border-top: none;
    }
 
    /* Theme Selector */
@@ -1297,7 +1303,7 @@
                                     "placeholderThumbnail",
                                     "customFonts",
                                     "googleFontsUsed",
-                                    "branding"
+                                    "branding",
                                  ].includes(key)
                               ) {
                                  return srcValue;
@@ -2685,7 +2691,7 @@
                    </div>
                `;
          },
-      
+
          // This method will initialize the branding customizer in sidebar
          initializeBrandingCustomizer: () => {
             // First we will retrieve the preview iframe membership parser and the necessary variables
@@ -2701,12 +2707,49 @@
             );
 
             // Then we will generate the branding list html
-           const html = activeTemplate.branding.reduce((a,c) => {
-            const customizationsHTML = c.customizations.reduce((aa,cc) => {
-               aa += `cool`
-               return aa
-            }, '');
-             a += `
+            const html = activeTemplate.branding.reduce((a, c) => {
+               const customizationsHTML = c.customizations.reduce((aa, cc) => {
+                 const input = (() => {
+                  if (c.type === "font") {
+                     return this?.widgets?.fontSelect(
+                        c.key,
+                        cc?.property,
+                        cc?.value,
+                        cc?.type,
+                        "E.g: 20px",
+                        (updatedValue) => {
+                           console.log(updatedValue)
+                           // this.actions.updateTemplateCustomizations(...updateArgs);
+                           // if (updatedValue.type === "google") {
+                           //    this.actions.pushFontGoogleFontsUsed(updatedValue.name);
+                           // }
+                        },
+                     );
+                  } else {
+                     return this?.widgets?.input(
+                        c.key,
+                        cc.property,
+                        cc?.value,
+                        cc.type,
+                        cc?.placeholder,
+                        (updatedValue) => {
+                          console.log(value)
+                           // this.actions.updateTemplateCustomizations(...updateArgs);
+                        },
+                     );
+                  }
+                 })();
+                 
+                  aa += `
+                  <div class="editor-customizer-item__form__item__input__group">
+                      <h3 class="editor-customizer-item__form__item__input__group__name">${c.name}</h3>
+                      ${input}
+                  </div>
+                  `;
+                  return aa;
+               }, "");
+
+               a += `
                          <div data class="branding-customizer__item">
                              <p class="branding-customizer__item__title" onclick="this.parentElement.classList.toggle('active')">
                                  ${c.label}
@@ -2717,8 +2760,8 @@
                              </div>
                          </div>
                      `;
-            return a
-           },'');
+               return a;
+            }, "");
 
             // Finally we will render the fully generated HTML into the sidebar content area
             $sidebarContent.innerHTML = `

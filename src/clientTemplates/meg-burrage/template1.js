@@ -1024,14 +1024,7 @@ window.templateCustomizationSchema = {
                      type: "color",
                      placeholder: "",
                      value: "",
-                  },
-                  {
-                     name: "Font Family",
-                     property: "font-family",
-                     type: "font",
-                     important: true,
-                     value: "",
-                  },
+                  }
                ],
                elementCustomizations: [
                   {

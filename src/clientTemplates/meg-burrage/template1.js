@@ -1024,7 +1024,7 @@ window.templateCustomizationSchema = {
                      type: "color",
                      placeholder: "",
                      value: "",
-                  }
+                  },
                ],
                elementCustomizations: [
                   {
@@ -2749,7 +2749,7 @@ class CourseTemplate {
 
    // This method initialize the script
    init = async () => {
-      console.log(this.isMobile)
+      console.log(this.isMobile);
       this?.[this.isMobile ? "mobileInitializers" : "desktopInitializers"]?.init();
       this?.globalInitializers.initStyles();
       this?.widgets.initStyles();
@@ -3362,9 +3362,12 @@ class CourseTemplate {
          setTimeout(() => {
             document.body.classList.add("template-ready");
          }, 500);
-         console.log("lol", /\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url))
+
          // Then we will check the URL against regex patterns to determine which page view to load
-         if (/\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url)) {
+         if (
+            /\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url) ||
+            /products\/[^/]+\/?(\?.*)?$/.test(url)
+         ) {
             await this.mobileInitializers.initLandingPage();
          } else if (
             /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/posts\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(

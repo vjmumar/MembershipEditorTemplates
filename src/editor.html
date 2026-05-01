@@ -657,8 +657,8 @@
       content: "Saving...";
    }
 
-   /* Theme Selector */
-   .additional-settings-header {
+   /* Additional Settings */
+      .additional-settings-header {
       display: flex;
       align-items: center;
       padding: 25px 15px;
@@ -684,6 +684,10 @@
       cursor: pointer;
    }
 
+   /* Branding Customizer */
+
+
+   /* Theme Selector */
    .theme-selector__list {
       display: grid;
       grid-template-columns: repeat(1, 1fr);
@@ -2666,52 +2670,15 @@
                ".editor-customizer-sidebar__content",
             );
 
-            // Then we will create the template list html
-            const themeHTML = (() => {
-               const itemHTML = templates.reduce((a, c) => {
-                  const controllerHTML = (() => {
-                     if (activeTemplate.id === c.id) {
-                        return `
-                               <div class="theme-selector__list__item__controller">
-                                   <p class="theme-selector__list__item__controller__info">Current</p>
-                               </div>
-                           `;
-                     } else {
-                        return `
-                           <div class="theme-selector__list__item__controller">
-                               <a href="#" onclick="window.MembershipEditor.actions.updateTemplateToProductsCustomJs('${c.id}', '.theme-selector__list')" class="theme-selector__list__item__controller__button">
-                                   <i class="fa-solid fa-check"></i>
-                               </a>
-                               <a href="${c.previewLink}" target="__blank" class="theme-selector__list__item__controller__button">
-                                   <i class="fa-solid fa-eye"></i>
-                               </a>
-                           </div>
-                           `;
-                     }
-                  })();
-                  a += `
-                       <div class="theme-selector__list__item">
-                           <div class="theme-selector__list__item__content">
-                               <img src="${c.imageUrl}" class="theme-selector__list__item__image" />
-                               ${controllerHTML}
-                           </div>
-                           <p class="theme-selector__list__item__title">${c.title}</p>
-                       </div>
-                       `;
-                  return a;
-               }, "");
-               return `<div class="theme-selector__list">${itemHTML}</div>`;
-            })();
-
             // Finally we will render the fully generated HTML into the sidebar content area
             $sidebarContent.innerHTML = `
-                   <div class="theme-selector">
+                   <div class="branding-customizer">
                        <div class="additional-settings-header">
                            <i class="fa-solid fa-arrow-left additional-settings-header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
-                           <p class="additional-settings-header__text">Templates</p>
+                           <p class="additional-settings-header__text">Branding</p>
                            <div></div>
                        </div>
-                       ${themeHTML}
+                       Test
                    </div>
                `;
          },

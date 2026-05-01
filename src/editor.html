@@ -1263,6 +1263,7 @@
                                     "placeholderThumbnail",
                                     "customFonts",
                                     "googleFontsUsed",
+                                    "branding"
                                  ].includes(key)
                               ) {
                                  return srcValue;
@@ -1887,6 +1888,7 @@
             }, 0);
          },
 
+         // This method will intialize the editor
          initializeEditor: () => {
             // First we will remove existing sidebar editor's
             document.querySelector(".editor-customizer-sidebar")?.remove();
@@ -2476,6 +2478,10 @@
                            <p>Advance Settings</p>
                            <i class="fa-solid fa-angle-right"></i>
                         </div>
+                        <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeBrandingCustomizer()">
+                           <p>Branding</p>
+                           <i class="fa-solid fa-angle-right"></i>
+                        </div>
                         <p class="global-contents__separator">Global Components</p>
                        ${globalItemsHTML}
                    </div>
@@ -2584,6 +2590,70 @@
 
          // This method will initialize the theme selector sidebar
          initializeThemeSelector: () => {
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const templates = previewIframeMembershipParser.templates;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will retrieve the sidebar and its content container where we will inject the HTML
+            const $sidebar = document.querySelector(".editor-customizer-sidebar");
+            const $sidebarContent = $sidebar.querySelector(
+               ".editor-customizer-sidebar__content",
+            );
+
+            // Then we will create the template list html
+            const themeHTML = (() => {
+               const itemHTML = templates.reduce((a, c) => {
+                  const controllerHTML = (() => {
+                     if (activeTemplate.id === c.id) {
+                        return `
+                               <div class="theme-selector__list__item__controller">
+                                   <p class="theme-selector__list__item__controller__info">Current</p>
+                               </div>
+                           `;
+                     } else {
+                        return `
+                           <div class="theme-selector__list__item__controller">
+                               <a href="#" onclick="window.MembershipEditor.actions.updateTemplateToProductsCustomJs('${c.id}', '.theme-selector__list')" class="theme-selector__list__item__controller__button">
+                                   <i class="fa-solid fa-check"></i>
+                               </a>
+                               <a href="${c.previewLink}" target="__blank" class="theme-selector__list__item__controller__button">
+                                   <i class="fa-solid fa-eye"></i>
+                               </a>
+                           </div>
+                           `;
+                     }
+                  })();
+                  a += `
+                       <div class="theme-selector__list__item">
+                           <div class="theme-selector__list__item__content">
+                               <img src="${c.imageUrl}" class="theme-selector__list__item__image" />
+                               ${controllerHTML}
+                           </div>
+                           <p class="theme-selector__list__item__title">${c.title}</p>
+                       </div>
+                       `;
+                  return a;
+               }, "");
+               return `<div class="theme-selector__list">${itemHTML}</div>`;
+            })();
+
+            // Finally we will render the fully generated HTML into the sidebar content area
+            $sidebarContent.innerHTML = `
+                   <div class="theme-selector">
+                       <div class="additional-settings-header">
+                           <i class="fa-solid fa-arrow-left additional-settings-header__icon" onclick="window.MembershipEditor.initializers.initializeGlobalContents()"></i>
+                           <p class="additional-settings-header__text">Templates</p>
+                           <div></div>
+                       </div>
+                       ${themeHTML}
+                   </div>
+               `;
+         },
+      
+         // This method will initialize the branding customizer in sidebar
+         initializeBrandingCustomizer: () => {
             // First we will retrieve the preview iframe membership parser and the necessary variables
             const previewIframeMembershipParser =
                this.$iframe.contentWindow.MembershipParser;

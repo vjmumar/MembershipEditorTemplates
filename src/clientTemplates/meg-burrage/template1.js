@@ -2744,7 +2744,9 @@ window.templateCustomizationSchema = {
 class CourseTemplate {
    constructor() {
       this.isMobile = window.matchMedia("(max-width: 768px)").matches;
-      this.init();
+      setTimeout(() => {
+         this.init();
+      }, 1000);
    }
 
    // This method initialize the script
@@ -3363,11 +3365,11 @@ class CourseTemplate {
          }, 500);
 
          // Then we will check the URL against regex patterns to determine which page view to load
-         if (/\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(window.location.href)) {
+         if (/\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url)) {
             await this.mobileInitializers.initLandingPage();
          } else if (
             /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/posts\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
-               window.location.href,
+               url,
             )
          ) {
             await this.mobileInitializers.initPostPage();
@@ -4494,4 +4496,6 @@ class CourseTemplate {
    };
 }
 
-window.CourseTemplate = new CourseTemplate();
+if (!window.CourseTemplate) {
+   window.CourseTemplate = new CourseTemplate();
+}

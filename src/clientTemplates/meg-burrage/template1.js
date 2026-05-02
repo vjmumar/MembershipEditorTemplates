@@ -102,6 +102,13 @@ window.templateCustomizationSchema = {
                value: "#000000",
             },
             {
+               name: "Primary Text Colour",
+               property: "branding-primary-text-color",
+               type: "color",
+               placeholder: "E.g: #000000",
+               value: "#000000",
+            },
+            {
                name: "Primary Accent - Dark",
                property: "branding-primary-accent-dark",
                placeholder: "E.g: #FFFFFF",

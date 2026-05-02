@@ -469,7 +469,7 @@ window.templateCustomizationSchema = {
                ],
             },
             {
-               elementSelector: ".template-sidebar__back-button",
+               elementSelector: ".template-sidebar__back-button *",
                label: "Back Button",
                key: "template-sidebar-back-button",
                cssCustomizations: [

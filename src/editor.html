@@ -3550,8 +3550,7 @@
                      `${productId}.txt`,
                   );
                   this.$iframe.contentWindow.savedTemplatesFileInfo = fileData;
-                  console.log(fileData)
-                  return;
+                  
                   // Then we will attempt to update the product configuration by sending a PUT request with a rehydration script embedded in customJs
                   await fetch(url, {
                      method: "PUT",

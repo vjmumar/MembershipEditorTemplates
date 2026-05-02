@@ -3703,7 +3703,7 @@
             }
          },
 
-         // This function uploads image to ghl media
+         // This method uploads image to ghl media
          uploadTextToGHL: async (textContent = "", fileName = "", parentFolder = "") => {
             const auth = await this.utils.getAuth();
             const locationId = auth?.locationId;
@@ -3818,6 +3818,26 @@
                isError = true;
                alert("Something went wrong, please reload or try again.");
             }
+         },
+
+         // This method is responsible for injecting the google fonts used inside tiny mce editor
+         injectUsedFontsInsideTinyMCE: (editor = null) => {
+            const googleFontsUsed =
+            this.$iframe.contentWindow?.MembershipParser?.activeTemplate[
+                  "googleFontsUsed"
+               ]
+                  ?.map(
+                     (f) =>
+                        `${f.replace(/ /g, "+")}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900`,
+                  )
+                  ?.join("&family=");
+            const templatesCustomCss = this.$iframe?.contentWindow?.MembershipParser?.activeTemplate["customCss"];
+            const googleFontsUsedCss = `@import url('https://fonts.googleapis.com/css2?family=${googleFontsUsed}&display=swap');`;
+            const styleHTML = `<style id="custom-fonts">${googleFontsUsedCss}${templatesCustomCss}</style>`;
+            editor.getDoc()?.querySelector("custom-fonts")?.remove();
+            editor
+               ?.getDoc()
+               ?.head.insertAdjacentHTML("beforeend", styleHTML);
          },
 
          // This method toggles the editor view between desktop and mobile modes.
@@ -4178,25 +4198,10 @@
                                                 this.actions.pushFontGoogleFontsUsed(
                                                    font.name,
                                                 );
-
-
-                                                  const googleFontsUsed = this.$iframe.contentWindow.MembershipParser.activeTemplate[
-                                                "googleFontsUsed"
-                                             ]
-                                                ?.map(
-                                                   (f) =>
-                                                      `${f.replace(/ /g, "+")}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900`,
-                                                )
-                                                .join("&family=");
-                                             const googleFontsUsedStyleHTML = `
-                                                <style class="bm-template-google-fonts-used">
-                                                   @import url('https://fonts.googleapis.com/css2?family=${googleFontsUsed}&display=swap');
-                                                </style>
-                                             `;
-
-                                             editor.getDoc().head.insertAdjacentHTML("beforeend", googleFontsUsedStyleHTML);
                                              }
-                                           
+                                             this.actions.injectUsedFontsInsideTinyMCE(
+                                                editor,
+                                             );
                                           },
                                        ),
                                        true,

@@ -58,7 +58,7 @@ window.templateCustomizationSchema = {
                property: "branding-h4-font-size",
                type: "text",
                placeholder: "E.g: 40px",
-               value: "32px",
+               value: "24px",
             },
             {
                name: "H5 Size",
@@ -3515,7 +3515,7 @@ class CourseTemplate {
 
       initStyles: () => {
          // !Note: Use https://unminify.com/ to uncompress the styles, and use https://www.textfixer.com/html/compress-html-compression.php to compress again
-         const styles = `<style id="template-styles">/* Dashboard */ .page-dashboard .template-container { padding: 40px 10px; background-color: #f6ebe7; } /* Post */ .page-post #app-container { width: 100%; margin-left: auto; } .template-post-page { background-color: #f6ebe7; padding: 30px 10px; min-height: 100vh; position: relative; } .template-post-page-header { background: #e0c5ba; box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.05); padding: 25px 10px; align-items: center; justify-content: center; display: grid; grid-template-columns: 1fr 1fr; gap: 7px; } .template-post-page-header__mark-as-complete { font-size: 16px; padding: 8px 10px; border-radius: 4px; border: 1px solid #000000; color: #000000; font-weight: 700; opacity: 1; cursor: pointer; transition-duration: 0.3s; } .template-post-page-header__mark-as-complete:hover { transition-duration: 0.3s; opacity: 1; } .template-post-page-header__arrow { font-size: 32px; opacity: 1; color: #000000 !important; transition-duration: 0.3s; display: flex; align-items: center; justify-content: flex-end; } .template-post-page-header__arrow.disabled { opacity: 0.3 !important; pointer-events: none !important; } .template-post-page-header__arrow.prev { rotate: 180deg; } .template-post-page-header__arrow:hover { opacity: 1 !important; transition-duration: 0.3s; text-decoration: none; } .template-post-page__breadcrumbs { display: flex; justify-content: center; align-items: center; gap: 5px; color: #000000; font-size: 12px; line-height: 18px; font-weight: 400; } .template-post-page__title { font-size: 35px; font-weight: 600; text-align: center; margin-top: 30px; margin-bottom: 20px; color: #000000; } .template-post-page__video, .template-post-page__audio { max-width: 100%; margin-inline: auto; } .template-post-page__description { max-width: 100%; word-wrap: break-word; margin-inline: auto; margin-top: 40px; margin-bottom: 40px; } .template-post-page__comments { max-width: 100%; margin-inline: auto; }</style>`;
+         const styles = `<style id="template-styles"></style>`;
          document.body.insertAdjacentHTML("afterbegin", styles);
       },
 

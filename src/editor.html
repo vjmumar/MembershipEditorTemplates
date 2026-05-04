@@ -3917,6 +3917,7 @@
             const auth = await this.utils.getAuth();
             const iframeUrl = new URL(page);
             iframeUrl.searchParams.set("token", auth?.tokenId);
+            console.log(auth, "from switch page")
             this.$iframe.src = iframeUrl.toString();
 
             // Finally we will add a loading indicator inside the sidebar editor
@@ -4633,6 +4634,7 @@
 
                      // Then we will check if the token is expired, if expired we will rehydrate the token
                      if (Number(data.tokenExpirationTime) <= new Date().getTime()) {
+                        console.log("expired")
                         // First we will retrieve the firebase auth
                         const firebaseAuth = (() => {
                            const firebaseAuthResult = Object.keys(localStorage).reduce(
@@ -4673,6 +4675,7 @@
                         };
                         window.$cookies.set("acat", window.btoa(JSON.stringify(newAuth)));
                         res(newAuth);
+                        console.log(newAuth)
                      }
                      res(data);
                   }

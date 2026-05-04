@@ -1051,7 +1051,7 @@
                .sort((a, b) => {
                   const hasMedia = (cat) =>
                      cat.posts?.some(
-                        (p) => p.video !== null || p.audio !== null || !!p.embedJson,
+                        (p) => p.video || p.audio || p.embedJson,
                      );
                   if (hasMedia(a) && !hasMedia(b)) return -1;
                   if (!hasMedia(a) && hasMedia(b)) return 1;
@@ -1063,8 +1063,8 @@
             const postId = (() => {
                const rawPosts = categoryWithValidPosts?.posts || [];
                return [...rawPosts].sort((a, b) => {
-                  const aHasMedia = a.video !== null || a.audio !== null || !!a.embedJson;
-                  const bHasMedia = b.video !== null || b.audio !== null || !!b.embedJson;
+                  const aHasMedia = a.video || a.audio || a.embedJson;
+                  const bHasMedia = b.video || b.audio || b.embedJson;
                   if (aHasMedia && !bHasMedia) return -1;
                   if (!aHasMedia && bHasMedia) return 1;
                   return (a.sequenceNo || 0) - (b.sequenceNo || 0);

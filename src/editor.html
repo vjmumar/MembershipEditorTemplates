@@ -4632,7 +4632,7 @@
                      clearInterval(interval);
 
                      // Then we will check if the token is expired, if expired we will rehydrate the token
-                     if (data.tokenExpirationTime <= new Date().getTime()) {
+                     if (Number(data.tokenExpirationTime) <= new Date().getTime()) {
                         // First we will retrieve the firebase auth
                         const firebaseAuth = (() => {
                            const firebaseAuthResult = Object.keys(localStorage).reduce(
@@ -4664,12 +4664,12 @@
                         });
 
                         // Finally we will update the data and the acat token
-                        const oneHourFromNow = new Date().getTime() + 60 * 60 * 1000;
+                        const fiftyMinutesFromNow =
+                           new Date().getTime() + 50 * 60 * 1000;
                         const newAuth = {
                            ...data,
                            tokenId: newToken.id_token,
-                           tokenExpirationTime: oneHourFromNow,
-                           rehydrate: true,
+                           tokenExpirationTime: fiftyMinutesFromNow,
                         };
                         window.$cookies.set("acat", window.btoa(JSON.stringify(newAuth)));
                         res(newAuth);

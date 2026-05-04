@@ -932,13 +932,13 @@ window.templateCustomizationSchema = {
                label: "Welcome Button",
                key: "welcome-button",
                cssCustomizations: [
-                  {
-                     name: "Text Color",
-                     property: "color",
-                     type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
+                  // {
+                  //    name: "Text Color",
+                  //    property: "color",
+                  //    type: "color",
+                  //    placeholder: "",
+                  //    value: "",
+                  // },
                   {
                      name: "Font Family",
                      property: "font-family",

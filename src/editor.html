@@ -3823,7 +3823,7 @@
          // This method is responsible for injecting the google fonts used inside tiny mce editor
          injectUsedFontsInsideTinyMCE: (editor = null) => {
             const googleFontsUsed =
-            this.$iframe.contentWindow?.MembershipParser?.activeTemplate[
+               this.$iframe.contentWindow?.MembershipParser?.activeTemplate[
                   "googleFontsUsed"
                ]
                   ?.map(
@@ -3831,13 +3831,12 @@
                         `${f.replace(/ /g, "+")}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900`,
                   )
                   ?.join("&family=");
-            const templatesCustomCss = this.$iframe?.contentWindow?.MembershipParser?.activeTemplate["customCss"];
+            const templatesCustomCss =
+               this.$iframe?.contentWindow?.MembershipParser?.activeTemplate["customCss"];
             const googleFontsUsedCss = `@import url('https://fonts.googleapis.com/css2?family=${googleFontsUsed}&display=swap');`;
             const styleHTML = `<style id="custom-fonts">${googleFontsUsedCss}${templatesCustomCss}</style>`;
             editor.getDoc()?.querySelector("custom-fonts")?.remove();
-            editor
-               ?.getDoc()
-               ?.head.insertAdjacentHTML("beforeend", styleHTML);
+            editor?.getDoc()?.head.insertAdjacentHTML("beforeend", styleHTML);
          },
 
          // This method toggles the editor view between desktop and mobile modes.
@@ -4534,6 +4533,7 @@
                clearTimeout(timeout);
             };
          },
+
          // Then method waits for the element and return it
          waitForElement: (elementSelector = "", resolveDelay = 1000, timeout = null) => {
             return new Promise((res) => {
@@ -4555,6 +4555,7 @@
                }
             });
          },
+
          // This helper method retrieves the snapshot of an element
          getElementSnapshot: (el) => {
             if (!el) return null;
@@ -4581,9 +4582,10 @@
 
          // This helper method retrieves the auth information
          getAuth: async () => {
-            return new Promise((res) => {
-               const interval = setInterval(() => {
+            return new Promise( (res) => {
+               const interval = setInterval(async () => {
                   if (window?.$cookies) {
+                     // First we will retrieve the token
                      const acatToken = window?.$cookies?.get("acat");
                      const catToken = window?.$cookies?.get("cat");
                      const data = JSON.parse(window.atob(catToken || acatToken) || "{}");
@@ -4598,6 +4600,51 @@
                         data.tokenId = data.token;
                      }
                      clearInterval(interval);
+
+                     // Then we will check if the token is expired, if expired we will rehydrate the token
+                     if (data.tokenExpirationTime <= new Date().getTime()) {
+                        // First we will retrieve the firebase auth
+                        const firebaseAuth = (() => {
+                           const firebaseAuthResult = Object.keys(localStorage).reduce(
+                              (a, c) => {
+                                 if (c.includes("firebase:authUser")) {
+                                    a = JSON.parse(localStorage.getItem(c));
+                                 }
+                                 return a;
+                              },
+                              undefined,
+                           );
+                           return firebaseAuthResult;
+                        })();
+
+                        // Then we will fetch a new refresh token
+                       const newToken = await fetch(
+                           `https://securetoken.googleapis.com/v1/token?key=${firebaseAuth.apiKey}`,
+                           {
+                              method: "POST",
+                              mode: "cors",
+                              credentials: "omit",
+                              headers: {
+                                 "Content-Type": "application/x-www-form-urlencoded",
+                              },
+                              body: `grant_type=refresh_token&refresh_token=${firebaseAuth.stsTokenManager.refreshToken}`,
+                           },
+                        )
+                           .then(async (res) => {
+                             return res.json()
+                           });
+
+                        // Finally we will update the data and the acat token
+                        const oneHourFromNow = new Date().getTime() + 60 * 60 * 1000;
+                        const newAuth = {
+                             ...data,
+                           tokenId: newToken.refresh_token,
+                           tokenExpirationTime: oneHourFromNow,
+                           rehydrate: true
+                        };
+                        window.$cookies.set("acat", window.btoa(JSON.stringify(newAuth)));
+                        rres(newAuth);
+                     }
                      res(data);
                   }
                }, 0);

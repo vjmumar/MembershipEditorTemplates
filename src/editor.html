@@ -1041,7 +1041,7 @@
          getListOfEditablePages: async () => {
             // First, we will retrieve the template schema inside the preview iframe
             const templateSchema = window.templateCustomizationSchema;
-
+            
             // Then, we will request to retrieve the categories inside the course template
             const categoriesWithPost = await window.CourseTemplate.data.fetchCategories();
 
@@ -1051,7 +1051,7 @@
                .sort((a, b) => {
                   const hasMedia = (cat) =>
                      cat.posts?.some(
-                        (p) => p.video || p.audio || p.embedJson,
+                        (p) => p.video !== null || p.audio !== null || !!p.embedJson,
                      );
                   if (hasMedia(a) && !hasMedia(b)) return -1;
                   if (!hasMedia(a) && hasMedia(b)) return 1;
@@ -1063,8 +1063,8 @@
             const postId = (() => {
                const rawPosts = categoryWithValidPosts?.posts || [];
                return [...rawPosts].sort((a, b) => {
-                  const aHasMedia = a.video || a.audio || a.embedJson;
-                  const bHasMedia = b.video || b.audio || b.embedJson;
+                  const aHasMedia = a.video !== null || a.audio !== null || !!a.embedJson;
+                  const bHasMedia = b.video !== null || b.audio !== null || !!b.embedJson;
                   if (aHasMedia && !bHasMedia) return -1;
                   if (!aHasMedia && bHasMedia) return 1;
                   return (a.sequenceNo || 0) - (b.sequenceNo || 0);
@@ -1082,7 +1082,7 @@
                currentUrl.searchParams.forEach((value, key) => {
                   finalUrl.searchParams.set(key, value);
                });
-               return finalUrl
+               return finalUrl.href
             };
 
             // Then, we will retrieve the pages from the template schema based on the window size

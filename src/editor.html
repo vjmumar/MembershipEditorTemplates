@@ -1226,64 +1226,91 @@
                         activeTemplateFromSavedTemplates?.id ===
                         window?.templateCustomizationSchema?.id
                      ) {
-                        /**
-                         * First we will strip deprecated items from saved data before merging,
-                         * using the master schema as the source of truth for valid keys.
-                         */
-                        const stripDeprecated = (masterObj, savedObj) => {
-                           const result = window._.cloneDeep(savedObj);
-
-                           Object.keys(result).forEach((key) => {
-                              const masterVal = masterObj[key];
-                              const savedVal = result[key];
-
-                              if (Array.isArray(masterVal) && Array.isArray(savedVal)) {
-                                 result[key] = savedVal.filter((savedItem) =>
-                                    masterVal.some(
-                                       (masterItem) =>
-                                          savedItem.key === masterItem.key ||
-                                          savedItem.property === masterItem.property,
-                                    ),
-                                 );
-                              }
-                           });
-
-                           return result;
+                        const savedMergeValueKeys = [
+                           "value",
+                           "isTurnedOn",
+                           "customCss",
+                           "placeholderThumbnail",
+                           "customFonts",
+                           "googleFontsUsed",
+                        ];
+                        const getArrayItemIdentity = (item = {}) => {
+                           if (!item || typeof item !== "object") return "";
+                           if (item.key) return `key:${item.key}`;
+                           if (item.property) return `property:${item.property}`;
+                           if (item.type && item.target) {
+                              return `type-target:${item.type}:${item.target}`;
+                           }
+                           if (item.urlRegex) return `urlRegex:${item.urlRegex}`;
+                           if (item.name) return `name:${item.name}`;
+                           if (item.label) return `label:${item.label}`;
+                           return "";
                         };
-                        const cleanedSaved = window._.cloneDeep(
+                        const findSavedArrayItem = (
+                           masterItem,
+                           savedItems = [],
+                           index = 0,
+                        ) => {
+                           const identity = getArrayItemIdentity(masterItem);
+                           if (!identity) return savedItems[index];
+                           return savedItems.find(
+                              (savedItem) =>
+                                 getArrayItemIdentity(savedItem) === identity,
+                           );
+                        };
+
+                        /**
+                         * First we strip deprecated saved data against the current master schema.
+                         * Arrays are aligned to the master schema order so _.mergeWith cannot
+                         * merge old saved items back in by index.
+                         */
+                        const stripDeprecated = (
+                           masterValue,
+                           savedValue,
+                           allowUnknownKeys = false,
+                        ) => {
+                           if (Array.isArray(masterValue)) {
+                              if (!Array.isArray(savedValue)) return undefined;
+                              return masterValue.map((masterItem, index) => {
+                                 const savedItem = findSavedArrayItem(
+                                    masterItem,
+                                    savedValue,
+                                    index,
+                                 );
+                                 if (savedItem === undefined) {
+                                    return window._.cloneDeep(masterItem);
+                                 }
+                                 return stripDeprecated(masterItem, savedItem);
+                              });
+                           }
+
+                           if (
+                              masterValue &&
+                              savedValue &&
+                              typeof masterValue === "object" &&
+                              typeof savedValue === "object"
+                           ) {
+                              const result = window._.cloneDeep(savedValue);
+                              Object.keys(result).forEach((key) => {
+                                 if (!(key in masterValue)) {
+                                    if (!allowUnknownKeys) delete result[key];
+                                    return;
+                                 }
+                                 result[key] = stripDeprecated(
+                                    masterValue[key],
+                                    result[key],
+                                 );
+                              });
+                              return result;
+                           }
+
+                           return savedValue;
+                        };
+                        const cleanedSaved = stripDeprecated(
+                           window.templateCustomizationSchema,
                            activeTemplateFromSavedTemplates,
+                           true,
                         );
-
-                        // Then we will strip deprecated items from each page's edit structure
-                        if (
-                           Array.isArray(cleanedSaved.pages) &&
-                           Array.isArray(window.templateCustomizationSchema.pages)
-                        ) {
-                           cleanedSaved.pages = cleanedSaved.pages.map((savedPage) => {
-                              const masterPage =
-                                 window.templateCustomizationSchema.pages.find(
-                                    (p) => p.key === savedPage.key,
-                                 );
-                              if (!masterPage) return savedPage;
-
-                              if (
-                                 Array.isArray(savedPage.editStructure) &&
-                                 Array.isArray(masterPage.editStructure)
-                              ) {
-                                 savedPage.editStructure = savedPage.editStructure.map(
-                                    (savedItem) => {
-                                       const masterItem = masterPage.editStructure.find(
-                                          (m) => m.key === savedItem.key,
-                                       );
-                                       if (!masterItem) return savedItem;
-                                       return stripDeprecated(masterItem, savedItem);
-                                    },
-                                 );
-                              }
-
-                              return savedPage;
-                           });
-                        }
 
                         /**
                          * Finally use _.mergeWith to ensure that structural fixes in our Master Schema
@@ -1296,17 +1323,7 @@
                            (objectValue, srcValue, key) => {
                               // --- STEP 1: USER DATA OVERWRITES ---
                               // Prioritize saved user data for specific visual properties.
-                              if (
-                                 [
-                                    "value",
-                                    "isTurnedOn",
-                                    "customCss",
-                                    "placeholderThumbnail",
-                                    "customFonts",
-                                    "googleFontsUsed",
-                                    "branding",
-                                 ].includes(key)
-                              ) {
+                              if (savedMergeValueKeys.includes(key)) {
                                  return srcValue;
                               }
 
@@ -2860,9 +2877,6 @@
                wholeSchema: clonedTemplateSchema,
                activePageOnTemplate: clonedActivePageOnTemplate,
             });
-
-            // Then we will keep only the latest 5 snapshots in the undo stack
-            this.templateUndoStack = this.templateUndoStack;
 
             // Finally we will enable the undo button
             document.querySelector(".undo")?.classList?.remove("disabled");

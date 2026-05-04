@@ -1827,7 +1827,10 @@
 
             // Finally, determine if we need to launch the full Editor or just the toggle widget.
             if (this.isEdit) {
-               // First, retrieve the main app and app-container elements.
+               // First we will retrieve the auth
+               const auth = await this.utils.getAuth();
+
+               // Then, retrieve the main app and app-container elements.
                const $app = document.querySelector("#app");
                const $appContainer = await this.utils.waitForElement("#app-container", 0);
 
@@ -1836,6 +1839,7 @@
                url.searchParams.delete("isEditorPreview");
                url.searchParams.delete("membershipeditor");
                url.searchParams.append("isEditorPreview", "true");
+               url.searchParams.set("token", auth?.tokenId);
                const cleanUrl = url.toString();
 
                // Then, clear the existing UI to make room for the iframe editor.

@@ -1082,7 +1082,6 @@
                currentUrl.searchParams.forEach((value, key) => {
                   finalUrl.searchParams.set(key, value);
                });
-               return finalUrl.toString();
             };
 
             // Then, we will retrieve the pages from the template schema based on the window size
@@ -1840,7 +1839,6 @@
                url.searchParams.delete("membershipeditor");
                url.searchParams.append("isEditorPreview", "true");
                url.searchParams.set("token", auth?.tokenId);
-               const cleanUrl = url.toString();
 
                // Then, clear the existing UI to make room for the iframe editor.
                if ($appContainer) $appContainer.remove();
@@ -1945,7 +1943,6 @@
                   .addEventListener("click", () => {
                      const u = new URL(window.location);
                      u.searchParams.set("membershipeditor", "true");
-                     location.href = u.toString();
                   });
             }, 500);
          },
@@ -1999,7 +1996,6 @@
                      if (shouldExit) {
                         const u = new URL(window.location);
                         u.searchParams.delete("membershipeditor");
-                        location.href = u.toString();
                      }
                   });
             }, 500);
@@ -3394,7 +3390,6 @@
                      updatedActiveTemplatesConfig,
                      (key, value) => {
                         if (typeof value === "function") {
-                           return value.toString();
                         }
                         return value;
                      },
@@ -3440,10 +3435,9 @@
                   document.querySelector(".undo")?.classList?.add("disabled");
 
                   // Then we will reload the preview iframe
-                  const url = new URL(this.$iframe.src);
-                  url.searchParams.set("token", auth?.tokenId);
-                  const cleanUrl = url.toString();
-                  this.$iframe.src = cleanUrl;
+                  const iframeUrl = new URL(this.$iframe.src);
+                  iframeUrl.searchParams.set("token", auth?.tokenId);
+                  this.$iframe.src = iframeUrl.toString();;
 
                   /**
                    * Finally, we provide visual confirmation to the user that their changes have been saved successfully,
@@ -3546,7 +3540,6 @@
                      updatedActiveTemplatesConfig,
                      (key, value) => {
                         if (typeof value === "function") {
-                           return value?.toString();
                         }
                         return value;
                      },
@@ -3582,10 +3575,9 @@
 
                   // Finally we will show a success message and reload the preview iframe
                   alert("✅ Done! You’ve switched to a new template.");
-                  const url = new URL(this.$iframe.src);
-                  url.searchParams.set("token", auth?.tokenId);
-                  const cleanUrl = url.toString();
-                  this.$iframe.src = cleanUrl;
+                  const iframeUrl = new URL(this.$iframe.src);
+                  iframeUrl.searchParams.set("token", auth?.tokenId);
+                  this.$iframe.src = iframeUrl.toString();
                } catch (err) {
                   // Finally we will notify the user and log the error for debugging if saving fails for any reason
                   alert(
@@ -3658,7 +3650,6 @@
                      updatedActiveTemplatesConfig,
                      (key, value) => {
                         if (typeof value === "function") {
-                           return value?.toString();
                         }
                         return value;
                      },
@@ -3698,10 +3689,9 @@
 
                   // Finally we will show a success message and reload the preview iframe
                   alert("✅ Done! Restored to default.");
-                  const url = new URL(this.$iframe.src);
-                  url.searchParams.set("token", auth?.tokenId);
-                  const cleanUrl = url.toString();
-                  this.$iframe.src = cleanUrl;
+                  const iframeUrl = new URL(this.$iframe.src);
+                  iframeUrl.searchParams.set("token", auth?.tokenId);
+                  this.$iframe.src = iframeUrl.toString();
                } catch (err) {
                   // Finally we will notify the user and log the error for debugging if restoring the template fails for any reason
                   alert(
@@ -3904,10 +3894,9 @@
 
             // Then we will update the iframe
             const auth = await this.utils.getAuth();
-            const url = new URL(page);
-            url.searchParams.set("token", auth?.tokenId);
-            const cleanUrl = url.toString();
-            this.$iframe.src = cleanUrl;
+            const iframeUrl = new URL(page);
+            iframeUrl.searchParams.set("token", auth?.tokenId);
+            this.$iframe.src = iframeUrl.toString();
 
             // Finally we will add a loading indicator inside the sidebar editor
             document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(

@@ -1082,6 +1082,7 @@
                currentUrl.searchParams.forEach((value, key) => {
                   finalUrl.searchParams.set(key, value);
                });
+               return finalUrl
             };
 
             // Then, we will retrieve the pages from the template schema based on the window size
@@ -1096,7 +1097,6 @@
                   categoryId,
                   postId,
                );
-               console.log(fullUrl)
                const isActive = (() => {
                   const currentRegex = new RegExp(page.urlRegex);
                   if (!currentRegex.test(location.pathname)) return false;

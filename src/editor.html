@@ -1996,6 +1996,7 @@
                      if (shouldExit) {
                         const u = new URL(window.location);
                         u.searchParams.delete("membershipeditor");
+                        window.location.href = u.toString();
                      }
                   });
             }, 500);

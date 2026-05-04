@@ -1096,6 +1096,7 @@
                   categoryId,
                   postId,
                );
+               console.log(fullUrl)
                const isActive = (() => {
                   const currentRegex = new RegExp(page.urlRegex);
                   if (!currentRegex.test(location.pathname)) return false;
@@ -3895,7 +3896,6 @@
             if (!isConfirm) return;
 
             // Then we will update the iframe
-            console.log(page);
             const auth = await this.utils.getAuth();
             const iframeUrl = new URL(page);
             iframeUrl.searchParams.set("token", auth?.tokenId);

@@ -90,8 +90,8 @@ export default {
                style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:2147483647;display:${isProduct ? "grid" : "none"};place-items:center;background:#fff;"
                >
                <dotlottie-wc
-                  src="https://lottie.host/5947091c-caae-4663-94b5-a68817f9e24e/Tkb1qTZsPV.lottie"
-                  style="width:150px;height:150px"
+                  src="https://lottie.host/1c2d9b25-9488-44b7-8bbb-a3c60c0b08d9/fafNfOpbeD.lottie"
+                  style="width:200px;height:200px"
                   autoplay
                   loop
                ></dotlottie-wc>

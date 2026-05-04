@@ -3895,6 +3895,7 @@
             if (!isConfirm) return;
 
             // Then we will update the iframe
+            console.log(page);
             const auth = await this.utils.getAuth();
             const iframeUrl = new URL(page);
             iframeUrl.searchParams.set("token", auth?.tokenId);

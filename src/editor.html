@@ -3440,7 +3440,10 @@
                   document.querySelector(".undo")?.classList?.add("disabled");
 
                   // Then we will reload the preview iframe
-                  this.$iframe.src = this.$iframe.src;
+                  const url = new URL(this.$iframe.src);
+                  url.searchParams.set("token", auth?.tokenId);
+                  const cleanUrl = url.toString();
+                  this.$iframe.src = cleanUrl;
 
                   /**
                    * Finally, we provide visual confirmation to the user that their changes have been saved successfully,
@@ -3579,7 +3582,10 @@
 
                   // Finally we will show a success message and reload the preview iframe
                   alert("✅ Done! You’ve switched to a new template.");
-                  this.$iframe.src = this.$iframe.src;
+                  const url = new URL(this.$iframe.src);
+                  url.searchParams.set("token", auth?.tokenId);
+                  const cleanUrl = url.toString();
+                  this.$iframe.src = cleanUrl;
                } catch (err) {
                   // Finally we will notify the user and log the error for debugging if saving fails for any reason
                   alert(
@@ -3689,7 +3695,10 @@
 
                   // Finally we will show a success message and reload the preview iframe
                   alert("✅ Done! Restored to default.");
-                  this.$iframe.src = this.$iframe.src;
+                  const url = new URL(this.$iframe.src);
+                  url.searchParams.set("token", auth?.tokenId);
+                  const cleanUrl = url.toString();
+                  this.$iframe.src = cleanUrl;
                } catch (err) {
                   // Finally we will notify the user and log the error for debugging if restoring the template fails for any reason
                   alert(
@@ -3891,7 +3900,11 @@
             if (!isConfirm) return;
 
             // Then we will update the iframe
-            this.$iframe.src = page;
+            const auth = await this.utils.getAuth();
+            const url = new URL(page);
+            url.searchParams.set("token", auth?.tokenId);
+            const cleanUrl = url.toString();
+            this.$iframe.src = cleanUrl;
 
             // Finally we will add a loading indicator inside the sidebar editor
             document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(
@@ -4586,7 +4599,7 @@
 
          // This helper method retrieves the auth information
          getAuth: async () => {
-            return new Promise( (res) => {
+            return new Promise((res) => {
                const interval = setInterval(async () => {
                   if (window?.$cookies) {
                      // First we will retrieve the token
@@ -4622,7 +4635,7 @@
                         })();
 
                         // Then we will fetch a new refresh token
-                       const newToken = await fetch(
+                        const newToken = await fetch(
                            `https://securetoken.googleapis.com/v1/token?key=${firebaseAuth.apiKey}`,
                            {
                               method: "POST",
@@ -4633,18 +4646,17 @@
                               },
                               body: `grant_type=refresh_token&refresh_token=${firebaseAuth.stsTokenManager.refreshToken}`,
                            },
-                        )
-                           .then(async (res) => {
-                             return res.json()
-                           });
+                        ).then(async (res) => {
+                           return res.json();
+                        });
 
                         // Finally we will update the data and the acat token
                         const oneHourFromNow = new Date().getTime() + 60 * 60 * 1000;
                         const newAuth = {
-                             ...data,
+                           ...data,
                            tokenId: newToken.id_token,
                            tokenExpirationTime: oneHourFromNow,
-                           rehydrate: true
+                           rehydrate: true,
                         };
                         window.$cookies.set("acat", window.btoa(JSON.stringify(newAuth)));
                         res(newAuth);

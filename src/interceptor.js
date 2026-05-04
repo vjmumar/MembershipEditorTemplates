@@ -87,7 +87,7 @@ export default {
          const loader = `
                <div
                class="template-loader"
-               style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:2147483647;display:${isProduct ? "grid" : "block"};place-items:center;background:#fff;"
+               style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:2147483647;display:${isProduct ? "grid" : "none"};place-items:center;background:#fff;"
                >
                <dotlottie-wc
                   src="https://lottie.host/5947091c-caae-4663-94b5-a68817f9e24e/Tkb1qTZsPV.lottie"

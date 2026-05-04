@@ -3693,6 +3693,9 @@
                      redirect: "follow",
                   });
 
+                  // Then we will clear the template undo stack array
+                  this.templateUndoStack = [];
+
                   // Finally we will show a success message and reload the preview iframe
                   alert("✅ Done! Restored to default.");
                   const url = new URL(this.$iframe.src);

@@ -4642,7 +4642,7 @@
                         const oneHourFromNow = new Date().getTime() + 60 * 60 * 1000;
                         const newAuth = {
                              ...data,
-                           tokenId: newToken.refresh_token,
+                           tokenId: newToken.id_token,
                            tokenExpirationTime: oneHourFromNow,
                            rehydrate: true
                         };

@@ -3177,10 +3177,7 @@
                   confirmBtn.disabled = true;
                   confirmBtn.textContent = 'Uploading...';
                   try {
-                     const renamedFile = new File([selectedFontFile], fontName,  { type: selectedFontFile.type });
-                     console.log(renamedFile)
-                     return;
-                     const res = await window.MembershipEditor.actions.uploadFontToGhl(renamedFile);
+                     const res = await window.MembershipEditor.actions.uploadFontToGhl(selectedFontFile, fontName);
                      window.MembershipEditor.$iframe.contentWindow.MembershipParser.activeTemplate.customFonts.push(res);
                      window.MembershipEditor.initializers.initializeAdvanceSettings();
                      alert('Font uploaded successfully!');
@@ -4272,7 +4269,7 @@
          },
 
          // This method uploads font to ghl media
-         uploadFontToGhl: async (file, parentFolder = "") => {
+         uploadFontToGhl: async (file, fileName = "",parentFolder = "") => {
             const auth = await this.utils.getAuth();
             const locationId = auth?.locationId;
             const contentTypeMap = {
@@ -4281,7 +4278,7 @@
                woff: "font/woff",
                woff2: "font/woff2",
             };
-            const fontName = file.name?.replace(/\.[^/.]+$/, "");
+            const fontName = fileName || file.name?.replace(/\.[^/.]+$/, "");
             const ext = file.name?.split(".").pop().toLowerCase();
             const contentType = contentTypeMap[ext] ?? "application/octet-stream";
             const blob =

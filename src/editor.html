@@ -839,7 +839,9 @@
       padding: 32px 24px;
       text-align: center;
       cursor: pointer;
-      transition: border-color 0.2s, background-color 0.2s;
+      transition:
+         border-color 0.2s,
+         background-color 0.2s;
       background-color: #f9fafb;
    }
 
@@ -920,7 +922,9 @@
       box-sizing: border-box;
       outline: none;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition:
+         border-color 0.2s,
+         box-shadow 0.2s;
    }
 
    .upload-font-popup__font-name input:focus {
@@ -1424,8 +1428,7 @@
                            const identity = getArrayItemIdentity(masterItem);
                            if (!identity) return savedItems[index];
                            return savedItems.find(
-                              (savedItem) =>
-                                 getArrayItemIdentity(savedItem) === identity,
+                              (savedItem) => getArrayItemIdentity(savedItem) === identity,
                            );
                         };
 
@@ -3040,11 +3043,8 @@
                var handleFontSelected = (input) => {
                   const file = input.files[0];
                   if (!file) return;
-
                   selectedFontFile = file;
-
                   const defaultFontName = file.name.replace(/\.[^/.]+$/, '');
-
                   document.getElementById('font-dropzone').style.display = 'none';
                   document.getElementById('font-selected-file').style.display = 'block';
                   document.getElementById('font-actions').style.display = 'flex';
@@ -3066,58 +3066,20 @@
                      alert('Please select a font file first.');
                      return;
                   }
-
                   const fontNameInput = document.getElementById('font-name-input');
                   const fontName = fontNameInput.value.trim() || selectedFontFile.name.replace(/\.[^/.]+$/, '');
-
                   if (!fontName) {
                      alert('Please enter a font name.');
                      return;
                   }
-
                   const confirmBtn = document.querySelector('.upload-font-popup__confirm-btn');
                   confirmBtn.disabled = true;
                   confirmBtn.textContent = 'Uploading...';
-
                   try {
-                     const auth = await window.MembershipEditor.utils.getAuth();
-                     const formData = new FormData();
+                     console.log(selectedFontFile);
                      formData.append('file', selectedFontFile);
                      formData.append('name', selectedFontFile.name);
-
-                     const uploadResponse = await fetch(
-                        window.MembershipEditor.utils.getBaseUrl() + '/v1/locations/' + auth.locationId + '/assets',
-                        {
-                           method: 'POST',
-                           headers: {
-                              Authorization: 'Bearer ' + auth.tokenId,
-                           },
-                           body: formData,
-                        }
-                     );
-
-                     if (!uploadResponse.ok) {
-                        throw new Error('Failed to upload ' + selectedFontFile.name);
-                     }
-
-                     const uploadResult = await uploadResponse.json();
-
-                     const popup = document.querySelector('.custom-popup');
-                     if (popup) popup.remove();
-
-                     const previewParser = window.MembershipEditor.$iframe.contentWindow.MembershipParser;
-                     const activeTemplate = previewParser.activeTemplate;
-                     const currentFonts = activeTemplate.customFonts || [];
-
-                     if (!currentFonts.includes(fontName)) {
-                        currentFonts.push(fontName);
-                     }
-
-                     window.MembershipEditor.actions.updateTemplateCustomFonts(currentFonts.join(', '));
-                     window.MembershipEditor.initializers.initializeAdvanceSettings();
-
                      alert('Font uploaded successfully!');
-
                   } catch (error) {
                      console.error('Font upload error:', error);
                      alert('Failed to upload font. Please try again.');
@@ -4026,7 +3988,7 @@
             }
          },
 
-         // This method uploads image to ghl media
+         // This method uploads text to ghl media
          uploadTextToGHL: async (textContent = "", fileName = "", parentFolder = "") => {
             const auth = await this.utils.getAuth();
             const locationId = auth?.locationId;
@@ -4127,6 +4089,93 @@
                      ],
                   }),
                });
+
+               // Finally return the new file information
+               return {
+                  id: validateJSON._id,
+                  altId: validateJSON.altId,
+                  altType: validateJSON.altType,
+                  name: validateJSON.name,
+                  url: validateJSON.url,
+                  size: validateJSON.size,
+               };
+            } catch (err) {
+               isError = true;
+               alert("Something went wrong, please reload or try again.");
+            }
+         },
+
+         // This method uploads font to ghl media
+         uploadFontToGhl: async (file, fileName = "", parentFolder = "") => {
+            const auth = await this.utils.getAuth();
+            const locationId = auth?.locationId;
+            const contentTypeMap = {
+               ttf: "font/ttf",
+               otf: "font/otf",
+               woff: "font/woff",
+               woff2: "font/woff2",
+            };
+            const ext = fileName.split(".").pop().toLowerCase();
+            const contentType = contentTypeMap[ext] ?? "application/octet-stream";
+            const blob =
+               file instanceof Blob ? file : new Blob([file], { type: contentType });
+            const size = blob.size;
+            let isError = false;
+            try {
+               // First we will upload the new configuration
+               const registerResponse = await fetch(
+                  "https://services.leadconnectorhq.com/medias/files/",
+                  {
+                     method: "POST",
+                     headers: {
+                        "Version": "2021-07-28",
+                        "Source": "WEB_USER",
+                        "Channel": "APP",
+                        "Content-Type": "application/json",
+                        "token-id": auth?.tokenId,
+                     },
+                     priority: "high",
+                     body: JSON.stringify({
+                        name: fileName,
+                        contentType: contentType,
+                        parentId: parentFolder,
+                        altType: "location",
+                        altId: String(locationId),
+                        size: size,
+                        mode: "public",
+                     }),
+                  },
+               );
+               const registerJSON = await registerResponse.json();
+               await fetch(registerJSON.url, {
+                  method: "PUT",
+                  headers: {
+                     "Content-Type": contentType,
+                  },
+                  priority: "high",
+                  body: blob,
+               });
+               const validateResponse = await fetch(
+                  "https://services.leadconnectorhq.com/medias/files/verify",
+                  {
+                     method: "POST",
+                     headers: {
+                        "Version": "2021-07-28",
+                        "Source": "WEB_USER",
+                        "Channel": "APP",
+                        "Content-Type": "application/json",
+                        "token-id": auth?.tokenId,
+                     },
+                     priority: "high",
+                     body: JSON.stringify({
+                        altId: String(locationId),
+                        altType: "location",
+                        id: registerJSON.aknId,
+                        mode: "public",
+                     }),
+                  },
+               );
+               const validateJSON = await validateResponse.json();
 
                // Finally return the new file information
                return {
@@ -4964,8 +5013,7 @@
                         });
 
                         // Finally we will update the data and the acat token
-                        const fiftyMinutesFromNow =
-                           new Date().getTime() + 50 * 60 * 1000;
+                        const fiftyMinutesFromNow = new Date().getTime() + 50 * 60 * 1000;
                         const newAuth = {
                            ...data,
                            tokenId: newToken.id_token,

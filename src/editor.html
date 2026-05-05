@@ -1769,7 +1769,7 @@
                ?.forEach((e) => e.remove());
 
             // Then we will generate the Custom Fonts style tag HTML
-            const googleFontsUsedStyleHTML = `
+            const customFontsStyleHTML = `
                <style class="bm-template-custom-fonts">
                   ${this.activeTemplate?.customFonts?.reduce((a, c) => {
                      a += `@font-face { font-family: '${c.name}'; src: url('${c.url}')}`;
@@ -1779,7 +1779,7 @@
             `;
 
             // Finally we will insert the fresh style tag with the updated CSS values
-            document.body.insertAdjacentHTML("beforeend", `${googleFontsUsedStyleHTML}`);
+            document.body.insertAdjacentHTML("beforeend", `${customFontsStyleHTML}`);
          },
 
          // This method applies all CSS customizations from the activePageOnTemplate into the page
@@ -4975,6 +4975,26 @@
 
                   // Then we will generate the custom fonts options HTML
                   const customFontsOptionsHTML = (() => {
+                     // First we will generate the
+                     const previewIframeMembershipParser =
+                        this.$iframe.contentWindow.MembershipParser;
+                     const activePageOnTemplate =
+                        previewIframeMembershipParser.activePageOnTemplate;
+                     const customFontsStyleHTML = `
+                        <style class="bm-template-custom-fonts-preview">
+                           ${activePageOnTemplate?.customFonts?.reduce((a, c) => {
+                              a += `@font-face { font-family: '${c.name}'; src: url('${c.url}')}`;
+                              return a;
+                           }, "")}
+                        </style>
+                     `;
+                     if (!document.querySelector(".bm-template-custom-fonts-preview")) {
+                        document.body.insertAdjacentHTML(
+                        "beforeend",
+                        `${customFontsStyleHTML}`,
+                     );
+                     }
+
                      const optionsHTML =
                         this.$iframe.contentWindow.MembershipParser?.activeTemplate[
                            "customFonts"

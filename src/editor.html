@@ -4980,6 +4980,7 @@
                         this.$iframe.contentWindow.MembershipParser;
                      const activePageOnTemplate =
                         previewIframeMembershipParser.activePageOnTemplate;
+                     console.log(activePageOnTemplate)
                      const customFontsStyleHTML = `
                         <style class="bm-template-custom-fonts-preview">
                            ${activePageOnTemplate?.customFonts?.reduce((a, c) => {
@@ -4988,11 +4989,12 @@
                            }, "")}
                         </style>
                      `;
+
                      if (!document.querySelector(".bm-template-custom-fonts-preview")) {
                         document.body.insertAdjacentHTML(
-                        "beforeend",
-                        `${customFontsStyleHTML}`,
-                     );
+                           "beforeend",
+                           `${customFontsStyleHTML}`,
+                        );
                      }
 
                      const optionsHTML =

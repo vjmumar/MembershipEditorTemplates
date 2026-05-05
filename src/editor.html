@@ -1472,7 +1472,6 @@
                            "isTurnedOn",
                            "customCss",
                            "placeholderThumbnail",
-                           "customFonts",
                            "googleFontsUsed",
                         ];
                         const getArrayItemIdentity = (item = {}) => {
@@ -3743,9 +3742,6 @@
                      (tem) => tem.id !== activeTemplate.id,
                   );
                   updatedActiveTemplatesConfig.push(activeTemplate);
-
-                  console.log(updatedActiveTemplatesConfig);
-                  return;
 
                   /**
                    * Then, we stringify the entire template configuration array and apply a replacer function

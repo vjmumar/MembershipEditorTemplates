@@ -4978,12 +4978,11 @@
                      // First we will generate the
                      const previewIframeMembershipParser =
                         this.$iframe.contentWindow.MembershipParser;
-                     const activePageOnTemplate =
-                        previewIframeMembershipParser.activePageOnTemplate;
-                     console.log(activePageOnTemplate)
+                     const activeTemplate =
+                        previewIframeMembershipParser.activeTemplate;
                      const customFontsStyleHTML = `
                         <style class="bm-template-custom-fonts-preview">
-                           ${activePageOnTemplate?.customFonts?.reduce((a, c) => {
+                           ${activeTemplate?.customFonts?.reduce((a, c) => {
                               a += `@font-face { font-family: '${c.name}'; src: url('${c.url}')}`;
                               return a;
                            }, "")}

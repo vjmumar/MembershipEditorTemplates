@@ -3,7 +3,7 @@ window.templateCustomizationSchema = {
    id: "template-3",
    customCss:
       "@font-face { font-family: 'Ogg'; src: url('https://res.cloudinary.com/dpr6hw8uh/raw/upload/v1659948521/Ogg-Roman_vloao9.otf') format('opentype'); font-weight: normal; font-style: normal; font-display: swap; }",
-   customFonts: ["Ogg"],
+   customFonts: [],
    googleFontsUsed: ["Lavishly Yours", "Playfair Display", "Quicksand"],
    placeholderThumbnail:
       "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
@@ -1482,20 +1482,6 @@ window.templateCustomizationSchema = {
                      property: "--categories-overlay-opacity",
                      type: "text",
                      placeholder: "E.g: 1 or .5",
-                     value: "",
-                  },
-               ],
-            },
-            {
-               elementSelector: ".template-categories",
-               label: "Categories Category Item Containers",
-               key: "template-category-post-posts",
-               cssCustomizations: [
-                  {
-                     name: "Background Color",
-                     property: "background-color",
-                     type: "color",
-                     placeholder: "",
                      value: "",
                   },
                ],

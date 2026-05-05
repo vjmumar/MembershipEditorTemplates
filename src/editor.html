@@ -2778,7 +2778,7 @@
             // Then we will create the custom fonts list html
             const fontsListHTML = (() => {
                return `
-                  <div class="advance-settings__fonts" onclick="window.MembershipEditor.initializers.initializeUploadFont()">
+                  <div class="advance-settings__fonts" onclick="window.MembershipEditor.initializers.initializeUploadCustomFont()">
                      <p class="advance-settings__fonts__label">Custom Fonts <i class="fa-solid fa-upload" style="margin-left: 8px;"></i></p>
                      <textarea name="customFonts" onclick="event.stopPropagation()" onchange="window.MembershipEditor.actions.updateTemplateCustomFonts(this.value || '')">${(activeTemplate?.customFonts || []).join(",\n")}</textarea>
                      <p class="advance-settings__fonts__info">ⓘ Click to upload custom fonts, or manually import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p>
@@ -3006,7 +3006,7 @@
          },
 
          // This method will initialize the upload font popup
-         initializeUploadFont: () => {
+         initializeUploadCustomFont: () => {
             const popupContent = `
                <div class="upload-font-popup">
                   <h3 class="upload-font-popup__title">Upload Custom Font</h3>
@@ -3076,9 +3076,8 @@
                   confirmBtn.disabled = true;
                   confirmBtn.textContent = 'Uploading...';
                   try {
-                     console.log(selectedFontFile);
-                     formData.append('file', selectedFontFile);
-                     formData.append('name', selectedFontFile.name);
+                     const res = await window.MembershipEditor.actions.uploadFontToGhl(selectedFontFile);
+                     console.log(res);
                      alert('Font uploaded successfully!');
                   } catch (error) {
                      console.error('Font upload error:', error);
@@ -4106,7 +4105,7 @@
          },
 
          // This method uploads font to ghl media
-         uploadFontToGhl: async (file, fileName = "", parentFolder = "") => {
+         uploadFontToGhl: async (file, parentFolder = "") => {
             const auth = await this.utils.getAuth();
             const locationId = auth?.locationId;
             const contentTypeMap = {
@@ -4115,7 +4114,8 @@
                woff: "font/woff",
                woff2: "font/woff2",
             };
-            const ext = fileName.split(".").pop().toLowerCase();
+            const fontName = file.name?.replace(/\.[^/.]+$/, "");
+            const ext = file.name?.split(".").pop().toLowerCase();
             const contentType = contentTypeMap[ext] ?? "application/octet-stream";
             const blob =
                file instanceof Blob ? file : new Blob([file], { type: contentType });

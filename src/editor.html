@@ -1472,7 +1472,6 @@
                            "isTurnedOn",
                            "customCss",
                            "placeholderThumbnail",
-                           "googleFontsUsed",
                         ];
                         const getArrayItemIdentity = (item = {}) => {
                            if (!item || typeof item !== "object") return "";
@@ -1497,11 +1496,17 @@
                               (savedItem) => getArrayItemIdentity(savedItem) === identity,
                            );
                         };
+                        const isPrimitiveArray = (items = []) => {
+                           return items.every(
+                              (item) => item === null || typeof item !== "object",
+                           );
+                        };
 
                         /**
                          * First we strip deprecated saved data against the current master schema.
                          * Arrays are aligned to the master schema order so _.mergeWith cannot
-                         * merge old saved items back in by index.
+                         * merge old saved items back in by index. Empty schema arrays
+                         * and primitive arrays are treated as user data arrays and kept as-is.
                          */
                         const stripDeprecated = (
                            masterValue,
@@ -1510,6 +1515,12 @@
                         ) => {
                            if (Array.isArray(masterValue)) {
                               if (!Array.isArray(savedValue)) return undefined;
+                              if (
+                                 !masterValue.length ||
+                                 isPrimitiveArray(masterValue)
+                              ) {
+                                 return window._.cloneDeep(savedValue);
+                              }
                               return masterValue.map((masterItem, index) => {
                                  const savedItem = findSavedArrayItem(
                                     masterItem,
@@ -1563,6 +1574,16 @@
                               // --- STEP 1: USER DATA OVERWRITES ---
                               // Prioritize saved user data for specific visual properties.
                               if (savedMergeValueKeys.includes(key)) {
+                                 return srcValue;
+                              }
+
+                              // Data arrays do not have schema items to align, so saved data should win automatically.
+                              if (
+                                 Array.isArray(objectValue) &&
+                                 Array.isArray(srcValue) &&
+                                 (!objectValue.length ||
+                                    isPrimitiveArray(objectValue))
+                              ) {
                                  return srcValue;
                               }
 
@@ -2851,7 +2872,7 @@
                   const ext = url.split('.').pop().toUpperCase();
                   const sizeStr = size > 0 ? (size / 1024).toFixed(1) + ' KB' : '';
                   const meta = [ext, sizeStr].filter(Boolean).join(' · ');
-                  return `<div class="advance-settings__fonts__item" data-font-index="${index}"><div class="advance-settings__fonts__item__info"><span class="advance-settings__fonts__item__name">${fontName}</span><span class="advance-settings__fonts__item__meta">${meta}</span></div><i class="fa-solid fa-xmark" onclick="event.stopPropagation(); window.MembershipEditor.actions.removeCustomFont(${index})"></i></div>`;
+                  return `<div class="advance-settings__fonts__item" data-font-index="${index}"><div class="advance-settings__fonts__item__info"><span class="advance-settings__fonts__item__name">${fontName}</span><span class="advance-settings__fonts__item__meta">${meta}</span></div></div>`;
                }).join('');
                const listContentHTML = fontListItemsHTML || '<div class="advance-settings__fonts__empty">No custom fonts uploaded</div>';
                return `

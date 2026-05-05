@@ -4106,8 +4106,7 @@
 
          // This method uploads font to ghl media
          uploadFontToGhl: async (file, parentFolder = "") => {
-               try {
-                  const auth = await this.utils.getAuth();
+            const auth = await this.utils.getAuth();
             const locationId = auth?.locationId;
             const contentTypeMap = {
                ttf: "font/ttf",
@@ -4137,7 +4136,7 @@
                      },
                      priority: "high",
                      body: JSON.stringify({
-                        name: fileName,
+                        name: fontName,
                         contentType: contentType,
                         parentId: parentFolder,
                         altType: "location",
@@ -4191,9 +4190,6 @@
                isError = true;
                alert("Something went wrong, please reload or try again.");
             }
-               } catch (err) {
-                  console.log(err);
-               }
          },
 
          // This method is responsible for injecting the google fonts used inside tiny mce editor

@@ -1773,6 +1773,7 @@
                <style class="bm-template-custom-fonts">
                   ${this.activeTemplate?.customFonts?.reduce((a,c) => {
                      a += `@font-face { font-family: '${c.name}'; src: url('${c.url}')}`;
+                     return a
                   }, "")}
                </style>
             `;

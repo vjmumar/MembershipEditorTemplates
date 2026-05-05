@@ -3178,6 +3178,8 @@
                   confirmBtn.textContent = 'Uploading...';
                   try {
                      const renamedFile = new File([selectedFontFile], fontName,  { type: selectedFontFile.type });
+                     console.log(renamedFiled)
+                     return;
                      const res = await window.MembershipEditor.actions.uploadFontToGhl(renamedFile);
                      window.MembershipEditor.$iframe.contentWindow.MembershipParser.activeTemplate.customFonts.push(res);
                      window.MembershipEditor.initializers.initializeAdvanceSettings();

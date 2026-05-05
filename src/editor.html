@@ -2868,7 +2868,7 @@
                      const ext = url.split(".").pop().toUpperCase();
                      const sizeStr = size > 0 ? (size / 1024).toFixed(1) + " KB" : "";
                      const meta = [ext, sizeStr].filter(Boolean).join(" · ");
-                     return `<div class="advance-settings__fonts__item" data-font-index="${index}"><div class="advance-settings__fonts__item__info"><span class="advance-settings__fonts__item__name">${fontName}</span><span class="advance-settings__fonts__item__meta">${meta}</span></div><i class="fa-solid fa-xmark" onclick="window.MembershipEditor.actions.removeCustomFont('${font.id}')"></i></div>`;
+                     return `<div class="advance-settings__fonts__item" data-font-index="${index}"><div class="advance-settings__fonts__item__info"><span class="advance-settings__fonts__item__name">${fontName}</span><span class="advance-settings__fonts__item__meta">${meta}</span></div><i class="fa-solid fa-xmark" onclick="window.MembershipEditor.actions.removeCustomFont('${font.id}', true)"></i></div>`;
                   })
                   .join("");
                const listContentHTML =
@@ -3687,7 +3687,10 @@
          },
 
          // This method removes a custom font from GHL media and the active template
-         removeCustomFont: async (fontId = "") => {
+         removeCustomFont: async (
+            fontId = "",
+            shouldRemoveFromActiveTemplate = false,
+         ) => {
             // First we will ask for user's confirmation
             if (!confirm("Are you sure you want to delete this custom font?")) return;
 
@@ -3702,7 +3705,7 @@
             // Then we will retrieve the auth context needed by the media delete endpoint
             const auth = await this.utils.getAuth();
 
-            // Finally we will start the delete process
+            // Then we will start the delete process
             await fetch("https://services.leadconnectorhq.com/medias/delete-files", {
                method: "PUT",
                headers: {
@@ -3733,6 +3736,15 @@
                   ],
                }),
             });
+
+            // Finally we will conditionally remove the font from activeTemplate
+            if (shouldRemoveFromActiveTemplate) {
+               previewIframeMembershipParser.activeTemplate.customFonts =
+                  previewIframeMembershipParser.activeTemplate.customFonts.filter(
+                     (font) => font.id !== selectedCustomFont.id,
+                  );
+               this.initializers.initializeAdvanceSettings();
+            }
          },
 
          // This method updates the template's placeholderThumbnail

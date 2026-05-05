@@ -2872,7 +2872,7 @@
                   const ext = url.split('.').pop().toUpperCase();
                   const sizeStr = size > 0 ? (size / 1024).toFixed(1) + ' KB' : '';
                   const meta = [ext, sizeStr].filter(Boolean).join(' · ');
-                  return `<div class="advance-settings__fonts__item" data-font-index="${index}"><div class="advance-settings__fonts__item__info"><span class="advance-settings__fonts__item__name">${fontName}</span><span class="advance-settings__fonts__item__meta">${meta}</span></div></div>`;
+                  return `<div class="advance-settings__fonts__item" data-font-index="${index}"><div class="advance-settings__fonts__item__info"><span class="advance-settings__fonts__item__name">${fontName}</span><span class="advance-settings__fonts__item__meta">${meta}</span></div><i class="fa-solid fa-xmark"></i></div>`;
                }).join('');
                const listContentHTML = fontListItemsHTML || '<div class="advance-settings__fonts__empty">No custom fonts uploaded</div>';
                return `

@@ -583,12 +583,8 @@
       cursor: pointer;
       background-color: #f9fafb;
       border-radius: 6px;
-      margin-bottom: 10px;
+      margin-bottom: 4px;
       transition: background-color 0.2s;
-   }
-
-   .advance-settings__fonts__header:hover {
-      background-color: #f3f4f6;
    }
 
    .advance-settings__fonts__upload-btn {
@@ -2840,18 +2836,24 @@
             // Then we will create the custom fonts list html
             const fontsListHTML = (() => {
                const fonts = activeTemplate?.customFonts || [];
-               const fontList = fonts.map((fontName, index) => {
-                  return `<div class="advance-settings__fonts__item" data-font-index="${index}"><span>${fontName}</span><i class="fa-solid fa-xmark" onclick="event.stopPropagation(); window.MembershipEditor.actions.removeCustomFont(${index})"></i></div>`;
+               const fontListItemsHTML = fonts.map((font, index) => {
+                  const fontName = typeof font === 'object' ? font.name : font;
+                  const url = typeof font === 'object' ? font.url : '';
+                  const size = typeof font === 'object' ? font.size : 0;
+                  const ext = url ? url.split('.').pop().toUpperCase() : '';
+                  const sizeStr = size > 0 ? (size / 1024).toFixed(1) + ' KB' : '';
+                  const meta = [ext, sizeStr].filter(Boolean).join(' · ');
+                  return `<div class="advance-settings__fonts__item" data-font-index="${index}"><div class="advance-settings__fonts__item__info"><span class="advance-settings__fonts__item__name">${fontName}</span><span class="advance-settings__fonts__item__meta">${meta}</span></div><i class="fa-solid fa-xmark" onclick="event.stopPropagation(); window.MembershipEditor.actions.removeCustomFont(${index})"></i></div>`;
                }).join('');
-               const listContent = fontList || '<div class="advance-settings__fonts__empty">No custom fonts uploaded</div>';
+               const listContentHTML = fontListItemsHTML || '<div class="advance-settings__fonts__empty">No custom fonts uploaded</div>';
                return `
                   <div class="advance-settings__fonts">
                      <div class="advance-settings__fonts__header" onclick="window.MembershipEditor.initializers.initializeUploadCustomFont()">
-                        <p class="advance-settings__fonts__label">${fonts.length} Custom Fonts</p>
+                        <p class="advance-settings__fonts__label">${fonts?.length} Custom Fonts</p>
                         <span class="advance-settings__fonts__upload-btn"><i class="fa-solid fa-plus"></i> Upload</span>
                      </div>
                      <div class="advance-settings__fonts__list" onclick="event.stopPropagation()">
-                        ${listContent}
+                        ${listContentHTML}
                      </div>
                   </div>
                `;

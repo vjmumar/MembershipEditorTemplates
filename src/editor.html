@@ -1771,7 +1771,7 @@
             // Then we will generate the Custom Fonts style tag HTML
             const googleFontsUsedStyleHTML = `
                <style class="bm-template-custom-fonts">
-                  ${this.activeTemplate.reduce((a,c) => {
+                  ${this.activeTemplate?.customFonts?.reduce((a,c) => {
                      a += `@font-face { font-family: '${c.name}'; src: url('${c.url}')}`;
                   }, "")}
                </style>

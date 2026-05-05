@@ -554,14 +554,13 @@
       background-position: center;
    }
 
-   
    .advance-settings__thumbnail-placeholder__info {
       font-size: 9px;
       margin-bottom: 9px;
    }
 
    .advance-settings__customcss {
-       margin: 10px;
+      margin: 10px;
    }
 
    .advance-settings__fonts {
@@ -1515,10 +1514,7 @@
                         ) => {
                            if (Array.isArray(masterValue)) {
                               if (!Array.isArray(savedValue)) return undefined;
-                              if (
-                                 !masterValue.length ||
-                                 isPrimitiveArray(masterValue)
-                              ) {
+                              if (!masterValue.length || isPrimitiveArray(masterValue)) {
                                  return window._.cloneDeep(savedValue);
                               }
                               return masterValue.map((masterItem, index) => {
@@ -1581,8 +1577,7 @@
                               if (
                                  Array.isArray(objectValue) &&
                                  Array.isArray(srcValue) &&
-                                 (!objectValue.length ||
-                                    isPrimitiveArray(objectValue))
+                                 (!objectValue.length || isPrimitiveArray(objectValue))
                               ) {
                                  return srcValue;
                               }
@@ -2865,16 +2860,20 @@
             // Then we will create the custom fonts list html
             const fontsListHTML = (() => {
                const fonts = activeTemplate?.customFonts || [];
-               const fontListItemsHTML = fonts.map((font, index) => {
-                  const fontName = font?.name;
-                  const url = font.url;
-                  const size = font.size;
-                  const ext = url.split('.').pop().toUpperCase();
-                  const sizeStr = size > 0 ? (size / 1024).toFixed(1) + ' KB' : '';
-                  const meta = [ext, sizeStr].filter(Boolean).join(' · ');
-                  return `<div class="advance-settings__fonts__item" data-font-index="${index}"><div class="advance-settings__fonts__item__info"><span class="advance-settings__fonts__item__name">${fontName}</span><span class="advance-settings__fonts__item__meta">${meta}</span></div><i class="fa-solid fa-xmark"></i></div>`;
-               }).join('');
-               const listContentHTML = fontListItemsHTML || '<div class="advance-settings__fonts__empty">No custom fonts uploaded</div>';
+               const fontListItemsHTML = fonts
+                  .map((font, index) => {
+                     const fontName = font?.name;
+                     const url = font.url;
+                     const size = font.size;
+                     const ext = url.split(".").pop().toUpperCase();
+                     const sizeStr = size > 0 ? (size / 1024).toFixed(1) + " KB" : "";
+                     const meta = [ext, sizeStr].filter(Boolean).join(" · ");
+                     return `<div class="advance-settings__fonts__item" data-font-index="${index}"><div class="advance-settings__fonts__item__info"><span class="advance-settings__fonts__item__name">${fontName}</span><span class="advance-settings__fonts__item__meta">${meta}</span></div><i class="fa-solid fa-xmark" onclick="window.MembershipEditor.actions.removeCustomFont(font.id)"></i></div>`;
+                  })
+                  .join("");
+               const listContentHTML =
+                  fontListItemsHTML ||
+                  '<div class="advance-settings__fonts__empty">No custom fonts uploaded</div>';
                return `
                   <div class="advance-settings__fonts">
                      <div class="advance-settings__fonts__header" onclick="window.MembershipEditor.initializers.initializeUploadCustomFont()">
@@ -3685,6 +3684,55 @@
 
             // Finally, update the active template custom fonts with the clean array
             activeTemplate.customFonts = formattedFontsToArray;
+         },
+
+         // This method removes a custom font from GHL media and the active template
+         removeCustomFont: async (fontId = "") => {
+            // First we will ask for user's confirmation
+            if (!confirm("Are you sure you want to delete this custom font?")) return;
+
+            // Then we will retrieve the preview iframe membership parser and the selected font
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+            const selectedCustomFont = activeTemplate?.customFonts.find(
+               (font) => font?.id === fontId,
+            );
+
+            // Then we will retrieve the auth context needed by the media delete endpoint
+            const auth = await this.utils.getAuth();
+
+            // Finally we will start the delete process
+            await fetch("https://services.leadconnectorhq.com/medias/delete-files", {
+               method: "PUT",
+               headers: {
+                  "Version": "2021-07-28",
+                  "Source": "WEB_USER",
+                  "Channel": "APP",
+                  "Content-Type": "application/json",
+                  "token-id": auth?.tokenId,
+               },
+               priority: "high",
+               body: JSON.stringify({
+                  altId: selectedCustomFont.altId,
+                  altType: selectedCustomFont.altType,
+                  mode: "public",
+                  status: "trashed",
+                  filesToBeDeleted: [
+                     {
+                        _id: String(selectedCustomFont?.id),
+                        altId: String(selectedCustomFont?.altId),
+                        altType: selectedCustomFont?.altType,
+                        parentId: "",
+                        name: selectedCustomFont?.name,
+                        url: selectedCustomFont?.url,
+                        size: selectedCustomFont?.size,
+                        contentType: "application/octet-stream",
+                        isPrivate: false,
+                     },
+                  ],
+               }),
+            });
          },
 
          // This method updates the template's placeholderThumbnail

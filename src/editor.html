@@ -4382,7 +4382,7 @@
             }
          },
 
-         // This method is responsible for injecting the google fonts used inside tiny mce editor
+         // This method is responsible for injecting the fonts used inside tiny mce editor
          injectUsedFontsInsideTinyMCE: (editor = null) => {
             const googleFontsUsed =
                this.$iframe.contentWindow?.MembershipParser?.activeTemplate[
@@ -4393,10 +4393,13 @@
                         `${f.replace(/ /g, "+")}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900`,
                   )
                   ?.join("&family=");
-            const templatesCustomCss =
-               this.$iframe?.contentWindow?.MembershipParser?.activeTemplate["customCss"];
+            const customFonts =
+               this.$iframe?.contentWindow?.MembershipParser?.activeTemplate["customFonts"].reduce((a,c) => {
+                  a += `@font-face { font-family: '${c.name}'; src: url('${c.url}')}`;
+                  return a
+               },"");
             const googleFontsUsedCss = `@import url('https://fonts.googleapis.com/css2?family=${googleFontsUsed}&display=swap');`;
-            const styleHTML = `<style id="custom-fonts">${googleFontsUsedCss}${templatesCustomCss}</style>`;
+            const styleHTML = `<style id="custom-fonts">${googleFontsUsedCss}${customFonts}</style>`;
             editor.getDoc()?.querySelector("custom-fonts")?.remove();
             editor?.getDoc()?.head.insertAdjacentHTML("beforeend", styleHTML);
          },

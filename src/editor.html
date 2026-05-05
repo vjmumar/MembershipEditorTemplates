@@ -2605,10 +2605,10 @@
             // Then we will create the custom fonts list html
             const fontsListHTML = (() => {
                return `
-                  <div class="advance-settings__fonts">
-                     <p class="advance-settings__fonts__label">Custom Fonts</p>
-                     <textarea name="customFonts" onchange="window.MembershipEditor.actions.updateTemplateCustomFonts(this.value || '')">${(activeTemplate?.customFonts || []).join(",\n")}</textarea>
-                     <p class="advance-settings__fonts__info">ⓘ Import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p>
+                  <div class="advance-settings__fonts" onclick="window.MembershipEditor.initializers.initializeUploadFont()">
+                     <p class="advance-settings__fonts__label">Custom Fonts <i class="fa-solid fa-upload" style="margin-left: 8px;"></i></p>
+                     <textarea name="customFonts" onclick="event.stopPropagation()" onchange="window.MembershipEditor.actions.updateTemplateCustomFonts(this.value || '')">${(activeTemplate?.customFonts || []).join(",\n")}</textarea>
+                     <p class="advance-settings__fonts__info">ⓘ Click to upload custom fonts, or manually import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p>
                   </div>
                `;
             })();
@@ -2830,6 +2830,25 @@
                        ${html}
                    </div>
                `;
+         },
+
+         // This method will initialize the upload font popup
+         initializeUploadFont: () => {
+            const popupContent = `
+               <div class="upload-font-popup">
+                  <h3 class="upload-font-popup__title">Upload Custom Font</h3>
+                  <div class="upload-font-popup__content">
+                     <p class="upload-font-popup__description">Upload your custom font files (TTF, OTF, WOFF, WOFF2) to use in your template.</p>
+                     <div class="upload-font-popup__dropzone" onclick="document.getElementById('font-file-input').click()">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <p>Click to select or drag font files here</p>
+                        <input type="file" id="font-file-input" accept=".ttf,.otf,.woff,.woff2" style="display: none;" onchange="window.MembershipEditor.actions.handleFontFileUpload(this.files)" />
+                     </div>
+                     <div class="upload-font-popup__file-list" id="font-file-list"></div>
+                  </div>
+               </div>
+            `;
+            this.widgets.popup(popupContent, true, "visible");
          },
       };
 
@@ -3917,7 +3936,6 @@
             const auth = await this.utils.getAuth();
             const iframeUrl = new URL(page);
             iframeUrl.searchParams.set("token", auth?.tokenId);
-            console.log(auth, "from switch page")
             this.$iframe.src = iframeUrl.toString();
 
             // Finally we will add a loading indicator inside the sidebar editor
@@ -4634,7 +4652,6 @@
 
                      // Then we will check if the token is expired, if expired we will rehydrate the token
                      if (Number(data.tokenExpirationTime) <= new Date().getTime()) {
-                        console.log("expired")
                         // First we will retrieve the firebase auth
                         const firebaseAuth = (() => {
                            const firebaseAuthResult = Object.keys(localStorage).reduce(
@@ -4675,7 +4692,6 @@
                         };
                         window.$cookies.set("acat", window.btoa(JSON.stringify(newAuth)));
                         res(newAuth);
-                        console.log(newAuth)
                      }
                      res(data);
                   }

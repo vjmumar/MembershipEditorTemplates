@@ -894,6 +894,55 @@
       margin-right: 8px;
    }
 
+   .upload-font-popup__selected-file {
+      margin-bottom: 16px;
+   }
+
+   .upload-font-popup__actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+   }
+
+   .upload-font-popup__cancel-btn {
+      padding: 10px 20px;
+      background-color: #f3f4f6;
+      color: #374151;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+   }
+
+   .upload-font-popup__cancel-btn:hover {
+      background-color: #e5e7eb;
+   }
+
+   .upload-font-popup__confirm-btn {
+      padding: 10px 20px;
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+   }
+
+   .upload-font-popup__confirm-btn:hover {
+      background-color: #2563eb;
+   }
+
+   .upload-font-popup__confirm-btn:disabled {
+      background-color: #9ca3af;
+      cursor: not-allowed;
+   }
+
    /* Widget */
    .widget-font-select {
       max-width: 300px;
@@ -2927,28 +2976,117 @@
          initializeUploadFont: () => {
             const popupContent = `
                <div class="upload-font-popup">
-                  <h3 class="upload-font-popup__title" onclick="v()">Upload Custom Font</h3>
+                  <h3 class="upload-font-popup__title">Upload Custom Font</h3>
                   <div class="upload-font-popup__content">
                      <p class="upload-font-popup__description">Upload your custom font files (TTF, OTF, WOFF, WOFF2) to use in your template.</p>
-                     <div class="upload-font-popup__dropzone" onclick="document.getElementById('font-file-input').click()">
+                     <div class="upload-font-popup__dropzone" id="font-dropzone" onclick="document.getElementById('font-file-input').click()">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
                         <p>Click to select or drag font files here</p>
-                        <input type="file" id="font-file-input" accept=".ttf,.otf,.woff,.woff2" style="display: none;" onchange="window.MembershipEditor.actions.handleFontFileUpload(this.files)" />
+                        <input type="file" id="font-file-input" accept=".ttf,.otf,.woff,.woff2" style="display: none;" onchange="handleFontSelected(this)" />
                      </div>
-                     <div class="upload-font-popup__file-list" id="font-file-list"></div>
+                     <div class="upload-font-popup__selected-file" id="font-selected-file" style="display: none;">
+                        <div class="upload-font-popup__file-item">
+                           <div style="display: flex; align-items: center; overflow: hidden;">
+                              <i class="fa-solid fa-file-font"></i>
+                              <span id="font-file-name"></span>
+                           </div>
+                           <span id="font-file-size" style="color: #9ca3af; margin-left: 8px; white-space: nowrap;"></span>
+                        </div>
+                     </div>
+                     <div class="upload-font-popup__actions" id="font-actions" style="display: none;">
+                        <button class="upload-font-popup__cancel-btn" onclick="handleFontCancel()">Cancel</button>
+                        <button class="upload-font-popup__confirm-btn" onclick="handleFontConfirm()">Confirm</button>
+                     </div>
                   </div>
                </div>
             `;
             const $script = document.createElement("script");
             $script.innerHTML = `
-               const v = () => {
-                  alert('test');
-               }
+               var selectedFontFile = null;
+
+               var handleFontSelected = (input) => {
+                  const file = input.files[0];
+                  if (!file) return;
+
+                  selectedFontFile = file;
+
+                  document.getElementById('font-dropzone').style.display = 'none';
+                  document.getElementById('font-selected-file').style.display = 'block';
+                  document.getElementById('font-actions').style.display = 'flex';
+                  document.getElementById('font-file-name').textContent = file.name;
+                  document.getElementById('font-file-size').textContent = (file.size / 1024).toFixed(1) + ' KB';
+               };
+
+               var handleFontCancel = () => {
+                  selectedFontFile = null;
+                  document.getElementById('font-dropzone').style.display = 'block';
+                  document.getElementById('font-selected-file').style.display = 'none';
+                  document.getElementById('font-actions').style.display = 'none';
+                  document.getElementById('font-file-input').value = '';
+               };
+
+               var handleFontConfirm = async () => {
+                  if (!selectedFontFile) {
+                     alert('Please select a font file first.');
+                     return;
+                  }
+
+                  const confirmBtn = document.querySelector('.upload-font-popup__confirm-btn');
+                  confirmBtn.disabled = true;
+                  confirmBtn.textContent = 'Uploading...';
+
+                  try {
+                     const auth = await window.MembershipEditor.utils.getAuth();
+                     const formData = new FormData();
+                     formData.append('file', selectedFontFile);
+                     formData.append('name', selectedFontFile.name);
+
+                     const uploadResponse = await fetch(
+                        window.MembershipEditor.utils.getBaseUrl() + '/v1/locations/' + auth.locationId + '/assets',
+                        {
+                           method: 'POST',
+                           headers: {
+                              Authorization: 'Bearer ' + auth.tokenId,
+                           },
+                           body: formData,
+                        }
+                     );
+
+                     if (!uploadResponse.ok) {
+                        throw new Error('Failed to upload ' + selectedFontFile.name);
+                     }
+
+                     const uploadResult = await uploadResponse.json();
+                     const fontName = selectedFontFile.name.replace(/\\.[^/.]+$/, '');
+
+                     const popup = document.querySelector('.custom-popup');
+                     if (popup) popup.remove();
+
+                     const previewParser = window.MembershipEditor.$iframe.contentWindow.MembershipParser;
+                     const activeTemplate = previewParser.activeTemplate;
+                     const currentFonts = activeTemplate.customFonts || [];
+
+                     if (!currentFonts.includes(fontName)) {
+                        currentFonts.push(fontName);
+                     }
+
+                     window.MembershipEditor.actions.updateTemplateCustomFonts(currentFonts.join(', '));
+                     window.MembershipEditor.initializers.initializeAdvanceSettings();
+
+                     alert('Font uploaded successfully!');
+
+                  } catch (error) {
+                     console.error('Font upload error:', error);
+                     alert('Failed to upload font. Please try again.');
+                     confirmBtn.disabled = false;
+                     confirmBtn.textContent = 'Confirm';
+                  }
+               };
             `;
             this.widgets.popup(popupContent, true, "visible");
             setTimeout(() => {
                document.querySelector(".upload-font-popup").append($script);
-            },500)
+            }, 500);
          },
       };
 

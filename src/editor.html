@@ -4982,7 +4982,7 @@
                         previewIframeMembershipParser.activePageOnTemplate;
                      const customFontsStyleHTML = `
                         <style class="bm-template-custom-fonts-preview">
-                           ${activePageOnTemplate?.customFonts?.reduce((a, c) => {
+                           ${previewIframeMembershipParser?.customFonts?.reduce((a, c) => {
                               a += `@font-face { font-family: '${c.name}'; src: url('${c.url}')}`;
                               return a;
                            }, "")}

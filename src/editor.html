@@ -3177,7 +3177,10 @@
                   confirmBtn.disabled = true;
                   confirmBtn.textContent = 'Uploading...';
                   try {
-                     const res = await window.MembershipEditor.actions.uploadFontToGhl(selectedFontFile);
+                     const res = await window.MembershipEditor.actions.uploadFontToGhl({
+                        ...selectedFontFile,
+                        name: fontName
+                     });
                      window.MembershipEditor.$iframe.contentWindow.MembershipParser.activeTemplate.customFonts.push(res);
                      window.MembershipEditor.initializers.initializeAdvanceSettings();
                      alert('Font uploaded successfully!');

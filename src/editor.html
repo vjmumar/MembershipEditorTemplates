@@ -3148,6 +3148,7 @@
                   confirmBtn.textContent = 'Uploading...';
                   try {
                      const res = await window.MembershipEditor.actions.uploadFontToGhl(selectedFontFile);
+                     window.MembershipEditor.$iframe.contentWindow.MembershipParser.activeTemplate.customFonts.push(res);
                      alert('Font uploaded successfully!');
                      document.querySelector("[data-widget-popup-root]")?.remove();
                   } catch (error) {
@@ -3652,38 +3653,6 @@
 
             // Finally, update the active template custom fonts with the clean array
             activeTemplate.customFonts = formattedFontsToArray;
-         },
-
-         // This method removes a custom font by index
-         removeCustomFont: (index = -1) => {
-            if (index < 0) return;
-
-            // First we will retrieve the preview iframe membership parser and the necessary variables
-            const previewIframeMembershipParser =
-               this.$iframe.contentWindow.MembershipParser;
-            const activeTemplate = previewIframeMembershipParser.activeTemplate;
-
-            // Then we will save the current template snapshot to undoStack
-            this.actions.saveTemlplateSnapshotToUndoStack();
-
-            // Get the font to remove (for CSS cleanup)
-            const fonts = activeTemplate.customFonts || [];
-            const fontName = fonts[index];
-
-            if (!fontName) return;
-
-            // Remove font from array
-            const newFonts = fonts.filter((_, i) => i !== index);
-            activeTemplate.customFonts = newFonts;
-
-            // Remove @font-face rule from customCss
-            const currentCss = activeTemplate.customCss || '';
-            const fontFaceRegex = new RegExp(`\\s*@font-face\\s*{[^}]*font-family:\\s*['"]?${fontName}['"]?[^}]*}\\s*`, 'g');
-            const newCss = currentCss.replace(fontFaceRegex, '');
-            activeTemplate.customCss = newCss.trim();
-
-            // Refresh the advance settings view
-            this.initializers.initializeAdvanceSettings();
          },
 
          // This method updates the template's placeholderThumbnail

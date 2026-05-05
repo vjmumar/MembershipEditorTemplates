@@ -1634,6 +1634,9 @@
             // Then we will sync the template's used google fonts
             this.actions.syncTemplateGoogleFontsUsed();
 
+            // Then we will sync the template's custom fonts
+            this.actions.syncTemplateCustomFonts();
+
             // Then we will sync the template's branding styles
             this.actions.syncTemplateBrandingCss();
 
@@ -1751,6 +1754,26 @@
             const googleFontsUsedStyleHTML = `
                <style class="bm-template-google-fonts-used">
                   @import url('https://fonts.googleapis.com/css2?family=${googleFontsUsed}&display=swap');
+               </style>
+            `;
+
+            // Finally we will insert the fresh style tag with the updated CSS values
+            document.body.insertAdjacentHTML("beforeend", `${googleFontsUsedStyleHTML}`);
+         },
+
+          // This method applies the template's Custom Fonts
+         syncTemplateCustomFonts: () => {
+            // First we will remove any previously rendered font style tags
+            document
+               ?.querySelectorAll(".bm-template-custom-fonts")
+               ?.forEach((e) => e.remove());
+
+            // Then we will generate the Custom Fonts style tag HTML
+            const googleFontsUsedStyleHTML = `
+               <style class="bm-template-custom-fonts">
+                  ${this.activeTemplate.reduce((a,c) => {
+                     a += `@font-face { font-family: '${c.name}'; src: url('${c.url}')}`;
+                  }, "")}
                </style>
             `;
 
@@ -3179,6 +3202,7 @@
                   try {
                      const res = await window.MembershipEditor.actions.uploadFontToGhl(selectedFontFile, fontName);
                      window.MembershipEditor.$iframe.contentWindow.MembershipParser.activeTemplate.customFonts.push(res);
+                     window.MembershipEditor.$iframe.contentWindow.MembershipParser.actions.syncTemplateCustomFonts();
                      window.MembershipEditor.initializers.initializeAdvanceSettings();
                      alert('Font uploaded successfully!');
                      document.querySelector("[data-widget-popup-root]")?.remove();
@@ -3743,6 +3767,7 @@
                   previewIframeMembershipParser.activeTemplate.customFonts.filter(
                      (font) => font.id !== selectedCustomFont.id,
                   );
+               previewIframeMembershipParser.actions.syncTemplateCustomFonts();
                this.initializers.initializeAdvanceSettings();
             }
          },

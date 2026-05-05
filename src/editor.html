@@ -559,15 +559,6 @@
       margin-bottom: 9px;
    }
 
-   .advance-settings__customcss {
-      margin: 10px;
-   }
-
-   .advance-settings__customcss__label {
-      font-size: 13px;
-      margin-bottom: 6px;
-   }
-
    .advance-settings__fonts {
       margin: 10px;
    }
@@ -2777,11 +2768,17 @@
 
             // Then we will create the custom fonts list html
             const fontsListHTML = (() => {
+               const fonts = activeTemplate?.customFonts || [];
+               const fontPills = fonts.map((fontName, index) => {
+                  return `<span class="advance-settings__fonts__pill" data-font-index="${index}">${fontName}<i class="fa-solid fa-xmark" onclick="event.stopPropagation(); window.MembershipEditor.actions.removeCustomFont(${index})"></i></span>`;
+               }).join('');
                return `
                   <div class="advance-settings__fonts" onclick="window.MembershipEditor.initializers.initializeUploadCustomFont()">
                      <p class="advance-settings__fonts__label">Custom Fonts <i class="fa-solid fa-upload" style="margin-left: 8px;"></i></p>
-                     <textarea name="customFonts" onclick="event.stopPropagation()" onchange="window.MembershipEditor.actions.updateTemplateCustomFonts(this.value || '')">${(activeTemplate?.customFonts || []).join(",\n")}</textarea>
-                     <p class="advance-settings__fonts__info">ⓘ Click to upload custom fonts, or manually import your font families in the Custom JS first. Then, list the font names below, separated by commas (e.g., Open Sans, Montserrat, Roboto), to populate the Font Family dropdown.</p>
+                     <div class="advance-settings__fonts__pills" onclick="event.stopPropagation()">
+                        ${fontPills}
+                     </div>
+                     <p class="advance-settings__fonts__info">ⓘ Click the upload icon to add custom fonts. Uploaded fonts will appear as pills above and be available in the Font Family dropdown.</p>
                   </div>
                `;
             })();
@@ -3077,8 +3074,8 @@
                   confirmBtn.textContent = 'Uploading...';
                   try {
                      const res = await window.MembershipEditor.actions.uploadFontToGhl(selectedFontFile);
-                     console.log(res);
                      alert('Font uploaded successfully!');
+                     document.querySelector("[data-widget-popup-root]")?.remove();
                   } catch (error) {
                      console.error('Font upload error:', error);
                      alert('Failed to upload font. Please try again.');
@@ -3581,6 +3578,38 @@
 
             // Finally, update the active template custom fonts with the clean array
             activeTemplate.customFonts = formattedFontsToArray;
+         },
+
+         // This method removes a custom font by index
+         removeCustomFont: (index = -1) => {
+            if (index < 0) return;
+
+            // First we will retrieve the preview iframe membership parser and the necessary variables
+            const previewIframeMembershipParser =
+               this.$iframe.contentWindow.MembershipParser;
+            const activeTemplate = previewIframeMembershipParser.activeTemplate;
+
+            // Then we will save the current template snapshot to undoStack
+            this.actions.saveTemlplateSnapshotToUndoStack();
+
+            // Get the font to remove (for CSS cleanup)
+            const fonts = activeTemplate.customFonts || [];
+            const fontName = fonts[index];
+
+            if (!fontName) return;
+
+            // Remove font from array
+            const newFonts = fonts.filter((_, i) => i !== index);
+            activeTemplate.customFonts = newFonts;
+
+            // Remove @font-face rule from customCss
+            const currentCss = activeTemplate.customCss || '';
+            const fontFaceRegex = new RegExp(`\\s*@font-face\\s*{[^}]*font-family:\\s*['"]?${fontName}['"]?[^}]*}\\s*`, 'g');
+            const newCss = currentCss.replace(fontFaceRegex, '');
+            activeTemplate.customCss = newCss.trim();
+
+            // Refresh the advance settings view
+            this.initializers.initializeAdvanceSettings();
          },
 
          // This method updates the template's placeholderThumbnail

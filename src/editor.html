@@ -565,11 +565,78 @@
 
    .advance-settings__fonts__label {
       font-size: 13px;
-      margin-bottom: 6px;
+      margin: 0;
+      font-weight: 500;
+      color: #374151;
    }
 
-   .advance-settings__fonts__info {
-      font-size: 9px;
+   .advance-settings__fonts__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      cursor: pointer;
+      background-color: #f9fafb;
+      border-radius: 6px;
+      margin: 10px;
+      transition: background-color 0.2s;
+   }
+
+   .advance-settings__fonts__header:hover {
+      background-color: #f3f4f6;
+   }
+
+   .advance-settings__fonts__upload-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #3b82f6;
+      font-weight: 500;
+   }
+
+   .advance-settings__fonts__list {
+      max-height: 300px;
+      overflow-y: auto;
+      margin: 0 10px 10px 10px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background-color: #ffffff;
+   }
+
+   .advance-settings__fonts__item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 14px;
+      color: #374151;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+   }
+
+   .advance-settings__fonts__item:last-child {
+      border-bottom: none;
+   }
+
+   .advance-settings__fonts__item i {
+      cursor: pointer;
+      color: #9ca3af;
+      font-size: 14px;
+      transition: color 0.2s;
+      padding: 4px;
+   }
+
+   .advance-settings__fonts__item i:hover {
+      color: #ef4444;
+   }
+
+   .advance-settings__fonts__empty {
+      padding: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #9ca3af;
+      font-style: italic;
    }
 
    /* Editable Pages */
@@ -2769,16 +2836,19 @@
             // Then we will create the custom fonts list html
             const fontsListHTML = (() => {
                const fonts = activeTemplate?.customFonts || [];
-               const fontPills = fonts.map((fontName, index) => {
-                  return `<span class="advance-settings__fonts__pill" data-font-index="${index}">${fontName}<i class="fa-solid fa-xmark" onclick="event.stopPropagation(); window.MembershipEditor.actions.removeCustomFont(${index})"></i></span>`;
+               const fontList = fonts.map((fontName, index) => {
+                  return `<div class="advance-settings__fonts__item" data-font-index="${index}"><span>${fontName}</span><i class="fa-solid fa-xmark" onclick="event.stopPropagation(); window.MembershipEditor.actions.removeCustomFont(${index})"></i></div>`;
                }).join('');
+               const listContent = fontList || '<div class="advance-settings__fonts__empty">No custom fonts uploaded</div>';
                return `
-                  <div class="advance-settings__fonts" onclick="window.MembershipEditor.initializers.initializeUploadCustomFont()">
-                     <p class="advance-settings__fonts__label">Custom Fonts <i class="fa-solid fa-upload" style="margin-left: 8px;"></i></p>
-                     <div class="advance-settings__fonts__pills" onclick="event.stopPropagation()">
-                        ${fontPills}
+                  <div class="advance-settings__fonts">
+                     <div class="advance-settings__fonts__header" onclick="window.MembershipEditor.initializers.initializeUploadCustomFont()">
+                        <p class="advance-settings__fonts__label">${fonts.length} Custom Fonts</p>
+                        <span class="advance-settings__fonts__upload-btn"><i class="fa-solid fa-plus"></i> Upload</span>
                      </div>
-                     <p class="advance-settings__fonts__info">ⓘ Click the upload icon to add custom fonts. Uploaded fonts will appear as pills above and be available in the Font Family dropdown.</p>
+                     <div class="advance-settings__fonts__list" onclick="event.stopPropagation()">
+                        ${listContent}
+                     </div>
                   </div>
                `;
             })();

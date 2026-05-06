@@ -1320,20 +1320,6 @@ window.templateCustomizationSchema = {
                ],
             },
             {
-               elementSelector: ".template-category-post__posts",
-               label: "Category Posts Post Container",
-               key: "template-category-post-posts",
-               cssCustomizations: [
-                  {
-                     name: "Background Color",
-                     property: "background-color",
-                     type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
-               ],
-            },
-            {
                elementSelector: ".template-post__card",
                label: "Category Posts Post Card",
                key: "template-post__card",

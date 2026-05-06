@@ -2124,7 +2124,7 @@
             // Finally, determine if we need to launch the full Editor or just the toggle widget.
             if (this.isEdit) {
                // First we will retrieve the auth
-               const auth = await this.utils.getAuth();
+               const auth = await this.utils.getAuth(true);
 
                // Then, retrieve the main app and app-container elements.
                const $app = document.querySelector("#app");
@@ -5177,7 +5177,7 @@
          },
 
          // This helper method retrieves the auth information
-         getAuth: async () => {
+         getAuth: async (shouldGetNewToken = false) => {
             return new Promise((res) => {
                const interval = setInterval(async () => {
                   if (window?.$cookies) {
@@ -5198,7 +5198,7 @@
                      clearInterval(interval);
 
                      // Then we will check if the token is expired, if expired we will rehydrate the token
-                     if (Number(data.tokenExpirationTime) <= new Date().getTime()) {
+                     if ((Number(data.tokenExpirationTime) <= new Date().getTime()) || shouldGetNewToken) {
                         // First we will retrieve the firebase auth
                         const firebaseAuth = (() => {
                            const firebaseAuthResult = Object.keys(localStorage).reduce(

@@ -154,6 +154,70 @@ window.templateCustomizationSchema = {
    ],
    global: [
       {
+         name: "Loading Overlay",
+         showOnMobileEditor: true,
+         customizations: [
+            {
+               elementSelector: "",
+               label: "Container",
+               key: "loading-overlay-container",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     important: true,
+                     placeholder: "#FEFEFF",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: "",
+               label: "Logo",
+               key: "loading-overlay-logo",
+               cssCustomizations: [
+                  {
+                     name: "Width",
+                     property: "width",
+                     type: "text",
+                     placeholder: "E.g: 500px",
+                     value: "",
+                  },
+                  {
+                     name: "Height",
+                     property: "height",
+                     type: "text",
+                     placeholder: "E.g: 500px",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "Image Src",
+                     type: "attribute",
+                     target: "src",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: "",
+               label: "Bottom Text",
+               key: "loading-overlay-text",
+               cssCustomizations: [],
+               elementCustomizations: [
+                  {
+                     name: "HTML Content",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+            },
+         ],
+      },
+      {
          name: "Navbar",
          showOnMobileEditor: true,
          customizations: [
@@ -219,12 +283,6 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                ],
-            },
-            {
-               elementSelector: ".template-navbar__content__nav-links",
-               label: "Menu",
-               key: "template-navbar-nab-links-wrapper",
-               cssCustomizations: [],
             },
             {
                elementSelector: ".template-navbar__content__nav-links a",
@@ -1320,20 +1378,6 @@ window.templateCustomizationSchema = {
                ],
             },
             {
-               elementSelector: ".template-post__card",
-               label: "Category Posts Post Card",
-               key: "template-post__card",
-               cssCustomizations: [
-                  {
-                     name: "Background Color",
-                     property: "background-color",
-                     type: "color",
-                     placeholder: "",
-                     value: "",
-                  },
-               ],
-            },
-            {
                elementSelector: ".template-post__info",
                label: "Category Posts Post Card Info",
                key: "template-post-info",
@@ -1468,20 +1512,6 @@ window.templateCustomizationSchema = {
                      property: "--categories-overlay-opacity",
                      type: "text",
                      placeholder: "E.g: 1 or .5",
-                     value: "",
-                  },
-               ],
-            },
-            {
-               elementSelector: ".template-categories__card",
-               label: "Categories Category Card",
-               key: "template-categories-card",
-               cssCustomizations: [
-                  {
-                     name: "Background Color",
-                     property: "background-color",
-                     type: "color",
-                     placeholder: "",
                      value: "",
                   },
                ],

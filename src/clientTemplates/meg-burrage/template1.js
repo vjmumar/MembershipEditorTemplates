@@ -197,7 +197,7 @@ window.templateCustomizationSchema = {
                      name: "Image Src",
                      type: "attribute",
                      target: "src",
-                     value: "",
+                     value: "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png",
                   },
                ],
             },

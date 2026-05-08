@@ -158,7 +158,7 @@ window.templateCustomizationSchema = {
          showOnMobileEditor: true,
          customizations: [
             {
-               elementSelector: "",
+               elementSelector: ".loading-overlay__container",
                label: "Container",
                key: "loading-overlay-container",
                cssCustomizations: [
@@ -173,7 +173,7 @@ window.templateCustomizationSchema = {
                ],
             },
             {
-               elementSelector: "",
+               elementSelector: ".loading-overlay__logo",
                label: "Logo",
                key: "loading-overlay-logo",
                cssCustomizations: [
@@ -202,7 +202,7 @@ window.templateCustomizationSchema = {
                ],
             },
             {
-               elementSelector: "",
+               elementSelector: ".loading-overlay__bottom-text",
                label: "Bottom Text",
                key: "loading-overlay-text",
                cssCustomizations: [],

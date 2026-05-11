@@ -3139,7 +3139,7 @@ class CourseTemplate {
          // Then we will append a class to the body indicating that the template is ready
          setTimeout(() => {
             document.body.classList.add("template-ready");
-         }, 500);
+         }, 0);
 
          // Finally we will remove the intial loader
          setTimeout(() => {
@@ -3490,11 +3490,6 @@ class CourseTemplate {
          fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
          document.head.append(fScript);
 
-         // Then we will append a class to the body indicating that the template is ready
-         setTimeout(() => {
-            document.body.classList.add("template-ready");
-         }, 500);
-
          // Then we will check the URL against regex patterns to determine which page view to load
          if (
             /\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url) ||
@@ -3508,6 +3503,12 @@ class CourseTemplate {
          ) {
             await this.mobileInitializers.initPostPage();
          }
+
+         
+         // Then we will append a class to the body indicating that the template is ready
+         setTimeout(() => {
+            document.body.classList.add("template-ready");
+         }, 0);
 
          // Finally we will remove the intial loader
          setTimeout(() => {

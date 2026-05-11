@@ -21,7 +21,7 @@ class ProductProxy {
       },
       retrieveGHLProduct: async () => {
          const auth = this.utils.getGhlAuth();
-         const url = `https://services.leadconnectorhq.com/membership/locations/${auth.locationId}/products/${auth.productId}`;
+         const url =    `https://services.leadconnectorhq.com/membership/locations/${auth.locationId}/products/${auth.productId}`;
          return await fetch(url, {
             headers: {
                "accept": "application/json, text/plain, */*",
@@ -45,7 +45,7 @@ class ProductProxy {
             })();
 
             // Then we will check if the client id is valid or not, if not then we will return the default loader
-            if (!clientId) return `<script>setTimeout(() => {document.body.classList.add('template-ready')}, 3000)</script>${this.defaultLoaderHTML}`;
+            if (!clientId) return `${JSON.stringify(product)}<script>setTimeout(() => {document.body.classList.add('template-ready')}, 3000)</script>${this.defaultLoaderHTML}`;
 
             // Then we will create a variables that is responsible for retrieving the saved templates and the current active saved template
             const savedTemplates = await (async () => {
@@ -217,7 +217,7 @@ class ProductProxy {
          const productId =
             this.utils.getCookie("productId") ||
             this.url.pathname.split("/courses/products/")[1]?.split("/")[0];
-         const locationId = this.utils.getCookie("locationId");
+         const locationId =  tokenJson.locationId || this.utils.getCookie("locationId");
          return { ...tokenJson, productId, locationId };
       },
       toScriptJson: (value) => {

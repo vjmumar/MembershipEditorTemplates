@@ -1176,6 +1176,44 @@
       grid-area: 3 / 2 / 4 / 3;
    }
 
+   /* Tooltip Widget */
+   .widget-tooltip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+   }
+
+   .widget-tooltip__bubble {
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #1f2937;
+      color: #fff;
+      font-size: 11px;
+      white-space: nowrap;
+      padding: 4px 8px;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      z-index: 99999;
+   }
+
+   .widget-tooltip__bubble::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid transparent;
+      border-top-color: #1f2937;
+   }
+
+   .widget-tooltip:hover .widget-tooltip__bubble {
+      opacity: 1;
+   }
+
    @media (max-width: 700px) {
       .editor-customizer-sidebar {
          position: fixed;
@@ -2831,8 +2869,8 @@
                            <i onclick="window.MembershipEditor.actions.switchEditorMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
                            <p class="global-contents__header__text">Global</p>
                            <div class="global-contents__header__control">
-                              <i onclick="window.MembershipEditor.actions.undoChanges()" class="fa-solid fa-rotate-left ${this.templateUndoStack?.length ? "" : "disabled"} undo"></i>
-                              <i onclick="window.MembershipEditor.actions.resetTemplateToDefaultInCustomJs('.editor-customizer-sidebar')" class="fa-solid fa-arrows-rotate"></i>
+                              ${this.widgets.withToolTip(`<i onclick="window.MembershipEditor.actions.undoChanges()" class="fa-solid fa-rotate-left ${this.templateUndoStack?.length ? "" : "disabled"} undo"></i>`, "Undo")}
+                              ${this.widgets.withToolTip(`<i onclick="window.MembershipEditor.actions.resetTemplateToDefaultInCustomJs('.editor-customizer-sidebar')" class="fa-solid fa-arrows-rotate"></i>`, "Restore To Defaults")}
                            </div>
                        </div>
                        <div class="global-contents__additional-settings" onClick="window.MembershipEditor.initializers.initializeListOfEditablePages()">
@@ -5081,6 +5119,9 @@
                    <input type="hidden" data-template-key=${templateKey} data-template-property=${property} id="${templateKey}${property}" name="font_family" class="widget-font-select__value editor-customizer-form__item__input" >
                </div>
             `;
+         },
+         withToolTip: (html = "", label = "") => {
+            return `<span class="widget-tooltip">${html}<span class="widget-tooltip__bubble">${label}</span></span>`;
          },
       };
 

@@ -2877,7 +2877,7 @@
             $sidebarContent.innerHTML = `
                    <div class="global-contents">
                        <div class="global-contents__header">
-                           <i onclick="window.MembershipEditor.actions.switchEditorMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>
+                           ${this.widgets.withToolTip(`<i onclick="window.MembershipEditor.actions.switchEditorMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>`, `Switch To ${this.isDesktop ? "Mobile" : "Desktop"}`)}
                            <p class="global-contents__header__text">Global</p>
                            <div class="global-contents__header__control">
                               ${this.widgets.withToolTip(`<i onclick="window.MembershipEditor.actions.undoChanges()" class="fa-solid fa-rotate-left ${this.templateUndoStack?.length ? "" : "disabled"} undo"></i>`, "Undo")}

@@ -277,7 +277,7 @@ export default {
                   </script>
                `;
          } else {
-            loader = proxy.defaultLoaderHTML();
+            loader = proxy.defaultLoaderHTML;
          }
          html = html
             .replace("<head>", `<head>${script}`)

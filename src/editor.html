@@ -2738,7 +2738,7 @@
                ];
                const tabItems = categories.reduce((a, c) => {
                   const js = `{ const $el = this; const $elParent = $el.parentElement; const $elContent = $elParent.parentElement; const $formItems = $elContent.querySelectorAll('.editor-customizer-item__form .editor-customizer-item__form__item', ); $elParent.querySelectorAll('p').forEach(($item,i) => { $item?.classList?.[$item === $el ? 'add' : 'remove']('active'); }); $formItems.forEach(($formItem) => { const category = $formItem.getAttribute('data-category-type'); $formItem?.classList?.[category === '${c.name.toLowerCase()}' ? 'add' : 'remove']('active'); });}`;
-                  a += `<p onclick="${js}" style="display: ${c.templateItems?.length ? "flex" : "none"}" class="editor-customizer-category__item ${c.name === "Styles" ? "active" : ""}">${c.name}</p>`;
+                  a += `<p onclick="${js}" style="display: ${c.templateItems?.length ? "flex" : "none"}" class="editor-customizer-category__item ${c.templateItems?.length ? "active" : ""}">${c.name}</p>`;
                   return a;
                }, "");
                return `

@@ -3049,7 +3049,7 @@ class CourseTemplate {
                             <a href="/courses/products/${product.id}">
                                 <img class="template-sidebar__logo" src="https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png">    
                             </a>
-                            <a href="${this.isMobile ? "#" : `/courses/products/${product.id}/courses`}" class='template-sidebar__titles'>Modules</a>
+                            <a href="${this.isMobile ? "#" : `/courses/products/${product.id}/categories`}" class='template-sidebar__titles'>Modules</a>
                             <div class="template-sidebar__category">
                                 ${sideBarCategories}    
                             </div>    

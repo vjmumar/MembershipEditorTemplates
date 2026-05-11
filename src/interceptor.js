@@ -277,7 +277,7 @@ export default {
                   </script>
                `;
          } else {
-            loader = proxy.defaultLoaderHTML;
+            loader = `<script>setTimeout(() => {document.body.classList.add('template-ready')}, 1000)</script>${proxy.defaultLoaderHTML}`;
          }
          html = html
             .replace("<head>", `<head>${script}`)

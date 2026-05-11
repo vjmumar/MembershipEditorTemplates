@@ -3115,11 +3115,6 @@ class CourseTemplate {
          fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
          document.head.append(fScript);
 
-         // Then we will append a class to the body indicating that the template is ready
-         setTimeout(() => {
-            document.body.classList.add("template-ready");
-         }, 1000);
-
          // Then we will check the URL against regex patterns to determine which page view to load
          if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
             await this.desktopInitializers.initLandingPage();
@@ -3140,6 +3135,11 @@ class CourseTemplate {
          } else {
             console.log("No page found");
          }
+
+         // Then we will append a class to the body indicating that the template is ready
+         setTimeout(() => {
+            document.body.classList.add("template-ready");
+         }, 500);
 
          // Finally we will remove the intial loader
          setTimeout(() => {

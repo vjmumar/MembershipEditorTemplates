@@ -5163,6 +5163,7 @@
                   left = Math.max(6, Math.min(left, vw - bubbleRect.width - 6));
                   bubble.style.top = `${top}px`;
                   bubble.style.left = `${left}px`;
+                  bubble.style.opacity = "";
                   bubble.classList.add("visible");
                });
                document.addEventListener("mouseout", (e) => {

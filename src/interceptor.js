@@ -272,6 +272,9 @@ export default {
             loader = auth?.tokenId
                ? await proxy.data.getLoaderHTML()
                : proxy.defaultLoaderHTML;
+            if (loader.includes("You are not authorized to make this request")) {
+               return Response.redirect(`${proxy.origin}/login`);
+            }
             script = `
                   <script>
                      const url = "${proxy?.url?.href}";

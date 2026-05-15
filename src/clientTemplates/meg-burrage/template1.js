@@ -102,6 +102,13 @@ window.templateCustomizationSchema = {
                value: "#000000",
             },
             {
+               name: "Primary Heading Colour",
+               property: "branding-primary-text-color",
+               type: "color",
+               placeholder: "E.g: #000000",
+               value: "#000000",
+            },
+            {
                name: "Primary Text Colour",
                property: "branding-primary-text-color",
                type: "color",
@@ -3504,7 +3511,6 @@ class CourseTemplate {
             await this.mobileInitializers.initPostPage();
          }
 
-         
          // Then we will append a class to the body indicating that the template is ready
          setTimeout(() => {
             document.body.classList.add("template-ready");

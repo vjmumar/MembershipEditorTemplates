@@ -5095,7 +5095,7 @@
                      class="editor-customizer-form__item__input"
                      data-template-key=${templateKey}
                      data-template-property=${property}
-                     type="${type === "color" ? "text" : type || "text"}"
+                     type="${type === "color" || type === "image" ? "text" : type || "text"}"
                      value="${value}"
                      ${type === "color" ? `data-jscolor='{"alphaChannel":true,"format":"hexa"}'` : ""}
                      placeholder="${placeholder}"

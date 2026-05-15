@@ -2576,7 +2576,7 @@
                         templateItem.key,
                         `${c?.type}-${c?.target}`,
                         value,
-                        "text",
+                        c?.type.target === "src" ? "image" : "text",
                         c?.placeholder,
                         (updatedValue) => {
                            const updateArgs = (() => {
@@ -3365,9 +3365,9 @@
                   confirmBtn.textContent = 'Uploading...';
                   try {
                      const res = await window.MembershipEditor.actions.uploadImageToGhl(selectedImageFile, imageName);
-                     console.log(res);
                      alert('Image uploaded successfully!');
                      document.querySelector("input[data-template-key='${templateKey}']").value = res.url;
+                     document.querySelector("input[data-template-key='${templateKey}']").dispatchEvent(new Event("change", {bubbles: true}))
                      document.querySelector("[data-widget-popup-root]")?.remove();
                   } catch (error) {
                      console.error('Image upload error:', error);

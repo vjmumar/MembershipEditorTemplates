@@ -2152,7 +2152,7 @@
    }
 </script>
 <script id="bm-membership-editor" defer>
-  class MembershipEditor {
+   class MembershipEditor {
       constructor() {
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
@@ -2786,7 +2786,9 @@
                   templateItems: templateItem?.cssCustomizations,
                },
             ];
-            const defaultActiveTab = categories[0]?.templateItems?.length ? "Contents" : "Styles";
+            const defaultActiveTab = categories[0]?.templateItems?.length
+               ? "Contents"
+               : "Styles";
             const editorTabsHTML = (() => {
                const tabItems = categories.reduce((a, c) => {
                   const js = `{ const $el = this; const $elParent = $el.parentElement; const $elContent = $elParent.parentElement; const $formItems = $elContent.querySelectorAll('.editor-customizer-item__form .editor-customizer-item__form__item', ); $elParent.querySelectorAll('p').forEach(($item,i) => { $item?.classList?.[$item === $el ? 'add' : 'remove']('active'); }); $formItems.forEach(($formItem) => { const category = $formItem.getAttribute('data-category-type'); $formItem?.classList?.[category === '${c.name.toLowerCase()}' ? 'add' : 'remove']('active'); });}`;
@@ -3275,7 +3277,7 @@
          },
 
          // This method will initialize the upload image popup
-         initializeUploadImage: (templateKey="") => {
+         initializeUploadImage: (templateKey = "") => {
             const popupContent = `
                <div class="upload-font-popup">
                   <h3 class="upload-font-popup__title">Upload Image</h3>
@@ -4561,10 +4563,9 @@
                avif: "image/avif",
             };
             const ext = file.name?.split(".").pop().toLowerCase();
-            const contentType =
-               file.type?.startsWith("image/")
-                  ? file.type
-                  : contentTypeMap[ext] || "application/octet-stream";
+            const contentType = file.type?.startsWith("image/")
+               ? file.type
+               : contentTypeMap[ext] || "application/octet-stream";
             const imageNameBase = fileName || file.name?.replace(/\.[^/.]+$/, "");
             const imageName =
                ext && !/\.[a-z0-9]+$/i.test(imageNameBase)
@@ -5083,7 +5084,10 @@
             }
 
             // Then we will create a inline click that toggles the upload image if type is image
-            const uploadImageClick = type === "image" ? `onclick="window.MembershipEditor.initializers.initializeUploadImage('${templateKey}')"` : "";
+            const uploadImageClick =
+               type === "image"
+                  ? `onclick="window.MembershipEditor.initializers.initializeUploadImage('${templateKey}')"`
+                  : "";
 
             // Finally return the actual HTML for the widget
             return isTextArea
@@ -5263,8 +5267,7 @@
                      // First we will inject the preview fonts inside the body
                      const previewIframeMembershipParser =
                         this.$iframe.contentWindow.MembershipParser;
-                     const activeTemplate =
-                        previewIframeMembershipParser.activeTemplate;
+                     const activeTemplate = previewIframeMembershipParser.activeTemplate;
                      const customFontsStyleHTML = `
                         <style class="bm-template-custom-fonts-preview">
                            ${activeTemplate?.customFonts?.reduce((a, c) => {
@@ -5394,7 +5397,8 @@
                      bubble.classList.remove("tt-above");
                      bubble.classList.add("tt-below");
                   }
-                  let left = triggerRect.left + triggerRect.width / 2 - bubbleRect.width / 2;
+                  let left =
+                     triggerRect.left + triggerRect.width / 2 - bubbleRect.width / 2;
                   left = Math.max(6, Math.min(left, vw - bubbleRect.width - 6));
                   bubble.style.top = `${top}px`;
                   bubble.style.left = `${left}px`;
@@ -5527,7 +5531,10 @@
                      clearInterval(interval);
 
                      // Then we will check if the token is expired, if expired we will rehydrate the token
-                     if ((Number(data.tokenExpirationTime) <= new Date().getTime()) || shouldGetNewToken) {
+                     if (
+                        Number(data.tokenExpirationTime) <= new Date().getTime() ||
+                        shouldGetNewToken
+                     ) {
                         // First we will retrieve the firebase auth
                         const firebaseAuth = (() => {
                            const firebaseAuthResult = Object.keys(localStorage).reduce(
@@ -5591,7 +5598,11 @@
          clearInterval(membershipEditorInterval);
       }, 5000);
    }
+</script>
+<script id="bm-membership-cleaner">
    if (sessionStorage?.is_preview !== "true") {
       document.querySelector("#bm-membership-editor")?.remove();
+      document.querySelector("#bm-membership-preview")?.remove();
+      document.querySelector("#bm-membership-cleaner").remove();
    }
 </script>

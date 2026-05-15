@@ -46,7 +46,7 @@ class ProductProxy {
 
             // Then we will check if the client id is valid or not, if not then we will return the default loader
             if (!clientId)
-               return `${JSON.stringify(product)}<script>setTimeout(() => {document.body.classList.add('template-ready')}, 3000)</script>${this.defaultLoaderHTML}`;
+               return `<script>setTimeout(() => {document.body.classList.add('template-ready')}, 10000)</script>${this.defaultLoaderHTML}`;
 
             // Then we will create a variables that is responsible for retrieving the saved templates and the current active saved template
             const savedTemplates = await (async () => {
@@ -272,9 +272,6 @@ export default {
             loader = auth?.tokenId
                ? await proxy.data.getLoaderHTML()
                : proxy.defaultLoaderHTML;
-            if (loader.includes("You are not authorized to make this request")) {
-               return Response.redirect(`${proxy.origin}/login`);
-            }
             script = `
                   <script>
                      const url = "${proxy?.url?.href}";

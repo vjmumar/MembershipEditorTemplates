@@ -3272,7 +3272,7 @@
          },
 
          // This method will initialize the upload image popup
-         initializeUploadImage: () => {
+         initializeUploadImage: (templateKey="") => {
             const popupContent = `
                <div class="upload-font-popup">
                   <h3 class="upload-font-popup__title">Upload Image</h3>
@@ -3367,6 +3367,7 @@
                      const res = await window.MembershipEditor.actions.uploadImageToGhl(selectedImageFile, imageName);
                      console.log(res);
                      alert('Image uploaded successfully!');
+                     document.querySelector("input[data-template-key='${templateKey}']").value = res.url;
                      document.querySelector("[data-widget-popup-root]")?.remove();
                   } catch (error) {
                      console.error('Image upload error:', error);

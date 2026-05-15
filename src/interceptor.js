@@ -245,7 +245,8 @@ class ProductProxy {
          const productId =
             this.utils.getCookie("productId") ||
             this.url.pathname.split("/courses/products/")[1]?.split("/")[0];
-         const locationId = tokenJson.locationId || this.utils.getCookie("locationId");
+         const locationId =
+            tokenJson?.locationId || this.utils.getCookie("locationId") || "";
          return { ...tokenJson, productId, locationId };
       },
       toScriptJson: (value) => {
@@ -265,12 +266,11 @@ export default {
          let script = "";
          let loader = "";
          if (proxy.isProduct) {
-            try {
-               const auth = proxy.utils.getGhlAuth();
-               loader = auth?.tokenId
-                  ? await proxy.data.getLoaderHTML()
-                  : proxy.defaultLoaderHTML;
-               script = `
+            const auth = proxy.utils.getGhlAuth();
+            loader = auth?.tokenId
+               ? await proxy.data.getLoaderHTML()
+               : proxy.defaultLoaderHTML;
+            script = `
                   <script>
                      const url = "${proxy?.url?.href}";
                      const auth = ${proxy.utils.toScriptJson(auth)};
@@ -307,9 +307,6 @@ export default {
                      }
                   </script>
                `;
-            } catch (err) {
-               return Response.redirect(`${new URL(request.url).origin}/login`, 301);
-            }
          } else {
             loader = `<script>setTimeout(() => {document.body.classList.add('template-ready')}, 1000)</script>${proxy.defaultLoaderHTML}`;
          }

@@ -2576,7 +2576,7 @@
                         templateItem.key,
                         `${c?.type}-${c?.target}`,
                         value,
-                        c?.type.target === "src" ? "image" : "text",
+                        c?.target === "src" ? "image" : "text",
                         c?.placeholder,
                         (updatedValue) => {
                            const updateArgs = (() => {

@@ -4254,9 +4254,11 @@ class CourseTemplate {
                   .then(async (e) => {
                      // 1. Fetch all available categories and filter them to find only those
                      //    that specify the current categoryId as their parent (i.e., subcategories).
-                     const subCategories = (await this.data.fetchCategories())
-                        .filter((sub) => sub.parentCategory === categoryId)
-                        ?.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
+                     const subCategories =
+                        (await this.data.fetchCategories()) ||
+                        []
+                           ?.filter((sub) => sub.parentCategory === categoryId)
+                           ?.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
 
                      // 2. Assign the found subcategories directly to the current category's structure.
                      //    NOTE: This operation REPLACES any existing data in the 'subCategories'

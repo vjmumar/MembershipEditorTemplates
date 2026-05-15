@@ -246,7 +246,9 @@ class ProductProxy {
             this.utils.getCookie("productId") ||
             this.url.pathname.split("/courses/products/")[1]?.split("/")[0];
          const locationId =
-            tokenJson?.locationId || this.utils.getCookie("locationId") || "";
+            tokenJson?.locationId ||
+            this.utils.getCookie("locationId") ||
+            this.ghlPreviewId;
          return { ...tokenJson, productId, locationId };
       },
       toScriptJson: (value) => {

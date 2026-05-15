@@ -3270,6 +3270,117 @@
                document.querySelector(".upload-font-popup").append($script);
             }, 500);
          },
+
+         // This method will initialize the upload image popup
+         initializeUploadImage: () => {
+            const popupContent = `
+               <div class="upload-font-popup">
+                  <h3 class="upload-font-popup__title">Upload Image</h3>
+                  <div class="upload-font-popup__content">
+                     <p class="upload-font-popup__description">Upload an image file to use in your template.</p>
+                     <div class="upload-font-popup__dropzone" id="image-dropzone" onclick="document.getElementById('image-file-input').click()">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <p>Click to select an image file</p>
+                        <input type="file" id="image-file-input" accept="image/*" style="display: none;" onchange="handleImageSelected(this)" />
+                     </div>
+                     <div class="upload-font-popup__selected-file" id="image-selected-file" style="display: none;">
+                        <img id="image-file-preview" alt="" style="width: 100%; max-height: 180px; object-fit: contain; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 12px; background: #f9fafb;" />
+                        <div class="upload-font-popup__file-item">
+                           <div style="display: flex; align-items: center; overflow: hidden;">
+                              <span id="image-file-name"></span>
+                           </div>
+                           <span id="image-file-size" style="color: #9ca3af; margin-left: 8px; white-space: nowrap;"></span>
+                        </div>
+                        <div class="upload-font-popup__font-name">
+                           <label for="image-name-input">Image Name</label>
+                           <input type="text" id="image-name-input" placeholder="Enter image name" />
+                        </div>
+                     </div>
+                     <div class="upload-font-popup__actions" id="image-actions" style="display: none;">
+                        <button class="upload-font-popup__cancel-btn" onclick="handleImageCancel()">Cancel</button>
+                        <button class="upload-font-popup__confirm-btn" onclick="handleImageConfirm()">Confirm</button>
+                     </div>
+                  </div>
+               </div>
+            `;
+            const $script = document.createElement("script");
+            $script.innerHTML = `
+               var selectedImageFile = null;
+               var selectedImagePreviewUrl = "";
+
+               var formatImageFileSize = (size) => {
+                  return size >= 1024 * 1024
+                     ? (size / 1024 / 1024).toFixed(2) + ' MB'
+                     : (size / 1024).toFixed(1) + ' KB';
+               };
+
+               var handleImageSelected = (input) => {
+                  const file = input.files[0];
+                  if (!file) return;
+                  const isImageFile =
+                     file.type?.startsWith('image/') ||
+                     /\\.(jpe?g|png|gif|webp|svg|avif)$/i.test(file.name);
+                  if (!isImageFile) {
+                     alert('Please select an image file.');
+                     input.value = '';
+                     return;
+                  }
+                  selectedImageFile = file;
+                  if (selectedImagePreviewUrl) URL.revokeObjectURL(selectedImagePreviewUrl);
+                  selectedImagePreviewUrl = URL.createObjectURL(file);
+                  const defaultImageName = file.name.replace(/\\.[^/.]+$/, '');
+                  document.getElementById('image-dropzone').style.display = 'none';
+                  document.getElementById('image-selected-file').style.display = 'block';
+                  document.getElementById('image-actions').style.display = 'flex';
+                  document.getElementById('image-file-preview').src = selectedImagePreviewUrl;
+                  document.getElementById('image-file-name').textContent = file.name;
+                  document.getElementById('image-file-size').textContent = formatImageFileSize(file.size);
+                  document.getElementById('image-name-input').value = defaultImageName;
+               };
+
+               var handleImageCancel = () => {
+                  selectedImageFile = null;
+                  if (selectedImagePreviewUrl) URL.revokeObjectURL(selectedImagePreviewUrl);
+                  selectedImagePreviewUrl = "";
+                  document.getElementById('image-dropzone').style.display = 'block';
+                  document.getElementById('image-selected-file').style.display = 'none';
+                  document.getElementById('image-actions').style.display = 'none';
+                  document.getElementById('image-file-preview').removeAttribute('src');
+                  document.getElementById('image-file-input').value = '';
+               };
+
+               var handleImageConfirm = async () => {
+                  if (!selectedImageFile) {
+                     alert('Please select an image file first.');
+                     return;
+                  }
+                  const imageNameInput = document.getElementById('image-name-input');
+                  const imageName = imageNameInput.value.trim() || selectedImageFile.name.replace(/\\.[^/.]+$/, '');
+                  if (!imageName) {
+                     alert('Please enter an image name.');
+                     return;
+                  }
+                  const confirmBtn = document.querySelector('.upload-font-popup__confirm-btn');
+                  confirmBtn.disabled = true;
+                  confirmBtn.textContent = 'Uploading...';
+                  try {
+                     const res = await window.MembershipEditor.actions.uploadImageToGhl(selectedImageFile, imageName);
+                     console.log(res);
+                     alert('Image uploaded successfully!');
+                     document.querySelector("[data-widget-popup-root]")?.remove();
+                  } catch (error) {
+                     console.error('Image upload error:', error);
+                     alert('Failed to upload image. Please try again.');
+                     confirmBtn.disabled = false;
+                     confirmBtn.textContent = 'Confirm';
+                  }
+               };
+            `;
+            this.widgets.popup(popupContent, true, "visible");
+            setTimeout(() => {
+               document.querySelector(".upload-font-popup").append($script);
+            }, 500);
+         },
       };
 
       // Data module
@@ -4432,6 +4543,122 @@
             }
          },
 
+         // This method uploads image to ghl media
+         uploadImageToGhl: async (file, fileName = "", parentFolder = "") => {
+            const auth = await this.utils.getAuth();
+            const locationId = auth?.locationId;
+            const contentTypeMap = {
+               jpg: "image/jpeg",
+               jpeg: "image/jpeg",
+               png: "image/png",
+               gif: "image/gif",
+               webp: "image/webp",
+               svg: "image/svg+xml",
+               avif: "image/avif",
+            };
+            const ext = file.name?.split(".").pop().toLowerCase();
+            const contentType =
+               file.type?.startsWith("image/")
+                  ? file.type
+                  : contentTypeMap[ext] || "application/octet-stream";
+            const imageNameBase = fileName || file.name?.replace(/\.[^/.]+$/, "");
+            const imageName =
+               ext && !/\.[a-z0-9]+$/i.test(imageNameBase)
+                  ? `${imageNameBase}.${ext}`
+                  : imageNameBase;
+            const blob =
+               file instanceof Blob ? file : new Blob([file], { type: contentType });
+            const size = blob.size;
+            try {
+               // First we will validate the selected file
+               if (!contentType.startsWith("image/")) {
+                  throw new Error("Selected file is not an image");
+               }
+
+               // Then we will upload the new image
+               const registerResponse = await fetch(
+                  "https://services.leadconnectorhq.com/medias/files/",
+                  {
+                     method: "POST",
+                     headers: {
+                        "Version": "2021-07-28",
+                        "Source": "WEB_USER",
+                        "Channel": "APP",
+                        "Content-Type": "application/json",
+                        "token-id": auth?.tokenId,
+                     },
+                     priority: "high",
+                     body: JSON.stringify({
+                        name: imageName,
+                        contentType: contentType,
+                        parentId: parentFolder,
+                        altType: "location",
+                        altId: String(locationId),
+                        size: size,
+                        mode: "public",
+                     }),
+                  },
+               );
+               if (!registerResponse.ok) {
+                  throw new Error(`Image register failed: ${registerResponse.status}`);
+               }
+               const registerJSON = await registerResponse.json();
+               if (!registerJSON?.url || !registerJSON?.aknId) {
+                  throw new Error("Image register response is missing upload data");
+               }
+               const uploadResponse = await fetch(registerJSON.url, {
+                  method: "PUT",
+                  headers: {
+                     "Content-Type": contentType,
+                  },
+                  priority: "high",
+                  body: blob,
+               });
+               if (!uploadResponse.ok) {
+                  throw new Error(`Image file upload failed: ${uploadResponse.status}`);
+               }
+               const validateResponse = await fetch(
+                  "https://services.leadconnectorhq.com/medias/files/verify",
+                  {
+                     method: "POST",
+                     headers: {
+                        "Version": "2021-07-28",
+                        "Source": "WEB_USER",
+                        "Channel": "APP",
+                        "Content-Type": "application/json",
+                        "token-id": auth?.tokenId,
+                     },
+                     priority: "high",
+                     body: JSON.stringify({
+                        altId: String(locationId),
+                        altType: "location",
+                        id: registerJSON.aknId,
+                        mode: "public",
+                     }),
+                  },
+               );
+               if (!validateResponse.ok) {
+                  throw new Error(`Image verify failed: ${validateResponse.status}`);
+               }
+               const validateJSON = await validateResponse.json();
+
+               // Finally return the new image information
+               return {
+                  id: validateJSON._id,
+                  altId: validateJSON.altId,
+                  altType: validateJSON.altType,
+                  name: validateJSON.name,
+                  url: validateJSON.url,
+                  size: validateJSON.size,
+                  contentType: validateJSON.contentType || contentType,
+               };
+            } catch (err) {
+               console.error("Image upload error:", err);
+               alert("Something went wrong, please reload or try again.");
+               throw err;
+            }
+         },
+
          // This method is responsible for injecting the fonts used inside TinyMCE editor
          injectUsedFontsInsideTinyMCE: (editor = null) => {
             const googleFontsUsed =
@@ -4851,6 +5078,9 @@
                }, 500);
             }
 
+            // Then we will create a inline click that toggles the upload image if type is image
+            const uploadImageClick = type === "image" ? `onlick="window.MembershipEditor.initializers.initializeUploadImage('${templateKey}')"` : "";
+
             // Finally return the actual HTML for the widget
             return isTextArea
                ? `
@@ -4869,6 +5099,7 @@
                      value="${value}"
                      ${type === "color" ? `data-jscolor='{"alphaChannel":true,"format":"hexa"}'` : ""}
                      placeholder="${placeholder}"
+                     ${uploadImageClick}
                      />
                   `;
          },

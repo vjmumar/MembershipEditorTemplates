@@ -237,7 +237,7 @@ window.templateCustomizationSchema = {
                      name: "Background Image",
                      property: "background-image",
                      placeholder: "E.g: https://www.sampleimage.com",
-                     type: "text",
+                     type: "image",
                      value: "",
                   },
                   {
@@ -1327,7 +1327,7 @@ window.templateCustomizationSchema = {
                   {
                      name: "Background Image",
                      property: "background-image",
-                     type: "text",
+                     type: "image",
                      placeholder: "E.g: https://www.sampleimage.com",
                      value: "",
                   },
@@ -1501,7 +1501,7 @@ window.templateCustomizationSchema = {
                   {
                      name: "Background Image",
                      property: "background-image",
-                     type: "text",
+                     type: "image",
                      placeholder: "E.g: https://www.sampleimage.com",
                      value: "",
                   },

@@ -5079,7 +5079,7 @@
             }
 
             // Then we will create a inline click that toggles the upload image if type is image
-            const uploadImageClick = type === "image" ? `onlick="window.MembershipEditor.initializers.initializeUploadImage('${templateKey}')"` : "";
+            const uploadImageClick = type === "image" ? `onclick="window.MembershipEditor.initializers.initializeUploadImage('${templateKey}')"` : "";
 
             // Finally return the actual HTML for the widget
             return isTextArea

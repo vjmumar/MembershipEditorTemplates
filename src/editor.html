@@ -1259,7 +1259,7 @@
    referrerpolicy="no-referrer"
 ></script>
 <script src="https://kit.fontawesome.com/d84a98056b.js"></script>
-<script defer>
+<script id="bm-membership-preview" defer>
    class MembershipPreview {
       constructor() {
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
@@ -1437,7 +1437,8 @@
          },
       };
    }
-
+</script>
+<script id="bm-membership-parser" defer>
    class MembershipParser {
       constructor() {
          // First, we define the available templates along with their metadata, such as IDs, preview images, and script sources.
@@ -2149,8 +2150,9 @@
          },
       };
    }
-
-   class MembershipEditor {
+</script>
+<script id="bm-membership-editor" defer>
+  class MembershipEditor {
       constructor() {
          this.isEdit = location.href.includes("membershipeditor=true");
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
@@ -5573,11 +5575,11 @@
          },
       };
    }
-
+</script>
+<script id="bm-membership-initializer" defer>
    if (!window.MembershipParser) {
       window.MembershipParser = new MembershipParser();
    }
-
    if (!window.MembershipEditor) {
       const membershipEditorInterval = setInterval(() => {
          if (sessionStorage?.is_preview) {
@@ -5588,5 +5590,8 @@
       setTimeout(() => {
          clearInterval(membershipEditorInterval);
       }, 5000);
+   }
+   if (!location.href.includes("membershipeditor=true")) {
+      document.querySelector("#bm-membership-editor")?.remove();
    }
 </script>

@@ -5591,7 +5591,7 @@
          clearInterval(membershipEditorInterval);
       }, 5000);
    }
-   if (!location.href.includes("membershipeditor=true")) {
+   if (sessionStorage?.is_preview !== "true") {
       document.querySelector("#bm-membership-editor")?.remove();
    }
 </script>

@@ -5600,9 +5600,14 @@
    }
 </script>
 <script id="bm-membership-cleaner">
-   if (sessionStorage?.is_preview !== "true") {
-      document.querySelector("#bm-membership-editor")?.remove();
-      document.querySelector("#bm-membership-preview")?.remove();
-      document.querySelector("#bm-membership-cleaner").remove();
-   }
+   const membershipEditorInterval = setInterval(() => {
+      if (sessionStorage?.is_preview) {
+         clearInterval(membershipEditorInterval);
+         if (sessionStorage?.is_preview !== "true") {
+            document.querySelector("#bm-membership-editor")?.remove();
+            document.querySelector("#bm-membership-preview")?.remove();
+            document.querySelector("#bm-membership-cleaner").remove();
+         }
+      }
+   }, 0);
 </script>

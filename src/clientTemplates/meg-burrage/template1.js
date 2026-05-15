@@ -1026,7 +1026,7 @@ window.templateCustomizationSchema = {
                   {
                      name: "Background Image",
                      property: "background-image",
-                     type: "text",
+                     type: "image",
                      placeholder: "E.g: https://www.sampleimage.com",
                      value: "",
                   },

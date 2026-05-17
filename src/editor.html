@@ -5584,20 +5584,22 @@
    }
 </script>
 <script id="bm-membership-initializer" defer>
-   if (!window?.MembershipParser) {
-      window.MembershipParser = new MembershipParser();
-   }
-   if (!window?.MembershipEditor) {
-      const membershipEditorInterval = setInterval(() => {
-         if (sessionStorage?.is_preview) {
+   setTimeout(() => {
+      if (!window?.MembershipParser) {
+         window.MembershipParser = new MembershipParser();
+      }
+      if (!window?.MembershipEditor) {
+         const membershipEditorInterval = setInterval(() => {
+            if (sessionStorage?.is_preview) {
+               clearInterval(membershipEditorInterval);
+               window.MembershipEditor = new MembershipEditor();
+            }
+         }, 500);
+         setTimeout(() => {
             clearInterval(membershipEditorInterval);
-            window.MembershipEditor = new MembershipEditor();
-         }
-      }, 500);
-      setTimeout(() => {
-         clearInterval(membershipEditorInterval);
-      }, 5000);
-   }
+         }, 5000);
+      }
+   }, 0);
 </script>
 <script id="bm-membership-cleaner" defer>
    const membershipEditorInterval = setInterval(() => {

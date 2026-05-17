@@ -5599,7 +5599,7 @@
       }, 5000);
    }
 </script>
-<script id="bm-membership-cleaner">
+<script id="bm-membership-cleaner" defer>
    const membershipEditorInterval = setInterval(() => {
       if (sessionStorage?.is_preview) {
          clearInterval(membershipEditorInterval);

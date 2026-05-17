@@ -5584,10 +5584,10 @@
    }
 </script>
 <script id="bm-membership-initializer" defer>
-   if (!window.MembershipParser) {
+   if (!window?.MembershipParser) {
       window.MembershipParser = new MembershipParser();
    }
-   if (!window.MembershipEditor) {
+   if (!window?.MembershipEditor) {
       const membershipEditorInterval = setInterval(() => {
          if (sessionStorage?.is_preview) {
             clearInterval(membershipEditorInterval);

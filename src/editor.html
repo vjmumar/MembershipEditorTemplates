@@ -1259,8 +1259,8 @@
    referrerpolicy="no-referrer"
 ></script>
 <script src="https://kit.fontawesome.com/d84a98056b.js"></script>
-<script id="bm-membership-preview">
-   class MembershipPreview {
+<script id="bm-membership-parser">
+    class MembershipPreview {
       constructor() {
          this.isPreviewEditor = location.href.includes("isEditorPreview=true");
          if (this.isPreviewEditor) {
@@ -1437,8 +1437,7 @@
          },
       };
    }
-</script>
-<script id="bm-membership-parser">
+
    class MembershipParser {
       constructor() {
          // First, we define the available templates along with their metadata, such as IDs, preview images, and script sources.
@@ -2150,8 +2149,7 @@
          },
       };
    }
-</script>
-<script id="bm-membership-editor">
+
    class MembershipEditor {
       constructor() {
          this.isEdit = location.href.includes("membershipeditor=true");
@@ -5582,8 +5580,7 @@
          },
       };
    }
-</script>
-<script id="bm-membership-initializer" defer>
+
    setTimeout(() => {
       if (!window?.MembershipParser) {
          window.MembershipParser = new MembershipParser();
@@ -5598,18 +5595,6 @@
          setTimeout(() => {
             clearInterval(membershipEditorInterval);
          }, 5000);
-      }
-   }, 0);
-</script>
-<script id="bm-membership-cleaner" defer>
-   const membershipEditorInterval = setInterval(() => {
-      if (sessionStorage?.is_preview) {
-         clearInterval(membershipEditorInterval);
-         if (sessionStorage?.is_preview !== "true") {
-            document.querySelector("#bm-membership-editor")?.remove();
-            document.querySelector("#bm-membership-preview")?.remove();
-            document.querySelector("#bm-membership-cleaner").remove();
-         }
       }
    }, 0);
 </script>

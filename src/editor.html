@@ -2188,7 +2188,7 @@
                url.searchParams.delete("isEditorPreview");
                url.searchParams.delete("membershipeditor");
                url.searchParams.append("isEditorPreview", "true");
-               url.searchParams.set("token", auth?.tokenId);
+               // url.searchParams.set("token", auth?.tokenId);
 
                // Then, clear the existing UI to make room for the iframe editor.
                if ($appContainer) $appContainer.remove();

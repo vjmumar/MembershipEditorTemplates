@@ -2198,6 +2198,7 @@
 
                // Then, create an iframe to load the current page in edit mode and append it to the app.
                this.$iframe = document.createElement("iframe");
+               this.$iframe.sandbox = "allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation-by-user-activation";
                this.$iframe.src = url.toString();
                this.$iframe.id = "membership-editor-iframe-preview";
                this.$iframe.style.cssText =

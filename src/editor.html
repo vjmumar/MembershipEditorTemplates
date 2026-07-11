@@ -2177,7 +2177,7 @@
             // Finally, determine if we need to launch the full Editor or just the toggle widget.
             if (this.isEdit) {
                // First we will retrieve the auth
-               const auth = await this.utils.getAuth();
+               const auth = await this.utils.getAuth(true);
 
                // Then, retrieve the main app and app-container elements.
                const $app = document.querySelector("#app");

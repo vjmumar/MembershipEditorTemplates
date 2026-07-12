@@ -4207,6 +4207,7 @@ class CourseTemplate {
                      "accept-language": "en-US,en;q=0.6",
                      "authorization": `Bearer ${token}`,
                      "channel": "APP",
+                     "source": "PORTAL_USERs"
                   },
                   body: null,
                   method: "GET",
@@ -4245,6 +4246,7 @@ class CourseTemplate {
                      "accept-language": "en-US,en;q=0.6",
                      "authorization": `Bearer ${token}`,
                      "channel": "APP",
+                     "source": "PORTAL_USERs"
                   },
                   priority: "high",
                   body: null,
@@ -4303,6 +4305,7 @@ class CourseTemplate {
                      "accept-language": "en-US,en;q=0.6",
                      "authorization": `Bearer ${token}`,
                      "channel": "APP",
+                     "source": "PORTAL_USERs"
                   },
                   body: null,
                   method: "GET",
@@ -4339,6 +4342,7 @@ class CourseTemplate {
                      "accept-language": "en-US,en;q=0.6",
                      "authorization": `Bearer ${token}`,
                      "channel": "APP",
+                     "source": "PORTAL_USERs"
                   },
                   body: null,
                   method: "GET",
@@ -4372,6 +4376,7 @@ class CourseTemplate {
                      "accept-language": "en-US,en;q=0.6",
                      "authorization": `Bearer ${token}`,
                      "channel": "APP",
+                     "source": "PORTAL_USERs"
                   },
                   body: null,
                   method: "GET",
@@ -4489,6 +4494,7 @@ class CourseTemplate {
                      headers: {
                         "accept": "application/json, text/plain, */*",
                         "channel": "APP",
+                        "source": "PORTAL_USERs"
                         "accept-language": "en-US,en;q=0.5",
                         "source": "PORTAL_USER",
                         "token-id": token,
@@ -4536,6 +4542,7 @@ class CourseTemplate {
                         "authorization": `Bearer ${token}`,
                         "content-type": "application/json",
                         "channel": "APP",
+                        "source": "PORTAL_USERs"
                      },
                      priority: "high",
                      body: JSON.stringify({
@@ -4554,6 +4561,7 @@ class CourseTemplate {
                         "accept-language": "en-US,en;q=0.6",
                         "authorization": `Bearer ${token}`,
                         "channel": "APP",
+                        "source": "PORTAL_USERs"
                      },
                      priority: "high",
                      method: "DELETE",

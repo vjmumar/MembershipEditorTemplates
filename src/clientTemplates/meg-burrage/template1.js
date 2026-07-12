@@ -4500,7 +4500,7 @@ class CourseTemplate {
                         "accept": "application/json, text/plain, */*",
                         "channel": "APP",
                         "source": "PORTAL_USER",
-                        "version": "2021-07-28"
+                        "version": "2021-07-28",
                         "accept-language": "en-US,en;q=0.5",
                         "source": "PORTAL_USER",
                         "version": "2021-07-28",

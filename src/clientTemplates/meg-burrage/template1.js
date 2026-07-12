@@ -4611,7 +4611,7 @@ class CourseTemplate {
                      const url = location.href
                         ?.split("/products/")[1]
                         .split("/")[0]
-                        .split("?")[0];x  
+                        .split("?")[0];
                      data.productId = url;
                   }
                   if (!("tokenId" in data)) {

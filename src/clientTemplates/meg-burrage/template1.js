@@ -4602,14 +4602,16 @@ class CourseTemplate {
                   document.querySelector(".product-container, #app-container") &&
                   window?.$cookies
                ) {
-                  const acatToken = window?.$cookies?.get("acat");
-                  const catToken = window?.$cookies?.get("cat");
-                  const data = JSON.parse(window.atob(catToken || acatToken) || "{}");
+                  const acatToken = window?.$cookies?.get("acatv2");
+                  const acatTokenSessionStorage = window.sessionStorage.getItem("acatv2");
+                  const catToken = window?.$cookies?.get("catv2");
+                   const catTokenSessionStorage = window.sessionStorage.getItem("catv2");
+                  const data = JSON.parse(window.atob(catToken || catTokenSessionStorage || acatToken || acatTokenSessionStorage) || "{}");
                   if (!("productId" in data)) {
                      const url = location.href
                         ?.split("/products/")[1]
                         .split("/")[0]
-                        .split("?")[0];
+                        .split("?")[0];x  
                      data.productId = url;
                   }
                   if (!("tokenId" in data)) {

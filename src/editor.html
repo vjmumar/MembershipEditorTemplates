@@ -5538,45 +5538,45 @@
                         Number(data.tokenExpirationTime) <= new Date().getTime() ||
                         shouldGetNewToken
                      ) {
-                        // First we will retrieve the firebase auth
-                        const firebaseAuth = (() => {
-                           const firebaseAuthResult = Object.keys(localStorage).reduce(
-                              (a, c) => {
-                                 if (c.includes("firebase:authUser")) {
-                                    a = JSON.parse(localStorage.getItem(c));
-                                 }
-                                 return a;
-                              },
-                              undefined,
-                           );
-                           return firebaseAuthResult;
-                        })();
+                        // // First we will retrieve the firebase auth
+                        // const firebaseAuth = (() => {
+                        //    const firebaseAuthResult = Object.keys(localStorage).reduce(
+                        //       (a, c) => {
+                        //          if (c.includes("firebase:authUser")) {
+                        //             a = JSON.parse(localStorage.getItem(c));
+                        //          }
+                        //          return a;
+                        //       },
+                        //       undefined,
+                        //    );
+                        //    return firebaseAuthResult;
+                        // })();
 
-                        // Then we will fetch a new refresh token
-                        const newToken = await fetch(
-                           `https://securetoken.googleapis.com/v1/token?key=${firebaseAuth.apiKey}`,
-                           {
-                              method: "POST",
-                              mode: "cors",
-                              credentials: "omit",
-                              headers: {
-                                 "Content-Type": "application/x-www-form-urlencoded",
-                              },
-                              body: `grant_type=refresh_token&refresh_token=${firebaseAuth.stsTokenManager.refreshToken}`,
-                           },
-                        ).then(async (res) => {
-                           return res.json();
-                        });
+                        // // Then we will fetch a new refresh token
+                        // const newToken = await fetch(
+                        //    `https://securetoken.googleapis.com/v1/token?key=${firebaseAuth.apiKey}`,
+                        //    {
+                        //       method: "POST",
+                        //       mode: "cors",
+                        //       credentials: "omit",
+                        //       headers: {
+                        //          "Content-Type": "application/x-www-form-urlencoded",
+                        //       },
+                        //       body: `grant_type=refresh_token&refresh_token=${firebaseAuth.stsTokenManager.refreshToken}`,
+                        //    },
+                        // ).then(async (res) => {
+                        //    return res.json();
+                        // });
 
                         // Finally we will update the data and the acat token
-                        const fiftyMinutesFromNow = new Date().getTime() + 50 * 60 * 1000;
-                        const newAuth = {
-                           ...data,
-                           tokenId: newToken.id_token,
-                           tokenExpirationTime: fiftyMinutesFromNow,
-                        };
-                        window.$cookies.set("acat", window.btoa(JSON.stringify(newAuth)));
-                        res(newAuth);
+                        // const fiftyMinutesFromNow = new Date().getTime() + 50 * 60 * 1000;
+                        // const newAuth = {
+                        //    ...data,
+                        //    tokenId: newToken.id_token,
+                        //    tokenExpirationTime: fiftyMinutesFromNow,
+                        // };
+                        // window.$cookies.set("acat", window.btoa(JSON.stringify(newAuth)));
+                        // res(newAuth);
                      }
                      res(data);
                   }

@@ -4208,6 +4208,7 @@ class CourseTemplate {
                      "authorization": `Bearer ${token}`,
                      "channel": "APP",
                      "source": "PORTAL_USER",
+                     "x-product-id": productId,
                      "version": "2021-07-28"
                   },
                   body: null,
@@ -4248,6 +4249,7 @@ class CourseTemplate {
                      "authorization": `Bearer ${token}`,
                      "channel": "APP",
                      "source": "PORTAL_USER",
+                     "x-product-id": productId,
                      "version": "2021-07-28"
                   },
                   priority: "high",
@@ -4308,6 +4310,7 @@ class CourseTemplate {
                      "authorization": `Bearer ${token}`,
                      "channel": "APP",
                      "source": "PORTAL_USER",
+                     "x-product-id": productId,
                      "version": "2021-07-28"
                   },
                   body: null,
@@ -4346,6 +4349,7 @@ class CourseTemplate {
                      "authorization": `Bearer ${token}`,
                      "channel": "APP",
                      "source": "PORTAL_USER",
+                     "x-product-id": productId,
                      "version": "2021-07-28"
                   },
                   body: null,
@@ -4381,6 +4385,7 @@ class CourseTemplate {
                      "authorization": `Bearer ${token}`,
                      "channel": "APP",
                      "source": "PORTAL_USER",
+                     "x-product-id": productId,
                      "version": "2021-07-28"
                   },
                   body: null,
@@ -4500,9 +4505,11 @@ class CourseTemplate {
                         "accept": "application/json, text/plain, */*",
                         "channel": "APP",
                         "source": "PORTAL_USER",
+                        "x-product-id": productId,
                         "version": "2021-07-28",
                         "accept-language": "en-US,en;q=0.5",
                         "source": "PORTAL_USER",
+                        "x-product-id": productId,
                         "version": "2021-07-28",
                         "token-id": token,
                      },
@@ -4550,7 +4557,8 @@ class CourseTemplate {
                         "content-type": "application/json",
                         "channel": "APP",
                         "source": "PORTAL_USER",
-                        "version": "2021-07-28"
+                        "x-product-id": productId,
+                        "version": "2021-07-28",
                      },
                      priority: "high",
                      body: JSON.stringify({
@@ -4570,6 +4578,7 @@ class CourseTemplate {
                         "authorization": `Bearer ${token}`,
                         "channel": "APP",
                         "source": "PORTAL_USER",
+                        "x-product-id": productId,
                         "version": "2021-07-28"
                      },
                      priority: "high",

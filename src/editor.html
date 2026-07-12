@@ -4745,7 +4745,7 @@
             // Then we will update the iframe
             const auth = await this.utils.getAuth();
             const iframeUrl = new URL(page);
-            iframeUrl.searchParams.set("token", auth?.tokenId);
+            // iframeUrl.searchParams.set("token", auth?.tokenId);
             this.$iframe.src = iframeUrl.toString();
 
             // Finally we will add a loading indicator inside the sidebar editor

@@ -4742,6 +4742,8 @@
             // Then we will check the user's decision and if they did not agree then we will not proceed
             if (!isConfirm) return;
 
+            console.log(page)
+
             // Then we will update the iframe
             const auth = await this.utils.getAuth();
             const iframeUrl = new URL(page);

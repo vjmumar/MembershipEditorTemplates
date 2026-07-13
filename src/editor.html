@@ -1413,12 +1413,14 @@
       // Utils module
       utils = {
          // This helper method retrieves the auth information
-         getAuth: async () => {
-            return new Promise((res) => {
-               const interval = setInterval(() => {
-                  res("")
-               }, 0);
-            });
+        getAuth: async () => {
+            const accessToken = localStorage.getItem("bm-editor-admin-token");
+            if (accessToken) {
+               return accessToken
+            } else {
+               alert("Preview: No Token Found");
+               return ""
+            }
          },
       };
    }
@@ -2105,14 +2107,6 @@
                clearTimeout(timeout);
             };
          },
-         // This helper method retrieves the auth information
-         getAuth: async () => {
-            return new Promise((res) => {
-               const interval = setInterval(() => {
-                  res("")
-               }, 0);
-            });
-         },
       };
    }
 
@@ -2138,10 +2132,7 @@
 
             // Finally, determine if we need to launch the full Editor or just the toggle widget.
             if (this.isEdit) {
-               // First we will retrieve the auth
-               const auth = await this.utils.getAuth(true);
-
-               // Then, retrieve the main app and app-container elements.
+               // First, retrieve the main app and app-container elements.
                const $app = document.querySelector("#app");
                const $appContainer = await this.utils.waitForElement("#app-container", 0);
 
@@ -2150,7 +2141,10 @@
                url.searchParams.delete("isEditorPreview");
                url.searchParams.delete("membershipeditor");
                url.searchParams.append("isEditorPreview", "true");
-               // url.searchParams.set("token", auth?.tokenId);
+
+               // Then we will save the admin token to local storage
+               const adminAccessToken = url.searchParams.get("adminToken");
+               localStorage.setItem("bm-editor-admin-token", adminAccessToken);
 
                // Then, clear the existing UI to make room for the iframe editor.
                if ($appContainer) $appContainer.remove();
@@ -2191,7 +2185,7 @@
             } else {
                // Fallback: If in preview but not in edit mode, show the floating toggle (if not already present).
                if (!this.isPreviewEditor) {
-                  this.initializers.initFloatingWidgetToggler();
+                  // this.initializers.initFloatingWidgetToggler();
                }
             }
          },
@@ -5478,11 +5472,13 @@
 
          // This helper method retrieves the auth information
          getAuth: async () => {
-            return new Promise((res) => {
-               const interval = setInterval(() => {
-                  res("")
-               }, 0);
-            });
+            const accessToken = localStorage.getItem("bm-editor-admin-token");
+            if (accessToken) {
+               return accessToken
+            } else {
+               alert("Edit: No Token Found");
+               return ""
+            }
          },
       };
    }

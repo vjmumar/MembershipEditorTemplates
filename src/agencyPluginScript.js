@@ -408,10 +408,8 @@
 
   // This helper injects our button next to #preview-btn, once
   const injectButton = (previewBtn) => {
-    const BTN_ID = "my-custom-btn";
-
     // First we bail if our button is already there
-    if (document.getElementById(BTN_ID)) return;
+    if (document.getElementById(`#bm-editor-launch-btn`)) return;
 
     // Then we inject the button styles once (scoped to our button id so nothing else is affected)
     if (!document.getElementById("bm-edit-btn-styles")) {
@@ -419,7 +417,7 @@
       style.id = "bm-edit-btn-styles";
       style.textContent = `
           /* Brand tokens — primary + white secondary */
-          #${BTN_ID} {
+          #bm-editor-launch-btn {
             --bm-primary: #10b981;
             --bm-primary-strong: #059669;
             --bm-secondary: #ffffff;
@@ -452,7 +450,7 @@
           }
 
           /* the sheen that sweeps across on hover */
-          #${BTN_ID}::before {
+          #bm-editor-launch-btn::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -467,39 +465,39 @@
             transition: transform 620ms ease;
           }
 
-          #${BTN_ID}:hover {
+          #bm-editor-launch-btn:hover {
             filter: saturate(1.08);
             box-shadow:
               0 2px 4px color-mix(in srgb, var(--bm-primary-strong) 28%, transparent),
               0 10px 24px -6px color-mix(in srgb, var(--bm-primary) 70%, transparent),
               inset 0 1px 0 rgba(255, 255, 255, 0.22);
           }
-          #${BTN_ID}:hover::before { transform: translateX(120%); }
+          #bm-editor-launch-btn:hover::before { transform: translateX(120%); }
 
-          #${BTN_ID}:active { transform: translateY(0) scale(0.98); }
+          #bm-editor-launch-btn:active { transform: translateY(0) scale(0.98); }
 
-          #${BTN_ID}:focus-visible {
+          #bm-editor-launch-btn:focus-visible {
             outline: none;
             box-shadow:
               0 0 0 3px color-mix(in srgb, var(--bm-primary) 35%, transparent),
               0 6px 16px -6px color-mix(in srgb, var(--bm-primary) 55%, transparent);
           }
 
-          #${BTN_ID} .bm-edit-btn__icon {
+          #bm-editor-launch-btn .bm-edit-btn__icon {
             width: 15px;
             height: 15px;
             flex: 0 0 15px;
             transition: transform 220ms ease;
           }
-          #${BTN_ID}:hover .bm-edit-btn__icon { transform: rotate(-12deg); }
+          #bm-editor-launch-btn:hover .bm-edit-btn__icon { transform: rotate(-12deg); }
 
           /* loading state: swap icon for a spinner, dim slightly, block clicks */
-          #${BTN_ID}.bm-loading {
+          #bm-editor-launch-btn.bm-loading {
             pointer-events: none;
             filter: saturate(0.9);
           }
-          #${BTN_ID}.bm-loading .bm-edit-btn__icon { display: none; }
-          #${BTN_ID}.bm-loading::after {
+          #bm-editor-launch-btn.bm-loading .bm-edit-btn__icon { display: none; }
+          #bm-editor-launch-btn.bm-loading::after {
             content: "";
             width: 14px;
             height: 14px;
@@ -512,7 +510,7 @@
           @keyframes bm-edit-spin { to { transform: rotate(360deg); } }
 
           @media (prefers-reduced-motion: reduce) {
-            #${BTN_ID}, #${BTN_ID}::before, #${BTN_ID} .bm-edit-btn__icon { transition: none; }
+            #bm-editor-launch-btn, #bm-editor-launch-btn::before, #bm-editor-launch-btn .bm-edit-btn__icon { transition: none; }
           }
         `;
       document.head.appendChild(style);
@@ -520,7 +518,7 @@
 
     // Then we build the button with a pencil icon + label
     const btn = document.createElement("button");
-    btn.id = BTN_ID;
+    btn.id = `#bm-editor-launch-btn`;
     btn.type = "button";
     btn.innerHTML = `
         <svg class="bm-edit-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">

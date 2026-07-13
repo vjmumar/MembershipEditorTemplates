@@ -408,8 +408,12 @@
 
   // This helper injects our button next to #preview-btn, once
   const injectButton = (previewBtn) => {
-    // First we bail if our button is already there
-    if (document.getElementById(`bm-editor-launch-btn`)) return;
+    // First we will check if we are inside a course page
+    const currentPageUrl = location.pathname;
+    const isInsideProduct = currentPageUrl.includes("/courses") && currentPageUrl.includes("?product_id");
+
+    // First we bail if our button is already there or we are not inside product page
+    if (!isInsideProduct || document.getElementById(`bm-editor-launch-btn`)) return;
 
     // Then we inject the button styles once (scoped to our button id so nothing else is affected)
     if (!document.getElementById("bm-edit-btn-styles")) {

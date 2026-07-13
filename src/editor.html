@@ -11,7 +11,7 @@
   :root {
     --bm-primary: #10b981;
     --bm-primary-strong: #059669;
-    --bm-primary-soft: rgba(16, 185, 129, 0.10);
+    --bm-primary-soft: rgba(16, 185, 129, 0.1);
     --bm-primary-ring: rgba(16, 185, 129, 0.22);
 
     --bm-ink: #0f172a;
@@ -34,8 +34,10 @@
     --bm-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
     --bm-shadow-md: 0 10px 30px -12px rgba(15, 23, 42, 0.22);
 
-    --bm-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --bm-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --bm-font:
+      "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --bm-mono:
+      ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   }
 
   #app {
@@ -50,7 +52,9 @@
     outline: 1.5px dashed rgba(16, 185, 129, 0.7);
     outline-offset: -1px;
     cursor: pointer;
-    transition: outline-color 0.15s ease, outline-width 0.15s ease;
+    transition:
+      outline-color 0.15s ease,
+      outline-width 0.15s ease;
   }
 
   [data-editable="true"] iframe {
@@ -127,7 +131,10 @@
     outline: none;
     text-align: left;
     background-color: var(--bm-bg);
-    transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s,
+      background-color 0.15s;
   }
 
   .editor-customizer-sidebar input[type="text"]:hover:not(:focus),
@@ -191,7 +198,9 @@
     overflow: auto;
     resize: vertical;
     outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
   }
 
   .editor-customizer-sidebar textarea:hover:not(:focus) {
@@ -275,7 +284,10 @@
     border-radius: var(--bm-r-sm);
     border-bottom: none;
     cursor: pointer;
-    transition: background-color 0.15s, color 0.15s, box-shadow 0.15s;
+    transition:
+      background-color 0.15s,
+      color 0.15s,
+      box-shadow 0.15s;
   }
 
   .editor-customizer-category__item:hover {
@@ -301,7 +313,9 @@
     display: flex !important;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.15s, color 0.15s;
+    transition:
+      background-color 0.15s,
+      color 0.15s;
   }
 
   .editor-customizer-header__global:hover {
@@ -320,7 +334,9 @@
     display: flex !important;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.15s, color 0.15s;
+    transition:
+      background-color 0.15s,
+      color 0.15s;
   }
 
   .global-contents__header__mobile-switch:hover {
@@ -339,7 +355,9 @@
     display: flex !important;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.15s, color 0.15s;
+    transition:
+      background-color 0.15s,
+      color 0.15s;
   }
 
   .additional-settings-header__icon:hover {
@@ -442,7 +460,8 @@
   }
 
   /* iOS-style toggle for feature switches */
-  .editor-customizer-item__form__item__input__group__toggler input[type="checkbox"] {
+  .editor-customizer-item__form__item__input__group__toggler
+    input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
     width: 38px;
@@ -454,10 +473,13 @@
     background-repeat: no-repeat;
     background-position: 2px center;
     cursor: pointer;
-    transition: background-color 0.2s ease, background-position 0.2s ease;
+    transition:
+      background-color 0.2s ease,
+      background-position 0.2s ease;
   }
 
-  .editor-customizer-item__form__item__input__group__toggler input[type="checkbox"]:checked {
+  .editor-customizer-item__form__item__input__group__toggler
+    input[type="checkbox"]:checked {
     background-color: var(--bm-primary);
     background-position: calc(100% - 2px) center;
   }
@@ -474,7 +496,9 @@
     border: 1px solid var(--bm-line);
     padding: 9px 12px;
     border-radius: var(--bm-r);
-    transition: background-color 0.15s, border-color 0.15s;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s;
   }
 
   .editor-customizer-item__form__item__input__group__name__toggler:hover {
@@ -640,7 +664,10 @@
     justify-content: center;
     border-radius: 6px;
     font-size: 12.5px;
-    transition: background-color 0.15s, color 0.15s, box-shadow 0.15s;
+    transition:
+      background-color 0.15s,
+      color 0.15s,
+      box-shadow 0.15s;
   }
 
   .global-contents__header__control i:hover {
@@ -701,7 +728,9 @@
     padding: 10px 12px;
     cursor: pointer;
     border-radius: 10px;
-    transition: background-color 0.15s, border-color 0.15s;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s;
   }
 
   .global-contents-item__toggler:hover {
@@ -756,7 +785,9 @@
     background-color: var(--bm-surface-2);
     padding: 8px 10px;
     border-radius: var(--bm-r-sm);
-    transition: background-color 0.15s, color 0.15s;
+    transition:
+      background-color 0.15s,
+      color 0.15s;
   }
 
   .global-contents-item__item__title:hover {
@@ -788,7 +819,9 @@
     cursor: pointer;
     border-radius: 10px;
     margin: 0 12px 8px;
-    transition: background-color 0.15s, border-color 0.15s;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s;
   }
 
   .global-contents__additional-settings:hover {
@@ -804,7 +837,9 @@
   .global-contents__additional-settings i {
     font-size: 11px;
     color: var(--bm-ink-3);
-    transition: transform 0.15s ease, color 0.15s;
+    transition:
+      transform 0.15s ease,
+      color 0.15s;
   }
 
   .global-contents__additional-settings:hover i {
@@ -867,7 +902,9 @@
     border-radius: 10px;
     padding: 10px 12px;
     margin-bottom: 8px;
-    transition: background-color 0.15s, border-color 0.15s;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s;
   }
 
   .advance-settings__fonts__header:hover {
@@ -924,7 +961,9 @@
     cursor: pointer;
     color: var(--bm-ink-3);
     font-size: 13px;
-    transition: color 0.15s, background-color 0.15s;
+    transition:
+      color 0.15s,
+      background-color 0.15s;
     padding: 5px;
     border-radius: 6px;
   }
@@ -959,7 +998,9 @@
     cursor: pointer;
     border-radius: 10px;
     gap: 10px;
-    transition: background-color 0.15s, border-color 0.15s;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s;
   }
 
   .editable-pages__list__item:hover {
@@ -1004,7 +1045,12 @@
     align-items: center;
     justify-content: center;
     background-color: transparent;
-    transition: background-color 0.15s, color 0.15s, border-color 0.15s, transform 0.12s, box-shadow 0.15s;
+    transition:
+      background-color 0.15s,
+      color 0.15s,
+      border-color 0.15s,
+      transform 0.12s,
+      box-shadow 0.15s;
   }
 
   .editor-customizer-sidebar__footer__button:active {
@@ -1072,7 +1118,9 @@
   }
 
   @keyframes bm-ed-spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   /* Branding Customizer */
@@ -1095,7 +1143,9 @@
     border: 1px solid var(--bm-line);
     padding: 10px 12px;
     border-radius: 10px;
-    transition: background-color 0.15s, border-color 0.15s;
+    transition:
+      background-color 0.15s,
+      border-color 0.15s;
   }
 
   .branding-customizer__item__title:hover {
@@ -1169,7 +1219,10 @@
     border: 1px solid var(--bm-line);
     background-color: var(--bm-bg);
     box-shadow: var(--bm-shadow-sm);
-    transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    transition:
+      box-shadow 0.2s ease,
+      transform 0.2s ease,
+      border-color 0.2s ease;
   }
 
   .theme-selector__list__item:hover {
@@ -1212,7 +1265,9 @@
     padding-block: 9px;
     text-decoration: none !important;
     color: var(--bm-ink-2) !important;
-    transition: background-color 0.15s, color 0.15s;
+    transition:
+      background-color 0.15s,
+      color 0.15s;
   }
 
   .theme-selector__list__item__controller__button:first-of-type {
@@ -1263,7 +1318,9 @@
     padding: 30px 20px;
     text-align: center;
     cursor: pointer;
-    transition: border-color 0.2s, background-color 0.2s;
+    transition:
+      border-color 0.2s,
+      background-color 0.2s;
     background-color: var(--bm-surface);
   }
 
@@ -1346,7 +1403,9 @@
     outline: none;
     color: var(--bm-ink);
     font-family: var(--bm-font);
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
   }
 
   .upload-font-popup__font-name input:focus {
@@ -1386,7 +1445,9 @@
     font-size: 13.5px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s;
+    transition:
+      background-color 0.2s,
+      box-shadow 0.2s;
     font-family: var(--bm-font);
     box-shadow: 0 6px 14px -6px rgba(16, 185, 129, 0.55);
   }
@@ -1421,7 +1482,9 @@
     background: var(--bm-bg);
     color: var(--bm-ink);
     font-family: var(--bm-font);
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
   }
 
   .widget-font-select__input::placeholder {
@@ -2542,7 +2605,10 @@
           localStorage.setItem("bm-editor-location-id", locationId);
           localStorage.setItem("bm-editor-product-id", productId);
           localStorage.setItem("bm-editor-agency-user-id", agencyUserId);
-          localStorage.setItem("bm-editor-agency-user-email", decodeURIComponent(agencyUserEmail));
+          localStorage.setItem(
+            "bm-editor-agency-user-email",
+            decodeURIComponent(agencyUserEmail),
+          );
 
           // Then, clear the existing UI to make room for the iframe editor.
           if ($appContainer) $appContainer.remove();
@@ -5885,21 +5951,37 @@
       withToolTip: (html = "", label = "") => {
         if (!document.__tooltipListenersAttached) {
           document.__tooltipListenersAttached = true;
+          
+          let bubble = document.getElementById("__bm-tooltip");
+          if (!bubble) {
+            bubble = document.createElement("div");
+            bubble.id = "__bm-tooltip";
+            bubble.className = "widget-tooltip__bubble";
+            document.body.appendChild(bubble);
+          }
+
           document.addEventListener("mouseover", (e) => {
             const trigger = e.target.closest(".widget-tooltip");
             if (!trigger) return;
-            const bubble = trigger.querySelector(".widget-tooltip__bubble");
-            if (!bubble) return;
+            const label = trigger.getAttribute("data-tt");
+            if (!label) return;
+
+            bubble.textContent = label;
             bubble.style.opacity = "0";
             bubble.style.display = "block";
+            bubble.style.left = "0";
+            bubble.style.top = "0";
+
             const triggerRect = trigger.getBoundingClientRect();
             const bubbleRect = bubble.getBoundingClientRect();
             const gap = 6;
             const vw = window.innerWidth;
             const vh = window.innerHeight;
+
             const placeAbove =
               triggerRect.top >= bubbleRect.height + gap ||
               triggerRect.top >= vh - triggerRect.bottom;
+
             let top;
             if (placeAbove) {
               top = triggerRect.top - bubbleRect.height - gap;
@@ -5910,22 +5992,27 @@
               bubble.classList.remove("tt-above");
               bubble.classList.add("tt-below");
             }
+
             let left =
               triggerRect.left + triggerRect.width / 2 - bubbleRect.width / 2;
             left = Math.max(6, Math.min(left, vw - bubbleRect.width - 6));
+
             bubble.style.top = `${top}px`;
             bubble.style.left = `${left}px`;
             bubble.style.opacity = "";
             bubble.classList.add("visible");
           });
+
           document.addEventListener("mouseout", (e) => {
             const trigger = e.target.closest(".widget-tooltip");
             if (!trigger) return;
-            const bubble = trigger.querySelector(".widget-tooltip__bubble");
-            if (bubble) bubble.classList.remove("visible");
+            bubble.classList.remove("visible");
+            bubble.style.display = "none";
           });
         }
-        return `<span class="widget-tooltip">${html}<span class="widget-tooltip__bubble">${label}</span></span>`;
+
+        // store label as a data attribute; single shared bubble reads it
+        return `<span class="widget-tooltip" data-tt="${label.replace(/"/g, "&quot;")}">${html}</span>`;
       },
     };
 

@@ -1431,11 +1431,11 @@
       // This helper method retrieves the auth information
       getAuth: async () => {
         const locationId = $cookies.get("locationId");
-        const productId = $cookies.get("locationId");
+        const productId = $cookies.get("productId");
         const accessToken = localStorage.getItem("bm-editor-admin-token");
         if (accessToken) {
           return {
-            location,
+            locationId,
             productId,
             tokenId: accessToken,
           };
@@ -5571,11 +5571,11 @@
       // This helper method retrieves the auth information
       getAuth: async () => {
         const locationId = $cookies.get("locationId");
-        const productId = $cookies.get("locationId");
+        const productId = $cookies.get("productId");
         const accessToken = localStorage.getItem("bm-editor-admin-token");
         if (accessToken) {
           return {
-            location,
+            locationId,
             productId,
             tokenId: accessToken,
           };

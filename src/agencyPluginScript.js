@@ -468,7 +468,6 @@
           }
 
           #${BTN_ID}:hover {
-            transform: translateY(-1px);
             filter: saturate(1.08);
             box-shadow:
               0 2px 4px color-mix(in srgb, var(--bm-primary-strong) 28%, transparent),

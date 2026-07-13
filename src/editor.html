@@ -209,6 +209,8 @@
   /* Customizer shell */
   .editor-customizer-sidebar {
     width: 336px;
+    min-width: 336px;
+    flex: 0 0 336px;
     height: 100vh;
     position: sticky;
     display: none;
@@ -284,8 +286,44 @@
     box-shadow: var(--bm-shadow-sm);
   }
 
-  .editor-customizer-header__global,
-  .global-contents__header__mobile-switch,
+  .editor-customizer-header__global {
+    font-size: 15px;
+    color: var(--bm-ink-2);
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    border-radius: 50%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s, color 0.15s;
+  }
+
+  .editor-customizer-header__global:hover {
+    background-color: var(--bm-surface-2);
+    color: var(--bm-ink);
+  }
+
+  .global-contents__header__mobile-switch {
+    font-size: 15px;
+    color: var(--bm-ink-2);
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    border-radius: 50%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s, color 0.15s;
+  }
+
+  .global-contents__header__mobile-switch:hover {
+    background-color: var(--bm-surface-2);
+    color: var(--bm-ink);
+  }
+
   .additional-settings-header__icon {
     font-size: 15px;
     color: var(--bm-ink-2);
@@ -294,14 +332,12 @@
     height: 34px;
     flex: 0 0 34px;
     border-radius: 50%;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     transition: background-color 0.15s, color 0.15s;
   }
 
-  .editor-customizer-header__global:hover,
-  .global-contents__header__mobile-switch:hover,
   .additional-settings-header__icon:hover {
     background-color: var(--bm-surface-2);
     color: var(--bm-ink);
@@ -320,6 +356,9 @@
   .editor-customizer-sidebar__content {
     flex: 1;
     min-height: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
     position: relative;
@@ -592,7 +631,7 @@
     cursor: pointer;
     width: 26px;
     height: 24px;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     border-radius: 6px;

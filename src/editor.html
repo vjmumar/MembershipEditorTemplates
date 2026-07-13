@@ -2175,7 +2175,7 @@
           localStorage.setItem("bm-editor-location-id", locationId);
           localStorage.setItem("bm-editor-product-id", productId);
           localStorage.setItem("bm-editor-agency-user-id", agencyUserId);
-          localStorage.setItem("bm-editor-agency-user-email", agencyUserEmail);
+          localStorage.setItem("bm-editor-agency-user-email", decodeURIComponent(agencyUserEmail));
 
           // Then, clear the existing UI to make room for the iframe editor.
           if ($appContainer) $appContainer.remove();

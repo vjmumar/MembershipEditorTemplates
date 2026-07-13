@@ -429,7 +429,8 @@
             align-items: center;
             gap: 8px;
             margin-left: 10px;
-            padding: 9px 16px 9px 14px;
+            padding: 4px 14px 4px 14px;
+            max-height: 32px;
             border: 0;
             border-radius: 5px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;

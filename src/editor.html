@@ -184,10 +184,10 @@
     font-size: 12.5px;
     font-family: var(--bm-mono);
     line-height: 1.6;
-    color: #e2e8f0;
-    border: 1px solid #1e293b;
+    color: var(--bm-ink);
+    border: 1px solid var(--bm-line-strong);
     border-radius: 10px;
-    background: #0f172a;
+    background: var(--bm-surface);
     caret-color: var(--bm-primary);
     overflow: auto;
     resize: vertical;
@@ -195,15 +195,20 @@
     transition: border-color 0.15s, box-shadow 0.15s;
   }
 
+  .editor-customizer-sidebar textarea:hover:not(:focus) {
+    border-color: var(--bm-ink-3);
+  }
+
   .editor-customizer-sidebar textarea:focus {
     border-color: var(--bm-primary);
+    background: var(--bm-bg);
     box-shadow: 0 0 0 3px var(--bm-primary-ring);
   }
 
   .editor-customizer-sidebar textarea::placeholder {
     font-family: var(--bm-mono);
-    color: #64748b;
-    opacity: 0.85;
+    color: var(--bm-ink-3);
+    opacity: 1;
   }
 
   /* Customizer shell */

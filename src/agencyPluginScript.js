@@ -165,7 +165,7 @@
     const magicLinkToken = magicLinkUrl.searchParams.get("token");
     const currentUrl = new URL(window.location.href);
     const currentUrlProductId = currentUrl.searchParams.get("product_id");
-    const finalUrl = `${baseUrl}/courses/products/${currentUrlProductId}?token=${magicLinkToken}&adminToken=${accessToken}&membershipeditor=true&location_id=${portalSettings.locationId}&product_id=${currentUrlProductId}&is_preview=true`;
+    const finalUrl = `${baseUrl}/courses/products/${currentUrlProductId}?token=${magicLinkToken}&adminToken=${accessToken}&membershipeditor=true&location_id=${portalSettings.locationId}&product_id=${currentUrlProductId}&agency_user_id=${authManager.uid}&agency_user_email=${encodeURIComponent(agencyUserContact?.email)}&is_preview=true`;
     return finalUrl;
   };
 
@@ -183,13 +183,18 @@
     wrapper.id = "bm-editor-overlay";
     wrapper.innerHTML = `
         <style>
+          /* Brand tokens — primary + white secondary */
           #bm-editor-overlay {
+            --bm-primary: #10b981;
+            --bm-primary-strong: #059669;
+            --bm-secondary: #ffffff;
+
             position: fixed;
             inset: 0;
             z-index: 2147483647;
             display: flex;
             flex-direction: column;
-            background: #0b1020;
+            background: var(--bm-secondary);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             opacity: 0;
             transition: opacity 220ms ease;
@@ -204,9 +209,9 @@
             justify-content: space-between;
             gap: 16px;
             padding: 0 16px;
-            background: linear-gradient(180deg, #10182e 0%, #0d1426 100%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 20px -8px rgba(0, 0, 0, 0.6);
+            background: var(--bm-secondary);
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06);
           }
 
           .bm-editor-topbar__left {
@@ -222,9 +227,9 @@
             gap: 7px;
             padding: 5px 11px;
             border-radius: 999px;
-            background: rgba(16, 185, 129, 0.14);
-            border: 1px solid rgba(16, 185, 129, 0.35);
-            color: #34d399;
+            background: color-mix(in srgb, var(--bm-primary) 12%, var(--bm-secondary));
+            border: 1px solid color-mix(in srgb, var(--bm-primary) 35%, var(--bm-secondary));
+            color: var(--bm-primary-strong);
             font-size: 12px;
             font-weight: 600;
             letter-spacing: 0.01em;
@@ -235,14 +240,14 @@
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            background: #34d399;
-            box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+            background: var(--bm-primary);
+            box-shadow: 0 0 0 0 color-mix(in srgb, var(--bm-primary) 70%, transparent);
             animation: bm-pulse 2s ease-out infinite;
           }
           @keyframes bm-pulse {
-            0%   { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.55); }
-            70%  { box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+            0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--bm-primary) 55%, transparent); }
+            70%  { box-shadow: 0 0 0 6px color-mix(in srgb, var(--bm-primary) 0%, transparent); }
+            100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--bm-primary) 0%, transparent); }
           }
 
           .bm-editor-topbar__title {
@@ -252,12 +257,12 @@
             line-height: 1.25;
           }
           .bm-editor-topbar__title strong {
-            color: #f8fafc;
+            color: #111827;
             font-size: 13.5px;
             font-weight: 600;
           }
           .bm-editor-topbar__title span {
-            color: #94a3b8;
+            color: #6b7280;
             font-size: 11.5px;
             font-weight: 400;
           }
@@ -269,7 +274,7 @@
           }
 
           .bm-editor-topbar__hint {
-            color: #64748b;
+            color: #9ca3af;
             font-size: 11.5px;
             font-weight: 400;
           }
@@ -280,10 +285,10 @@
             gap: 7px;
             height: 36px;
             padding: 0 14px;
-            border: 1px solid rgba(255, 255, 255, 0.14);
+            border: 1px solid #e5e7eb;
             border-radius: 9px;
-            background: rgba(255, 255, 255, 0.04);
-            color: #e2e8f0;
+            background: var(--bm-secondary);
+            color: #374151;
             font-family: inherit;
             font-size: 13px;
             font-weight: 600;
@@ -291,9 +296,9 @@
             transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
           }
           .bm-editor-close:hover {
-            background: rgba(239, 68, 68, 0.14);
-            border-color: rgba(239, 68, 68, 0.5);
-            color: #fca5a5;
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #dc2626;
           }
           .bm-editor-close svg { width: 15px; height: 15px; }
 
@@ -301,7 +306,7 @@
             flex: 1 1 auto;
             position: relative;
             min-height: 0;
-            background: #fefeff;
+            background: var(--bm-secondary);
           }
           .bm-editor-body iframe {
             position: absolute;
@@ -320,15 +325,15 @@
             align-items: center;
             justify-content: center;
             gap: 14px;
-            background: #0b1020;
-            color: #94a3b8;
+            background: var(--bm-secondary);
+            color: #6b7280;
             font-size: 13px;
           }
           .bm-editor-loader__spinner {
             width: 30px;
             height: 30px;
-            border: 3px solid rgba(148, 163, 184, 0.25);
-            border-top-color: #34d399;
+            border: 3px solid color-mix(in srgb, var(--bm-primary) 20%, var(--bm-secondary));
+            border-top-color: var(--bm-primary);
             border-radius: 50%;
             animation: bm-spin 0.8s linear infinite;
           }
@@ -403,17 +408,20 @@
 
   // This helper injects our button next to #preview-btn, once
   const injectButton = (previewBtn) => {
-    const BTN_ID = "my-custom-btn";
-
     // First we bail if our button is already there
-    if (document.getElementById(BTN_ID)) return;
+    if (document.getElementById(`#bm-editor-launch-btn`)) return;
 
     // Then we inject the button styles once (scoped to our button id so nothing else is affected)
     if (!document.getElementById("bm-edit-btn-styles")) {
       const style = document.createElement("style");
       style.id = "bm-edit-btn-styles";
       style.textContent = `
-          #${BTN_ID} {
+          /* Brand tokens — primary + white secondary */
+          #bm-editor-launch-btn {
+            --bm-primary: #10b981;
+            --bm-primary-strong: #059669;
+            --bm-secondary: #ffffff;
+
             position: relative;
             display: inline-flex;
             align-items: center;
@@ -426,14 +434,14 @@
             font-size: 13px;
             font-weight: 600;
             letter-spacing: 0.01em;
-            color: #ffffff;
+            color: var(--bm-secondary);
             cursor: pointer;
             isolation: isolate;
             overflow: hidden;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, var(--bm-primary) 0%, var(--bm-primary-strong) 100%);
             box-shadow:
-              0 1px 2px rgba(6, 78, 59, 0.25),
-              0 6px 16px -6px rgba(16, 185, 129, 0.55),
+              0 1px 2px color-mix(in srgb, var(--bm-primary-strong) 25%, transparent),
+              0 6px 16px -6px color-mix(in srgb, var(--bm-primary) 55%, transparent),
               inset 0 1px 0 rgba(255, 255, 255, 0.18);
             transition:
               transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -442,7 +450,7 @@
           }
 
           /* the sheen that sweeps across on hover */
-          #${BTN_ID}::before {
+          #bm-editor-launch-btn::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -457,53 +465,52 @@
             transition: transform 620ms ease;
           }
 
-          #${BTN_ID}:hover {
-            transform: translateY(-1px);
+          #bm-editor-launch-btn:hover {
             filter: saturate(1.08);
             box-shadow:
-              0 2px 4px rgba(6, 78, 59, 0.28),
-              0 10px 24px -6px rgba(16, 185, 129, 0.7),
+              0 2px 4px color-mix(in srgb, var(--bm-primary-strong) 28%, transparent),
+              0 10px 24px -6px color-mix(in srgb, var(--bm-primary) 70%, transparent),
               inset 0 1px 0 rgba(255, 255, 255, 0.22);
           }
-          #${BTN_ID}:hover::before { transform: translateX(120%); }
+          #bm-editor-launch-btn:hover::before { transform: translateX(120%); }
 
-          #${BTN_ID}:active { transform: translateY(0) scale(0.98); }
+          #bm-editor-launch-btn:active { transform: translateY(0) scale(0.98); }
 
-          #${BTN_ID}:focus-visible {
+          #bm-editor-launch-btn:focus-visible {
             outline: none;
             box-shadow:
-              0 0 0 3px rgba(16, 185, 129, 0.35),
-              0 6px 16px -6px rgba(16, 185, 129, 0.55);
+              0 0 0 3px color-mix(in srgb, var(--bm-primary) 35%, transparent),
+              0 6px 16px -6px color-mix(in srgb, var(--bm-primary) 55%, transparent);
           }
 
-          #${BTN_ID} .bm-edit-btn__icon {
+          #bm-editor-launch-btn .bm-edit-btn__icon {
             width: 15px;
             height: 15px;
             flex: 0 0 15px;
             transition: transform 220ms ease;
           }
-          #${BTN_ID}:hover .bm-edit-btn__icon { transform: rotate(-12deg); }
+          #bm-editor-launch-btn:hover .bm-edit-btn__icon { transform: rotate(-12deg); }
 
           /* loading state: swap icon for a spinner, dim slightly, block clicks */
-          #${BTN_ID}.bm-loading {
+          #bm-editor-launch-btn.bm-loading {
             pointer-events: none;
             filter: saturate(0.9);
           }
-          #${BTN_ID}.bm-loading .bm-edit-btn__icon { display: none; }
-          #${BTN_ID}.bm-loading::after {
+          #bm-editor-launch-btn.bm-loading .bm-edit-btn__icon { display: none; }
+          #bm-editor-launch-btn.bm-loading::after {
             content: "";
             width: 14px;
             height: 14px;
             flex: 0 0 14px;
             border: 2px solid rgba(255, 255, 255, 0.4);
-            border-top-color: #ffffff;
+            border-top-color: var(--bm-secondary);
             border-radius: 50%;
             animation: bm-edit-spin 0.7s linear infinite;
           }
           @keyframes bm-edit-spin { to { transform: rotate(360deg); } }
 
           @media (prefers-reduced-motion: reduce) {
-            #${BTN_ID}, #${BTN_ID}::before, #${BTN_ID} .bm-edit-btn__icon { transition: none; }
+            #bm-editor-launch-btn, #bm-editor-launch-btn::before, #bm-editor-launch-btn .bm-edit-btn__icon { transition: none; }
           }
         `;
       document.head.appendChild(style);
@@ -511,7 +518,7 @@
 
     // Then we build the button with a pencil icon + label
     const btn = document.createElement("button");
-    btn.id = BTN_ID;
+    btn.id = `bm-editor-launch-btn`;
     btn.type = "button";
     btn.innerHTML = `
         <svg class="bm-edit-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">

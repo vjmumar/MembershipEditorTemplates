@@ -4084,6 +4084,7 @@ class CourseTemplate {
       completedPosts = [],
       categoryProgress = [],
     ) => {
+        console.log(categoryProgress)
       // First we will create the necessary variables
       let fallbackImage =
         window.templateCustomizationSchema.placeholderThumbnail;

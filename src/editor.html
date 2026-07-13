@@ -1430,8 +1430,8 @@
     utils = {
       // This helper method retrieves the auth information
       getAuth: async () => {
-        const locationId = $cookies.get("locationId");
-        const productId = $cookies.get("productId");
+        const locationId = localStorage.getItem("bm-editor-location-id");
+        const productId = localStorage.getItem("bm-editor-product-id");
         const accessToken = localStorage.getItem("bm-editor-admin-token");
         if (accessToken) {
           return {
@@ -2182,9 +2182,13 @@
           url.searchParams.delete("membershipeditor");
           url.searchParams.append("isEditorPreview", "true");
 
-          // Then we will save the admin token to local storage
+          // Then we will save the admin token,location,product to local storage
           const adminAccessToken = url.searchParams.get("adminToken");
+          const locationId = url.searchParams.get("location_id");
+          const productId = url.searchParams.get("product_id");
           localStorage.setItem("bm-editor-admin-token", adminAccessToken);
+          localStorage.setItem("bm-editor-location-id", locationId);
+          localStorage.setItem("bm-editor-product-id", productId);
 
           // Then, clear the existing UI to make room for the iframe editor.
           if ($appContainer) $appContainer.remove();
@@ -5570,8 +5574,8 @@
 
       // This helper method retrieves the auth information
       getAuth: async () => {
-        const locationId = $cookies.get("locationId");
-        const productId = $cookies.get("productId");
+        const locationId = localStorage.getItem("bm-editor-location-id");
+        const productId = localStorage.getItem("bm-editor-product-id");
         const accessToken = localStorage.getItem("bm-editor-admin-token");
         if (accessToken) {
           return {

@@ -489,7 +489,6 @@
             flex: 0 0 15px;
             transition: transform 220ms ease;
           }
-          #bm-editor-launch-btn:hover .bm-edit-btn__icon { transform: rotate(-12deg); }
 
           /* loading state: swap icon for a spinner, dim slightly, block clicks */
           #bm-editor-launch-btn.bm-loading {

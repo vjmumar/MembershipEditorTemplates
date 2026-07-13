@@ -409,7 +409,7 @@
   const injectButton = (previewBtn) => {
     // First we will check if we are inside a course page
     const currentPageUrl = location.href;
-    const isInsideProduct = currentPageUrl.includes("/courses") && currentPageUrl.includes("?product_id");
+    const isInsideProduct = currentPageUrl.includes("/memberships/courses") && currentPageUrl.includes("product_id=");
 
     // First we bail if our button is already there or we are not inside product page
     if (!isInsideProduct || document.getElementById(`bm-editor-launch-btn`)) return;

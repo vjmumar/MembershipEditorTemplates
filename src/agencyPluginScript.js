@@ -518,7 +518,7 @@
 
     // Then we build the button with a pencil icon + label
     const btn = document.createElement("button");
-    btn.id = `#bm-editor-launch-btn`;
+    btn.id = `bm-editor-launch-btn`;
     btn.type = "button";
     btn.innerHTML = `
         <svg class="bm-edit-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">

@@ -409,7 +409,7 @@
   // This helper injects our button next to #preview-btn, once
   const injectButton = (previewBtn) => {
     // First we bail if our button is already there
-    if (document.getElementById(`#bm-editor-launch-btn`)) return;
+    if (document.getElementById(`bm-editor-launch-btn`)) return;
 
     // Then we inject the button styles once (scoped to our button id so nothing else is affected)
     if (!document.getElementById("bm-edit-btn-styles")) {

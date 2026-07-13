@@ -188,7 +188,6 @@
             --bm-primary: #10b981;
             --bm-primary-strong: #059669;
             --bm-secondary: #ffffff;
-
             position: fixed;
             inset: 0;
             z-index: 2147483647;
@@ -409,7 +408,7 @@
   // This helper injects our button next to #preview-btn, once
   const injectButton = (previewBtn) => {
     // First we will check if we are inside a course page
-    const currentPageUrl = location.pathname;
+    const currentPageUrl = location.href;
     const isInsideProduct = currentPageUrl.includes("/courses") && currentPageUrl.includes("?product_id");
 
     // First we bail if our button is already there or we are not inside product page
@@ -425,7 +424,6 @@
             --bm-primary: #10b981;
             --bm-primary-strong: #059669;
             --bm-secondary: #ffffff;
-
             position: relative;
             display: inline-flex;
             align-items: center;
@@ -433,7 +431,7 @@
             margin-left: 10px;
             padding: 9px 16px 9px 14px;
             border: 0;
-            border-radius: 10px;
+            border-radius: 5px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             font-size: 13px;
             font-weight: 600;

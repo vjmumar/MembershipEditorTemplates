@@ -165,7 +165,7 @@
     const magicLinkToken = magicLinkUrl.searchParams.get("token");
     const currentUrl = new URL(window.location.href);
     const currentUrlProductId = currentUrl.searchParams.get("product_id");
-    const finalUrl = `${baseUrl}/courses/products/${currentUrlProductId}?token=${magicLinkToken}&adminToken=${accessToken}&membershipeditor=true&location_id=${portalSettings.locationId}&product_id=${currentUrlProductId}&is_preview=true`;
+    const finalUrl = `${baseUrl}/courses/products/${currentUrlProductId}?token=${magicLinkToken}&adminToken=${accessToken}&membershipeditor=true&location_id=${portalSettings.locationId}&product_id=${currentUrlProductId}&agency_user_id=${authManager.uid}&agency_user_email=${encodeURIComponent(agencyUserContact?.email)}&is_preview=true`;
     return finalUrl;
   };
 

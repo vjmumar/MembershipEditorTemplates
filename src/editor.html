@@ -702,11 +702,11 @@
   .editor-customizer-hide {
     border: 1px solid #4b5563;
     color: #4b5563;
-   }
-   
-   .editor-customizer-exit {
-   border: 1px solid red;
-   display: none;
+  }
+
+  .editor-customizer-exit {
+    border: 1px solid red;
+    display: none;
     color: red;
   }
 
@@ -1427,24 +1427,7 @@
     };
 
     // Utils module
-    utils = {
-      // This helper method retrieves the auth information
-      getAuth: async () => {
-        const locationId = localStorage.getItem("bm-editor-location-id");
-        const productId = localStorage.getItem("bm-editor-product-id");
-        const accessToken = localStorage.getItem("bm-editor-admin-token");
-        if (accessToken) {
-          return {
-            locationId,
-            productId,
-            tokenId: accessToken,
-          };
-        } else {
-          alert("Edit: No Token Found");
-          return {};
-        }
-      },
-    };
+    utils = {};
   }
 
   class MembershipParser {
@@ -2182,13 +2165,17 @@
           url.searchParams.delete("membershipeditor");
           url.searchParams.append("isEditorPreview", "true");
 
-          // Then we will save the admin token,location,product to local storage
+          // Then we will save the admin token,location,agency user id, and product to local storage
           const adminAccessToken = url.searchParams.get("adminToken");
           const locationId = url.searchParams.get("location_id");
           const productId = url.searchParams.get("product_id");
+          const agencyUserId = url.searchParams.get("agency_user_id");
+          const agencyUserEmail = url.searchParams.get("agency_user_email");
           localStorage.setItem("bm-editor-admin-token", adminAccessToken);
           localStorage.setItem("bm-editor-location-id", locationId);
           localStorage.setItem("bm-editor-product-id", productId);
+          localStorage.setItem("bm-editor-agency-user-id", agencyUserId);
+          localStorage.setItem("bm-editor-agency-user-email", agencyUserEmail);
 
           // Then, clear the existing UI to make room for the iframe editor.
           if ($appContainer) $appContainer.remove();
@@ -3420,6 +3407,103 @@
             });
         });
       },
+      getNewLoginToken: async () => {
+        // First we will retrieve the auth
+        const auth = await this.utils.getAuth();
+
+        // Then we will retrieve the portal settings
+        const portalSettings = await fetch(
+          `https://services.leadconnectorhq.com/clientclub/portal-settings/${auth.locationId}`,
+          {
+            headers: {
+              accept: "application/json, text/plain, */*",
+              "accept-language": "en-US,en;q=0.6",
+              channel: "APP",
+              source: "WEB_USER",
+              "source-id": auth.locationId,
+              "token-id": auth.tokenId,
+              Referer: "https://app.gohighlevel.com/",
+              version: "2021-07-28",
+            },
+            body: null,
+            method: "GET",
+          },
+        ).then((e) => e.json());
+
+        // Then we will retrieve the agency user contact
+        const agencyUserContact = await fetch(
+          `https://services.leadconnectorhq.com/clientclub/${auth.locationId}/users/agency-user-contacts?agencyUserId=${auth.agencyUserId}`,
+          {
+            headers: {
+              accept: "application/json, text/plain, */*",
+              "accept-language": "en-US,en;q=0.6",
+              channel: "APP",
+              source: "WEB_USER",
+              "source-id": auth.locationId,
+              "token-id": auth.tokenId,
+              Referer: "https://app.gohighlevel.com/",
+              version: "2021-07-28",
+            },
+            body: null,
+            method: "GET",
+          },
+        )
+          .then((e) => e.json())
+          .then((e) => e[0]);
+
+        // Then we will retrieve the base url
+        const baseUrl = await fetch(
+          `https://backend.leadconnectorhq.com/membership/locations/${auth.locationId}/settings/preview-base-url`,
+          {
+            headers: {
+              accept: "application/json, text/plain, */*",
+              "accept-language": "en-US,en;q=0.6",
+              authorization: `Bearer ${auth.tokenId}`,
+              channel: "APP",
+              source: "WEB_USER",
+              sourceid: location,
+              version: "2021-07-28",
+              Referer: "https://app.gohighlevel.com/",
+            },
+            body: null,
+            method: "GET",
+          },
+        )
+          .then((e) => e.json())
+          .then((e) => e.baseUrl);
+
+        // Then we will generate the magic link
+        const magicLink = await fetch(
+          `https://services.leadconnectorhq.com/clientclub/${auth.locationId}/tokens/send-magic-link`,
+          {
+            headers: {
+              accept: "application/json, text/plain, */*",
+              "accept-language": "en-US,en;q=0.6",
+              channel: "APP",
+              "content-type": "application/json",
+              source: "WEB_USER",
+              "source-id": auth.locationId,
+              "token-id": auth.tokenId,
+              Referer: "https://app.gohighlevel.com/",
+              version: "2021-07-28",
+            },
+            body: JSON.stringify({
+              locationId: auth.locationId,
+              email: [auth?.agencyUserEmail],
+              sendEmail: false,
+              showMagicLink: true,
+              contactId: auth.agencyUserId,
+              source: "WEB_USER",
+            }),
+            method: "POST",
+          },
+        )
+          .then((e) => e.json())
+          .then((e) => e[0].magicLink);
+        const magicLinkUrl = new URL(magicLink);
+        const magicLinkToken = magicLinkUrl.searchParams.get("token");
+        return magicLinkToken;
+      },
     };
 
     // Action module
@@ -4094,9 +4178,10 @@
             document.querySelector(".undo")?.classList?.add("disabled");
 
             // Then we will reload the preview iframe
-            // const iframeUrl = new URL(this.$iframe.src);
-            // iframeUrl.searchParams.set("token", auth?.tokenId);
-            // this.$iframe.src = iframeUrl.toString();
+            const newPreviewLinkToken = await this.data.getNewLoginToken();
+            const iframeUrl = new URL(this.$iframe.src);
+            iframeUrl.searchParams.set("token", newPreviewLinkToken);
+            this.$iframe.src = iframeUrl.toString();
 
             /**
              * Finally, we provide visual confirmation to the user that their changes have been saved successfully,
@@ -4236,8 +4321,9 @@
 
             // Finally we will show a success message and reload the preview iframe
             alert("✅ Done! You’ve switched to a new template.");
+            const newPreviewLinkToken = await this.data.getNewLoginToken();
             const iframeUrl = new URL(this.$iframe.src);
-            iframeUrl.searchParams.set("token", auth?.tokenId);
+            iframeUrl.searchParams.set("token", newPreviewLinkToken);
             this.$iframe.src = iframeUrl.toString();
           } catch (err) {
             // Finally we will notify the user and log the error for debugging if saving fails for any reason
@@ -4352,8 +4438,9 @@
 
             // Finally we will show a success message and reload the preview iframe
             alert("✅ Done! Restored to default.");
+            const newPreviewLinkToken = await this.data.getNewLoginToken();
             const iframeUrl = new URL(this.$iframe.src);
-            iframeUrl.searchParams.set("token", auth?.tokenId);
+            iframeUrl.searchParams.set("token", newPreviewLinkToken);
             this.$iframe.src = iframeUrl.toString();
           } catch (err) {
             // Finally we will notify the user and log the error for debugging if restoring the template fails for any reason
@@ -4746,12 +4833,13 @@
         this.$iframe.contentDocument.body.style.display = "none";
         setTimeout(async () => {
           const auth = await this.utils.getAuth();
+          const newPreviewLinkToken = await this.data.getNewLoginToken();
           const url = this.$iframe.src.replace(
             /(\/courses\/products\/[^/?]+)\/?(\?.*)?$/,
             "$1/categories$2",
           );
           const iframeUrl = new URL(url);
-         //  iframeUrl.searchParams.set("token", auth?.tokenId);
+          iframeUrl.searchParams.set("token", newPreviewLinkToken);
           this.$iframe.src = iframeUrl.toString();
         }, 500);
 
@@ -4783,8 +4871,9 @@
 
         // Then we will update the iframe
         const auth = await this.utils.getAuth();
+        const newPreviewLinkToken = await this.data.getNewLoginToken();
         const iframeUrl = new URL(page);
-        // iframeUrl.searchParams.set("token", auth?.tokenId);
+        iframeUrl.searchParams.set("token", newPreviewLinkToken);
         this.$iframe.src = iframeUrl.toString();
 
         // Finally we will add a loading indicator inside the sidebar editor
@@ -5575,11 +5664,17 @@
         const locationId = localStorage.getItem("bm-editor-location-id");
         const productId = localStorage.getItem("bm-editor-product-id");
         const accessToken = localStorage.getItem("bm-editor-admin-token");
+        const agencyUserId = localStorage.getItem("bm-editor-agency-user-id");
+        const agencyUserEmail = localStorage.getItem(
+          "bm-editor-agency-user-email",
+        );
         if (accessToken) {
           return {
             locationId,
             productId,
             tokenId: accessToken,
+            agencyUserId,
+            agencyUserEmail,
           };
         } else {
           alert("Edit: No Token Found");

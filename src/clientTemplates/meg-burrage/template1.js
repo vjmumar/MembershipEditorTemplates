@@ -4084,14 +4084,14 @@ class CourseTemplate {
       completedPosts = [],
       categoryProgress = [],
     ) => {
-        console.log(categoryProgress)
       // First we will create the necessary variables
       let fallbackImage =
         window.templateCustomizationSchema.placeholderThumbnail;
 
       // Then we will add a boolean to each category if it is completed
       categories.forEach((category) => {
-        const currentCategoryProgress = (categoryProgress || [])?.find(
+        const progress = categoryProgress?.error ? [] : categoryProgress;
+        const currentCategoryProgress = progress?.find(
           (e) => e.categoryId === category.id,
         );
         category.isCompleted = currentCategoryProgress?.progress === 100;

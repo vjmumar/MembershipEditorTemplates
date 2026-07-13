@@ -4872,6 +4872,7 @@
         // Then we will update the iframe
         const auth = await this.utils.getAuth();
         const newPreviewLinkToken = await this.data.getNewLoginToken();
+        console.log(newPreviewLinkToken)
         const iframeUrl = new URL(page);
         iframeUrl.searchParams.set("token", newPreviewLinkToken);
         this.$iframe.src = iframeUrl.toString();

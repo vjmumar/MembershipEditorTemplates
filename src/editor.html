@@ -4064,7 +4064,7 @@
               headers: {
                 accept: "application/json, text/plain, */*",
                 "accept-language": "en-US,en;q=0.6",
-                authorization: `Bearer ${auth}`,
+                authorization: `Bearer ${auth.tokenId}`,
                 channel: "APP",
                 "content-type": "application/json",
                 source: "WEB_USER",
@@ -5566,7 +5566,9 @@
       getAuth: async () => {
         const accessToken = localStorage.getItem("bm-editor-admin-token");
         if (accessToken) {
-          return accessToken;
+          return {
+            tokenId: accessToken
+          };
         } else {
           alert("Edit: No Token Found");
           return "";

@@ -1430,12 +1430,18 @@
     utils = {
       // This helper method retrieves the auth information
       getAuth: async () => {
+        const locationId = $cookies.get("locationId");
+        const productId = $cookies.get("locationId");
         const accessToken = localStorage.getItem("bm-editor-admin-token");
         if (accessToken) {
-          return accessToken;
+          return {
+            location,
+            productId,
+            tokenId: accessToken,
+          };
         } else {
-          alert("Preview: No Token Found");
-          return "";
+          alert("Edit: No Token Found");
+          return {};
         }
       },
     };
@@ -5564,14 +5570,18 @@
 
       // This helper method retrieves the auth information
       getAuth: async () => {
+        const locationId = $cookies.get("locationId");
+        const productId = $cookies.get("locationId");
         const accessToken = localStorage.getItem("bm-editor-admin-token");
         if (accessToken) {
           return {
-            tokenId: accessToken
+            location,
+            productId,
+            tokenId: accessToken,
           };
         } else {
           alert("Edit: No Token Found");
-          return "";
+          return {};
         }
       },
     };

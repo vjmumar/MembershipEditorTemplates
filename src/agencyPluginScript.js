@@ -445,7 +445,7 @@
     if (
       isInsideProduct &&
       !currentProduct?.customHeader?.includes(
-        "window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID",
+        "data-client",
       )
     ) {
       return;

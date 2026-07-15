@@ -72,7 +72,7 @@
 
   // Then we will create a function that is responsible for retrieving the current product
   const getProduct = async () => {
-    const currentUrlProductId = currentUrl.searchParams.get("product_id");
+    const currentUrlProductId = new Url(location.href).searchParams.get("product_id");
     const auth = await accessToken();
     return await fetch(
       `https://backend.leadconnectorhq.com/membership/locations/${locationId}/products/${currentUrlProductId}`,

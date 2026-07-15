@@ -70,6 +70,29 @@
     return firebaseManager.manager;
   })();
 
+  // Then we will create a function that is responsible for retrieving the current product
+  const getProduct = async () => {
+    const currentUrlProductId = currentUrl.searchParams.get("product_id");
+    const auth = await accessToken();
+    return await fetch(
+      `https://backend.leadconnectorhq.com/membership/locations/${locationId}/products/${currentUrlProductId}`,
+      {
+        headers: {
+          accept: "application/json, text/plain, */*",
+          "accept-language": "en-US,en;q=0.6",
+          authorization: `Bearer ${auth.token}`,
+          priority: "u=1, i",
+          source: "WEB_USER",
+          sourceid: locationId,
+          version: "2021-07-28",
+          Referer: "https://app.gohighlevel.com/",
+        },
+        body: null,
+        method: "GET",
+      },
+    ).then((e) => e.json());
+  };
+
   // Then we will create a function that is responsible for generating magic link
   const generateMagicLink = async () => {
     // First we will retrieve the portal settings
@@ -406,13 +429,27 @@
   };
 
   // This helper injects our button next to #preview-btn, once
-  const injectButton = (previewBtn) => {
+  const injectButton = async (previewBtn) => {
     // First we will check if we are inside a course page
     const currentPageUrl = location.href;
-    const isInsideProduct = currentPageUrl.includes("/memberships/courses") && currentPageUrl.includes("product_id=");
+    const isInsideProduct =
+      currentPageUrl.includes("/memberships/courses") &&
+      currentPageUrl.includes("product_id=");
+    const currentProduct = await getProduct();
 
     // First we bail if our button is already there or we are not inside product page
-    if (!isInsideProduct || document.getElementById(`bm-editor-launch-btn`)) return;
+    if (!isInsideProduct || document.getElementById(`bm-editor-launch-btn`))
+      return;
+
+    // Then we will check if the product contains client id in it's header, if not then we will bail
+    if (
+      isInsideProduct &&
+      !currentProduct?.customHeader?.includes(
+        "window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID",
+      )
+    ) {
+      return;
+    }
 
     // Then we inject the button styles once (scoped to our button id so nothing else is affected)
     if (!document.getElementById("bm-edit-btn-styles")) {

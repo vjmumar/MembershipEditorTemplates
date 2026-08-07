@@ -4726,13 +4726,13 @@ class CourseTemplate {
               window.sessionStorage.getItem("catv2");
             const data = JSON.parse(
               window.atob(
-                  catTokenV2
+                  catTokenV2 ||
                   catToken ||
                   catTokenSessionStorageV2 ||
                   catTokenSessionStorage ||
                   acatTokenV2,
                   acatToken ||
-                  acatTokenSessionStorageV2,
+                  acatTokenSessionStorageV2 ||,
                   acatTokenSessionStorage,
               ) || "{}",
             );

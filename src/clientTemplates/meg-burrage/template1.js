@@ -1,6 +1,6 @@
 window.templateCustomizationSchema = {
   name: "Production",
-  id: "template-3",
+  id: "template-0",
   customCss:
     "@font-face { font-family: 'Ogg'; src: url('https://res.cloudinary.com/dpr6hw8uh/raw/upload/v1659948521/Ogg-Roman_vloao9.otf') format('opentype'); font-weight: normal; font-style: normal; font-display: swap; }",
   customFonts: [],

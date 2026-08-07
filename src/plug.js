@@ -3181,9 +3181,9 @@ class CourseTemplate {
          const [userData, userProductProgress, productCategories, completedPosts] =
             await Promise.allSettled([
               //  this.data.fetchUser(),
-               this.data.fetchUserProductProgress(),
-               this.data.fetchCategories(),
-               this.data.fetchCompletedPosts(),
+               // this.data.fetchUserProductProgress(),
+               // this.data.fetchCategories(),
+               // this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
             console.log("no error here" , userData, userProductProgress, productCategories, completedPosts)
          // Then we will process the categories data

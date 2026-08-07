@@ -2896,7 +2896,6 @@ window.templateCustomizationSchema = {
 class CourseTemplate {
    constructor() {
       this.isMobile = window.matchMedia("(max-width: 768px)").matches;
-      console.log("lols");
       this.init();
    }
 
@@ -3180,12 +3179,12 @@ class CourseTemplate {
          // Then we will retrieve the necessary data
          const [userData, userProductProgress, productCategories, completedPosts] =
             await Promise.allSettled([
-              //  this.data.fetchUser(),
-               // this.data.fetchUserProductProgress(),
-               // this.data.fetchCategories(),
-               // this.data.fetchCompletedPosts(),
+               this.data.fetchUser(),
+               this.data.fetchUserProductProgress(),
+               this.data.fetchCategories(),
+               this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
-            console.log("no error here" , userData, userProductProgress, productCategories, completedPosts)
+
          // Then we will process the categories data
          const categories = productCategories
             ?.filter((cat) => !cat?.parentCategory)
@@ -4225,6 +4224,9 @@ class CourseTemplate {
                   .then((e) => {
                      resolved(e);
                      sessionStorage.setItem(storageName, JSON.stringify(e));
+                  })
+                  .catch(() => {
+                     resolve({});
                   });
             } else {
                console.log("No Token Found! Product!");
@@ -4338,6 +4340,9 @@ class CourseTemplate {
                         storageName,
                         JSON.stringify(e?.categories || []),
                      );
+                  })
+                  .catch(() => {
+                     resolve([]);
                   });
             } else {
                console.log("No Token Found! Categories!");
@@ -4377,6 +4382,9 @@ class CourseTemplate {
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e);
+                  })
+                  .catch(() => {
+                     resolve({});
                   });
             } else {
                console.log("No Token Found! Post!");
@@ -4422,6 +4430,9 @@ class CourseTemplate {
                         storageName,
                         JSON.stringify(isArray ? e : []),
                      );
+                  })
+                  .catch(() => {
+                     resolve([]);
                   });
             } else {
                console.log("No Token Found! Completed Posts!");
@@ -4467,6 +4478,9 @@ class CourseTemplate {
                      ).toFixed(0);
                      sessionStorage.setItem(storageName, JSON.stringify(e || "{}"));
                      resolved(e);
+                  })
+                  .catch(() => {
+                     resolve({});
                   });
             } else {
                console.log("No Token Found! Product Progress!");
@@ -4510,6 +4524,9 @@ class CourseTemplate {
                   .then((e) => {
                      sessionStorage.setItem(storageName, JSON.stringify(e));
                      resolved(e);
+                  })
+                  .catch(() => {
+                     resolve({});
                   });
             } else {
                console.log("No Token Found! Category Progress!");
@@ -4556,6 +4573,9 @@ class CourseTemplate {
                   .then((e) => {
                      resolved(e);
                      sessionStorage.setItem(storageName, JSON.stringify(e));
+                  })
+                  .catch(() => {
+                     resolve({});
                   });
             } else {
                console.log("No Token Found! User!");
@@ -4654,7 +4674,7 @@ class CourseTemplate {
                console.warn(`Fetch error, trying next URL: ${url}`, error);
             }
          }
-         throw lastError;
+         throw null;
       },
       waitForElement: (elementSelector = "", resolveDelay = 1000, timeout = null) => {
          return new Promise((res) => {

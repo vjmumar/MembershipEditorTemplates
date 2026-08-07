@@ -4649,6 +4649,7 @@ class CourseTemplate {
                   `Fetch failed: ${response.status} ${response.statusText}`,
                );
                console.warn(`Failed, trying next URL: ${url}`, lastError);
+               continue;
             } catch (error) {
                lastError = error;
                console.warn(`Fetch error, trying next URL: ${url}`, error);

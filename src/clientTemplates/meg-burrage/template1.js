@@ -3176,7 +3176,7 @@ class CourseTemplate {
       initLandingPage: async () => {
          // First we will wait for the product container
          const $container = await this.utils.waitForElement(".product-container", 0);
-
+        console.log($container)
          // Then we will retrieve the necessary data
          const [userData, userProductProgress, productCategories, completedPosts] =
             await Promise.allSettled([
@@ -3185,6 +3185,7 @@ class CourseTemplate {
                this.data.fetchCategories(),
                this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
+            console.log(";p;")
 
          // Then we will process the categories data
          const categories = productCategories
@@ -4525,7 +4526,6 @@ class CourseTemplate {
          const userId = auth?.userId;
          const storageName = `${productId}-user`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         return null;
          if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             if (token) {

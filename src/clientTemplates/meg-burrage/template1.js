@@ -4525,6 +4525,7 @@ class CourseTemplate {
          const userId = auth?.userId;
          const storageName = `${productId}-user`;
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+         return null;
          if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             if (token) {
@@ -4641,7 +4642,6 @@ class CourseTemplate {
          let lastError;
          for (const url of urls) {
             try {
-              console.log(url)
                const response = await fetch(url, options);
                if (response.ok) {
                   return response;

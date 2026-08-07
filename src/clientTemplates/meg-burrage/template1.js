@@ -4440,24 +4440,24 @@ class CourseTemplate {
             if (token) {
                this.utils
                   .relayUrlFetch(
-                  [
-                    `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/products/user-activity/${cId || contactId}`,
-                    `https://services.leadconnectorhq.com/memberships/locations/${locationId}/products/user-activity/${cId || contactId}`
-                  ],
-                  {
-                     headers: {
-                        "accept": "application/json, text/plain, */*",
-                        "accept-language": "en-US,en;q=0.5",
-                        "token-id": token,
-                        "content-type": "application/json",
+                     [
+                        `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/products/user-activity/${cId || contactId}`,
+                        `https://services.leadconnectorhq.com/memberships/locations/${locationId}/products/user-activity/${cId || contactId}`,
+                     ],
+                     {
+                        headers: {
+                           "accept": "application/json, text/plain, */*",
+                           "accept-language": "en-US,en;q=0.5",
+                           "token-id": token,
+                           "content-type": "application/json",
+                        },
+                        body: null,
+                        method: "POST",
+                        mode: "cors",
+                        credentials: "omit",
+                        priority: "high",
                      },
-                     body: null,
-                     method: "POST",
-                     mode: "cors",
-                     credentials: "omit",
-                     priority: "high",
-                  },
-               )
+                  )
                   .then((e) => e.json())
                   .then((e) => {
                      e.progressPercentage = (
@@ -4486,25 +4486,25 @@ class CourseTemplate {
                const categoryIds = await this.data.fetchCategories();
                this.utils
                   .relayUrlFetch(
-                  [
-                    `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/categories/get-progress`,
-                    `https://services.leadconnectorhq.com/memberships/locations/${locationId}/categories/get-progress`
-                  ],
-                  {
-                     headers: {
-                        "accept": "application/json, text/plain, */*",
-                        "accept-language": "en-US,en;q=0.5",
-                        "authorization": `Bearer ${token}`,
-                        "content-type": "application/json",
+                     [
+                        `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/categories/get-progress`,
+                        `https://services.leadconnectorhq.com/memberships/locations/${locationId}/categories/get-progress`,
+                     ],
+                     {
+                        headers: {
+                           "accept": "application/json, text/plain, */*",
+                           "accept-language": "en-US,en;q=0.5",
+                           "authorization": `Bearer ${token}`,
+                           "content-type": "application/json",
+                        },
+                        body: JSON.stringify({
+                           product_id: productId,
+                           categories: categoryIds.map((e) => e.id),
+                        }),
+                        method: "POST",
+                        priority: "high",
                      },
-                     body: JSON.stringify({
-                        product_id: productId,
-                        categories: categoryIds.map((e) => e.id),
-                     }),
-                     method: "POST",
-                     priority: "high",
-                  },
-               )
+                  )
                   .then((e) => e.json())
                   .then((e) => {
                      sessionStorage.setItem(storageName, JSON.stringify(e));
@@ -4647,13 +4647,14 @@ class CourseTemplate {
                lastError = new Error(
                   `Fetch failed: ${response.status} ${response.statusText}`,
                );
+               console.warn(`Failed, trying next URL: ${url}`, lastError);
             } catch (error) {
                lastError = error;
+               console.warn(`Fetch error, trying next URL: ${url}`, error);
             }
          }
          throw lastError;
       },
-
       waitForElement: (elementSelector = "", resolveDelay = 1000, timeout = null) => {
          return new Promise((res) => {
             const interval = setInterval(() => {

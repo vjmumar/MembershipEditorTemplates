@@ -4221,9 +4221,7 @@ class CourseTemplate {
                      method: "GET",
                      priority: "high",
                   })
-                  .then((e) => {
-                     console.log(e);
-                  })
+                  .then((e) => e.json())
                   .then((e) => {
                      resolved(e);
                      sessionStorage.setItem(storageName, JSON.stringify(e));
@@ -4643,6 +4641,7 @@ class CourseTemplate {
          let lastError;
          for (const url of urls) {
             try {
+              console.log(url)
                const response = await fetch(url, options);
                if (response.ok) {
                   return response;
@@ -4651,7 +4650,6 @@ class CourseTemplate {
                   `Fetch failed: ${response.status} ${response.statusText}`,
                );
                console.warn(`Failed, trying next URL: ${url}`, lastError);
-               continue;
             } catch (error) {
                lastError = error;
                console.warn(`Fetch error, trying next URL: ${url}`, error);

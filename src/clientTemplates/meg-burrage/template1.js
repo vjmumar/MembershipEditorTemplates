@@ -3174,8 +3174,7 @@ class CourseTemplate {
       },
 
       initLandingPage: async () => {
-         try {
-          // First we will wait for the product container
+         // First we will wait for the product container
          const $container = await this.utils.waitForElement(".product-container", 0);
 
          // Then we will retrieve the necessary data
@@ -3186,7 +3185,7 @@ class CourseTemplate {
                this.data.fetchCategories(),
                this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
-
+            console.log("no error here" , userData, userProductProgress, productCategories, completedPosts)
          // Then we will process the categories data
          const categories = productCategories
             ?.filter((cat) => !cat?.parentCategory)
@@ -3220,9 +3219,6 @@ class CourseTemplate {
          this.globalInitializers.initNavBar($container);
          this.globalInitializers.initSidebar($container);
          document.body.classList.add("page-dashboard");
-         } catch (err) {
-          console.log(err)
-         }
       },
 
       initCategoryPostPage: async () => {

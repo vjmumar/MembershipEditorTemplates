@@ -4712,17 +4712,27 @@ class CourseTemplate {
             document.querySelector(".product-container, #app-container") &&
             window?.$cookies
           ) {
-            const acatToken = window?.$cookies?.get("acatv2");
+            const acatToken = window?.$cookies?.get("acat");
+            const acatTokenV2 = window?.$cookies?.get("acatv2");
             const acatTokenSessionStorage =
+              window.sessionStorage.getItem("acat");
+            const acatTokenSessionStorageV2 =
               window.sessionStorage.getItem("acatv2");
-            const catToken = window?.$cookies?.get("catv2");
+            const catToken = window?.$cookies?.get("cat");
+            const catTokenV2 = window?.$cookies?.get("catv2");
             const catTokenSessionStorage =
+              window.sessionStorage.getItem("cat");
+            const catTokenSessionStorageV2 =
               window.sessionStorage.getItem("catv2");
             const data = JSON.parse(
               window.atob(
-                catToken ||
+                  catTokenV2
+                  catToken ||
+                  catTokenSessionStorageV2 ||
                   catTokenSessionStorage ||
+                  acatTokenV2,
                   acatToken ||
+                  acatTokenSessionStorageV2,
                   acatTokenSessionStorage,
               ) || "{}",
             );

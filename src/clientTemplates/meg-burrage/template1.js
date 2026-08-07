@@ -4200,22 +4200,26 @@ class CourseTemplate {
          if (Object.keys(previousData).length > 0 && previousData?.id === productId)
             return previousData;
          return await new Promise((resolved, reject) => {
-            const url = `https://services.leadconnectorhq.com/memberships/locations/${locationId}/products/${productId}`;
+            const url = [
+               `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/products/${productId}`,
+               `https://services.leadconnectorhq.com/memberships/locations/${locationId}/products/${productId}`,
+            ];
             if (token) {
-               fetch(url, {
-                  headers: {
-                     "accept": "application/json, text/plain, */*",
-                     "accept-language": "en-US,en;q=0.6",
-                     "authorization": `Bearer ${token}`,
-                     "channel": "APP",
-                     "source": "PORTAL_USER",
-                     "x-product-id": productId,
-                     "version": "2021-07-28",
-                  },
-                  body: null,
-                  method: "GET",
-                  priority: "high",
-               })
+               this.utils
+                  .relayUrlFetch(url, {
+                     headers: {
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.6",
+                        "authorization": `Bearer ${token}`,
+                        "channel": "APP",
+                        "source": "PORTAL_USER",
+                        "x-product-id": productId,
+                        "version": "2021-07-28",
+                     },
+                     body: null,
+                     method: "GET",
+                     priority: "high",
+                  })
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e);
@@ -4241,22 +4245,26 @@ class CourseTemplate {
             const categoryId =
                catId ||
                location.href.split("/categories/")[1].split("?")[0].split("/")[0];
-            const url = `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-purchase/categories/${categoryId}?product_id=${productId}&visibility=published&published_posts=true`;
+            const url = [
+               `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-purchase/categories/${categoryId}?product_id=${productId}&visibility=published&published_posts=true`,
+               `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-purchase/categories/${categoryId}?product_id=${productId}&visibility=published&published_posts=true`,
+            ];
             if (token) {
-               fetch(url, {
-                  headers: {
-                     "accept": "application/json, text/plain, */*",
-                     "accept-language": "en-US,en;q=0.6",
-                     "authorization": `Bearer ${token}`,
-                     "channel": "APP",
-                     "source": "PORTAL_USER",
-                     "x-product-id": productId,
-                     "version": "2021-07-28",
-                  },
-                  priority: "high",
-                  body: null,
-                  method: "GET",
-               })
+               this.utils
+                  .relayUrlFetch(url, {
+                     headers: {
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.6",
+                        "authorization": `Bearer ${token}`,
+                        "channel": "APP",
+                        "source": "PORTAL_USER",
+                        "x-product-id": productId,
+                        "version": "2021-07-28",
+                     },
+                     priority: "high",
+                     body: null,
+                     method: "GET",
+                  })
                   .then((e) => e.json())
                   .then(async (e) => {
                      // 1. Fetch all available categories and filter them to find only those
@@ -4302,22 +4310,26 @@ class CourseTemplate {
          const previousData = JSON.parse(sessionStorage.getItem(storageName) || "[]");
          if (previousData.length > 0) return previousData;
          return await new Promise((resolved, reject) => {
-            const url = `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-purchase/categories?product_id=${productId}`;
+            const url = [
+               `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-purchase/categories?product_id=${productId}`,
+               `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-purchase/categories?product_id=${productId}`,
+            ];
             if (token) {
-               fetch(url, {
-                  headers: {
-                     "accept": "application/json, text/plain, */*",
-                     "accept-language": "en-US,en;q=0.6",
-                     "authorization": `Bearer ${token}`,
-                     "channel": "APP",
-                     "source": "PORTAL_USER",
-                     "x-product-id": productId,
-                     "version": "2021-07-28",
-                  },
-                  body: null,
-                  method: "GET",
-                  priority: "high",
-               })
+               this.utils
+                  .relayUrlFetch(url, {
+                     headers: {
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.6",
+                        "authorization": `Bearer ${token}`,
+                        "channel": "APP",
+                        "source": "PORTAL_USER",
+                        "x-product-id": productId,
+                        "version": "2021-07-28",
+                     },
+                     body: null,
+                     method: "GET",
+                     priority: "high",
+                  })
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e?.categories || []);
@@ -4341,22 +4353,26 @@ class CourseTemplate {
          return await new Promise((resolved, reject) => {
             const postId =
                pId || location.href.split("/posts/")[1].split("?")[0].split("/")[0];
-            const url = `https://services.leadconnectorhq.com/memberships/locations/${locationId}/posts/${postId}`;
+            const url = [
+               `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/posts/${postId}`,
+               `https://services.leadconnectorhq.com/memberships/locations/${locationId}/posts/${postId}`,
+            ];
             if (postId) {
-               fetch(url, {
-                  headers: {
-                     "accept": "application/json, text/plain, */*",
-                     "accept-language": "en-US,en;q=0.6",
-                     "authorization": `Bearer ${token}`,
-                     "channel": "APP",
-                     "source": "PORTAL_USER",
-                     "x-product-id": productId,
-                     "version": "2021-07-28",
-                  },
-                  body: null,
-                  method: "GET",
-                  priority: "high",
-               })
+               this.utils
+                  .relayUrlFetch(url, {
+                     headers: {
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.6",
+                        "authorization": `Bearer ${token}`,
+                        "channel": "APP",
+                        "source": "PORTAL_USER",
+                        "x-product-id": productId,
+                        "version": "2021-07-28",
+                     },
+                     body: null,
+                     method: "GET",
+                     priority: "high",
+                  })
                   .then((e) => e.json())
                   .then((e) => {
                      resolved(e);
@@ -4378,21 +4394,25 @@ class CourseTemplate {
          if (previousData.length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             if (token) {
-               const url = `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`;
-               fetch(url, {
-                  headers: {
-                     "accept": "application/json, text/plain, */*",
-                     "accept-language": "en-US,en;q=0.6",
-                     "authorization": `Bearer ${token}`,
-                     "channel": "APP",
-                     "source": "PORTAL_USER",
-                     "x-product-id": productId,
-                     "version": "2021-07-28",
-                  },
-                  body: null,
-                  method: "GET",
-                  priority: "high",
-               })
+               const url = [
+                  `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`,
+                  `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`,
+               ];
+               this.utils
+                  .relayUrlFetch(url, {
+                     headers: {
+                        "accept": "application/json, text/plain, */*",
+                        "accept-language": "en-US,en;q=0.6",
+                        "authorization": `Bearer ${token}`,
+                        "channel": "APP",
+                        "source": "PORTAL_USER",
+                        "x-product-id": productId,
+                        "version": "2021-07-28",
+                     },
+                     body: null,
+                     method: "GET",
+                     priority: "high",
+                  })
                   .then((e) => e.json())
                   .then((e) => {
                      const isArray = Array.isArray(e);
@@ -4418,8 +4438,12 @@ class CourseTemplate {
          if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             if (token) {
-               fetch(
-                  `https://services.leadconnectorhq.com/memberships/locations/${locationId}/products/user-activity/${cId || contactId}`,
+               this.utils
+                  .relayUrlFetch(
+                  [
+                    `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/products/user-activity/${cId || contactId}`,
+                    `https://services.leadconnectorhq.com/memberships/locations/${locationId}/products/user-activity/${cId || contactId}`
+                  ],
                   {
                      headers: {
                         "accept": "application/json, text/plain, */*",
@@ -4460,8 +4484,12 @@ class CourseTemplate {
          return await new Promise(async (resolved, reject) => {
             if (token) {
                const categoryIds = await this.data.fetchCategories();
-               fetch(
-                  `https://services.leadconnectorhq.com/memberships/locations/${locationId}/categories/get-progress`,
+               this.utils
+                  .relayUrlFetch(
+                  [
+                    `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/categories/get-progress`,
+                    `https://services.leadconnectorhq.com/memberships/locations/${locationId}/categories/get-progress`
+                  ],
                   {
                      headers: {
                         "accept": "application/json, text/plain, */*",
@@ -4547,8 +4575,11 @@ class CourseTemplate {
          let req = null;
          try {
             if (isComplete) {
-               req = await fetch(
-                  `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-post-completion`,
+               req = await this.utils.relayUrlFetch(
+                  [
+                     `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-post-completion`,
+                     `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-post-completion`,
+                  ],
                   {
                      method: "POST",
                      headers: {
@@ -4570,8 +4601,11 @@ class CourseTemplate {
                   },
                );
             } else {
-               req = await fetch(
-                  `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-post-completion/${postId}`,
+               req = await this.utils.relayUrlFetch(
+                  [
+                     `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-post-completion/${postId}`,
+                     `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-post-completion/${postId}`,
+                  ],
                   {
                      headers: {
                         "accept": "application/json, text/plain, */*",
@@ -4602,6 +4636,24 @@ class CourseTemplate {
 
    // This object holds utility methods
    utils = {
+      relayUrlFetch: async (urls, options) => {
+         let lastError;
+         for (const url of urls) {
+            try {
+               const response = await fetch(url, options);
+               if (response.ok) {
+                  return response;
+               }
+               lastError = new Error(
+                  `Fetch failed: ${response.status} ${response.statusText}`,
+               );
+            } catch (error) {
+               lastError = error;
+            }
+         }
+         throw lastError;
+      },
+
       waitForElement: (elementSelector = "", resolveDelay = 1000, timeout = null) => {
          return new Promise((res) => {
             const interval = setInterval(() => {

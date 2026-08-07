@@ -1,6 +1,6 @@
 window.templateCustomizationSchema = {
   name: "Production",
-  id: "template-0",
+  id: "template-3",
   customCss:
     "@font-face { font-family: 'Ogg'; src: url('https://res.cloudinary.com/dpr6hw8uh/raw/upload/v1659948521/Ogg-Roman_vloao9.otf') format('opentype'); font-weight: normal; font-style: normal; font-display: swap; }",
   customFonts: [],
@@ -4732,8 +4732,8 @@ class CourseTemplate {
                   catTokenSessionStorage ||
                   acatTokenV2,
                   acatToken ||
-                  acatTokenSessionStorageV2 ||,
-                  acatTokenSessionStorage,
+                  acatTokenSessionStorageV2 ||
+                  acatTokenSessionStorage
               ) || "{}",
             );
             if (!("productId" in data)) {

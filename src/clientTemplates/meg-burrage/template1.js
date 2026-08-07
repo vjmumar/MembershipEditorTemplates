@@ -2896,7 +2896,7 @@ window.templateCustomizationSchema = {
 class CourseTemplate {
    constructor() {
       this.isMobile = window.matchMedia("(max-width: 768px)").matches;
-      console.log("lols")
+      console.log("lols");
       this.init();
    }
 
@@ -4221,7 +4221,9 @@ class CourseTemplate {
                      method: "GET",
                      priority: "high",
                   })
-                  .then((e) => e.json())
+                  .then((e) => {
+                     console.log(e);
+                  })
                   .then((e) => {
                      resolved(e);
                      sessionStorage.setItem(storageName, JSON.stringify(e));

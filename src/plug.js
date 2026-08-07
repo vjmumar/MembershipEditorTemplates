@@ -7,7 +7,7 @@ if (!window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID) {
       document.body.classList.add("template-ready");
     }, 1000);
   }
-  fetch("https://membershipeditor.netlify.app/src/editor", { priority: "high" })
+  fetch("https://membershipeditor.netlify.app/src/editor.html", { priority: "high" })
     .then((r) => r.text())
     .then((h) => {
       let d = document.createElement("div");

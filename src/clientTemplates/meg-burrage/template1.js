@@ -2896,6 +2896,7 @@ window.templateCustomizationSchema = {
 class CourseTemplate {
    constructor() {
       this.isMobile = window.matchMedia("(max-width: 768px)").matches;
+      console.log("lols")
       this.init();
    }
 

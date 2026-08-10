@@ -3185,8 +3185,6 @@ class CourseTemplate {
                this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
 
-         console.log(userData, userProductProgress, productCategories, completedPosts);
-
          // Then we will process the categories data
          const categories = productCategories
             ?.filter((cat) => !cat?.parentCategory)
@@ -3199,7 +3197,7 @@ class CourseTemplate {
             }));
 
          // Then we will inject the Dashboard HTML and initialize the navigation components
-         $container.innerHTML = `
+         document.querySelector(".bm-theme").innerHTML = `
          <div class='template-container'>
              <div class="dashboard">
                      ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}

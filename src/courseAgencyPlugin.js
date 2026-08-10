@@ -150,7 +150,7 @@
    if (client) {
       // First we will create the script tag
       const script = document.createElement("script");
-      script.src = "https://membershipeditor.netlify.app/src/courseAgencyPlugin.js";
+      script.src = "https://membershipeditor.netlify.app/src/productPlug.js";
       script.setAttribute("data-client", client);
 
       // Then we will retrieve Nuxt (the parent)

@@ -120,7 +120,6 @@ const fetchProduct = async () => {
 
 // Finally we will create an initializer
 (async () => {
-    alert("cool");
    // First we will retrieve the product
    const product = await fetchProduct();
 

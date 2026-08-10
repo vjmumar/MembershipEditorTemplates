@@ -122,10 +122,12 @@ const fetchProduct = async () => {
 (async () => {
    // First we will retrieve the product
    const product = await fetchProduct();
-   console.log(product);
 
    // Then we will retrieve the client
    const client = product.customHeader?.match(/data-client=["']([^"']+)["']/i)?.[1];
+
+   // Then we will check if it is an old theme
+   const isOldTheme = document.querySelector(".cp-root-shell");
 
    // Finally we will process it if client is present
    if (client) {
@@ -156,6 +158,16 @@ const fetchProduct = async () => {
             </div>`,
          );
 
+         // Then if it is an old theme then we will insert the css and js
+         if (isOldTheme) {
+            const $styleTag = document.querySelector("style")
+            const $scriptTag = document.createElement("script");
+            $scriptTag.innerHTML = product.customJs;
+            $styleTag.innerHTML = product.customCss;
+            document.body.append($scriptTag);
+            document.body.append($styleTag)
+         }
+         
          // Then we will hide the original Nuxt application
          $nuxt.style.display = "none";
          $nuxt.style.visibility = "hidden";

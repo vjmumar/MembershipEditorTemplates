@@ -3082,10 +3082,7 @@ class CourseTemplate {
                 `;
 
          // Finally we will inject the sidebar and attach event listeners for interactivity
-         ($container || document.querySelector(".product-container")).insertAdjacentHTML(
-            "afterbegin",
-            html,
-         );
+         $container.insertAdjacentHTML("afterbegin", html);
          setTimeout(() => {
             document.body.addEventListener("click", (e) => {
                if (
@@ -3223,8 +3220,11 @@ class CourseTemplate {
       },
 
       initCategoryPostPage: async () => {
-         // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 100);
+         // First we will retrieve the root and root container on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
+
+         // Then we will retrieve the category
          const category = await this.data.fetchCategory();
 
          // Then we will fetch the category data and prepare the breadcrumbs
@@ -3265,7 +3265,7 @@ class CourseTemplate {
          }, "");
 
          // Then we will render the Category Page HTML
-         $container.innerHTML = `
+         $rootContainer.innerHTML = `
          <p class="template-category-post-title">${category?.category?.title}</p>
          <div class='template-container'>
              <div class="template-category-post">
@@ -3282,14 +3282,15 @@ class CourseTemplate {
 
          // Finally we will invoke the necessary initializers
          this.desktopInitializers.initStyles();
-         this.globalInitializers.initNavBar($container);
-         this.globalInitializers.initSidebar($container);
+         this.globalInitializers.initNavBar($rootContainer);
+         this.globalInitializers.initSidebar($root);
          document.body.classList.add("page-category-posts");
       },
 
       initCategoriesPage: async () => {
-         // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 100);
+         // First we will retrieve the root and root container on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
 
          // Then we will fetch all categories and filter out subcategories
          const categories = await (async () => {
@@ -3306,7 +3307,7 @@ class CourseTemplate {
          })();
 
          // Then we will render the Categories List Page
-         $container.innerHTML = `
+         $rootContainer.innerHTML = `
           <p class="template-categories-title">Categories</p>
           <div class='template-container'>
               <div class="template-categories__list">
@@ -3319,14 +3320,15 @@ class CourseTemplate {
 
          // Finally we will invoke the necessary initializers
          this.desktopInitializers.initStyles();
-         this.globalInitializers.initNavBar($container);
-         this.globalInitializers.initSidebar($container);
+         this.globalInitializers.initNavBar($rootContainer);
+         this.globalInitializers.initSidebar($root);
          document.body.classList.add("page-categories");
       },
 
       initPostPage: async () => {
-         // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 100);
+         // First we will retrieve the root and root container on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [completedPosts, currentPost, categories] = await Promise.allSettled([
@@ -3461,7 +3463,7 @@ class CourseTemplate {
          })();
 
          // Then we will render the page and re-attach the scraped elements (video, audio, comments)
-         $container.innerHTML = `
+         $rootContainer.innerHTML = `
          ${headerHTML}
          <div class='template-container'>
              <div class="template-post-page">
@@ -3479,8 +3481,8 @@ class CourseTemplate {
 
          // Then we will invoke the necessary initializers
          this.desktopInitializers.initStyles();
-         this.globalInitializers.initNavBar($container);
-         this.globalInitializers.initSidebar($container);
+         this.globalInitializers.initNavBar($rootContainer);
+         this.globalInitializers.initSidebar($root);
          document.body.classList.add("page-post");
 
          // Finally we will append all container conditionally
@@ -3543,8 +3545,9 @@ class CourseTemplate {
       },
 
       initLandingPage: async () => {
-         // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 100);
+         // First we will retrieve the root and root container on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
 
          // Then we will retrieve the necessary data
          const [
@@ -3564,7 +3567,7 @@ class CourseTemplate {
          ]).then((res) => res.map((e) => e.value));
 
          // Then we will render the Categories List Page
-         $container.innerHTML = `
+         $rootContainer.innerHTML = `
           <img class="template-hero__image" src="${product?.posterImage}" />
           ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
           <div class='template-container'>
@@ -3582,14 +3585,15 @@ class CourseTemplate {
 
          // Finally we will invoke the necessary initializers
          this.mobileInitializers.initStyles();
-         this.globalInitializers.initNavBar();
-         this.globalInitializers.initSidebar($container);
+         this.globalInitializers.initNavBar($rootContainer);
+         this.globalInitializers.initSidebar($root);
          document.body.classList.add("page-dashboard");
       },
 
       initPostPage: async () => {
-         // First we will wait for the product container
-         const $container = await this.utils.waitForElement("#app-container", 100);
+         // First we will retrieve the root and root container on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [product, completedPosts, currentPost, categories] =
@@ -3711,7 +3715,7 @@ class CourseTemplate {
          })();
 
          // Then we will render the page and re-attach the scraped elements (video, audio, comments)
-         $container.innerHTML = `
+         $rootContainer.innerHTML = `
          ${headerHTML}
          <div class='template-container'>
              <div class="template-post-page">
@@ -3732,8 +3736,8 @@ class CourseTemplate {
 
          // Then we will invoke the necessary initializers
          this.mobileInitializers.initStyles();
-         this.globalInitializers.initNavBar();
-         this.globalInitializers.initSidebar($container);
+         this.globalInitializers.initNavBar($rootContainer);
+         this.globalInitializers.initSidebar($root);
          document.body.classList.add("page-post");
 
          // Finally we will append all container conditionally

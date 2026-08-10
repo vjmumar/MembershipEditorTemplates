@@ -153,7 +153,6 @@ const fetchProduct = async () => {
             $app.remove();
          }
       } else {
-        alert("eqw")
          // Otherwise we will create the theme root
          document.body.insertAdjacentHTML(
             "afterbegin",

@@ -3085,7 +3085,7 @@ class CourseTemplate {
 
          // Finally we will inject the sidebar and attach event listeners for interactivity
          ($container || document.querySelector(".product-container")).insertAdjacentHTML(
-            "beforebegin",
+            "afterbegin",
             html,
          );
          setTimeout(() => {

@@ -4204,7 +4204,7 @@ class CourseTemplate {
          return await new Promise((resolved, reject) => {
             const url = [
                `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/products/${productId}`,
-               `https://services.leadconnectorhq.com/memberships/locations/${locationId}/products/${productId}`,
+               `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`,
             ];
             if (token) {
                this.utils
@@ -4252,7 +4252,7 @@ class CourseTemplate {
                location.href.split("/categories/")[1].split("?")[0].split("/")[0];
             const url = [
                `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-purchase/categories/${categoryId}?product_id=${productId}&visibility=published&published_posts=true`,
-               `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-purchase/categories/${categoryId}?product_id=${productId}&visibility=published&published_posts=true`,
+               `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-purchase/categories/${categoryId}?product_id=${productId}&visibility=published&published_posts=true`,
             ];
             if (token) {
                this.utils
@@ -4364,7 +4364,7 @@ class CourseTemplate {
                pId || location.href.split("/posts/")[1].split("?")[0].split("/")[0];
             const url = [
                `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/posts/${postId}`,
-               `https://services.leadconnectorhq.com/memberships/locations/${locationId}/posts/${postId}`,
+               `https://services.leadconnectorhq.com/membership/locations/${locationId}/posts/${postId}`,
             ];
             if (postId) {
                this.utils
@@ -4408,7 +4408,7 @@ class CourseTemplate {
             if (token) {
                const url = [
                   `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`,
-                  `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`,
+                  `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`,
                ];
                this.utils
                   .relayUrlFetch(url, {
@@ -4457,7 +4457,7 @@ class CourseTemplate {
                   .relayUrlFetch(
                      [
                         `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/products/user-activity/${cId || contactId}`,
-                        `https://services.leadconnectorhq.com/memberships/locations/${locationId}/products/user-activity/${cId || contactId}`,
+                        `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/user-activity/${cId || contactId}`,
                      ],
                      {
                         headers: {
@@ -4506,7 +4506,7 @@ class CourseTemplate {
                   .relayUrlFetch(
                      [
                         `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/categories/get-progress`,
-                        `https://services.leadconnectorhq.com/memberships/locations/${locationId}/categories/get-progress`,
+                        `https://services.leadconnectorhq.com/membership/locations/${locationId}/categories/get-progress`,
                      ],
                      {
                         headers: {
@@ -4602,7 +4602,7 @@ class CourseTemplate {
                req = await this.utils.relayUrlFetch(
                   [
                      `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-post-completion`,
-                     `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-post-completion`,
+                     `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion`,
                   ],
                   {
                      method: "POST",
@@ -4628,7 +4628,7 @@ class CourseTemplate {
                req = await this.utils.relayUrlFetch(
                   [
                      `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-post-completion/${postId}`,
-                     `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-post-completion/${postId}`,
+                     `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion/${postId}`,
                   ],
                   {
                      headers: {

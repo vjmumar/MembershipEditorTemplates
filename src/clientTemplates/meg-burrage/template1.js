@@ -4044,7 +4044,7 @@ class CourseTemplate {
          // Then we will add a boolean to each category if it is completed
          categories.forEach((category) => {
             const progress = categoryProgress?.error ? [] : categoryProgress || [];
-            const currentCategoryProgress = progress?.find(
+            const currentCategoryProgress = (progress || [])?.find(
                (e) => e.categoryId === category.id,
             );
             category.isCompleted = currentCategoryProgress?.progress === 100;

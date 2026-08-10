@@ -1,216 +1,213 @@
 (async () => {
-  // Others
-  const locationId = location.pathname.split("/")[3];
+   // Others
+   const locationId = location.pathname.split("/")[3];
 
-  // First we will create a function that is responsible for returning the firebase auth storage
-  const getFirebaseAuthManager = async () => {
-    return await new Promise((res) => {
-      // First, we open the IndexedDB database named "firebaseLocalStorageDb" with version 1
-      const indexDbRequest = indexedDB.open("firebaseLocalStorageDb", 1);
-      /**
-       * Finally we will listen for a successful opening of the indexedDB database. Once successful, retrieve
-       * the database connection and initiate a transaction to read from the "firebaseLocalStorage"
-       * object store.
-       */
-      indexDbRequest.onsuccess = async (event) => {
-        // First, we will retrieve the result of the successful IndexedDB request (the database instance)
-        const db = event?.target?.result;
-        // Then we will create a read-only transaction on the "firebaseLocalStorage" object store
-        const transaction = db.transaction(
-          ["firebaseLocalStorage"],
-          "readonly",
-        );
-        // Then we will access the "firebaseLocalStorage" object store, where Firebase stores its authentication data
-        const objectStore = transaction.objectStore("firebaseLocalStorage");
-        /**
-         * Then we will retrieve all records from the "firebaseLocalStorage" object store to find
-         * Firebase auth-related data.
-         */
-        const getAllRequest = objectStore.getAll();
-        /**
-         * Finally, we listen for a successful retrieval of all records. Once successful,
-         * retrieve all data from the "firebaseLocalStorage" object store by accessing the result
-         * from the database request.
-         */
-        getAllRequest.onsuccess = async function (event) {
-          // First we will access the result containing all data from the object store
-          const allData = event.target?.result;
-          /**
-           * Then we will loop through the data to find the specific record that matches the pattern:
-           * "firebase:authUser:" followed by a dynamic string, and ends with ":[DEFAULT]".
-           */
-          const matchingData = allData.find(
-            (item) =>
-              item.fbase_key.startsWith("firebase:authUser:") &&
-              item.fbase_key.endsWith(":[DEFAULT]"),
-          );
-          // Then we will retrieve the auth-related data (tokens, etc.) from the matching record.
-          const authData = matchingData.value;
-          // Then we will access the specific fields from the auth data (such as the access token)
-          const accessToken = authData.stsTokenManager.accessToken;
-          // Finally, we resolve the promise by returning the access token
-          res({
-            manager: authData,
-            token: accessToken,
-          });
-        };
-      };
-    });
-  };
+   // First we will create a function that is responsible for returning the firebase auth storage
+   const getFirebaseAuthManager = async () => {
+      return await new Promise((res) => {
+         // First, we open the IndexedDB database named "firebaseLocalStorageDb" with version 1
+         const indexDbRequest = indexedDB.open("firebaseLocalStorageDb", 1);
+         /**
+          * Finally we will listen for a successful opening of the indexedDB database. Once successful, retrieve
+          * the database connection and initiate a transaction to read from the "firebaseLocalStorage"
+          * object store.
+          */
+         indexDbRequest.onsuccess = async (event) => {
+            // First, we will retrieve the result of the successful IndexedDB request (the database instance)
+            const db = event?.target?.result;
+            // Then we will create a read-only transaction on the "firebaseLocalStorage" object store
+            const transaction = db.transaction(["firebaseLocalStorage"], "readonly");
+            // Then we will access the "firebaseLocalStorage" object store, where Firebase stores its authentication data
+            const objectStore = transaction.objectStore("firebaseLocalStorage");
+            /**
+             * Then we will retrieve all records from the "firebaseLocalStorage" object store to find
+             * Firebase auth-related data.
+             */
+            const getAllRequest = objectStore.getAll();
+            /**
+             * Finally, we listen for a successful retrieval of all records. Once successful,
+             * retrieve all data from the "firebaseLocalStorage" object store by accessing the result
+             * from the database request.
+             */
+            getAllRequest.onsuccess = async function (event) {
+               // First we will access the result containing all data from the object store
+               const allData = event.target?.result;
+               /**
+                * Then we will loop through the data to find the specific record that matches the pattern:
+                * "firebase:authUser:" followed by a dynamic string, and ends with ":[DEFAULT]".
+                */
+               const matchingData = allData.find(
+                  (item) =>
+                     item.fbase_key.startsWith("firebase:authUser:") &&
+                     item.fbase_key.endsWith(":[DEFAULT]"),
+               );
+               // Then we will retrieve the auth-related data (tokens, etc.) from the matching record.
+               const authData = matchingData.value;
+               // Then we will access the specific fields from the auth data (such as the access token)
+               const accessToken = authData.stsTokenManager.accessToken;
+               // Finally, we resolve the promise by returning the access token
+               res({
+                  manager: authData,
+                  token: accessToken,
+               });
+            };
+         };
+      });
+   };
 
-  // Then we will retrieve the access token
-  const accessToken = await (async () => {
-    const firebaseManager = await getFirebaseAuthManager();
-    return firebaseManager.token;
-  })();
+   // Then we will retrieve the access token
+   const accessToken = await (async () => {
+      const firebaseManager = await getFirebaseAuthManager();
+      return firebaseManager.token;
+   })();
 
-  // Then we will retrieve the auth manager
-  const authManager = await (async () => {
-    const firebaseManager = await getFirebaseAuthManager();
-    return firebaseManager.manager;
-  })();
+   // Then we will retrieve the auth manager
+   const authManager = await (async () => {
+      const firebaseManager = await getFirebaseAuthManager();
+      return firebaseManager.manager;
+   })();
 
-  // Then we will create a function that is responsible for retrieving the current product
-  const getProduct = async () => {
-    const currentUrlProductId = new URL(location.href).searchParams.get("product_id");
-    return await fetch(
-      `https://backend.leadconnectorhq.com/membership/locations/${locationId}/products/${currentUrlProductId}`,
-      {
-        headers: {
-          accept: "application/json, text/plain, */*",
-          "accept-language": "en-US,en;q=0.6",
-          authorization: `Bearer ${accessToken}`,
-          priority: "u=1, i",
-          source: "WEB_USER",
-          sourceid: locationId,
-          version: "2021-07-28",
-          Referer: "https://app.gohighlevel.com/",
-        },
-        body: null,
-        method: "GET",
-      },
-    ).then((e) => e.json());
-  };
+   // Then we will create a function that is responsible for retrieving the current product
+   const getProduct = async () => {
+      const currentUrlProductId = new URL(location.href).searchParams.get("product_id");
+      return await fetch(
+         `https://backend.leadconnectorhq.com/membership/locations/${locationId}/products/${currentUrlProductId}`,
+         {
+            headers: {
+               "accept": "application/json, text/plain, */*",
+               "accept-language": "en-US,en;q=0.6",
+               "authorization": `Bearer ${accessToken}`,
+               "priority": "u=1, i",
+               "source": "WEB_USER",
+               "sourceid": locationId,
+               "version": "2021-07-28",
+               "Referer": "https://app.gohighlevel.com/",
+            },
+            body: null,
+            method: "GET",
+         },
+      ).then((e) => e.json());
+   };
 
-  // Then we will create a function that is responsible for generating magic link
-  const generateMagicLink = async () => {
-    // First we will retrieve the portal settings
-    const portalSettings = await fetch(
-      `https://services.leadconnectorhq.com/clientclub/portal-settings/${locationId}`,
-      {
-        headers: {
-          accept: "application/json, text/plain, */*",
-          "accept-language": "en-US,en;q=0.6",
-          channel: "APP",
-          source: "WEB_USER",
-          "source-id": locationId,
-          "token-id": accessToken,
-          Referer: "https://app.gohighlevel.com/",
-          version: "2021-07-28",
-        },
-        body: null,
-        method: "GET",
-      },
-    ).then((e) => e.json());
+   // Then we will create a function that is responsible for generating magic link
+   const generateMagicLink = async () => {
+      // First we will retrieve the portal settings
+      const portalSettings = await fetch(
+         `https://services.leadconnectorhq.com/clientclub/portal-settings/${locationId}`,
+         {
+            headers: {
+               "accept": "application/json, text/plain, */*",
+               "accept-language": "en-US,en;q=0.6",
+               "channel": "APP",
+               "source": "WEB_USER",
+               "source-id": locationId,
+               "token-id": accessToken,
+               "Referer": "https://app.gohighlevel.com/",
+               "version": "2021-07-28",
+            },
+            body: null,
+            method: "GET",
+         },
+      ).then((e) => e.json());
 
-    // Then we will retrieve the agency user contact
-    const agencyUserContact = await fetch(
-      `https://services.leadconnectorhq.com/clientclub/${portalSettings.locationId}/users/agency-user-contacts?agencyUserId=${authManager.uid}`,
-      {
-        headers: {
-          accept: "application/json, text/plain, */*",
-          "accept-language": "en-US,en;q=0.6",
-          channel: "APP",
-          source: "WEB_USER",
-          "source-id": portalSettings.locationId,
-          "token-id": accessToken,
-          Referer: "https://app.gohighlevel.com/",
-          version: "2021-07-28",
-        },
-        body: null,
-        method: "GET",
-      },
-    )
-      .then((e) => e.json())
-      .then((e) => e[0]);
+      // Then we will retrieve the agency user contact
+      const agencyUserContact = await fetch(
+         `https://services.leadconnectorhq.com/clientclub/${portalSettings.locationId}/users/agency-user-contacts?agencyUserId=${authManager.uid}`,
+         {
+            headers: {
+               "accept": "application/json, text/plain, */*",
+               "accept-language": "en-US,en;q=0.6",
+               "channel": "APP",
+               "source": "WEB_USER",
+               "source-id": portalSettings.locationId,
+               "token-id": accessToken,
+               "Referer": "https://app.gohighlevel.com/",
+               "version": "2021-07-28",
+            },
+            body: null,
+            method: "GET",
+         },
+      )
+         .then((e) => e.json())
+         .then((e) => e[0]);
 
-    // Then we will retrieve the base url
-    const baseUrl = await fetch(
-      `https://backend.leadconnectorhq.com/membership/locations/${portalSettings.locationId}/settings/preview-base-url`,
-      {
-        headers: {
-          accept: "application/json, text/plain, */*",
-          "accept-language": "en-US,en;q=0.6",
-          authorization: `Bearer ${accessToken}`,
-          channel: "APP",
-          source: "WEB_USER",
-          sourceid: location,
-          version: "2021-07-28",
-          Referer: "https://app.gohighlevel.com/",
-        },
-        body: null,
-        method: "GET",
-      },
-    )
-      .then((e) => e.json())
-      .then((e) => e.baseUrl);
+      // Then we will retrieve the base url
+      const baseUrl = await fetch(
+         `https://backend.leadconnectorhq.com/membership/locations/${portalSettings.locationId}/settings/preview-base-url`,
+         {
+            headers: {
+               "accept": "application/json, text/plain, */*",
+               "accept-language": "en-US,en;q=0.6",
+               "authorization": `Bearer ${accessToken}`,
+               "channel": "APP",
+               "source": "WEB_USER",
+               "sourceid": location,
+               "version": "2021-07-28",
+               "Referer": "https://app.gohighlevel.com/",
+            },
+            body: null,
+            method: "GET",
+         },
+      )
+         .then((e) => e.json())
+         .then((e) => e.baseUrl);
 
-    // Then we will generate the magic link
-    const magicLink = await fetch(
-      `https://services.leadconnectorhq.com/clientclub/${portalSettings.locationId}/tokens/send-magic-link`,
-      {
-        headers: {
-          accept: "application/json, text/plain, */*",
-          "accept-language": "en-US,en;q=0.6",
-          channel: "APP",
-          "content-type": "application/json",
-          source: "WEB_USER",
-          "source-id": portalSettings?.locationId,
-          "token-id": accessToken,
-          Referer: "https://app.gohighlevel.com/",
-          version: "2021-07-28",
-        },
-        body: JSON.stringify({
-          locationId: portalSettings?.locationId,
-          email: [agencyUserContact?.email],
-          sendEmail: false,
-          showMagicLink: true,
-          contactId: agencyUserContact?.contactId,
-          source: "WEB_USER",
-        }),
-        method: "POST",
-      },
-    )
-      .then((e) => e.json())
-      .then((e) => e[0].magicLink);
+      // Then we will generate the magic link
+      const magicLink = await fetch(
+         `https://services.leadconnectorhq.com/clientclub/${portalSettings.locationId}/tokens/send-magic-link`,
+         {
+            headers: {
+               "accept": "application/json, text/plain, */*",
+               "accept-language": "en-US,en;q=0.6",
+               "channel": "APP",
+               "content-type": "application/json",
+               "source": "WEB_USER",
+               "source-id": portalSettings?.locationId,
+               "token-id": accessToken,
+               "Referer": "https://app.gohighlevel.com/",
+               "version": "2021-07-28",
+            },
+            body: JSON.stringify({
+               locationId: portalSettings?.locationId,
+               email: [agencyUserContact?.email],
+               sendEmail: false,
+               showMagicLink: true,
+               contactId: agencyUserContact?.contactId,
+               source: "WEB_USER",
+            }),
+            method: "POST",
+         },
+      )
+         .then((e) => e.json())
+         .then((e) => e[0].magicLink);
 
-      // Then we will retrieve v2 access token if available 
-    const v2AccessToken = await (async () => {
-      const res = await cookieStore.get("access-token-v2").then(e => e?.value);
-      return res;
-    })();
+      // Then we will retrieve v2 access token if available
+      const v2AccessToken = await (async () => {
+         const res = await cookieStore.get("access-token-v2").then((e) => e?.value);
+         return res;
+      })();
 
-    const magicLinkUrl = new URL(magicLink);
-    const magicLinkToken = magicLinkUrl.searchParams.get("token");
-    const currentUrl = new URL(window.location.href);
-    const currentUrlProductId = currentUrl.searchParams.get("product_id");
-    const finalUrl = `${baseUrl}/courses/products/${currentUrlProductId}?token=${v2AccessToken || magicLinkToken}&adminToken=${accessToken}&membershipeditor=true&location_id=${portalSettings.locationId}&product_id=${currentUrlProductId}&agency_user_id=${authManager.uid}&agency_user_email=${encodeURIComponent(agencyUserContact?.email)}&is_preview=true`;
-    return finalUrl;
-  };
+      const magicLinkUrl = new URL(magicLink);
+      const magicLinkToken = magicLinkUrl.searchParams.get("token");
+      const currentUrl = new URL(window.location.href);
+      const currentUrlProductId = currentUrl.searchParams.get("product_id");
+      const finalUrl = `${baseUrl}/courses/products/${currentUrlProductId}?token=${magicLinkToken || v2AccessToken}&adminToken=${accessToken}&membershipeditor=true&location_id=${portalSettings.locationId}&product_id=${currentUrlProductId}&agency_user_id=${authManager.uid}&agency_user_email=${encodeURIComponent(agencyUserContact?.email)}&is_preview=true`;
+      return finalUrl;
+   };
 
-  // Then we will create a function that mounts the editor overlay (topbar + iframe) in the same tab
-  const openEditor = (magicLink) => {
-    // First we bail if an editor is already open so we never stack two overlays
-    if (document.getElementById("bm-editor-overlay")) return;
+   // Then we will create a function that mounts the editor overlay (topbar + iframe) in the same tab
+   const openEditor = (magicLink) => {
+      // First we bail if an editor is already open so we never stack two overlays
+      if (document.getElementById("bm-editor-overlay")) return;
 
-    // Then we lock the underlying page scroll while the editor is open
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+      // Then we lock the underlying page scroll while the editor is open
+      const previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
 
-    // Then we build the overlay markup: a fixed topbar with context + close, and a full-bleed iframe beneath it
-    const wrapper = document.createElement("div");
-    wrapper.id = "bm-editor-overlay";
-    wrapper.innerHTML = `
+      // Then we build the overlay markup: a fixed topbar with context + close, and a full-bleed iframe beneath it
+      const wrapper = document.createElement("div");
+      wrapper.id = "bm-editor-overlay";
+      wrapper.innerHTML = `
         <style>
           /* Brand tokens — primary + white secondary */
           #bm-editor-overlay {
@@ -403,65 +400,57 @@
             sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation-by-user-activation allow-modals"></iframe>
         </div>
       `;
-    document.body.appendChild(wrapper);
+      document.body.appendChild(wrapper);
 
-    // Then we fade the overlay in on the next frame for a smooth entrance
-    requestAnimationFrame(() => wrapper.classList.add("bm-visible"));
+      // Then we fade the overlay in on the next frame for a smooth entrance
+      requestAnimationFrame(() => wrapper.classList.add("bm-visible"));
 
-    // Then we hide the loader once the iframe has loaded so the user sees the editor, not a blank frame
-    const body = wrapper.querySelector("#bm-editor-body");
-    wrapper.querySelector("#bm-editor-iframe").addEventListener("load", () => {
-      body.classList.add("bm-loaded");
-    });
+      // Then we hide the loader once the iframe has loaded so the user sees the editor, not a blank frame
+      const body = wrapper.querySelector("#bm-editor-body");
+      wrapper.querySelector("#bm-editor-iframe").addEventListener("load", () => {
+         body.classList.add("bm-loaded");
+      });
 
-    // Then we create a single close routine that fades out, restores scroll, and removes the overlay
-    const closeEditor = () => {
-      wrapper.classList.remove("bm-visible");
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener("keydown", onKey);
-      setTimeout(() => wrapper.remove(), 220);
-    };
+      // Then we create a single close routine that fades out, restores scroll, and removes the overlay
+      const closeEditor = () => {
+         wrapper.classList.remove("bm-visible");
+         document.body.style.overflow = previousOverflow;
+         document.removeEventListener("keydown", onKey);
+         setTimeout(() => wrapper.remove(), 220);
+      };
 
-    // Then we wire the close button
-    wrapper
-      .querySelector("#bm-editor-close")
-      .addEventListener("click", closeEditor);
+      // Then we wire the close button
+      wrapper.querySelector("#bm-editor-close").addEventListener("click", closeEditor);
 
-    // Finally we let the Escape key close the editor as well
-    const onKey = (e) => {
-      if (e.key === "Escape") closeEditor();
-    };
-    document.addEventListener("keydown", onKey);
-  };
+      // Finally we let the Escape key close the editor as well
+      const onKey = (e) => {
+         if (e.key === "Escape") closeEditor();
+      };
+      document.addEventListener("keydown", onKey);
+   };
 
-  // This helper injects our button next to #preview-btn, once
-  const injectButton = async (previewBtn) => {
-    // First we will check if we are inside a course page
-    const currentPageUrl = location.href;
-    const isInsideProduct =
-      currentPageUrl.includes("/memberships/courses") &&
-      currentPageUrl.includes("product_id=");
-    const currentProduct = await getProduct();
+   // This helper injects our button next to #preview-btn, once
+   const injectButton = async (previewBtn) => {
+      // First we will check if we are inside a course page
+      const currentPageUrl = location.href;
+      const isInsideProduct =
+         currentPageUrl.includes("/memberships/courses") &&
+         currentPageUrl.includes("product_id=");
+      const currentProduct = await getProduct();
 
-    // First we bail if our button is already there or we are not inside product page
-    if (!isInsideProduct || document.getElementById(`bm-editor-launch-btn`))
-      return;
+      // First we bail if our button is already there or we are not inside product page
+      if (!isInsideProduct || document.getElementById(`bm-editor-launch-btn`)) return;
 
-    // Then we will check if the product contains client id in it's header, if not then we will bail
-    if (
-      isInsideProduct &&
-      !currentProduct?.customHeader?.includes(
-        "data-client",
-      )
-    ) {
-      return;
-    }
+      // Then we will check if the product contains client id in it's header, if not then we will bail
+      if (isInsideProduct && !currentProduct?.customHeader?.includes("data-client")) {
+         return;
+      }
 
-    // Then we inject the button styles once (scoped to our button id so nothing else is affected)
-    if (!document.getElementById("bm-edit-btn-styles")) {
-      const style = document.createElement("style");
-      style.id = "bm-edit-btn-styles";
-      style.textContent = `
+      // Then we inject the button styles once (scoped to our button id so nothing else is affected)
+      if (!document.getElementById("bm-edit-btn-styles")) {
+         const style = document.createElement("style");
+         style.id = "bm-edit-btn-styles";
+         style.textContent = `
           /* Brand tokens — primary + white secondary */
           #bm-editor-launch-btn {
             --bm-primary: #10b981;
@@ -559,56 +548,56 @@
             #bm-editor-launch-btn, #bm-editor-launch-btn::before, #bm-editor-launch-btn .bm-edit-btn__icon { transition: none; }
           }
         `;
-      document.head.appendChild(style);
-    }
+         document.head.appendChild(style);
+      }
 
-    // Then we build the button with a pencil icon + label
-    const btn = document.createElement("button");
-    btn.id = `bm-editor-launch-btn`;
-    btn.type = "button";
-    btn.innerHTML = `
+      // Then we build the button with a pencil icon + label
+      const btn = document.createElement("button");
+      btn.id = `bm-editor-launch-btn`;
+      btn.type = "button";
+      btn.innerHTML = `
         <svg class="bm-edit-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 20h9"/>
           <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/>
         </svg>
         <span class="bm-edit-btn__label">Edit Theme</span>
       `;
-    btn.addEventListener("click", async () => {
-      // First we grab the label and put the button into a loading state so the wait reads as intentional
-      const label = btn.querySelector(".bm-edit-btn__label");
-      const originalLabel = label.textContent;
-      btn.classList.add("bm-loading");
-      label.textContent = "Preparing…";
+      btn.addEventListener("click", async () => {
+         // First we grab the label and put the button into a loading state so the wait reads as intentional
+         const label = btn.querySelector(".bm-edit-btn__label");
+         const originalLabel = label.textContent;
+         btn.classList.add("bm-loading");
+         label.textContent = "Preparing…";
 
-      // Then we generate the magic link and open the in-tab editor overlay
-      try {
-        const magicLink = await generateMagicLink();
-        openEditor(magicLink);
-      } catch (err) {
-        // Then if something fails we surface it rather than leaving the button stuck
-        console.error("Edit Theme failed:", err);
-      } finally {
-        // Finally we restore the button to its normal state
-        btn.classList.remove("bm-loading");
-        label.textContent = originalLabel;
-      }
-    });
+         // Then we generate the magic link and open the in-tab editor overlay
+         try {
+            const magicLink = await generateMagicLink();
+            openEditor(magicLink);
+         } catch (err) {
+            // Then if something fails we surface it rather than leaving the button stuck
+            console.error("Edit Theme failed:", err);
+         } finally {
+            // Finally we restore the button to its normal state
+            btn.classList.remove("bm-loading");
+            label.textContent = originalLabel;
+         }
+      });
 
-    // Finally we place it right after #preview-btn
-    previewBtn.insertAdjacentElement("afterend", btn);
-  };
+      // Finally we place it right after #preview-btn
+      previewBtn.insertAdjacentElement("afterend", btn);
+   };
 
-  // This checks the DOM right now, in case #preview-btn already exists before the observer starts
-  const existing = document.getElementById("preview-btn");
-  if (existing) injectButton(existing);
+   // This checks the DOM right now, in case #preview-btn already exists before the observer starts
+   const existing = document.getElementById("preview-btn");
+   if (existing) injectButton(existing);
 
-  // Then we watch document.body for #preview-btn appearing (SPA renders it late)
-  const observer = new MutationObserver(() => {
-    const previewBtn = document.getElementById("preview-btn");
-    // We keep the observer alive (don't disconnect) because SPA navigation can
-    // remove and re-add #preview-btn — if it comes back, our guard re-injects safely
-    if (previewBtn) injectButton(previewBtn);
-  });
+   // Then we watch document.body for #preview-btn appearing (SPA renders it late)
+   const observer = new MutationObserver(() => {
+      const previewBtn = document.getElementById("preview-btn");
+      // We keep the observer alive (don't disconnect) because SPA navigation can
+      // remove and re-add #preview-btn — if it comes back, our guard re-injects safely
+      if (previewBtn) injectButton(previewBtn);
+   });
 
-  observer.observe(document.body, { childList: true, subtree: true });
+   observer.observe(document.body, { childList: true, subtree: true });
 })();

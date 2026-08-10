@@ -70,7 +70,6 @@ const getAuth = async () => {
       if (!("tokenId" in data)) {
          data.tokenId = data.token;
       }
-      clearInterval(interval);
       res(data);
    });
 };

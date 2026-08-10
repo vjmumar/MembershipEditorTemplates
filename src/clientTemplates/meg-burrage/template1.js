@@ -3185,6 +3185,8 @@ class CourseTemplate {
                this.data.fetchCompletedPosts(),
             ]).then((res) => res.map((e) => e.value));
 
+         console.log(userData, userProductProgress, productCategories, completedPosts);
+
          // Then we will process the categories data
          const categories = productCategories
             ?.filter((cat) => !cat?.parentCategory)

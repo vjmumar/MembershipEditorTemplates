@@ -2716,11 +2716,11 @@
         }, 500);
       },
 
-      // This method will wait until the #app container exists before initializing the editor
+      // This method will wait until the .bm-editor-root container exists before initializing the editor
       initShowEditor: () => {
         const interval = setInterval(() => {
-          const $container = document.querySelector("#app");
-          if ($container) {
+          const $root = document.querySelector(".bm-editor-root");
+          if ($root) {
             clearInterval(interval);
             this.initializers.initializeEditor();
           }

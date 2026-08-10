@@ -4226,7 +4226,7 @@ class CourseTemplate {
                      sessionStorage.setItem(storageName, JSON.stringify(e));
                   })
                   .catch(() => {
-                     resolve({});
+                     resolved({});
                   });
             } else {
                console.log("No Token Found! Product!");
@@ -4342,7 +4342,7 @@ class CourseTemplate {
                      );
                   })
                   .catch(() => {
-                     resolve([]);
+                     resolved([]);
                   });
             } else {
                console.log("No Token Found! Categories!");
@@ -4384,7 +4384,7 @@ class CourseTemplate {
                      resolved(e);
                   })
                   .catch(() => {
-                     resolve({});
+                     resolved({});
                   });
             } else {
                console.log("No Token Found! Post!");
@@ -4432,7 +4432,7 @@ class CourseTemplate {
                      );
                   })
                   .catch(() => {
-                     resolve([]);
+                     resolved([]);
                   });
             } else {
                console.log("No Token Found! Completed Posts!");
@@ -4480,7 +4480,7 @@ class CourseTemplate {
                      resolved(e);
                   })
                   .catch(() => {
-                     resolve({});
+                     resolved({});
                   });
             } else {
                console.log("No Token Found! Product Progress!");
@@ -4526,7 +4526,7 @@ class CourseTemplate {
                      resolved(e);
                   })
                   .catch(() => {
-                     resolve({});
+                     resolved({});
                   });
             } else {
                console.log("No Token Found! Category Progress!");
@@ -4575,7 +4575,7 @@ class CourseTemplate {
                      sessionStorage.setItem(storageName, JSON.stringify(e));
                   })
                   .catch(() => {
-                     resolve({});
+                     resolved({});
                   });
             } else {
                console.log("No Token Found! User!");

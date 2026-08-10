@@ -136,9 +136,6 @@ const fetchProduct = async () => {
       script.src = "https://membershipeditor.netlify.app/src/productPlug.js";
       script.setAttribute("data-client", client);
 
-      // Then we will retrieve Nuxt (the parent)
-      const $nuxt = document.querySelector("#__nuxt");
-
       // If the membership editor is enabled
       if (location.href.includes("membershipeditor=true")) {
          // First we will create the editor root
@@ -147,8 +144,14 @@ const fetchProduct = async () => {
             `<div class="bm-editor-root"></div>`,
          );
 
-         // Then we will remove the original Nuxt application
-         $nuxt.remove();
+         // Finally we will remove the original Nuxt application if it is an old theme, else remove the app
+         if (isOldTheme) {
+            const $nuxt = document.querySelector("#__nuxt");
+            $nuxt.remove();
+         } else {
+            const $app = document.querySelector("#app");
+            $app.remove();
+         }
       } else {
          // Otherwise we will create the theme root
          document.body.insertAdjacentHTML(
@@ -166,11 +169,15 @@ const fetchProduct = async () => {
             $styleTag.innerHTML = product.customCss;
             document.body.append($scriptTag);
             document.body.append($styleTag)
+            // Then we will hide the original Nuxt application
+            $nuxt.style.display = "none";
+            $nuxt.style.visibility = "hidden";
+         } else {
+            const $app = document.querySelector("#app");
+            $app.style.display = "none";
+            $app.style.visibility = "hidden";
          }
          
-         // Then we will hide the original Nuxt application
-         $nuxt.style.display = "none";
-         $nuxt.style.visibility = "hidden";
       }
 
       // Then we will mark the theme as ready

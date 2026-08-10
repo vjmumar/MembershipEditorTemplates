@@ -4703,8 +4703,9 @@ class CourseTemplate {
          return new Promise((res) => {
             const interval = setInterval(() => {
                if (
-                  document.querySelector(".product-container, #app-container") &&
-                  window?.$cookies
+                  (document.querySelector(".product-container, #app-container") &&
+                     window?.$cookies) ||
+                  document.querySelector(".cp-root-shell")
                ) {
                   const data = (() => {
                      let result = {};

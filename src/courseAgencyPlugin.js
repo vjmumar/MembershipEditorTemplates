@@ -151,7 +151,9 @@ const fetchProduct = async () => {
          // Otherwise we will create the theme root
          document.body.insertAdjacentHTML(
             "afterbegin",
-            `<div class="bm-theme-root"></div>`,
+            `<div class="bm-theme-root">
+                <div class="bm-theme-root__container"></div>
+            </div>`,
          );
 
          // Then we will hide the original Nuxt application

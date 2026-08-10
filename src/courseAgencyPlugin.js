@@ -77,7 +77,6 @@ const getAuth = async () => {
 // Then we will create a function that is responsible for retrieving the product
 const fetchProduct = async () => {
    const auth = await getAuth();
-   console.log(auth)
    const productId = auth?.productId;
    const locationId = auth?.locationId;
    const token = auth?.tokenId;
@@ -109,6 +108,7 @@ const fetchProduct = async () => {
          })
             .then((e) => e.json())
             .then((e) => {
+               console.log(e);
                resolved(e);
                sessionStorage.setItem(storageName, JSON.stringify(e));
             })
@@ -125,6 +125,7 @@ const fetchProduct = async () => {
 (async () => {
    // First we will retrieve the product
    const product = await fetchProduct();
+   console.log(product);
 
    // Then we will retrieve the client
    const client = product.customHeader?.match(/data-client=["']([^"']+)["']/i)?.[1];

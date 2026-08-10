@@ -2584,8 +2584,8 @@
         if (this.isEdit) {
           // First, retrieve the main app and app-container elements.
           const $app = document.querySelector("#app");
-          const $appContainer = await this.utils.waitForElement(
-            "#app-container",
+          const $root = await this.utils.waitForElement(
+            ".bm-theme-root",
             0,
           );
 
@@ -2609,9 +2609,6 @@
             "bm-editor-agency-user-email",
             decodeURIComponent(agencyUserEmail),
           );
-
-          // Then, clear the existing UI to make room for the iframe editor.
-          if ($appContainer) $appContainer.remove();
 
           // Then, clear the template loader
           document.querySelector(".template-loader")?.remove();

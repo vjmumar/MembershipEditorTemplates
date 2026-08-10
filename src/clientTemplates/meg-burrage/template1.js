@@ -3173,11 +3173,12 @@ class CourseTemplate {
       },
 
       initLandingPage: async () => {
-         // Then we will retrieve the root on where we will insert the page theme
+         // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
 
          // Then we will wait for the product container
-         const $container = await this.utils.waitForElement(".product-container", 0);
+         await this.utils.waitForElement(".product-container", 0);
 
          // Then we will retrieve the necessary data
          const [userData, userProductProgress, productCategories, completedPosts] =
@@ -3200,7 +3201,7 @@ class CourseTemplate {
             }));
 
          // Then we will inject the Dashboard HTML and initialize the navigation components
-         $root.innerHTML = `
+         $rootContainer.innerHTML = `
          <div class='template-container'>
              <div class="dashboard">
                      ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
@@ -3218,7 +3219,7 @@ class CourseTemplate {
 
          // Finally we will invoke the necessary initializers
          this.desktopInitializers.initStyles();
-         this.globalInitializers.initNavBar($root);
+         this.globalInitializers.initNavBar($rootContainer);
          this.globalInitializers.initSidebar($root);
          document.body.classList.add("page-dashboard");
       },

@@ -84,8 +84,6 @@ const fetchProduct = async () => {
    const userId = auth?.externalUserId;
    const storageName = `${productId}-product`;
    const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-   if (Object.keys(previousData).length > 0 && previousData?.id === productId)
-      return previousData;
    return await new Promise((resolved, reject) => {
       const url = [
          `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/products/${productId}`,

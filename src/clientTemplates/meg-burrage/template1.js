@@ -4343,7 +4343,8 @@ class CourseTemplate {
                         JSON.stringify(e?.categories || []),
                      );
                   })
-                  .catch(() => {
+                  .catch((e) => {
+                     console.log("error on categories", String(e))
                      resolved([]);
                   });
             } else {

@@ -2577,6 +2577,7 @@
     initializers = {
       // This method serves as the entry point for initializing the application.
       init: async () => {
+        console.log(this.isEdit)
         // First, check if the page is in preview mode; if not, exit the method.
         if (!this.isPagePreview) return;
 

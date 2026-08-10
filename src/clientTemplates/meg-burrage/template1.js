@@ -4705,7 +4705,7 @@ class CourseTemplate {
                if (
                   (document.querySelector(".product-container, #app-container") &&
                      window?.$cookies) ||
-                  document.querySelector(".cp-root-shell")
+                  document.body.contains(".theme-ready")
                ) {
                   const data = (() => {
                      let result = {};
@@ -4748,8 +4748,8 @@ class CourseTemplate {
                   if (!("productId" in data)) {
                      const url = location.href
                         ?.split("/products/")[1]
-                        .split("/")[0]
-                        .split("?")[0];
+                        ?.split("/")[0]
+                        ?.split("?")[0];
                      data.productId = url;
                   }
                   if (!("tokenId" in data)) {

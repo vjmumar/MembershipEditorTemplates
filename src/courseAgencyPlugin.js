@@ -20,57 +20,71 @@ const relayUrlFetch = async (urls, options) => {
 // Then we will create a function that is responsible for retrieving auth
 const getAuth = async () => {
    return new Promise((res) => {
-      const data = (() => {
-         let result = {};
-         const acatToken = window?.$cookies?.get("acat");
-         const acatTokenV2 = window?.$cookies?.get("acatv2");
-         const acatTokenSessionStorage = window.sessionStorage.getItem("acat");
-         const acatTokenSessionStorageV2 = window.sessionStorage.getItem("acatv2");
-         const acatTokenLocalStorage = window.localStorage.getItem("acat");
-         const acatTokenLocalStorageV2 = window.localStorage.getItem("acatv2");
-         const catToken = window?.$cookies?.get("cat");
-         const catTokenV2 = window?.$cookies?.get("catv2");
-         const catTokenSessionStorage = window.sessionStorage.getItem("cat");
-         const catTokenSessionStorageV2 = window.sessionStorage.getItem("catv2");
-         const catTokenLocalStorage = window.localStorage.getItem("cat");
-         const catTokenLocalStorageV2 = window.localStorage.getItem("catv2");
-         const possibleTokens = [
-            catTokenV2,
-            catToken,
-            acatToken,
-            acatTokenV2,
-            catTokenSessionStorage,
-            catTokenSessionStorageV2,
-            acatTokenSessionStorage,
-            acatTokenLocalStorage,
-            acatTokenSessionStorageV2,
-            acatTokenLocalStorageV2,
-            catTokenLocalStorageV2,
-            catTokenLocalStorage,
-         ];
-         for (let i = 0; i < possibleTokens.length; i++) {
-            const possibleCurrent = possibleTokens[i];
-            let atob = "";
-            try {
-               atob = window.atob(possibleCurrent);
-            } catch (err) {
-               continue;
+      const interval = setInterval(() => {
+         if (
+            (document.querySelector(".product-container, #app-container") &&
+               window?.$cookies) ||
+            document.querySelector(".cp-root-shell")
+         ) {
+            const data = (() => {
+               let result = {};
+               const acatToken = window?.$cookies?.get("acat");
+               const acatTokenV2 = window?.$cookies?.get("acatv2");
+               const acatTokenSessionStorage = window.sessionStorage.getItem("acat");
+               const acatTokenSessionStorageV2 = window.sessionStorage.getItem("acatv2");
+               const acatTokenLocalStorage = window.localStorage.getItem("acat");
+               const acatTokenLocalStorageV2 = window.localStorage.getItem("acatv2");
+
+               const catToken = window?.$cookies?.get("cat");
+               const catTokenV2 = window?.$cookies?.get("catv2");
+               const catTokenSessionStorage = window.sessionStorage.getItem("cat");
+               const catTokenSessionStorageV2 = window.sessionStorage.getItem("catv2");
+               const catTokenLocalStorage = window.localStorage.getItem("cat");
+               const catTokenLocalStorageV2 = window.localStorage.getItem("catv2");
+
+               const possibleTokens = [
+                  catTokenV2,
+                  catToken,
+                  acatToken,
+                  acatTokenV2,
+                  catTokenSessionStorage,
+                  catTokenSessionStorageV2,
+                  acatTokenSessionStorage,
+                  acatTokenLocalStorage,
+                  acatTokenSessionStorageV2,
+                  acatTokenLocalStorageV2,
+                  catTokenLocalStorageV2,
+                  catTokenLocalStorage,
+               ];
+               for (let i = 0; i < possibleTokens.length; i++) {
+                  const possibleCurrent = possibleTokens[i];
+                  let atob = "";
+                  try {
+                     atob = window.atob(possibleCurrent);
+                  } catch (err) {
+                     continue;
+                  }
+                  if (atob.includes("token")) {
+                     result = JSON.parse(atob);
+                     break;
+                  }
+               }
+               return result;
+            })();
+            if (!("productId" in data)) {
+               const url = location.href
+                  ?.split("/products/")[1]
+                  ?.split("/")[0]
+                  ?.split("?")[0];
+               data.productId = url;
             }
-            if (atob.includes("token")) {
-               result = JSON.parse(atob);
-               break;
+            if (!("tokenId" in data)) {
+               data.tokenId = data.token;
             }
+            clearInterval(interval);
+            res(data);
          }
-         return result;
-      })();
-      if (!("productId" in data)) {
-         const url = location.href?.split("/products/")[1]?.split("/")[0]?.split("?")[0];
-         data.productId = url;
-      }
-      if (!("tokenId" in data)) {
-         data.tokenId = data.token;
-      }
-      res(data);
+      }, 100);
    });
 };
 
@@ -108,12 +122,10 @@ const fetchProduct = async () => {
          })
             .then((e) => e.json())
             .then((e) => {
-               console.log(e,"cool");
                resolved(e);
                sessionStorage.setItem(storageName, JSON.stringify(e));
             })
             .catch((e) => {
-               console.log("err", e)
                resolved({});
             });
       } else {

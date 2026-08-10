@@ -170,6 +170,7 @@ const fetchProduct = async () => {
             document.body.append($scriptTag);
             document.body.append($styleTag)
             // Then we will hide the original Nuxt application
+            const $nuxt = document.querySelector("#__nuxt");
             $nuxt.style.display = "none";
             $nuxt.style.visibility = "hidden";
          } else {

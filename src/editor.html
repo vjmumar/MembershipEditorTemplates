@@ -5258,7 +5258,8 @@
 
         // Then we will update the iframe
         this.isDesktop = isDesktop;
-        this.$iframe.style.width = isDesktop ? "100%" : "500px";
+        this.$iframe.style.maxWidth = isDesktop ? "100%" : "500px";
+        this.$iframe.style.width = "100%";
         this.$iframe.contentDocument.body.style.display = "none";
         setTimeout(async () => {
           const auth = await this.utils.getAuth();

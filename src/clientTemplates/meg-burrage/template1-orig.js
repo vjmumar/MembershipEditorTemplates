@@ -1,6 +1,6 @@
 window.templateCustomizationSchema = {
    name: "Production",
-   id: "template-3",
+   id: "template-3-orig",
    customCss:
       "@font-face { font-family: 'Ogg'; src: url('https://res.cloudinary.com/dpr6hw8uh/raw/upload/v1659948521/Ogg-Roman_vloao9.otf') format('opentype'); font-weight: normal; font-style: normal; font-display: swap; }",
    customFonts: [],
@@ -3219,25 +3219,24 @@ class CourseTemplate {
          document.body.classList.add("page-dashboard");
       },
 
-      initCategoryPostPage: async (categoryId = "") => {
+      initCategoryPostPage: async () => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
 
          // Then we will retrieve the category
-         const category = await this.data.fetchCategory(categoryId);
+         const category = await this.data.fetchCategory();
 
          // Then we will fetch the category data and prepare the breadcrumbs
          const breadCrumbs = await (async () => {
-            // const $el = await this.utils.waitForElement(
-            //    "#product-breadcrumbs, #breadcrumb-container",
-            //    0,
-            // );
-            // $el?.querySelectorAll("a").forEach((e) => {
-            //    e.href = `/courses${e.getAttribute("href")}`;
-            // });
-            // return $el?.innerHTML;
-            return "";
+            const $el = await this.utils.waitForElement(
+               "#product-breadcrumbs, #breadcrumb-container",
+               0,
+            );
+            $el?.querySelectorAll("a").forEach((e) => {
+               e.href = `/courses${e.getAttribute("href")}`;
+            });
+            return $el?.innerHTML;
          })();
 
          // Then we will helper function to map posts to our data structure
@@ -3896,7 +3895,6 @@ class CourseTemplate {
          return html;
       },
       categoryGrid: (categories = []) => {
-         console.log(categories);
          // First we will check if the assed categories is valid and is not empty, if it does then we will return a error html
          if (!categories || categories.length === 0) {
             return '<p class="text-center text-gray-500">No categories found to display.</p>';
@@ -3905,7 +3903,7 @@ class CourseTemplate {
          // Then we will generate the category cards
          const categoryCards = categories.reduce((a, c) => {
             a += `
-                        <div onclick="window.CourseTemplate.actions.navigate('category', {categoryId: 'hello world'})" class="template-categories__card">
+                        <a href="${c.url || "#"}" class="template-categories__card">
                             <img 
                                 src="${c.thumbnail || window.templateCustomizationSchema.placeholderThumbnail}" 
                                 alt="Thumbnail for ${c.title}" 
@@ -3916,7 +3914,7 @@ class CourseTemplate {
                             <div class="template-categories__info">
                                 <h5 class="template-categories__title-text">${c.title}</h5>
                             </div>
-                        </div>
+                        </a>
                     `;
             return a;
          }, "");
@@ -4595,14 +4593,6 @@ class CourseTemplate {
 
    // This object holds actions methods
    actions = {
-      navigate: async (type = "", params = {}) => {
-         document.querySelector(".bm-theme-root").innerHTML = "";
-         if (type === "dashboard") {
-            await this.desktopInitializers.initLandingPage();
-         } else if (type === "category") {
-            await this.desktopInitializers.initCategoryPostPage(params.categoryId);
-         }
-      },
       markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {
          const auth = await this.utils.getAuth();
          const productId = auth?.productId;

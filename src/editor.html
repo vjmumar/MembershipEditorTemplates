@@ -2577,7 +2577,6 @@
     initializers = {
       // This method serves as the entry point for initializing the application.
       init: async () => {
-        console.log("hello world");
         // First, check if the page is in preview mode; if not, exit the method.
         if (!this.isPagePreview) return;
 
@@ -2588,9 +2587,7 @@
             ".bm-editor-root",
             0,
           );
-
-          console.log($root)
-
+          
           // Then, generate and sanitize the URL for the preview.
           const url = new URL(location.href);
           url.searchParams.delete("isEditorPreview");

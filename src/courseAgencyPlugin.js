@@ -108,11 +108,12 @@ const fetchProduct = async () => {
          })
             .then((e) => e.json())
             .then((e) => {
-               console.log(e);
+               console.log(e,"cool");
                resolved(e);
                sessionStorage.setItem(storageName, JSON.stringify(e));
             })
-            .catch(() => {
+            .catch((e) => {
+               console.log("err", e)
                resolved({});
             });
       } else {

@@ -3173,7 +3173,10 @@ class CourseTemplate {
       },
 
       initLandingPage: async () => {
-         // First we will wait for the product container
+         // Then we will retrieve the root on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+
+         // Then we will wait for the product container
          const $container = await this.utils.waitForElement(".product-container", 0);
 
          // Then we will retrieve the necessary data
@@ -3197,7 +3200,7 @@ class CourseTemplate {
             }));
 
          // Then we will inject the Dashboard HTML and initialize the navigation components
-         document.querySelector(".bm-theme").innerHTML = `
+         $root.innerHTML = `
          <div class='template-container'>
              <div class="dashboard">
                      ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
@@ -3215,8 +3218,8 @@ class CourseTemplate {
 
          // Finally we will invoke the necessary initializers
          this.desktopInitializers.initStyles();
-         this.globalInitializers.initNavBar($container);
-         this.globalInitializers.initSidebar($container);
+         this.globalInitializers.initNavBar($root);
+         this.globalInitializers.initSidebar($root);
          document.body.classList.add("page-dashboard");
       },
 
@@ -4796,4 +4799,3 @@ class CourseTemplate {
 if (!window.CourseTemplate) {
    window.CourseTemplate = new CourseTemplate();
 }
-   

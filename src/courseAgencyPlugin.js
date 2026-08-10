@@ -127,7 +127,7 @@ const fetchProduct = async () => {
 
    // Then we will retrieve the client
    const client = product.customHeader?.match(/data-client=["']([^"']+)["']/i)?.[1];
-    allert(client)
+    alert(client)
    // Finally we will process it if client is present
    if (client) {
       // First we will create the script tag

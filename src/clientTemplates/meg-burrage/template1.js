@@ -3192,6 +3192,9 @@ class CourseTemplate {
                   cat?.posterImage ||
                   window.templateCustomizationSchema.placeholderThumbnail,
                title: cat.title,
+               id: cat.id,
+               locaationId: cat.location,
+               productId: cat.product,
                url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
             }));
 
@@ -3899,6 +3902,7 @@ class CourseTemplate {
          return html;
       },
       categoryGrid: (categories = []) => {
+         console.log(categories)
          // First we will check if the assed categories is valid and is not empty, if it does then we will return a error html
          if (!categories || categories.length === 0) {
             return '<p class="text-center text-gray-500">No categories found to display.</p>';

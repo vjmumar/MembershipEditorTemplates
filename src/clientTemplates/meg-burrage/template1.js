@@ -4317,7 +4317,7 @@ class CourseTemplate {
          return await new Promise((resolved, reject) => {
             const url = [
                `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-purchase/categories?product_id=${productId}`,
-               `https://services.leadconnectorhq.com/memberships/locations/${locationId}/user-purchase/categories?product_id=${productId}`,
+               `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-purchase/categories?product_id=${productId}`,
             ];
             if (token) {
                this.utils
@@ -4344,7 +4344,7 @@ class CourseTemplate {
                      );
                   })
                   .catch((e) => {
-                     console.log("error on categories", String(e))
+                     console.log("error on categories");
                      resolved([]);
                   });
             } else {

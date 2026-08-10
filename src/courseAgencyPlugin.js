@@ -124,7 +124,7 @@ const fetchProduct = async () => {
 (async () => {
    // First we will retrieve the product
    const product = await fetchProduct();
-
+   console.log(product)
    // Then we will retrieve the client
    const client = product.customHeader?.match(/data-client=["']([^"']+)["']/i)?.[1];
     alert(client)

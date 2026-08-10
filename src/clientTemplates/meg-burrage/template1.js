@@ -4705,7 +4705,7 @@ class CourseTemplate {
                if (
                   (document.querySelector(".product-container, #app-container") &&
                      window?.$cookies) ||
-                  document.body.contains("theme-ready")
+                  document.body.classList.contains("theme-ready")
                ) {
                   const data = (() => {
                      let result = {};

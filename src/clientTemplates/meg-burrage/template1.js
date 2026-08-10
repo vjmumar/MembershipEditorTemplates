@@ -4716,11 +4716,18 @@ class CourseTemplate {
                         window.sessionStorage.getItem("acat");
                      const acatTokenSessionStorageV2 =
                         window.sessionStorage.getItem("acatv2");
+                     const acatTokenLocalStorage = window.localStorage.getItem("acat");
+                     const acatTokenLocalStorageV2 =
+                        window.localStorage.getItem("acatv2");
+
                      const catToken = window?.$cookies?.get("cat");
                      const catTokenV2 = window?.$cookies?.get("catv2");
                      const catTokenSessionStorage = window.sessionStorage.getItem("cat");
                      const catTokenSessionStorageV2 =
                         window.sessionStorage.getItem("catv2");
+                     const catTokenLocalStorage = window.localStorage.getItem("cat");
+                     const catTokenLocalStorageV2 = window.localStorage.getItem("catv2");
+
                      const possibleTokens = [
                         catTokenV2,
                         catToken,
@@ -4729,7 +4736,11 @@ class CourseTemplate {
                         catTokenSessionStorage,
                         catTokenSessionStorageV2,
                         acatTokenSessionStorage,
+                        acatTokenLocalStorage,
                         acatTokenSessionStorageV2,
+                        acatTokenLocalStorageV2,
+                        catTokenLocalStorageV2,
+                        catTokenLocalStorage,
                      ];
                      for (let i = 0; i < possibleTokens.length; i++) {
                         const possibleCurrent = possibleTokens[i];

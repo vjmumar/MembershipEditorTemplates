@@ -4796,3 +4796,4 @@ class CourseTemplate {
 if (!window.CourseTemplate) {
    window.CourseTemplate = new CourseTemplate();
 }
+   

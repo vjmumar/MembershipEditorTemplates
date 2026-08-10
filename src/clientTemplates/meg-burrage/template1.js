@@ -4602,7 +4602,9 @@ class CourseTemplate {
    // This object holds actions methods
    actions = {
       navigate: async (type = "", params = {}) => {
-         document.querySelector(".bm-theme-root").innerHTML = "";
+         document.querySelector(".bm-theme-root").innerHTML = `
+            <div class="bm-theme-root__container"></div>
+         `;
          if (type === "dashboard") {
             await this.desktopInitializers.initLandingPage();
          } else if (type === "category") {

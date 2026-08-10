@@ -2582,10 +2582,9 @@
 
         // Finally, determine if we need to launch the full Editor or just the toggle widget.
         if (this.isEdit) {
-          // First, retrieve the main app and app-container elements.
-          const $app = document.querySelector("#app");
+          // First, retrieve the editor root
           const $root = await this.utils.waitForElement(
-            ".bm-theme-root",
+            ".bm-editor-root",
             0,
           );
 
@@ -2613,7 +2612,7 @@
           // Then, clear the template loader
           document.querySelector(".template-loader")?.remove();
 
-          // Then, create an iframe to load the current page in edit mode and append it to the app.
+          // Then, create an iframe to load the current page in edit mode and append it to the root.
           this.$iframe = document.createElement("iframe");
           this.$iframe.sandbox =
             "allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation-by-user-activation";
@@ -2621,7 +2620,7 @@
           this.$iframe.id = "membership-editor-iframe-preview";
           this.$iframe.style.cssText =
             "width:100%; height:100vh; border:none; display:block; margin-inline: auto";
-          $app.prepend(this.$iframe);
+          $root.prepend(this.$iframe);
 
           // Then we will set the body overflow to hidden
           document.body.style.overflow = "hidden";

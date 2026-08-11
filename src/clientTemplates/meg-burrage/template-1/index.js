@@ -2897,7 +2897,6 @@ class CourseTemplate {
    constructor() {
       this.isMobile = window.matchMedia("(max-width: 768px)").matches;
       this.baseURL = `https://membershipeditor.netlify.app`;
-      this.path = "src/clientTemplates/meg-burrage/template-1"
       this.init();
    }
 
@@ -2905,6 +2904,7 @@ class CourseTemplate {
    init = async () => {
       // First we will retrieve the current URL
       const url = window.location.href;
+
       // Then we will insert the font-awesome script into the head
       const fScript = document.createElement("script");
       fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
@@ -2913,27 +2913,29 @@ class CourseTemplate {
       // Then we will insert the global and widget styles
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link class="template-global-styles" rel="stylesheet" href="${this.baseURL}/${this.path}/css/global.css"></link>`,
+         `<link class="template-global-styles" rel="stylesheet" src="${this.baseURL}/template-1/css/global.css"></link>`,
       );
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link class="template-widget-styles" rel="stylesheet" href="${this.baseURL}/${this.path}/css/widget.css"></link>`,
+         `<link class="template-widget-styles" rel="stylesheet" src="${this.baseURL}/template-1/css/widget.css"></link>`,
       );
 
-      // Finally we will initialize the styles
-      if (this.isMobile) {
-         document.head.insertAdjacentHTML(
-            "beforeend",
-            `<link class="template-styles" rel="stylesheet" href="${this.baseURL}/${this.path}/css/pageMobile.css"></link>`,
-         );
-         await this.mobileInitializers.initLandingPage();
-      } else {
-         document.head.insertAdjacentHTML(
-            "beforeend",
-            `<link class="template-styles" rel="stylesheet" href="${this.baseURL}/${this.path}/css/pageDesktop.css"></link>`,
-         );
-         await this.desktopInitializers.initLandingPage();
-      }
+      // Then we will initialize the styles and the landing page
+      document.head.insertAdjacentHTML(
+         "beforeend",
+         `<link class="template-styles" rel="stylesheet" src="${this.baseURL}/template-1/css/page.css"></link>`,
+      );
+      await this.actions.navigate("landingPage");
+
+      // Finally we will append a class to the body indicating that the template is ready
+      setTimeout(() => {
+         document.body.classList.add("template-ready");
+      }, 0);
+
+      // Finally we will remove the intial loader
+      setTimeout(() => {
+         document.querySelector(".template-loader")?.remove();
+      }, 1000);
    };
 
    // This object holds global related initializers
@@ -3145,43 +3147,9 @@ class CourseTemplate {
       },
    };
 
-   // This object holds desktop related initializers
-   desktopInitializers = {
-      init: async () => {
-         // Then we will check the URL against regex patterns to determine which page view to load
-         await this.desktopInitializers.initLandingPage();
-         // if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
-         //    await this.desktopInitializers.initLandingPage();
-         // } else if (
-         //    /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
-         //       url,
-         //    )
-         // ) {
-         //    await this.desktopInitializers.initCategoryPostPage();
-         // } else if (/products\/[0-9a-fA-F-]{36}\/categories\/?(\?.*)?$/.test(url)) {
-         //    await this.desktopInitializers.initCategoriesPage();
-         // } else if (
-         //    /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/posts\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
-         //       url,
-         //    )
-         // ) {
-         //    await this.desktopInitializers.initPostPage();
-         // } else {
-         //    console.log("No page found");
-         // }
-
-         // Then we will append a class to the body indicating that the template is ready
-         setTimeout(() => {
-            document.body.classList.add("template-ready");
-         }, 0);
-
-         // Finally we will remove the intial loader
-         setTimeout(() => {
-            document.querySelector(".template-loader")?.remove();
-         }, 1000);
-      },
-
-      initLandingPage: async () => {
+   // This object holds desktop pages
+   pages = {
+      landingPage: async () => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
@@ -3232,13 +3200,11 @@ class CourseTemplate {
          </div>
          `;
 
-         // Finally we will invoke the necessary initializers
-         this.globalInitializers.initNavBar($rootContainer);
-         this.globalInitializers.initSidebar($rootContainer);
-         document.body.classList.add("page-dashboard");
+         // Finally we will update the body class to current page
+         this.utils.setPageClass("dashboard");
       },
 
-      initCategoryPostPage: async (categoryId = "") => {
+      categoryPostPage: async (categoryId = "") => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
@@ -3303,13 +3269,11 @@ class CourseTemplate {
          </div>
          `;
 
-         // Finally we will invoke the necessary initializers
-         this.globalInitializers.initNavBar($rootContainer);
-         this.globalInitializers.initSidebar($rootContainer);
-         document.body.classList.add("page-category-posts");
+         // Finally we will update the body class to current page
+         this.utils.setPageClass("category-post");
       },
 
-      initCategoriesPage: async () => {
+      categoriesPage: async () => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
@@ -3343,13 +3307,11 @@ class CourseTemplate {
           </div>
          `;
 
-         // Finally we will invoke the necessary initializers
-         this.globalInitializers.initNavBar($rootContainer);
-         this.globalInitializers.initSidebar($root);
-         document.body.classList.add("page-categories");
+         // Finally we will update the body class to current page
+         this.utils.setPageClass("categories");
       },
 
-      initPostPage: async () => {
+      postPage: async () => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
@@ -3503,10 +3465,8 @@ class CourseTemplate {
          </div>
          `;
 
-         // Then we will invoke the necessary initializers
-         this.globalInitializers.initNavBar($rootContainer);
-         this.globalInitializers.initSidebar($root);
-         document.body.classList.add("page-post");
+         // Then we will update the body class to current page
+         this.utils.setPageClass("post");
 
          // Finally we will append all container conditionally
          if (videoContainer) {
@@ -3525,43 +3485,9 @@ class CourseTemplate {
       },
    };
 
-   // This object holds mobile related initializers
-   mobileInitializers = {
-      init: async () => {
-         // First we will retrieve the current URL
-         const url = window.location.href;
-
-         // Then we will insert the font-awesome script into the head
-         const fScript = document.createElement("script");
-         fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
-         document.head.append(fScript);
-
-         // Then we will check the URL against regex patterns to determine which page view to load
-         if (
-            /\/products\/[a-z0-9-]+\/categories(\?.*)?$/i.test(url) ||
-            /products\/[^/]+\/?(\?.*)?$/.test(url)
-         ) {
-            await this.mobileInitializers.initLandingPage();
-         } else if (
-            /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/posts\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
-               url,
-            )
-         ) {
-            await this.mobileInitializers.initPostPage();
-         }
-
-         // Then we will append a class to the body indicating that the template is ready
-         setTimeout(() => {
-            document.body.classList.add("template-ready");
-         }, 0);
-
-         // Finally we will remove the intial loader
-         setTimeout(() => {
-            document.querySelector(".template-loader")?.remove();
-         }, 1000);
-      },
-
-      initLandingPage: async () => {
+   // This object holds mobile pages
+   mobilePages = {
+      landingPage: async () => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
@@ -3606,7 +3532,7 @@ class CourseTemplate {
          document.body.classList.add("page-dashboard");
       },
 
-      initPostPage: async () => {
+      postPage: async () => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
@@ -4607,11 +4533,7 @@ class CourseTemplate {
    actions = {
       navigate: async (type = "", params = {}) => {
          document.querySelector(".bm-theme-root__container__page").innerHTML = ``;
-         if (type === "dashboard") {
-            await this.desktopInitializers.initLandingPage();
-         } else if (type === "category") {
-            await this.desktopInitializers.initCategoryPostPage(params.categoryId);
-         }
+         await this.pages[type](params);
       },
       markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {
          const auth = await this.utils.getAuth();
@@ -4702,6 +4624,13 @@ class CourseTemplate {
             }
          }
          throw null;
+      },
+      setPageClass: (page = "") => {
+         const currentPageClass = Array.from(document.body.classList).find((e) =>
+            e.includes("page-"),
+         );
+         document.body.classList.remove(currentPageClass);
+         document.body.classList.add(`page-${page}`);
       },
       waitForElement: (elementSelector = "", resolveDelay = 1000, timeout = null) => {
          return new Promise((res) => {

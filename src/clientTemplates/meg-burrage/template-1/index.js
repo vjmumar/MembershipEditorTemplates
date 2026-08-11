@@ -3445,7 +3445,7 @@ class CourseTemplate {
          })();
 
          // Finally we will append all container conditionally
-         await this.coreMethods.utils.extractLessonParts({
+         this.coreMethods.utils.extractLessonParts({
             productId: currentPost.productId,
             categoryId: currentPost.categoryId,
             postId: currentPost.id,

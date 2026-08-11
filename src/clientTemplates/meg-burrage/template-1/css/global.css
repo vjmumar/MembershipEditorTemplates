@@ -231,6 +231,7 @@
    padding-block: 30px;
    padding-inline: 15px;
    max-width: calc(100% - 35px);
+   margin-left: auto;
 }
 .template-navbar-wrapper * {
    z-index: 1;

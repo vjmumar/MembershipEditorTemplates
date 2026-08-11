@@ -2916,16 +2916,14 @@ class CourseTemplate {
       const courseTemplateCoreScript = document.createElement("script");
       courseTemplateCoreScript.src = `${this.baseURL}/src/courseTemplateCore/v1.js`;
       document.head.append(courseTemplateCoreScript);
-
       await new Promise((res) => {
          courseTemplateCoreScript.onload = () => {
-            this.coreMethods = window.CourseTemplateCore;
+            this.coreMethods = new CourseTemplateCore(this.pages);
             res(true);
          };
-
          courseTemplateCoreScript.error = (err) => {
-            console.log(String(err))
-         }
+            console.log(String(err));
+         };
       });
 
       // Then we will insert the global and widget styles

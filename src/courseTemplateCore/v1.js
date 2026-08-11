@@ -1,5 +1,8 @@
 class CourseTemplateCore {
-   version = "v1";
+   constructor(pages = {}) {
+      this.version = "v1";
+      this.pages = pages;
+   }
 
    // This object holds data fetching and state management logic
    data = {
@@ -404,7 +407,7 @@ class CourseTemplateCore {
    actions = {
       navigate: async (type = "", params = {}) => {
          document.querySelector(".bm-theme-root__container__page").innerHTML = ``;
-         await window.CourseTemplate?.pages[type](params);
+         await this?.pages[type](params);
       },
       markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {
          const auth = await this.utils.getAuth();
@@ -628,8 +631,4 @@ class CourseTemplateCore {
             });
       },
    };
-}
-
-if (!window.CourseTemplateCore) {
-   window.CourseTemplateCore = new CourseTemplateCore();
 }

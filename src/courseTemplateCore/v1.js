@@ -1,5 +1,5 @@
 class CourseTemplateCore {
-   this.version = "v1";
+   version = "v1";
 
    // This object holds data fetching and state management logic
    data = {

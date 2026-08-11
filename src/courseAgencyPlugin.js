@@ -169,7 +169,9 @@
          document.body.insertAdjacentHTML(
             "afterbegin",
             `<div class="bm-theme-root">
-                <div class="bm-theme-root__container"></div>
+                <div class="bm-theme-root__container">
+                  <div class="bm-theme-root__container__page"></div>
+                </div>
             </div>`,
          );
 

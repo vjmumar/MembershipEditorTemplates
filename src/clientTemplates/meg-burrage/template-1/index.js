@@ -3290,7 +3290,7 @@ class CourseTemplate {
          `;
 
          // Finally we will update the body class to current page
-         this.coreMethods.utils.setPageClass("category-post");
+         this.coreMethods.utils.setPageClass("category-posts");
       },
 
       categoriesPage: async () => {

@@ -3331,7 +3331,7 @@ class CourseTemplate {
          this.coreMethods.utils.setPageClass("categories");
       },
 
-      postPage: async () => {
+      postPage: async (params = { postId }) => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
@@ -3339,7 +3339,7 @@ class CourseTemplate {
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [completedPosts, currentPost, categories] = await Promise.allSettled([
             this.coreMethods.data.fetchCompletedPosts(),
-            this.coreMethods.data.fetchPost(),
+            this.coreMethods.data.fetchPost(params.postId),
             this.coreMethods.data.fetchCategories(),
          ]).then((res) => res.map((e) => e.value));
 
@@ -3899,7 +3899,7 @@ class CourseTemplate {
          // Then we will generate the category cards
          const postCards = posts?.reduce((a, c) => {
             a += `
-                        <a href="${c.url || "#"}" class="template-post__card">
+                        <div onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${c.id}'})" class="template-post__card">
                             <img 
                                 src="${c.thumbnail ? `https://cdn.courses.apisystem.tech/${c.thumbnail}` : null || window.templateCustomizationSchema.placeholderThumbnail}" 
                                 alt="Thumbnail for ${c.title}" 
@@ -3910,7 +3910,7 @@ class CourseTemplate {
                             <div class="template-post__info">
                                 <h3 class="template-post__title-text">${c.title}</h3>
                             </div>
-                        </a>
+                        </div>
                     `;
             return a;
          }, "");

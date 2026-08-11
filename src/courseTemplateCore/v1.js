@@ -177,8 +177,7 @@ class CourseTemplateCore {
          const contactId = auth?.contactId;
          const userId = auth?.externalUserId;
          return await new Promise((resolved, reject) => {
-            const postId =
-               pId || location.href.split("/posts/")[1].split("?")[0].split("/")[0];
+            const postId = pId;
             const url = [
                `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/posts/${postId}`,
                `https://services.leadconnectorhq.com/membership/locations/${locationId}/posts/${postId}`,
@@ -415,7 +414,7 @@ class CourseTemplateCore {
          } else {
             alert(`Sorry Page Not Found! Possible Pages - ${String(pages)}`);
          }
-         $root.classList.add("loading");
+         $root.classList.remove("loading");
       },
       markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {
          const auth = await this.utils.getAuth();

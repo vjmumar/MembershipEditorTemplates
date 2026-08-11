@@ -3336,6 +3336,7 @@ class CourseTemplate {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
+         const $rootContainerPage = document.querySelector(".bm-theme-root__container");
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [completedPosts, currentPost, categories] = await Promise.allSettled([
@@ -3473,7 +3474,7 @@ class CourseTemplate {
          })();
 
          // Then we will render the page and re-attach the scraped elements (video, audio, comments)
-         $rootContainer.innerHTML = `
+         $rootContainerPage.innerHTML = `
          ${headerHTML}
          <div class='template-container'>
              <div class="template-post-page">
@@ -3493,19 +3494,19 @@ class CourseTemplate {
          this.coreMethods.utils.setPageClass("post");
 
          // Finally we will append all container conditionally
-         if (videoContainer) {
-            document.querySelector(".template-post-page__video")?.append(videoContainer);
-         }
+         // if (videoContainer) {
+         //    document.querySelector(".template-post-page__video")?.append(videoContainer);
+         // }
 
-         if (audioContainer) {
-            document.querySelector(".template-post-page__audio")?.append(audioContainer);
-         }
+         // if (audioContainer) {
+         //    document.querySelector(".template-post-page__audio")?.append(audioContainer);
+         // }
 
-         if (commentContainer) {
-            document
-               .querySelector(".template-post-page__comments")
-               ?.append(commentContainer);
-         }
+         // if (commentContainer) {
+         //    document
+         //       .querySelector(".template-post-page__comments")
+         //       ?.append(commentContainer);
+         // }
       },
    };
 

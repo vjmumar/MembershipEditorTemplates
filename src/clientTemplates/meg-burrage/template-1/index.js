@@ -3907,6 +3907,7 @@ class CourseTemplate {
                                 loading="lazy"
                                 onerror="this.onerror=null; this.src='${window.templateCustomizationSchema.placeholderThumbnail}';"
                             />
+                            ${JSON.stringify(c)}
                             <div class="template-post__info">
                                 <h3 class="template-post__title-text">${c.title}</h3>
                             </div>

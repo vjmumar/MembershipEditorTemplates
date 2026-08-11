@@ -3341,12 +3341,11 @@ class CourseTemplate {
          );
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
-         const [completedPosts, currentPost, categories] =
-            await Promise.allSettled([
-               this.coreMethods.data.fetchCompletedPosts(),
-               this.coreMethods.data.fetchPost(params.postId),
-               this.coreMethods.data.fetchCategories(),
-            ]).then((res) => res.map((e) => e.value));
+         const [completedPosts, currentPost, categories] = await Promise.allSettled([
+            this.coreMethods.data.fetchCompletedPosts(),
+            this.coreMethods.data.fetchPost(params.postId),
+            this.coreMethods.data.fetchCategories(),
+         ]).then((res) => res.map((e) => e.value));
 
          // Then we will create the bread crumbs
          const breadCrumbs = await (async () => {
@@ -3464,18 +3463,17 @@ class CourseTemplate {
          this.coreMethods.utils.setPageClass("post");
 
          // Finally we will append all container conditionally
-         await this.coreMethods.utils.extractLessonParts({
+         this.coreMethods.utils.extractLessonParts({
             productId: currentPost.productId,
             categoryId: currentPost.categoryId,
             postId: currentPost.id,
             locationId: currentPost.locationId,
             mediaTarget: ".template-post-page__media",
             commentsTarget: ".template-post-page__comments",
-            iframeParent = ".bm-theme-root__container__page",
-            muted = false,
-            timeout = 30000,
-         })
-         document.querySelector(".template-post-page__video")?.append(videoContainer);
+            iframeParent: ".bm-theme-root__container__page",
+            muted: true,
+            timeout: 30000,
+         });
 
          // if (audioContainer) {
          //    document.querySelector(".template-post-page__audio")?.append(audioContainer);

@@ -3443,6 +3443,7 @@ class CourseTemplate {
             </div>
             `;
          })();
+         const videoAssets = currentPost?.asset_urls;
 
          // Then we will render the page and re-attach the scraped elements (video, audio, comments)
          $rootContainerPage.innerHTML = `
@@ -3452,7 +3453,16 @@ class CourseTemplate {
                  <div class="template-post-page__breadcrumbs">${breadCrumbs}</div>
                  <div class="template-post-page__wrapper">
                      <p class="template-post-page__title">${currentPost?.title || ""}</p>
-                     <div class="template-post-page__media"></div>    
+                     <div class="template-post-page__media">
+                           <video
+                              class="template-video__player"
+                              src="${videoAssets.url}"
+                              poster="${videoAssets.thumbnailUrl || ""}"
+                              preload="metadata"
+                              playsinline
+                              controls
+                           ></video>
+                     </div>    
                      <div class="template-post-page__description">${currentPost?.description || ""}</div>  
                      <div class="template-post-page__comments"></div>  
                  </div>
@@ -3461,19 +3471,19 @@ class CourseTemplate {
          `;
 
          // Then we will append all container conditionally
-         this.coreMethods.utils.extractLessonParts({
-            productId: currentPost.productId,
-            categoryId: currentPost.categoryId,
-            postId: currentPost.id,
-            locationId: currentPost.locationId,
-            mediaTarget: ".template-post-page__media",
-            commentsTarget: ".template-post-page__comments",
-            iframeParent: ".bm-theme-root__container__page",
-            muted: true,
-            timeout: 30000,
-         });
+         // this.coreMethods.utils.extractLessonParts({
+         //    productId: currentPost.productId,
+         //    categoryId: currentPost.categoryId,
+         //    postId: currentPost.id,
+         //    locationId: currentPost.locationId,
+         //    mediaTarget: ".template-post-page__media",
+         //    commentsTarget: ".template-post-page__comments",
+         //    iframeParent: ".bm-theme-root__container__page",
+         //    muted: true,
+         //    timeout: 30000,
+         // });
 
-         // Then we will update the body class to current page
+         // // Then we will update the body class to current page
          this.coreMethods.utils.setPageClass("post");
 
          // if (audioContainer) {

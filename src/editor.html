@@ -1926,7 +1926,7 @@
          */
         script.onload = async () => {
           // First we will assign the this.originalTemplateCustomizationSchema to the current templates schema so that we have a clean copy of template schema
-          await Promise((res) => {
+          await new Promise((res) => {
             const interval = setInterval(() => {
               if (typeof window?._?.cloneDeep !== "undefined") {
                 res(true);

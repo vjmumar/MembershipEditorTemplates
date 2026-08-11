@@ -2907,14 +2907,17 @@ class CourseTemplate {
       // First we will retrieve the current URL
       const url = window.location.href;
 
+      // Then we will assign the core version
+      const coreVersion = "v1";
+
       // Then we will insert the font-awesome script into the head
       const fScript = document.createElement("script");
       fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
       document.head.append(fScript);
 
-      // Then we will insert the template core
+      // Then we will insert the template core and core widget css
       const courseTemplateCoreScript = document.createElement("script");
-      courseTemplateCoreScript.src = `${this.baseURL}/src/courseTemplateCore/v1.js`;
+      courseTemplateCoreScript.src = `${this.baseURL}/src/courseTemplateCore/${coreVersion}/index.js`;
       document.head.append(courseTemplateCoreScript);
       await new Promise((res) => {
          courseTemplateCoreScript.onload = () => {
@@ -2925,6 +2928,10 @@ class CourseTemplate {
             console.log(String(err));
          };
       });
+      document.head.insertAdjacentHTML(
+         "beforeend",
+         `<link class="template-global-styles" rel="stylesheet" href="${this.baseURL}/src/courseTemplateCore/${coreVersion}/css/widget.css"></link>`,
+      );
 
       // Then we will insert the global and widget styles
       document.head.insertAdjacentHTML(
@@ -3451,8 +3458,7 @@ class CourseTemplate {
                  <div class="template-post-page__breadcrumbs">${breadCrumbs}</div>
                  <div class="template-post-page__wrapper">
                      <p class="template-post-page__title">${currentPost?.title || ""}</p>
-                     <div class="template-post-page__video"></div>    
-                     <div class="template-post-page__audio"></div>
+                     <div class="template-post-page__media"></div>    
                      <div class="template-post-page__description">${currentPost?.description || ""}</div>  
                      <div class="template-post-page__comments"></div>  
                  </div>
@@ -3463,40 +3469,9 @@ class CourseTemplate {
          // Then we will update the body class to current page
          this.coreMethods.utils.setPageClass("post");
 
-         // Finally we will append all container conditionally
-         if (
-            currentPost.asset_urls.assetType === "video" &&
-            currentPost?.asset_urls?.url
-         ) {
-            document.querySelector(".template-post-page__video")?.insertAdjacentHTML(
-               "beforeend",
-               `
-                <video
-                  src="${currentPost?.asset_urls?.url}"
-                  poster="${currentPost?.asset_urls?.thumbnailUrl || ""}"
-                  preload="metadata"
-                  playsinline
-                  controls
-               ></video>
-            `,
-            );
-         }
-
-         if (
-            currentPost.asset_urls.assetType === "audio" &&
-            currentPost?.asset_urls?.url
-         ) {
-            document.querySelector(".template-post-page__video")?.insertAdjacentHTML(
-               "beforeend",
-               `
-                <audio
-                     src="${currentPost?.asset_urls?.url}"
-                     preload="metadata"
-                     controls
-                  ></audio>
-            `,
-            );
-         }
+         // Finally we will append the media player
+         const $mediaPostContainer = document.querySelector(".template-post-page__media");
+         this.coreMethods.widgets.postPlayer(currentPost, $mediaPostContainer);
       },
    };
 

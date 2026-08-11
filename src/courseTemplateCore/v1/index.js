@@ -485,6 +485,124 @@ class CourseTemplateCore {
       },
    };
 
+   // This object holds widgets
+   widgets = {
+      postPlayer: async (post = {}, $container = null) => {
+         // First we will retrieve the assets
+         const assets = post?.asset_urls;
+         const assetType = assets?.assetType;
+
+         // Then we will check if asset is valid
+         if (!$container || !assets?.url || !["video", "audio"].includes(assetType)) {
+            return null;
+         }
+
+         // Then we will create the video HTML
+         const videoHTML = (() => {
+            return `
+            <video
+               class="template-post-player__media"
+               src="${assets.url}"
+               poster="${assets.thumbnailUrl || ""}"
+               preload="metadata"
+               playsinline
+               controls
+            ></video>
+         `;
+         })();
+
+         // Then we will create the audio HTML
+         const audioHTML = (() => {
+            return `
+            <div class="template-post-player__audio-content">
+               ${
+                  assets.thumbnailUrl
+                     ? `
+                        <img
+                           class="template-post-player__thumbnail"
+                           src="${assets.thumbnailUrl}"
+                           alt=""
+                        >
+                     `
+                     : ""
+               }
+
+               <div class="template-post-player__audio-details">
+                  <p class="template-post-player__title">
+                     ${post?.title || "Audio"}
+                  </p>
+
+                  <audio
+                     class="template-post-player__media"
+                     src="${assets.url}"
+                     preload="metadata"
+                     controls
+                  ></audio>
+               </div>
+            </div>
+         `;
+         })();
+
+         // Then we will retrieve the correct media HTML
+         const mediaHTML = assetType === "video" ? videoHTML : audioHTML;
+
+         // Then we will render the player
+         $container.innerHTML = `
+         <div
+            class="
+               template-post-player
+               template-post-player--${assetType}
+            "
+         >
+            ${mediaHTML}
+         </div>
+      `;
+
+         // Then we will retrieve the media element
+         const $media = $container.querySelector(".template-post-player__media");
+
+         // Then we will initialize Plyr
+         const player = new Plyr($media, {
+            controls:
+               assetType === "video"
+                  ? [
+                       "play-large",
+                       "play",
+                       "rewind",
+                       "fast-forward",
+                       "progress",
+                       "current-time",
+                       "duration",
+                       "mute",
+                       "volume",
+                       "settings",
+                       "pip",
+                       "fullscreen",
+                    ]
+                  : [
+                       "play",
+                       "rewind",
+                       "fast-forward",
+                       "progress",
+                       "current-time",
+                       "duration",
+                       "mute",
+                       "volume",
+                       "settings",
+                    ],
+            seekTime: 10,
+         });
+
+         // Finally we will return the useful references
+         return {
+            player,
+            media: $media,
+            type: assetType,
+            post,
+         };
+      },
+   };
+
    // This object holds utility methods
    utils = {
       relayUrlFetch: async (urls, options) => {
@@ -636,344 +754,6 @@ class CourseTemplateCore {
                e.sequenceNo = i;
                return e;
             });
-      },
-      extractLessonParts: async ({
-         productId,
-         categoryId,
-         postId,
-         locationId,
-         mediaTarget,
-         commentsTarget,
-         iframeParent = ".bm-theme-root__container__page",
-         muted = false,
-         timeout = 30000,
-      } = {}) => {
-         // First we will resolve an element or selector
-         const resolveElement = (value, name) => {
-            const element =
-               typeof value === "string" ? document.querySelector(value) : value;
-
-            if (!element) {
-               throw new Error(`${name} was not found.`);
-            }
-
-            return element;
-         };
-
-         // Then we will retrieve the necessary containers
-         const $mediaTarget = resolveElement(mediaTarget, "Media target");
-
-         const $commentsTarget = resolveElement(commentsTarget, "Comments target");
-
-         const $iframeParent = resolveElement(iframeParent, "Iframe parent");
-
-         // Then we will remove an existing source iframe
-         $iframeParent.querySelector(".bm-ghl-lesson-source")?.remove();
-
-         // Then we will create the lesson URL
-         const lessonUrl = new URL(
-            [
-               `/courses/products/${productId}`,
-               `/modules/${categoryId}`,
-               `/lessons/${postId}`,
-            ].join(""),
-            location.origin,
-         );
-
-         lessonUrl.searchParams.set("location_id", locationId);
-
-         // Then we will create the hidden iframe
-         const iframe = document.createElement("iframe");
-
-         iframe.className = "bm-ghl-lesson-source";
-         iframe.setAttribute("aria-hidden", "true");
-         iframe.setAttribute("tabindex", "-1");
-
-         // We will force the iframe to use a desktop viewport
-         iframe.width = "1440";
-         iframe.height = "1000";
-
-         iframe.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: -10000px;
-      width: 1440px;
-      min-width: 1440px;
-      height: 1000px;
-      min-height: 1000px;
-      display: block;
-      visibility: visible;
-      opacity: 0;
-      pointer-events: none;
-      border: 0;
-      z-index: -1;
-   `;
-
-         // We assign the URL after setting the desktop dimensions
-         iframe.src = lessonUrl.href;
-
-         // Then we will add it inside the current page
-         $iframeParent.append(iframe);
-
-         try {
-            // Then we will wait for the iframe to load
-            await new Promise((resolve, reject) => {
-               const timer = setTimeout(() => {
-                  reject(new Error("The lesson iframe timed out."));
-               }, timeout);
-
-               iframe.addEventListener(
-                  "load",
-                  () => {
-                     clearTimeout(timer);
-                     resolve();
-                  },
-                  { once: true },
-               );
-
-               iframe.addEventListener(
-                  "error",
-                  () => {
-                     clearTimeout(timer);
-
-                     reject(new Error("The lesson iframe failed to load."));
-                  },
-                  { once: true },
-               );
-            });
-
-            // Then we will retrieve the iframe window and document
-            const iframeWindow = iframe.contentWindow;
-
-            const iframeDocument = iframe.contentDocument;
-
-            if (!iframeWindow || !iframeDocument) {
-               throw new Error("Unable to access the lesson iframe.");
-            }
-
-            // Then we will confirm that it has a desktop viewport
-            if (iframeWindow.innerWidth < 1024) {
-               throw new Error(
-                  `The iframe did not render as desktop: ${iframeWindow.innerWidth}px`,
-               );
-            }
-
-            // Then we will create a reusable wait function
-            const waitFor = (callback, errorMessage) => {
-               return new Promise((resolve, reject) => {
-                  const startedAt = Date.now();
-
-                  const interval = setInterval(() => {
-                     const result = callback();
-
-                     if (result) {
-                        clearInterval(interval);
-                        resolve(result);
-                        return;
-                     }
-
-                     if (Date.now() - startedAt >= timeout) {
-                        clearInterval(interval);
-
-                        reject(new Error(errorMessage));
-                     }
-                  }, 100);
-               });
-            };
-
-            // Then we will wait for the desktop lesson container
-            await waitFor(() => {
-               return iframeDocument.querySelector("#post-details-container");
-            }, "The desktop lesson container was not found.");
-
-            // Then we will wait for either an audio or video asset
-            await waitFor(() => {
-               const $videoAsset = iframeDocument.querySelector(
-                  ["#post-details-container", "#post-video"].join(" "),
-               );
-
-               const $videoElement = $videoAsset?.querySelector("video");
-
-               const $audioAsset =
-                  iframeDocument.querySelector(
-                     ["#post-details-container", ".audio-asset-wrapper"].join(" "),
-                  ) ||
-                  iframeDocument.querySelector(
-                     ["#post-details-container", ".audio-player-wrapper"].join(" "),
-                  );
-
-               const $audioElement = $audioAsset?.querySelector("audio");
-
-               const videoIsReady = $videoAsset && $videoElement && $videoElement.src;
-
-               const audioIsReady = $audioAsset && (!$audioElement || $audioElement.src);
-
-               return videoIsReady || audioIsReady;
-            }, "The audio or video player was not initialized.");
-
-            // Then we will wait for the comments component
-            const comments = await waitFor(() => {
-               const $desktopLesson = iframeDocument.querySelector(
-                  "#post-details-container",
-               );
-
-               if (!$desktopLesson) {
-                  return null;
-               }
-
-               const $commentsHeading = Array.from(
-                  $desktopLesson.querySelectorAll("div"),
-               ).find((element) => {
-                  return (
-                     element.textContent?.trim() === "Comments" &&
-                     element.children.length === 0
-                  );
-               });
-
-               return (
-                  $commentsHeading?.closest(".w-full.bg-white.mt-5.px-10.pb-10") ||
-                  $commentsHeading?.closest(".w-full.bg-white") ||
-                  null
-               );
-            }, "The comments component was not found.");
-
-            // Then we will copy GHL's external styles
-            (() => {
-               iframeDocument
-                  .querySelectorAll('link[rel="stylesheet"][href]')
-                  .forEach(($sourceLink) => {
-                     const href = $sourceLink.href;
-
-                     const alreadyLoaded = Array.from(
-                        document.querySelectorAll('link[rel="stylesheet"][href]'),
-                     ).some(($link) => {
-                        return $link.href === href;
-                     });
-
-                     if (alreadyLoaded) {
-                        return;
-                     }
-
-                     const $link = document.createElement("link");
-
-                     $link.rel = "stylesheet";
-                     $link.href = href;
-                     $link.dataset.ghlLessonStyle = "true";
-
-                     document.head.append($link);
-                  });
-            })();
-
-            // Then we will copy GHL's inline styles
-            (() => {
-               iframeDocument.querySelectorAll("style").forEach(($sourceStyle) => {
-                  const content = $sourceStyle.textContent || "";
-
-                  if (!content.trim()) {
-                     return;
-                  }
-
-                  const alreadyLoaded = Array.from(
-                     document.querySelectorAll("style[data-ghl-lesson-style]"),
-                  ).some(($style) => {
-                     return $style.textContent === content;
-                  });
-
-                  if (alreadyLoaded) {
-                     return;
-                  }
-
-                  const $style = document.createElement("style");
-
-                  $style.dataset.ghlLessonStyle = "true";
-
-                  $style.textContent = content;
-
-                  document.head.append($style);
-               });
-            })();
-
-            // Then we will clear the visible containers
-            $mediaTarget.innerHTML = "";
-            $commentsTarget.innerHTML = "";
-
-            // Then we will create a function that will retrieve the audio and move it
-            const audio = (() => {
-               const $audio =
-                  iframeDocument.querySelector(
-                     ["#post-details-container", ".audio-asset-wrapper"].join(" "),
-                  ) ||
-                  iframeDocument.querySelector(
-                     ["#post-details-container", ".audio-player-wrapper"].join(" "),
-                  );
-
-               if (!$audio) {
-                  return null;
-               }
-
-               // Then we will mute the audio when requested
-               if (muted) {
-                  $audio.querySelectorAll("audio").forEach(($element) => {
-                     $element.muted = true;
-                     $element.defaultMuted = true;
-                  });
-               }
-
-               // Finally we will move the complete audio asset
-               $mediaTarget.append($audio);
-
-               return $audio;
-            })();
-
-            // Then we will create a function that will retrieve the video and move it
-            const video = (() => {
-               // First we will retrieve the complete video asset
-               const $video = iframeDocument.querySelector(
-                  ["#post-details-container", ".video-asset-wrapper"].join(" "),
-               );
-
-               if (!$video) {
-                  return null;
-               }
-
-               // Then we will retrieve the native video element
-               const $videoElement = $video.querySelector("video");
-
-               // Then we will mute the video when requested
-               if (muted && $videoElement) {
-                  $videoElement.muted = true;
-                  $videoElement.defaultMuted = true;
-               }
-
-               // Finally we will move the complete video asset
-               $mediaTarget.append($video);
-
-               return $video;
-            })();
-
-            // Then we will create a function that will move the comments
-            const movedComments = (() => {
-               $commentsTarget.append(comments);
-
-               return comments;
-            })();
-
-            // Finally we will return the extracted elements
-            // The iframe must remain inside the current page
-            return {
-               iframe,
-               iframeWindow,
-               iframeDocument,
-               audio,
-               video,
-               comments: movedComments,
-            };
-         } catch (error) {
-            // We will remove the iframe only when loading fails
-            iframe.remove();
-
-            throw error;
-         }
       },
    };
 }

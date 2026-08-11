@@ -2947,7 +2947,7 @@ class CourseTemplate {
          ".bm-theme-root__container__page",
       );
       await this.globalWidgets.initSidebar($rootContainer);
-      await this.globalWidgets.initNavBar($rootContainerPage);
+      await this.globalWidgets.initNavBar($rootContainer);
       await this.coreMethods.actions.navigate("landingPage");
 
       // Then we will append a class to the body indicating that the template is ready

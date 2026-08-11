@@ -3833,7 +3833,6 @@ class CourseTemplate {
          return html;
       },
       categoryGrid: (categories = []) => {
-         console.log(categories);
          // First we will check if the assed categories is valid and is not empty, if it does then we will return a error html
          if (!categories || categories.length === 0) {
             return '<p class="text-center text-gray-500">No categories found to display.</p>';
@@ -3842,7 +3841,7 @@ class CourseTemplate {
          // Then we will generate the category cards
          const categoryCards = categories.reduce((a, c) => {
             a += `
-                        <div onclick="window.CourseTemplate.actions.navigate('category', {categoryId: '${c.id}'})" class="template-categories__card">
+                        <div onclick="window.CourseTemplate.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-categories__card">
                             <img 
                                 src="${c.thumbnail || window.templateCustomizationSchema.placeholderThumbnail}" 
                                 alt="Thumbnail for ${c.title}" 

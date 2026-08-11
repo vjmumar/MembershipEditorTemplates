@@ -3251,6 +3251,7 @@ class CourseTemplate {
          // Then we will helper function to map posts to our data structure
          const generatePosts = (posts = []) => {
             return posts?.map((post) => ({
+               id: post.id,
                thumbnail:
                   post?.posterImage ||
                   window.templateCustomizationSchema.placeholderThumbnail,
@@ -3907,7 +3908,6 @@ class CourseTemplate {
                                 loading="lazy"
                                 onerror="this.onerror=null; this.src='${window.templateCustomizationSchema.placeholderThumbnail}';"
                             />
-                            ${JSON.stringify(c)}
                             <div class="template-post__info">
                                 <h3 class="template-post__title-text">${c.title}</h3>
                             </div>

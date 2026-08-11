@@ -2914,17 +2914,17 @@ class CourseTemplate {
       // Then we will insert the global and widget styles
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link class="template-global-styles" rel="stylesheet" src="${this.baseURL}${this.path}css/global.css"></link>`,
+         `<link class="template-global-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/global.css"></link>`,
       );
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link class="template-widget-styles" rel="stylesheet" src="${this.baseURL}${this.path}css/widget.css"></link>`,
+         `<link class="template-widget-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/widget.css"></link>`,
       );
 
       // Then we will initialize the styles and the landing page
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link class="template-styles" rel="stylesheet" src="${this.baseURL}${this.path}css/page.css"></link>`,
+         `<link class="template-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/page.css"></link>`,
       );
       await this.actions.navigate("landingPage");
 

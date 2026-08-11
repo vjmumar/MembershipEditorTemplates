@@ -8,6 +8,7 @@
    height: 100vh;
    left: -290px;
    z-index: 999999;
+   top: 0;
    transition-duration: 0.5s !important;
 }
 .template-sidebar.active {

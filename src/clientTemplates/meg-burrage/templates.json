@@ -3,7 +3,7 @@
     "id": "template-3",
     "imageUrl": "https://dummyimage.com/700x400/000/fff&text=Main+Template",
     "title": "Production",
-    "scriptLink": "https://membershipeditor.netlify.app/src/clientTemplates/meg-burrage/template1.js",
+    "scriptLink": "https://membershipeditor.netlify.app/src/clientTemplates/meg-burrage/template-1/index.js",
     "previewLink": "1"
   },
   {

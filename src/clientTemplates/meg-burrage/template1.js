@@ -4609,7 +4609,7 @@ class CourseTemplate {
    actions = {
       navigate: async (type = "", params = {}) => {
          document.querySelector(".bm-theme-root").innerHTML = `
-            <div class="bm-theme-root__container"></div>
+            <div class="bm-theme-root__container__page"></div>
          `;
          if (type === "dashboard") {
             await this.desktopInitializers.initLandingPage();

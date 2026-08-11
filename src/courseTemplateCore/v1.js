@@ -642,12 +642,9 @@ class CourseTemplateCore {
          categoryId,
          postId,
          locationId,
-         companyId,
          mediaTarget,
          commentsTarget,
          iframeParent = ".bm-theme-root__container__page",
-         templateId = "Classic",
-         isPreview = true,
          muted = false,
          timeout = 30000,
       } = {}) => {
@@ -683,13 +680,7 @@ class CourseTemplateCore {
             location.origin,
          );
 
-         lessonUrl.searchParams.set("template_id", templateId);
-
-         lessonUrl.searchParams.set("is_preview", String(isPreview));
-
          lessonUrl.searchParams.set("location_id", locationId);
-
-         lessonUrl.searchParams.set("company_id", companyId);
 
          // Then we will create the hidden iframe
          const iframe = document.createElement("iframe");

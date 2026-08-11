@@ -2897,7 +2897,7 @@ class CourseTemplate {
    constructor() {
       this.isMobile = window.matchMedia("(max-width: 768px)").matches;
       this.baseURL = `https://membershipeditor.netlify.app`;
-      this.path = "clientTemplates/meg-burrage/template-1"
+      this.path = "src/clientTemplates/meg-burrage/template-1"
       this.init();
    }
 

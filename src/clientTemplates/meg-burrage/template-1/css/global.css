@@ -9,12 +9,12 @@
 
 .bm-theme-root__container__page::before {
    content: "";
-   position: fixed;
+   position: absolute;
    top: 0;
    left: 0;
    z-index: 999999;
    width: 0;
-   height: 4px;
+   height: 5px;
    background-color: var(
       --branding-primary-accent-dark,
       #d29a89
@@ -25,7 +25,7 @@
 
 .bm-theme-root__container__page.loading::before {
    opacity: 1;
-   animation: template-page-loading 1.5s ease-in-out infinite;
+   animation: template-page-loading 1.5s ease-in-out infinite !important;
 }
 
 /* Sidebar */

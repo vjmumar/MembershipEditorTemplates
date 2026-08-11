@@ -404,7 +404,7 @@ class CourseTemplateCore {
    actions = {
       navigate: async (type = "", params = {}) => {
          document.querySelector(".bm-theme-root__container__page").innerHTML = ``;
-         await this.pages[type](params);
+         await window.CourseTemplate?.pages[type](params);
       },
       markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {
          const auth = await this.utils.getAuth();

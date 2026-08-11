@@ -230,7 +230,7 @@
    justify-content: space-between;
    padding-block: 30px;
    padding-inline: 15px;
-   max-width: calc(100% - 35px);
+   max-width: calc(100% - 40px);
    margin-left: auto;
 }
 .template-navbar-wrapper * {

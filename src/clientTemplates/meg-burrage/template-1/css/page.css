@@ -203,7 +203,7 @@ p {
 /* Post */
 .page-post .bm-theme-root__container {
    width: 100%;
-   max-width: calc(100% - 35px);
+   max-width: calc(100% - 40px);
    margin-left: auto;
 }
 .template-post-page-header {

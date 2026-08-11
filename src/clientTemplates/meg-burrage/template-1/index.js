@@ -2914,24 +2914,24 @@ class CourseTemplate {
          await this.mobileInitializers.initLandingPage();
          document.head.insertAdjacentHTML(
             "beforeend",
-            `<link res="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/pageMobile.css"></link>`,
+            `<link class="template-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/pageMobile.css"></link>`,
          );
       } else {
          await this.desktopInitializers.initLandingPage();
          document.head.insertAdjacentHTML(
             "beforeend",
-            `<link res="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/pageDesktop.css"></link>`,
+            `<link class="template-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/pageDesktop.css"></link>`,
          );
       }
 
       // Finally we will insert the global and widget styles
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link res="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/global.css"></link>`,
+         `<link class="template-global-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/global.css"></link>`,
       );
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link res="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/widget.css"></link>`,
+         `<link class="template-widget-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/widget.css"></link>`,
       );
    };
 

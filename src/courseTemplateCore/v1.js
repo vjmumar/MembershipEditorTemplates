@@ -1,988 +1,4138 @@
-class CourseTemplateCore {
-   constructor(pages = {}, globalWidgets) {
-      this.version = "v1";
-      this.pages = pages;
-      this.globalWidgets = globalWidgets;
+window.templateCustomizationSchema = {
+   name: "Production",
+   id: "template-3",
+   customCss:
+      "@font-face { font-family: 'Ogg'; src: url('https://res.cloudinary.com/dpr6hw8uh/raw/upload/v1659948521/Ogg-Roman_vloao9.otf') format('opentype'); font-weight: normal; font-style: normal; font-display: swap; }",
+   customFonts: [],
+   googleFontsUsed: ["Lavishly Yours", "Playfair Display", "Quicksand"],
+   placeholderThumbnail:
+      "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1771635525/image7_w940ot.png",
+   branding: [
+      {
+         label: "Typography",
+         key: "branding-typography",
+         customizations: [
+            {
+               name: "Heading Font",
+               property: "branding-heading-font-family",
+               type: "font",
+               placeholder: "",
+               value: "Ogg",
+            },
+            {
+               name: "Body Font",
+               property: "branding-body-font-family",
+               type: "font",
+               placeholder: "",
+               value: "Quicksand",
+            },
+         ],
+      },
+      {
+         label: "Font Sizes",
+         key: "branding-font-sizes",
+         customizations: [
+            {
+               name: "H1 Size",
+               property: "branding-h1-font-size",
+               type: "text",
+               placeholder: "E.g: 70px",
+               value: "45px",
+            },
+            {
+               name: "H2 Size",
+               property: "branding-h2-font-size",
+               type: "text",
+               placeholder: "E.g: 60px",
+               value: "33px",
+            },
+            {
+               name: "H3 Size",
+               property: "branding-h3-font-size",
+               type: "text",
+               placeholder: "E.g: 50px",
+               value: "30px",
+            },
+            {
+               name: "H4 Size",
+               property: "branding-h4-font-size",
+               type: "text",
+               placeholder: "E.g: 40px",
+               value: "24px",
+            },
+            {
+               name: "H5 Size",
+               property: "branding-h5-font-size",
+               type: "text",
+               placeholder: "E.g: 30px",
+               value: "20px",
+            },
+            {
+               name: "H6 Size",
+               property: "branding-h6-font-size",
+               type: "text",
+               placeholder: "E.g: 20px",
+               value: "18px",
+            },
+            {
+               name: "Paragraph Size",
+               property: "branding-p-font-size",
+               type: "text",
+               placeholder: "E.g: 16px",
+               value: "16px",
+            },
+         ],
+      },
+      {
+         label: "Colours",
+         key: "branding-colours",
+         customizations: [
+            {
+               name: "Button Colour",
+               property: "branding-button-background-color",
+               type: "color",
+               placeholder: "E.g: #FFFFFF",
+               value: "#d29a89",
+            },
+            {
+               name: "Button Text Colour",
+               property: "branding-button-text-color",
+               placeholder: "E.g: #FFFFFF",
+               type: "color",
+               value: "#000000",
+            },
+            {
+               name: "Primary Heading Colour",
+               property: "branding-primary-heading-color",
+               type: "color",
+               placeholder: "E.g: #000000",
+               value: "#000000",
+            },
+            {
+               name: "Primary Text Colour",
+               property: "branding-primary-text-color",
+               type: "color",
+               placeholder: "E.g: #000000",
+               value: "#000000",
+            },
+            {
+               name: "Primary Accent - Dark",
+               property: "branding-primary-accent-dark",
+               placeholder: "E.g: #FFFFFF",
+               type: "color",
+               value: "#d29a89",
+            },
+            {
+               name: "Secondary Accent - Light",
+               property: "branding-secondary-accent-light",
+               placeholder: "E.g: #FFFFFF",
+               type: "color",
+               value: "#e0c5ba",
+            },
+            {
+               name: "Background Colour - Dark",
+               property: "branding-background-color-dark",
+               placeholder: "E.g: #FFFFFF",
+               type: "color",
+               value: "#e8f0f1",
+            },
+            {
+               name: "Background Colour - Light",
+               property: "branding-background-color-light",
+               placeholder: "E.g: #FFFFFF",
+               type: "color",
+               value: "#f6ebe7",
+            },
+         ],
+      },
+      {
+         label: "Buttons",
+         key: "branding-buttons",
+         customizations: [
+            {
+               name: "Button Radius",
+               property: "branding-button-radius",
+               placeholder: "E.g: 10px",
+               type: "text",
+               value: "4px",
+            },
+         ],
+      },
+   ],
+   global: [
+      {
+         name: "Loading Overlay",
+         showOnMobileEditor: true,
+         customizations: [
+            {
+               elementSelector: ".loading-overlay__container",
+               label: "Container",
+               key: "loading-overlay-container",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     important: true,
+                     placeholder: "#FEFEFF",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".loading-overlay__logo",
+               label: "Logo",
+               key: "loading-overlay-logo",
+               cssCustomizations: [
+                  {
+                     name: "Width",
+                     property: "width",
+                     type: "text",
+                     placeholder: "E.g: 500px",
+                     value: "",
+                  },
+                  {
+                     name: "Height",
+                     property: "height",
+                     type: "text",
+                     placeholder: "E.g: 500px",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "Image Src",
+                     type: "attribute",
+                     target: "src",
+                     value: "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".loading-overlay__bottom-text",
+               label: "Bottom Text",
+               key: "loading-overlay-text",
+               cssCustomizations: [],
+               elementCustomizations: [
+                  {
+                     name: "HTML Content",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+            },
+         ],
+      },
+      {
+         name: "Navbar",
+         showOnMobileEditor: true,
+         customizations: [
+            {
+               elementSelector: ".template-navbar-wrapper",
+               label: "Container",
+               key: "navigation-bar-container",
+               cssCustomizations: [
+                  {
+                     name: "Background Image",
+                     property: "background-image",
+                     placeholder: "E.g: https://www.sampleimage.com",
+                     type: "image",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-navbar-wrapper::before",
+               label: "Container Overlay",
+               key: "navigation-bar-container-overlay",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "#ffffff29",
+                     value: "",
+                  },
+                  {
+                     name: "Opacity",
+                     property: "opacity",
+                     type: "text",
+                     placeholder: "E.g: 1 or .5",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-navbar__logo-link img",
+               label: "Logo",
+               key: "template-navbar__logo-link-img",
+               cssCustomizations: [
+                  {
+                     name: "Width",
+                     property: "width",
+                     type: "text",
+                     placeholder: "E.g: 500px",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "Image",
+                     type: "attribute",
+                     target: "src",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-navbar__content__nav-links a",
+               label: "Menu Items",
+               key: "template-navbar-content-nav-links",
+               features: [
+                  {
+                     name: "Menus",
+                     key: "template-navbar-menus",
+                     isTurnedOn: false,
+                     customizations: [
+                        {
+                           name: "Label",
+                           property: "menu-text-1",
+                           type: "text",
+                           placeholder: "Home",
+                           value: "Home",
+                           group: "menu-1",
+                           groupLabel: "Menu 1",
+                        },
+                        {
+                           name: "Link",
+                           property: "menu-link-1",
+                           type: "text",
+                           placeholder: "https://example.com/image",
+                           value: "https://img.freepik.com/free-vector/pastel-coloured-hand-painted-watercolour-background_1048-19244.jpg?semt=ais_hybrid&w=740&q=80",
+                           group: "menu-1",
+                        },
+                        {
+                           name: "Label",
+                           property: "menu-text-2",
+                           type: "text",
+                           placeholder: "What's New",
+                           value: "What's New",
+                           group: "menu-2",
+                           groupLabel: "Menu 2",
+                        },
+                        {
+                           name: "Link",
+                           property: "menu-link-2",
+                           type: "text",
+                           placeholder: "https://example.com/image",
+                           value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
+                           group: "menu-2",
+                        },
+                        {
+                           name: "Label",
+                           property: "menu-text-3",
+                           type: "text",
+                           placeholder: "Favorites",
+                           value: "Favorites",
+                           group: "menu-3",
+                           groupLabel: "Menu 3",
+                        },
+                        {
+                           name: "Link",
+                           property: "menu-link-3",
+                           type: "text",
+                           placeholder: "https://example.com/image",
+                           value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
+                           group: "menu-3",
+                        },
+                        {
+                           name: "Label",
+                           property: "menu-text-4",
+                           type: "text",
+                           placeholder: "Announcements",
+                           value: "Announcements",
+                           group: "menu-4",
+                           groupLabel: "Menu 4",
+                        },
+                        {
+                           name: "Link",
+                           property: "menu-link-4",
+                           type: "text",
+                           placeholder: "https://example.com/image",
+                           value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
+                           group: "menu-4",
+                        },
+                        {
+                           name: "Link",
+                           property: "menu-link-5",
+                           type: "text",
+                           placeholder: "https://example.com/image",
+                           value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
+                           group: "menu-5",
+                        },
+                        {
+                           name: "Label",
+                           property: "menu-text-6",
+                           type: "text",
+                           placeholder: "Contact",
+                           value: "Contact",
+                           group: "menu-6",
+                           groupLabel: "Menu 6",
+                        },
+                        {
+                           name: "Link",
+                           property: "menu-link-6",
+                           type: "text",
+                           placeholder: "https://example.com/image",
+                           value: "https://t3.ftcdn.net/jpg/04/99/21/50/360_F_499215058_WG1sNeCqCm4KW0X5V6y1beuCL0twCFZ7.jpg",
+                           group: "menu-6",
+                        },
+                     ],
+                     css: (customizations = []) => {
+                        let css = ``;
+                        customizations.forEach((cItem) => {
+                           css = css.replace(`{{${cItem?.property}}}`, cItem?.value);
+                        });
+                        return css;
+                     },
+                     js: (customizations = []) => {
+                        let js = `
+                        (() => {
+                           var menu = [
+                              {
+                                 name: "{{menu-text-1}}",
+                                 link: "{{menu-link-1}}",
+                              },
+                              {
+                                 name: "{{menu-text-2}}",
+                                 link: "{{menu-link-2}}",
+                              },
+                              {
+                                 name: "{{menu-text-3}}",
+                                 link: "{{menu-link-3}}",
+                              },
+                              {
+                                 name: "{{menu-text-4}}",
+                                 link: "{{menu-link-4}}",
+                              },
+                              {
+                                 name: "{{menu-text-5}}",
+                                 link: "{{menu-link-5}}",
+                              },
+                              {
+                                 name: "{{menu-text-6}}",
+                                 link: "{{menu-link-6}}",
+                              },
+                           ];
+                           const menuHTML = menu.reduce((a, c) => {
+                              if (c.name) {
+                                    a += \`<a href="\${c.link}">\${c.name}</a>\`;
+                              }
+                              return a;
+                           }, "");
+                           if (document.querySelector('.template-navbar__content__nav-links')) {
+                                 document.querySelector('.template-navbar__content__nav-links').innerHTML =  menuHTML; 
+                           }
+                        })();
+                        `;
+                        customizations.forEach((cItem) => {
+                           js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
+                        });
+                        return js;
+                     },
+                     cleanUpJs: (customizations = []) => {
+                        let js = `
+                        (() => {
+                            const defaultLinks = [ { text: 'Home', url: '/' }, { text: "Library", url: "/courses/library-v2" }, { text: 'Favorites', url: '/favorites' }, { text: 'Announcements', url: '/announcements' }, { text: 'Contact', url: '/contact' } ];
+                            const linksHTML = defaultLinks.reduce((a, c) => {
+                                a += \`<a href="\${c.url}" class="template-navbar__link">\${c.text}</a>\`;
+                                return a
+                            }, '');
+                            if (document.querySelector('.template-navbar__content__nav-links')) {
+                                document.querySelector('.template-navbar__content__nav-links').innerHTML =  linksHTML; 
+                            }
+                        })();     
+                         `;
+                        customizations.forEach((cItem) => {
+                           js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
+                        });
+                        return js;
+                     },
+                  },
+               ],
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "#191919",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-navbar__content__avatar-img",
+               label: "Avatar",
+               key: "template-navbar-avatar",
+               cssCustomizations: [
+                  {
+                     name: "Width",
+                     property: "width",
+                     type: "text",
+                     placeholder: "E.g: 500px",
+                     value: "",
+                  },
+                  {
+                     name: "Height",
+                     property: "height",
+                     type: "text",
+                     placeholder: "E.g: 500px",
+                     value: "",
+                  },
+               ],
+            },
+         ],
+      },
+      {
+         name: "Sidebar",
+         showOnMobileEditor: true,
+         customizations: [
+            {
+               elementSelector: ".template-sidebar__content",
+               label: "Container",
+               key: "template-sidebar",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__back-button *",
+               label: "Back Button",
+               key: "template-sidebar-back-button",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__logo",
+               label: "Logo",
+               key: "template-sidebar-logo",
+               cssCustomizations: [
+                  {
+                     name: "Width",
+                     property: "width",
+                     type: "text",
+                     placeholder: "E.g: 500px",
+                     value: "",
+                  },
+                  {
+                     name: "Height",
+                     property: "height",
+                     type: "text",
+                     placeholder: "E.g: 500px",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "Image Src",
+                     type: "attribute",
+                     target: "src",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__titles",
+               label: "Module Title",
+               key: "template-sidebar-titles",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Border Top Color",
+                     property: "border-top-color",
+                     type: "color",
+                     value: "",
+                  },
+                  {
+                     name: "Border Bottom Color",
+                     property: "border-bottom-color",
+                     type: "color",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "HTML Content",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__category__item__title",
+               label: "Category Item",
+               key: "template-sidebar-category-item-title",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     value: "",
+                  },
+                  {
+                     name: "Border Bottom Color",
+                     property: "border-bottom-color",
+                     type: "color",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector:
+                  ".template-sidebar__category__item__title__content__title",
+               label: "Category Item Text",
+               key: "template-sidebar-category-item-title-content-title",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     placeholder: "E.g: 20px",
+                     type: "text",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__category__item__title i",
+               label: "Category Item Icon",
+               key: "template-sidebar-category-item-title-i",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     placeholder: "E.g: 20px",
+                     type: "text",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__category__item__post",
+               label: "Lesson Item",
+               key: "template-sidebar__category__item__post",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "background-color",
+                     type: "color",
+                     value: "",
+                  },
+                  {
+                     name: "Border Radius",
+                     property: "border-radius",
+                     type: "text",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__category__item__post__icon *",
+               label: "Lesson Item Icon",
+               key: "template-sidebar-category-item-post-icon",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "stroke",
+                     type: "color",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__category__item__post__text",
+               label: "Lesson Item Text",
+               key: "template-sidebar-category-item-post-text",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     placeholder: "E.g: 20px",
+                     type: "text",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__category__item__sub-folder__title",
+               label: "Sub Category Item",
+               key: "template-sidebar-category-item-sub-folder-title",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector:
+                  ".template-sidebar__category__item__sub-folder__title__text",
+               label: "Sub Category Item Text",
+               key: "template-sidebar-category-item-sub-folder-title-textplate-sidebar-category-item-title-i",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     placeholder: "E.g: 20px",
+                     type: "text",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector:
+                  ".template-sidebar__category__item__sub-folder__title__icon",
+               label: "Sub Category Item Icon",
+               key: "template-sidebar-category-item-sub-folder-title-icon",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     value: "",
+                  },
+                  {
+                     name: "Size",
+                     property: "font-size",
+                     placeholder: "E.g: 20px",
+                     type: "text",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__image",
+               label: "Bottom Image Container",
+               key: "template-sidebar-image",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "Link To",
+                     type: "attribute",
+                     target: "href",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__image img",
+               label: "Bottom Image",
+               key: "template-sidebar-image-img",
+               cssCustomizations: [
+                  {
+                     name: "Width",
+                     property: "width",
+                     placeholder: "E.g: 500px",
+                     type: "text",
+                     value: "",
+                  },
+                  {
+                     name: "Height",
+                     property: "height",
+                     placeholder: "E.g: 500px",
+                     type: "text",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "Image Src",
+                     type: "attribute",
+                     target: "src",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__toggler",
+               label: "Toggler Wrapper",
+               key: "template-sidebar-toggler-wrapper",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-sidebar__toggler i",
+               label: "Toggler Icon",
+               key: "template-sidebar-toggler-icon",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     value: "",
+                  },
+                  {
+                     name: "Size",
+                     property: "font-size",
+                     placeholder: "E.g: 20px",
+                     type: "text",
+                     value: "",
+                  },
+               ],
+            },
+         ],
+      },
+   ],
+   pages: [
+      {
+         name: "Dashboard",
+         urlRegex: "\\/courses\\/products\\/[^/]+\\/?(\\?.*)?$",
+         editor: [
+            {
+               elementSelector: ".template-welcome",
+               label: "Welcome Container",
+               key: "welcome-container",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Box Shadow",
+                     property: "box-shadow",
+                     type: "text",
+                     placeholder: "5px 10px #888888",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-welcome__greeting",
+               label: "Welcome Greeting",
+               key: "welcome-greeting",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-welcome__progress-icon",
+               label: "Welcome Progress Icon",
+               key: "welcome-progress-icon",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-welcome__progress span",
+               label: "Welcome Progress Text",
+               key: "welcome-progress-text",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-welcome__button",
+               label: "Welcome Button",
+               key: "welcome-button",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".dashboard__wrapper",
+               label: "Dashboard Container",
+               key: "dashboard-container",
+               cssCustomizations: [
+                  {
+                     name: "Background Image",
+                     property: "background-image",
+                     type: "image",
+                     placeholder: "E.g: https://www.sampleimage.com",
+                     value: "",
+                  },
+                  {
+                     name: "Overlay Background Color",
+                     property: "--dashboard-overlay-bg",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Overlay Opacity",
+                     property: "--dashboard-overlay-opacity",
+                     type: "text",
+                     placeholder: "E.g: 1 or .5",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-community-toggle__button",
+               label: "Community Toggle Button",
+               key: "template-community-toggle-button",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Box Shadow",
+                     property: "box-shadow",
+                     type: "text",
+                     placeholder: "5px 10px #888888",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-community-embed",
+               label: "Community Embed",
+               key: "template-community-embed",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Box Shadow",
+                     property: "box-shadow",
+                     type: "text",
+                     placeholder: "5px 10px #888888",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "HTML Content",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-hero__left",
+               label: "Dashboard Info",
+               key: "template-hero-left",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "HTML Content",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-hero__right",
+               label: "Dashboard Info Video",
+               key: "template-hero-right",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "Embed",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+               features: [
+                  {
+                     name: "Video",
+                     key: "template-hero-right-video",
+                     isTurnedOn: false,
+                     customizations: [
+                        {
+                           name: "Video Url",
+                           property: "template-hero-right-video-url",
+                           type: "text",
+                           placeholder: "Video Url",
+                           value: "https://www.w3schools.com/html/mov_bbb.mp4",
+                        },
+                        {
+                           name: "Video Thumbnail",
+                           property: "template-hero-right-video-thumbnail",
+                           type: "text",
+                           placeholder: "Video Thumbnail",
+                           value: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
+                        },
+                     ],
+                     css: (customizations = []) => {
+                        let css = ``;
+                        customizations.forEach((cItem) => {
+                           css = css.replace(`{{${cItem?.property}}}`, cItem?.value);
+                        });
+                        return css;
+                     },
+                     js: (customizations = []) => {
+                        let js = `
+                        (() => {
+                           window['template-hero-right-previous-html'] = document.querySelector('.template-hero__right').innerHTML;
+                           document.querySelector('.template-hero__right').innerHTML =  '<video style="width: 100%;" src="{{template-hero-right-video-url}}" playsinline="" controls="" poster="{{template-hero-right-video-thumbnail}}"></video>'; 
+                        })();
+                        `;
+                        customizations.forEach((cItem) => {
+                           js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
+                        });
+                        return js;
+                     },
+                     cleanUpJs: (customizations = []) => {
+                        let js = `
+                        (() => {
+                            document.querySelector('.template-hero__right').innerHTML = window['template-hero-right-previous-html'];
+                        })();     
+                         `;
+                        customizations.forEach((cItem) => {
+                           js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
+                        });
+                        return js;
+                     },
+                  },
+               ],
+            },
+            {
+               elementSelector: ".dashboard__categories__title",
+               label: "Dashboard Category Title",
+               key: "dashboard-categories-title",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "HTML Content",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-categories__info",
+               label: "Dasboard Category Card Info",
+               key: "template-categories-info",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-categories__title-text",
+               label: "Dasboard Category Card Info Text",
+               key: "template-categories-info-text",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+         ],
+      },
+      {
+         name: "Category Posts",
+         urlRegex: "/courses/products/[^/]+/categories/[^/]+/?(\\?.*)?$",
+         editor: [
+            {
+               elementSelector: ".template-category-post-title",
+               label: "Category Title",
+               key: "category-title",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-category-post",
+               label: "Category Post Container",
+               key: "template-category-post",
+               cssCustomizations: [
+                  {
+                     name: "Background Image",
+                     property: "background-image",
+                     type: "image",
+                     placeholder: "E.g: https://www.sampleimage.com",
+                     value: "",
+                  },
+                  {
+                     name: "Overlay Background Color",
+                     property: "--category-post-overlay-bg",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Overlay Opacity",
+                     property: "--category-post-overlay-opacity",
+                     type: "text",
+                     placeholder: "E.g: 1 or .5",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-category-post__breadcrumbs *",
+               label: "Category Posts Bread Crumbs",
+               key: "template-category-post-breadcrumbs",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Text Hover",
+                     property: "--category-post-breadcrumbs-hover-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "#2b6cb0",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post__info",
+               label: "Category Posts Post Card Info",
+               key: "template-post-info",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post__title-text",
+               label: "Category Posts Post Card Info Text",
+               key: "template-post-info-text",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-category-post__sub-categories__item__title",
+               label: "Category Posts Sub Category Title",
+               key: "template-category-post-sub-categories-item-title",
+               cssCustomizations: [
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+         ],
+      },
+      {
+         name: "Categories",
+         urlRegex: "/courses/products/[^/]+/categories/?(\\?.*)?$",
+         editor: [
+            {
+               elementSelector: ".template-categories-title",
+               label: "Category Title",
+               key: "category-title",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-categories__list",
+               label: "Category Post Container",
+               key: "template-categories-list",
+               cssCustomizations: [
+                  {
+                     name: "Background Image",
+                     property: "background-image",
+                     type: "image",
+                     placeholder: "E.g: https://www.sampleimage.com",
+                     value: "",
+                  },
+                  {
+                     name: "Overlay Background Color",
+                     property: "--categories-overlay-bg",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Overlay Opacity",
+                     property: "--categories-overlay-opacity",
+                     type: "text",
+                     placeholder: "E.g: 1 or .5",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-categories__info",
+               label: "Categories Category Card Info",
+               key: "template-categories-info",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-categories__title-text",
+               label: "Categories Category Card Info Text",
+               key: "template-categories-title-text",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+         ],
+      },
+      {
+         name: "Post",
+         urlRegex: "/courses/products/[^/]+/categories/[^/]+/posts/[^/]+/?(\\?.*)?$",
+         editor: [
+            {
+               elementSelector: ".template-post-page",
+               label: "Post Container",
+               key: "template-post-page",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Minimum Height",
+                     property: "min-height",
+                     type: "text",
+                     placeholder: "E.g: 400px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post-page-header",
+               label: "Post Header",
+               key: "template-post-page-header",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-downloads__button",
+               label: "Downloads Button",
+               key: "template-downloads-button",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "--download-text-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Border Color",
+                     property: "border-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Drop Down Background Color",
+                     property: "--download-dropdown-bg",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Drop Down Border Color",
+                     property: "--download-dropdown-border-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Drop Down Box Shadow",
+                     property: "--download-dropdown-box-shadow",
+                     type: "text",
+                     placeholder: "5px 10px #888888",
+                     value: "",
+                  },
+                  {
+                     name: "Drop Down Item Icon Color",
+                     property: "--download-dropdown-item-icon-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Drop Down Item Text Color",
+                     property: "--download-dropdown-item-text-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-downloads__button i:last-of-type",
+               label: "Downloads Button Icon",
+               key: "template-downloads-button-download-icon-last",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-downloads__button i:first-of-type",
+               label: "Downloads Button Icon",
+               key: "template-downloads-button-download-icon-first",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post-page-header__mark-as-complete",
+               label: "Mark As Complete Button",
+               key: "template-post-page-header-mark-as-complete",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Border Color",
+                     property: "border-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post-page-header__arrow",
+               label: "Post Arrow",
+               key: "template-post-page-header-arrow",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     important: true,
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post-page__breadcrumbs *",
+               label: "Post Bread Crumbs",
+               key: "template-post-page-breadcrumbs",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Text Hover",
+                     property: "--post-breadcrumbs-hover-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "#2b6cb0",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post-page__title",
+               label: "Post Title",
+               key: "template-post-page-title",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post-page__comments > div",
+               label: "Comment Body",
+               key: "template-post-page-comments-div",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+         ],
+      },
+   ],
+   mobilePages: [
+      {
+         name: "Main",
+         urlRegex: "/courses/products/[^/]+/categories(\\?.*)?$",
+         editor: [
+            {
+               elementSelector: ".template-hero__image",
+               label: "Hero Image",
+               key: "template-hero-image",
+               cssCustomizations: [
+                  {
+                     name: "Width",
+                     property: "height",
+                     type: "text",
+                     placeholder: "E.g: 400px",
+                     value: "",
+                  },
+                  {
+                     name: "Minimum Hight",
+                     property: "min-height",
+                     type: "text",
+                     placeholder: "E.g: 400px",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "Image Src",
+                     type: "attribute",
+                     target: "src",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-container",
+               label: "Template Container",
+               key: "template-container",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     value: "",
+                     important: true,
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-welcome",
+               label: "Welcome Container",
+               key: "welcome-container",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Box Shadow",
+                     property: "box-shadow",
+                     type: "text",
+                     placeholder: "5px 10px #888888",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-welcome__greeting",
+               label: "Welcome Greeting",
+               key: "welcome-greeting",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-welcome__progress-icon",
+               label: "Welcome Progress Icon",
+               key: "welcome-progress-icon",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-welcome__progress span",
+               label: "Welcome Progress Text",
+               key: "welcome-progress-text",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-welcome__button",
+               label: "Welcome Button",
+               key: "welcome-button",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-community-toggle__button",
+               label: "Community Toggle Button",
+               key: "template-community-toggle-button",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Box Shadow",
+                     property: "box-shadow",
+                     type: "text",
+                     placeholder: "5px 10px #888888",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-community-embed",
+               label: "Community Embed",
+               key: "template-community-embed",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Box Shadow",
+                     property: "box-shadow",
+                     type: "text",
+                     placeholder: "5px 10px #888888",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "HTML Content",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-hero__left",
+               label: "Dashboard Info",
+               key: "template-hero-left",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "HTML Content",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-hero__right",
+               label: "Dashboard Info Video",
+               key: "template-hero-right",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+               elementCustomizations: [
+                  {
+                     name: "HTML Content",
+                     type: "html",
+                     target: "",
+                     value: "",
+                  },
+               ],
+               features: [
+                  {
+                     name: "Video",
+                     key: "template-hero-right-video",
+                     isTurnedOn: false,
+                     customizations: [
+                        {
+                           name: "Video Url",
+                           property: "template-hero-right-video-url",
+                           type: "text",
+                           placeholder: "Video Url",
+                           value: "https://www.w3schools.com/html/mov_bbb.mp4",
+                        },
+                        {
+                           name: "Video Thumbnail",
+                           property: "template-hero-right-video-thumbnail",
+                           type: "text",
+                           placeholder: "Video Thumbnail",
+                           value: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
+                        },
+                     ],
+                     css: (customizations = []) => {
+                        let css = ``;
+                        customizations.forEach((cItem) => {
+                           css = css.replace(`{{${cItem?.property}}}`, cItem?.value);
+                        });
+                        return css;
+                     },
+                     js: (customizations = []) => {
+                        let js = `
+                        (() => {
+                           window['template-hero-right-previous-html'] = document.querySelector('.template-hero__right').innerHTML;
+                           document.querySelector('.template-hero__right').innerHTML =  '<video style="width: 100%;height: 100%;object-fit: cover; background-color: red;" src="{{template-hero-right-video-url}}" playsinline="" controls="" poster="{{template-hero-right-video-thumbnail}}"></video>'; 
+                        })();
+                        `;
+                        customizations.forEach((cItem) => {
+                           js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
+                        });
+                        return js;
+                     },
+                     cleanUpJs: (customizations = []) => {
+                        let js = `
+                        (() => {
+                            document.querySelector('.template-hero__right').innerHTML = window['template-hero-right-previous-html'];
+                        })();     
+                         `;
+                        customizations.forEach((cItem) => {
+                           js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
+                        });
+                        return js;
+                     },
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd",
+               label: "CWD",
+               key: "template-cwd",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__title",
+               label: "CWD Title",
+               key: "template-cwd-title",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__category__item__title",
+               label: "CWD Category Item",
+               key: "template-cwd-category-item-title",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__category__item__title__content__image",
+               label: "CWD Category Item Image",
+               key: "template-cwd-category-item-title-content-image",
+               cssCustomizations: [
+                  {
+                     name: "Border Color",
+                     property: "border-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Border Width",
+                     property: "border-width",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector:
+                  ".template-cwd__category__item__title__content__details__title",
+               label: "CWD Category Item Title",
+               key: "template-cwd-category-item-title-content-details-title",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector:
+                  ".template-cwd__category__item__title__content__details__completed",
+               label: "CWD Category Item Icon Detail",
+               key: "template-cwd-category-item-title-content-details-completed",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                     important: true,
+                  },
+               ],
+            },
+            {
+               elementSelector:
+                  ".template-cwd__category__item__title__content__details__posts",
+               label: "CWD Category Item Detail",
+               key: "template-cwd-category-item-title-content-details-posts",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__category__item__title__content__icon",
+               label: "CWD Category Item Arrow Icon",
+               key: "template-cwd-category-item-title-content-icon",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__category__item__post__icon",
+               label: "CWD Post Item Image",
+               key: "template-cwd-category-item-post-icon",
+               cssCustomizations: [
+                  {
+                     name: "Border Color",
+                     property: "border-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Border Width",
+                     property: "border-width",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__category__item__post__text",
+               label: "CWD Post Item Title",
+               key: "template-cwd-category-item-post-text",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__category__item__post__completed",
+               label: "CWD Post Item Icon Detail",
+               key: "template-cwd-category-item-post-completed",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                     important: true,
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__category__item__post__title",
+               label: "CWD Post Item Detail",
+               key: "template-cwd-category-item-post-title",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__category__item__sub-folder__title__image",
+               label: "CWD Subfolder Item Image",
+               key: "template-cwd-category-item-sub-folder-title-image",
+               cssCustomizations: [
+                  {
+                     name: "Border Color",
+                     property: "border-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Border Width",
+                     property: "border-width",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector:
+                  ".template-cwd__category__item__sub-folder__title__details__name",
+               label: "CWD Subfolder Item Title",
+               key: "template-cwd-category-item-sub-folder-title-details-name",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector:
+                  ".template-cwd__category__item__sub-folder__title__details__completed",
+               label: "CWD Subfolder Item Icon Detail",
+               key: "template-cwd-category-item-sub-folder-title-details-completed",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                     important: true,
+                  },
+               ],
+            },
+            {
+               elementSelector:
+                  ".template-cwd__category__item__sub-folder__title__details__title",
+               label: "CWD Subfolder Item Detail",
+               key: "template-cwd-category-item-sub-folder-title-details-title",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-cwd__category__item__sub-folder__title__icon",
+               label: "CWD Subfolder Item Arrow Icon",
+               key: "template-cwd__category__item__sub-folder__title__icon",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+         ],
+      },
+      {
+         name: "Post",
+         urlRegex: "/courses/products/[^/]+/categories/[^/]+/posts/[^/]+/?(\\?.*)?$",
+         editor: [
+            {
+               elementSelector: ".template-post-page",
+               label: "Post Container",
+               key: "template-post-page",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Minimum Height",
+                     property: "min-height",
+                     type: "text",
+                     placeholder: "E.g: 400px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post-page-header",
+               label: "Post Header",
+               key: "template-post-page-header",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-downloads__button",
+               label: "Downloads Button",
+               key: "template-downloads-button",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Text Color",
+                     property: "--download-text-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Border Color",
+                     property: "border-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Drop Down Background Color",
+                     property: "--download-dropdown-bg",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Drop Down Border Color",
+                     property: "--download-dropdown-border-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Drop Down Box Shadow",
+                     property: "--download-dropdown-box-shadow",
+                     type: "text",
+                     placeholder: "5px 10px #888888",
+                     value: "",
+                  },
+                  {
+                     name: "Drop Down Item Icon Color",
+                     property: "--download-dropdown-item-icon-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Drop Down Item Text Color",
+                     property: "--download-dropdown-item-text-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-downloads__button i:last-of-type",
+               label: "Downloads Button Icon",
+               key: "template-downloads-button-download-icon-last",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-downloads__button i:first-of-type",
+               label: "Downloads Button Icon",
+               key: "template-downloads-button-download-icon-first",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post-page-header__mark-as-complete",
+               label: "Mark As Complete Button",
+               key: "template-post-page-header-mark-as-complete",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Border Color",
+                     property: "border-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post-page-header__arrow",
+               label: "Post Arrow",
+               key: "template-post-page-header-arrow",
+               cssCustomizations: [
+                  {
+                     name: "Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post-page__breadcrumbs *",
+               label: "Post Bread Crumbs",
+               key: "template-post-page-breadcrumbs",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Text Hover",
+                     property: "--post-post-breadcrumbs-hover-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "#2b6cb0",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post-page__title",
+               label: "Post Title",
+               key: "template-post-page-title",
+               cssCustomizations: [
+                  {
+                     name: "Text Color",
+                     property: "color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+                  {
+                     name: "Font Family",
+                     property: "font-family",
+                     type: "font",
+                     important: true,
+                     value: "",
+                  },
+                  {
+                     name: "Font Size",
+                     property: "font-size",
+                     type: "text",
+                     placeholder: "E.g: 20px",
+                     value: "",
+                  },
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+            {
+               elementSelector: ".template-post-page__comments > div",
+               label: "Comment Body",
+               key: "template-post-page-comments-div",
+               cssCustomizations: [
+                  {
+                     name: "Background Color",
+                     property: "background-color",
+                     type: "color",
+                     placeholder: "",
+                     value: "",
+                  },
+               ],
+            },
+         ],
+      },
+   ],
+};
+
+class CourseTemplate {
+   constructor() {
+      this.coreMethods = null;
+      this.isMobile = window.matchMedia("(max-width: 768px)").matches;
+      this.baseURL = `https://membershipeditor.netlify.app`;
+      this.path = `/src/clientTemplates/meg-burrage/template-1/`;
+      this.init();
    }
 
-   // This object holds data fetching and state management logic
-   data = {
-      fetchProduct: async () => {
-         const auth = await this.utils.getAuth();
-         const productId = auth?.productId;
-         const locationId = auth?.locationId;
-         const token = auth?.tokenId;
-         const contactId = auth?.contactId;
-         const userId = auth?.externalUserId;
-         const storageName = `${productId}-product`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0 && previousData?.id === productId)
-            return previousData;
-         return await new Promise((resolved, reject) => {
-            const url = [
-               `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/products/${productId}`,
-               `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`,
-            ];
-            if (token) {
-               this.utils
-                  .relayUrlFetch(url, {
-                     headers: {
-                        "accept": "application/json, text/plain, */*",
-                        "accept-language": "en-US,en;q=0.6",
-                        "authorization": `Bearer ${token}`,
-                        "channel": "APP",
-                        "source": "PORTAL_USER",
-                        "x-product-id": productId,
-                        "version": "2021-07-28",
-                     },
-                     body: null,
-                     method: "GET",
-                     priority: "high",
-                  })
-                  .then((e) => e.json())
-                  .then((e) => {
-                     resolved(e);
-                     sessionStorage.setItem(storageName, JSON.stringify(e));
-                  })
-                  .catch(() => {
-                     resolved({});
-                  });
-            } else {
-               console.log("No Token Found! Product!");
-            }
-         });
+   // This method initialize the script
+   init = async () => {
+      // First we will retrieve the current URL
+      const url = window.location.href;
+
+      // Then we will insert the font-awesome script into the head
+      const fScript = document.createElement("script");
+      fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
+      document.head.append(fScript);
+
+      // Then we will insert the template core
+      const courseTemplateCoreScript = document.createElement("script");
+      courseTemplateCoreScript.src = `${this.baseURL}/src/courseTemplateCore/v1.js`;
+      document.head.append(courseTemplateCoreScript);
+      await new Promise((res) => {
+         courseTemplateCoreScript.onload = () => {
+            this.coreMethods = new CourseTemplateCore(this.pages, this.globalWidgets);
+            res(true);
+         };
+         courseTemplateCoreScript.error = (err) => {
+            console.log(String(err));
+         };
+      });
+
+      // Then we will insert the global and widget styles
+      document.head.insertAdjacentHTML(
+         "beforeend",
+         `<link class="template-global-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/global.css"></link>`,
+      );
+      document.head.insertAdjacentHTML(
+         "beforeend",
+         `<link class="template-widget-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/widget.css"></link>`,
+      );
+
+      // Then we will initialize the styles, global widgets and the landing page
+      document.head.insertAdjacentHTML(
+         "beforeend",
+         `<link class="template-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/page.css"></link>`,
+      );
+      const $root = document.querySelector(".bm-theme-root");
+      const $rootContainer = document.querySelector(".bm-theme-root__container");
+      const $rootContainerPage = document.querySelector(
+         ".bm-theme-root__container__page",
+      );
+      await this.globalWidgets.initSidebar($rootContainer);
+      await this.globalWidgets.initNavBar($rootContainer);
+      await this.coreMethods.actions.navigate("landingPage");
+
+      // Then we will append a class to the body indicating that the template is ready
+      setTimeout(() => {
+         document.body.classList.add("template-ready");
+      }, 0);
+
+      // Finally we will remove the intial loader
+      setTimeout(() => {
+         document.querySelector(".template-loader")?.remove();
+      }, 1000);
+   };
+
+   // This object holds global related initializers
+   globalWidgets = {
+      initNavBar: async ($container = null) => {
+         // First we will fetch the necessary data
+         const [userData, product] = await Promise.allSettled([
+            this.coreMethods.data.fetchUser(),
+            this.coreMethods.data.fetchProduct(),
+         ]).then((res) => res.map((e) => e.value));
+
+         // Then we will create the default variables
+         const logo =
+            "https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png";
+         const defaultLinks = [
+            { text: "Home", url: "/" },
+            { text: "Library", url: "/courses/library-v2" },
+            { text: "Favorites", url: "/favorites" },
+            { text: "Announcements", url: "/announcements" },
+            { text: "Contact", url: "/contact" },
+         ];
+
+         // Then we will generate the nav links HTML
+         const linksHTML = defaultLinks.reduce((a, c) => {
+            a += `<a href="${c.url}" class="template-navbar__link">${c.text}</a>`;
+            return a;
+         }, "");
+
+         // Finally we will render the Navbar
+         const html = `
+                    <header class="template-navbar-wrapper" id="custom-navbar">
+                        <div onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')" class="template-navbar__logo-link"><img src="${logo}" /></div>
+                        <!-- Center: Navigation Links -->
+                        <div class="template-navbar__content">
+                            <i class="fa-solid fa-xmark template-navbar__content__close" onclick="this.parentElement.classList.remove('active')"></i>
+                            <nav class="template-navbar__content__nav-links">${linksHTML}</nav>
+                            <div class="template-navbar__content__actions">
+                                <!-- User Avatar -->
+                                <a href="/account?activeTab=Profile" class="template-navbar__content__avatar" id="navbar-avatar">
+                                    <!-- Placeholder image, ideally replaced with user's actual avatar -->
+                                    <img 
+                                        src="${userData?.avatar || "https://i0.wp.com/s3.amazonaws.com/kajabi-storefronts-production/static_assets/default_avatar.jpg?ssl=1"}" 
+                                        alt="User Avatar" 
+                                        class="template-navbar__content__avatar-img"
+                                    />
+                                </a>
+                            </div>    
+                        </div>
+                        <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
+                    </header>
+                `;
+         if (document.querySelector(".template-navbar-wrapper")) return;
+         $container.insertAdjacentHTML("afterbegin", html);
       },
-      fetchCategory: async (catId = "") => {
-         const auth = await this.utils.getAuth();
-         const productId = auth?.productId;
-         const locationId = auth?.locationId;
-         const token = auth?.tokenId;
-         const contactId = auth?.contactId;
-         const userId = auth?.externalUserId;
-         const storageName = `${productId}-category`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0 && previousData?.category?.id === catId)
-            return previousData;
-         return await new Promise((resolved, reject) => {
-            const categoryId =
-               catId ||
-               location.href.split("/categories/")[1].split("?")[0].split("/")[0];
-            const url = [
-               `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-purchase/categories/${categoryId}?product_id=${productId}&visibility=published&published_posts=true`,
-               `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-purchase/categories/${categoryId}?product_id=${productId}&visibility=published&published_posts=true`,
-            ];
-            if (token) {
-               this.utils
-                  .relayUrlFetch(url, {
-                     headers: {
-                        "accept": "application/json, text/plain, */*",
-                        "accept-language": "en-US,en;q=0.6",
-                        "authorization": `Bearer ${token}`,
-                        "channel": "APP",
-                        "source": "PORTAL_USER",
-                        "x-product-id": productId,
-                        "version": "2021-07-28",
-                     },
-                     priority: "high",
-                     body: null,
-                     method: "GET",
-                  })
-                  .then((e) => e.json())
-                  .then(async (e) => {
-                     // 1. Fetch all available categories and filter them to find only those
-                     //    that specify the current categoryId as their parent (i.e., subcategories).
-                     const subCategories = await (async () => {
-                        const categories = await this.data.fetchCategories();
-                        if (categories) {
-                           return categories
-                              ?.filter((sub) => sub.parentCategory === categoryId)
-                              ?.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
-                        }
-                        return [];
-                     })();
+      initSidebar: async ($container = null) => {
+         // First we will fetch all necessary data
+         const [product, categories] = await Promise.allSettled([
+            this.coreMethods.data.fetchProduct(),
+            this.coreMethods.data.fetchCategories(),
+         ]).then((res) => res.map((e) => e.value));
 
-                     // 2. Assign the found subcategories directly to the current category's structure.
-                     //    NOTE: This operation REPLACES any existing data in the 'subCategories'
-                     //    array on the category object (e.category) with the newly filtered list.
-                     e.category.subCategories = subCategories;
-
-                     // 3. Sort the posts within the current category based on their sequence number.
-                     e.category.posts = e?.category?.posts?.sort((a, b) =>
+         // Then we will organize subcategories under their parents
+         let allCategories = categories.sort((a, b) =>
+            a.sequenceNo > b.sequenceNo ? 1 : -1,
+         );
+         allCategories.forEach((e) => {
+            if (e.parentCategory) {
+               e.posts = e.posts.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
+               allCategories.forEach((ca) => {
+                  if (ca.id === e.parentCategory) {
+                     allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
+                     ca.posts.push(e);
+                     ca.posts = ca.posts.sort((a, b) =>
                         a.sequenceNo > b.sequenceNo ? 1 : -1,
                      );
-
-                     // 4. Resolve the promise with the fully structured 'e' object,
-                     //    which now contains posts and its aggregated subcategories.
-                     resolved(e);
-                     sessionStorage.setItem(storageName, JSON.stringify(e));
-                  });
-            } else {
-               console.log("No Token Found! Category!");
-            }
-         });
-      },
-      fetchCategories: async () => {
-         const auth = await this.utils.getAuth();
-         const productId = auth?.productId;
-         const locationId = auth?.locationId;
-         const token = auth?.tokenId;
-         const contactId = auth?.contactId;
-         const userId = auth?.externalUserId;
-         const storageName = `${productId}-categories`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "[]");
-         if (previousData.length > 0) return previousData;
-         return await new Promise((resolved, reject) => {
-            const url = [
-               `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-purchase/categories?product_id=${productId}`,
-               `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-purchase/categories?product_id=${productId}`,
-            ];
-            if (token) {
-               this.utils
-                  .relayUrlFetch(url, {
-                     headers: {
-                        "accept": "application/json, text/plain, */*",
-                        "accept-language": "en-US,en;q=0.6",
-                        "authorization": `Bearer ${token}`,
-                        "channel": "APP",
-                        "source": "PORTAL_USER",
-                        "x-product-id": productId,
-                        "version": "2021-07-28",
-                     },
-                     body: null,
-                     method: "GET",
-                     priority: "high",
-                  })
-                  .then((e) => e.json())
-                  .then((e) => {
-                     resolved(e?.categories || []);
-                     sessionStorage.setItem(
-                        storageName,
-                        JSON.stringify(e?.categories || []),
-                     );
-                  })
-                  .catch((e) => {
-                     console.log("error on categories");
-                     resolved([]);
-                  });
-            } else {
-               console.log("No Token Found! Categories!");
-            }
-         });
-      },
-      fetchPost: async (pId = "") => {
-         const auth = await this.utils.getAuth();
-         const productId = auth?.productId;
-         const locationId = auth?.locationId;
-         const token = auth?.tokenId;
-         const contactId = auth?.contactId;
-         const userId = auth?.externalUserId;
-         return await new Promise((resolved, reject) => {
-            const postId = pId;
-            const url = [
-               `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/posts/${postId}`,
-               `https://services.leadconnectorhq.com/membership/locations/${locationId}/posts/${postId}`,
-            ];
-            if (postId) {
-               this.utils
-                  .relayUrlFetch(url, {
-                     headers: {
-                        "accept": "application/json, text/plain, */*",
-                        "accept-language": "en-US,en;q=0.6",
-                        "authorization": `Bearer ${token}`,
-                        "channel": "APP",
-                        "source": "PORTAL_USER",
-                        "x-product-id": productId,
-                        "version": "2021-07-28",
-                     },
-                     body: null,
-                     method: "GET",
-                     priority: "high",
-                  })
-                  .then((e) => e.json())
-                  .then((e) => {
-                     resolved(e);
-                  })
-                  .catch(() => {
-                     resolved({});
-                  });
-            } else {
-               console.log("No Token Found! Post!");
-            }
-         });
-      },
-      fetchCompletedPosts: async () => {
-         const auth = await this.utils.getAuth();
-         const productId = auth?.productId;
-         const locationId = auth?.locationId;
-         const token = auth?.tokenId;
-         const contactId = auth?.contactId;
-         const userId = auth?.externalUserId;
-         const storageName = `${productId}-completed-post`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "[]");
-         if (previousData.length > 0) return previousData;
-         return await new Promise(async (resolved, reject) => {
-            if (token) {
-               const url = [
-                  `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`,
-                  `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion?product_id=${productId}&user_id=${userId}`,
-               ];
-               this.utils
-                  .relayUrlFetch(url, {
-                     headers: {
-                        "accept": "application/json, text/plain, */*",
-                        "accept-language": "en-US,en;q=0.6",
-                        "authorization": `Bearer ${token}`,
-                        "channel": "APP",
-                        "source": "PORTAL_USER",
-                        "x-product-id": productId,
-                        "version": "2021-07-28",
-                     },
-                     body: null,
-                     method: "GET",
-                     priority: "high",
-                  })
-                  .then((e) => e.json())
-                  .then((e) => {
-                     const isArray = Array.isArray(e);
-                     resolved(isArray ? e : []);
-                     sessionStorage.setItem(
-                        storageName,
-                        JSON.stringify(isArray ? e : []),
-                     );
-                  })
-                  .catch(() => {
-                     resolved([]);
-                  });
-            } else {
-               console.log("No Token Found! Completed Posts!");
-            }
-         });
-      },
-      fetchUserProductProgress: async (cId = "") => {
-         const auth = await this.utils.getAuth();
-         const productId = auth?.productId;
-         const locationId = auth?.locationId;
-         const token = auth?.tokenId;
-         const contactId = auth?.contactId;
-         const storageName = `${productId}-product-progress`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0) return previousData;
-         return await new Promise(async (resolved, reject) => {
-            if (token) {
-               this.utils
-                  .relayUrlFetch(
-                     [
-                        `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/products/user-activity/${cId || contactId}`,
-                        `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/user-activity/${cId || contactId}`,
-                     ],
-                     {
-                        headers: {
-                           "accept": "application/json, text/plain, */*",
-                           "accept-language": "en-US,en;q=0.5",
-                           "token-id": token,
-                           "content-type": "application/json",
-                        },
-                        body: null,
-                        method: "POST",
-                        mode: "cors",
-                        credentials: "omit",
-                        priority: "high",
-                     },
-                  )
-                  .then((e) => e.json())
-                  .then((e) => {
-                     e.progressPercentage = (
-                        (e.completedPosts / e.totalPosts) *
-                        100
-                     ).toFixed(0);
-                     sessionStorage.setItem(storageName, JSON.stringify(e || "{}"));
-                     resolved(e);
-                  })
-                  .catch(() => {
-                     resolved({});
-                  });
-            } else {
-               console.log("No Token Found! Product Progress!");
-            }
-         });
-      },
-      fetchCategoryProgress: async () => {
-         const auth = await this.utils.getAuth();
-         const productId = auth?.productId;
-         const locationId = auth?.locationId;
-         const token = auth?.tokenId;
-         const contactId = auth?.contactId;
-         const storageName = `${productId}-category-progress`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0) return previousData;
-         return await new Promise(async (resolved, reject) => {
-            if (token) {
-               const categoryIds = await this.data.fetchCategories();
-               this.utils
-                  .relayUrlFetch(
-                     [
-                        `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/categories/get-progress`,
-                        `https://services.leadconnectorhq.com/membership/locations/${locationId}/categories/get-progress`,
-                     ],
-                     {
-                        headers: {
-                           "accept": "application/json, text/plain, */*",
-                           "accept-language": "en-US,en;q=0.5",
-                           "authorization": `Bearer ${token}`,
-                           "content-type": "application/json",
-                        },
-                        body: JSON.stringify({
-                           product_id: productId,
-                           categories: categoryIds.map((e) => e.id),
-                        }),
-                        method: "POST",
-                        priority: "high",
-                     },
-                  )
-                  .then((e) => e.json())
-                  .then((e) => {
-                     sessionStorage.setItem(storageName, JSON.stringify(e));
-                     resolved(e);
-                  })
-                  .catch(() => {
-                     resolved({});
-                  });
-            } else {
-               console.log("No Token Found! Category Progress!");
-            }
-         });
-      },
-      fetchUser: async () => {
-         const auth = await this.utils.getAuth();
-         const productId = auth?.productId;
-         const locationId = auth?.locationId;
-         const token = auth?.tokenId;
-         const contactId = auth?.contactId;
-         const userId = auth?.userId;
-         const storageName = `${productId}-user`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
-         if (Object.keys(previousData).length > 0) return previousData;
-         return await new Promise(async (resolved, reject) => {
-            if (token) {
-               fetch(
-                  `https://services.leadconnectorhq.com/clientclub/${locationId}/users/${contactId}`,
-                  {
-                     headers: {
-                        "accept": "application/json, text/plain, */*",
-                        "channel": "APP",
-                        "source": "PORTAL_USER",
-                        "x-product-id": productId,
-                        "version": "2021-07-28",
-                        "accept-language": "en-US,en;q=0.5",
-                        "source": "PORTAL_USER",
-                        "x-product-id": productId,
-                        "version": "2021-07-28",
-                        "token-id": token,
-                     },
-                     referrer: `https://${locationId}.app.clientclub.net/`,
-                     referrerPolicy: "strict-origin-when-cross-origin",
-                     body: null,
-                     method: "GET",
-                     mode: "cors",
-                     credentials: "omit",
-                     priority: "high",
-                  },
-               )
-                  .then((e) => e.json())
-                  .then((e) => {
-                     resolved(e);
-                     sessionStorage.setItem(storageName, JSON.stringify(e));
-                  })
-                  .catch(() => {
-                     resolved({});
-                  });
-            } else {
-               console.log("No Token Found! User!");
-            }
-         });
-      },
-   };
-
-   // This object holds actions methods
-   actions = {
-      navigate: async (type = "", params = {}) => {
-         const $root = document.querySelector(".bm-theme-root");
-         const pages = Object.keys(this.pages);
-         $root.classList.add("loading");
-         if (pages.includes(type)) {
-            await this?.pages[type](params);
-         } else {
-            alert(`Sorry Page Not Found! Possible Pages - ${String(pages)}`);
-         }
-         $root.classList.remove("loading");
-      },
-      markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {
-         const auth = await this.utils.getAuth();
-         const productId = auth?.productId;
-         const locationId = auth?.locationId;
-         const token = auth?.tokenId;
-         const contactId = auth?.contactId;
-         const userId = auth?.externalUserId;
-         let req = null;
-         try {
-            if (isComplete) {
-               req = await this.utils.relayUrlFetch(
-                  [
-                     `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-post-completion`,
-                     `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion`,
-                  ],
-                  {
-                     method: "POST",
-                     headers: {
-                        "accept": "application/json, text/plain, */*",
-                        "accept-language": "en-US,en;q=0.6",
-                        "authorization": `Bearer ${token}`,
-                        "content-type": "application/json",
-                        "channel": "APP",
-                        "source": "PORTAL_USER",
-                        "x-product-id": productId,
-                        "version": "2021-07-28",
-                     },
-                     priority: "high",
-                     body: JSON.stringify({
-                        percentage: 100,
-                        postId: postId,
-                        productId: productId,
-                     }),
-                  },
-               );
-            } else {
-               req = await this.utils.relayUrlFetch(
-                  [
-                     `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-post-completion/${postId}`,
-                     `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion/${postId}`,
-                  ],
-                  {
-                     headers: {
-                        "accept": "application/json, text/plain, */*",
-                        "accept-language": "en-US,en;q=0.6",
-                        "authorization": `Bearer ${token}`,
-                        "channel": "APP",
-                        "source": "PORTAL_USER",
-                        "x-product-id": productId,
-                        "version": "2021-07-28",
-                     },
-                     priority: "high",
-                     method: "DELETE",
-                  },
-               );
-            }
-            const json = await req.json();
-            return json;
-         } catch (err) {
-            console.log(err);
-            alert("Something went wrong!");
-         } finally {
-            sessionStorage.removeItem(`${productId}-completed-post`);
-            sessionStorage.removeItem(`${productId}-product-progress`);
-            sessionStorage.removeItem(`${productId}-category-progress`);
-         }
-      },
-   };
-
-   // This object holds utility methods
-   utils = {
-      relayUrlFetch: async (urls, options) => {
-         let lastError;
-         for (const url of urls) {
-            try {
-               const response = await fetch(url, options);
-               if (response.ok) {
-                  return response;
-               }
-               lastError = new Error(
-                  `Fetch failed: ${response.status} ${response.statusText}`,
-               );
-               console.warn(`Failed, trying next URL: ${url}`, lastError);
-            } catch (error) {
-               lastError = error;
-               console.warn(`Fetch error, trying next URL: ${url}`, error);
-            }
-         }
-         throw null;
-      },
-      setPageClass: (page = "") => {
-         const currentPageClass = Array.from(document.body.classList).find((e) =>
-            e.includes("page-"),
-         );
-         document.body.classList.remove(currentPageClass);
-         document.body.classList.add(`page-${page}`);
-      },
-      waitForElement: (elementSelector = "", resolveDelay = 1000, timeout = null) => {
-         return new Promise((res) => {
-            const interval = setInterval(() => {
-               const $element = document.querySelector(elementSelector);
-               if ($element) {
-                  clearInterval(interval);
-                  setTimeout(() => {
-                     res($element);
-                  }, resolveDelay);
-               }
-               console.log("waiting for ", elementSelector);
-            }, 200);
-            if (timeout) {
-               setTimeout(() => {
-                  clearInterval(interval);
-                  res(null);
-               }, timeout);
-            }
-         });
-      },
-      getAuth: async () => {
-         return new Promise((res) => {
-            const interval = setInterval(() => {
-               if (
-                  (document.querySelector(".product-container, #app-container") &&
-                     window?.$cookies) ||
-                  document.body.classList.contains("theme-ready")
-               ) {
-                  const data = (() => {
-                     let result = {};
-                     const acatToken = window?.$cookies?.get("acat");
-                     const acatTokenV2 = window?.$cookies?.get("acatv2");
-                     const acatTokenSessionStorage =
-                        window.sessionStorage.getItem("acat");
-                     const acatTokenSessionStorageV2 =
-                        window.sessionStorage.getItem("acatv2");
-                     const acatTokenLocalStorage = window.localStorage.getItem("acat");
-                     const acatTokenLocalStorageV2 =
-                        window.localStorage.getItem("acatv2");
-
-                     const catToken = window?.$cookies?.get("cat");
-                     const catTokenV2 = window?.$cookies?.get("catv2");
-                     const catTokenSessionStorage = window.sessionStorage.getItem("cat");
-                     const catTokenSessionStorageV2 =
-                        window.sessionStorage.getItem("catv2");
-                     const catTokenLocalStorage = window.localStorage.getItem("cat");
-                     const catTokenLocalStorageV2 = window.localStorage.getItem("catv2");
-
-                     const possibleTokens = [
-                        catTokenV2,
-                        catToken,
-                        acatToken,
-                        acatTokenV2,
-                        catTokenSessionStorage,
-                        catTokenSessionStorageV2,
-                        acatTokenSessionStorage,
-                        acatTokenLocalStorage,
-                        acatTokenSessionStorageV2,
-                        acatTokenLocalStorageV2,
-                        catTokenLocalStorageV2,
-                        catTokenLocalStorage,
-                     ];
-                     for (let i = 0; i < possibleTokens.length; i++) {
-                        const possibleCurrent = possibleTokens[i];
-                        let atob = "";
-                        try {
-                           atob = window.atob(possibleCurrent);
-                        } catch (err) {
-                           continue;
-                        }
-                        if (atob.includes("token")) {
-                           result = JSON.parse(atob);
-                           break;
-                        }
-                     }
-                     return result;
-                  })();
-                  if (!("productId" in data)) {
-                     const url = location.href
-                        ?.split("/products/")[1]
-                        ?.split("/")[0]
-                        ?.split("?")[0];
-                     data.productId = url;
                   }
-                  if (!("tokenId" in data)) {
-                     data.tokenId = data.token;
-                  }
-                  clearInterval(interval);
-                  res(data);
-               }
-            }, 100);
+               });
+            }
          });
-      },
-      getDeepSequencedPosts: (categories = []) => {
-         return categories
-            ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
-            ?.filter((e) => !e.parentCategory)
-            ?.sort((a, b) => a.sequenceNo - b.sequenceNo)
-            ?.map((e) => {
-               const currentCategorySubFolders = categories
-                  ?.map((e) => {
-                     e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
-                     return e;
-                  })
-                  ?.filter((se) => se.parentCategory === e.id);
-               e.posts.push(...currentCategorySubFolders);
-               e.posts = e.posts?.sort((a, b) => a.sequenceNo - b.sequenceNo);
-               return e;
-            })
-            ?.flatMap((e) => e.posts)
-            ?.reduce((a, c) => {
-               if (!c.parentCategory) {
-                  a.push(c);
+
+         // Then we will generate the HTML for the sidebar navigation
+         const sideBarCategories = allCategories.reduce((a, c, i) => {
+            const postsHTML = c?.posts.reduce((cPA, cP) => {
+               if (!cP?.posts) {
+                  cPA += `
+                            <a href="${`/courses/products/${cP?.productId}/categories/${cP?.categoryId}/posts/${cP?.id}`}" class="template-sidebar__category__item__post">
+                                <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#000000" fill-rule="nonzero">
+                                            <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
+                                            <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
+                                            <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
+                                        </g>
+                                        <rect class="color-stroke" id="Rectangle" stroke="#000000" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
+                                    </g>
+                                </svg>
+                                <p class="template-sidebar__category__item__post__text">${cP.title}</p>
+                            </a>
+                        `;
                } else {
-                  const subCategoryPosts = c.posts.flatMap((e) => e);
-                  a.push(...subCategoryPosts);
+                  const posts = cP.posts.reduce((cPPA, cPP) => {
+                     cPPA += `
+                                    <a href="${`/courses/products/${cPP?.productId}/categories/${cPP?.categoryId}/posts/${cPP?.id}`}" class="template-sidebar__category__item__post">
+                                        <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#000000" fill-rule="nonzero">
+                                                    <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
+                                                    <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
+                                                    <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
+                                                </g>
+                                                <rect class="color-stroke" id="Rectangle" stroke="#000000" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
+                                            </g>
+                                        </svg>
+                                        <p class="template-sidebar__category__item__post__text">${cPP.title}</p>
+                                    </a>
+                                `;
+                     return cPPA;
+                  }, "");
+                  cPA += `
+                            <div class="template-sidebar__category__item__sub-folder">
+                                <div class="template-sidebar__category__item__sub-folder__title">
+                                    <p class="template-sidebar__category__item__sub-folder__title__text">${cP.title}</p>
+                                    <a  style="display: ${this.isMobile ? "none" : "flex"}" href="/courses/products/${cP?.productId}/categories/${cP?.id}" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
+                                </div>
+                                <div class="template-sidebar-category__item__sub-folder__posts">
+                                    ${posts}    
+                                </div>
+                            </div>
+                            `;
                }
-               return a;
-            }, [])
-            ?.map((e, i) => {
-               e.sequenceNo = i;
-               return e;
+               return cPA;
+            }, "");
+            a += `
+                    <div class="template-sidebar__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
+                        <div class="template-sidebar__category__item__title">
+                            <div class="template-sidebar__category__item__title__content">
+                                <i class="fas fa-angle-right template-sidebar__category__item__title__content__icon"></i>
+                                <p class="template-sidebar__category__item__title__content__title">${c.title}</p>
+                            </div>
+                            <a  style="display: ${this.isMobile ? "none" : "flex"}" href="/courses/products/${c?.productId}/categories/${c?.id}" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></a>
+                        </div>
+                        <div class="template-sidebar__category__item__content">
+                            ${postsHTML}     
+                        </div>       
+                    </div>
+                    `;
+            return a;
+         }, "");
+         const html = `
+                    <div class="template-sidebar">
+                        <div class="template-sidebar__content">
+                            <a href="/library" class="template-sidebar__back-button">
+                                <i class="fa-solid fa-angle-left template-sidebar__back-button__icon"></i>
+                                <p class="template-sidebar__back-button__text">Library</p>    
+                            </a>
+                            <a href="/courses/products/${product.id}">
+                                <img class="template-sidebar__logo" src="https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png">    
+                            </a>
+                            <a href="${this.isMobile ? "#" : `/courses/products/${product.id}/categories`}" class='template-sidebar__titles'>Modules</a>
+                            <div class="template-sidebar__category">
+                                ${sideBarCategories}    
+                            </div>    
+                            <a class="template-sidebar__image" href="#">
+                                <img src="${product?.posterImage}" />    
+                            </a>
+                        </div>
+                        <div class="template-sidebar__toggler">
+                            <i class="fa-solid fa-angle-right open"></i>
+                            <i class="fa-solid fa-xmark close"></i>
+                        </div>
+                    </div>
+                `;
+
+         // Finally we will inject the sidebar and attach event listeners for interactivity
+         if (document.querySelector(".template-sidebar")) return;
+         $container.insertAdjacentHTML("afterbegin", html);
+         setTimeout(() => {
+            document.body.addEventListener("click", (e) => {
+               if (
+                  e.target.closest(".template-sidebar__category__item__title__content")
+               ) {
+                  const $categoryItem = e.target.closest(
+                     ".template-sidebar__category__item",
+                  );
+                  const isActive = $categoryItem.classList.contains("active");
+                  $categoryItem.classList?.[isActive ? "remove" : "add"]("active");
+               }
+
+               if (
+                  e.target.closest(".template-sidebar__category__item__sub-folder__title")
+               ) {
+                  const $subFolder = e.target.closest(
+                     ".template-sidebar__category__item__sub-folder",
+                  );
+                  const isActive = $subFolder.classList.contains("active");
+                  $subFolder.classList?.[isActive ? "remove" : "add"]("active");
+               }
+
+               if (e.target.closest(".template-sidebar__toggler")) {
+                  const isSidebarActive = document
+                     .querySelector(".template-sidebar")
+                     .classList.contains("active");
+                  document
+                     .querySelector(".template-sidebar")
+                     .classList[isSidebarActive ? "remove" : "add"]("active");
+               }
             });
+         }, 500);
       },
-      extractLessonParts: async ({
-         productId,
-         categoryId,
-         postId,
-         locationId,
-         mediaTarget,
-         commentsTarget,
-         iframeParent = ".bm-theme-root__container__page",
-         muted = false,
-         timeout = 30000,
-      } = {}) => {
-         // First we will resolve an element or selector
-         const resolveElement = (value, name) => {
-            const element =
-               typeof value === "string" ? document.querySelector(value) : value;
+   };
 
-            if (!element) {
-               throw new Error(`${name} was not found.`);
-            }
+   // This object holds desktop pages
+   pages = {
+      landingPage: async () => {
+         // First we will retrieve the root and root container on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
+         const $rootContainerPage = document.querySelector(
+            ".bm-theme-root__container__page",
+         );
 
-            return element;
+         // Then we will retrieve the necessary data
+         const [userData, userProductProgress, productCategories, completedPosts] =
+            await Promise.allSettled([
+               this.coreMethods.data.fetchUser(),
+               this.coreMethods.data.fetchUserProductProgress(),
+               this.coreMethods.data.fetchCategories(),
+               this.coreMethods.data.fetchCompletedPosts(),
+            ]).then((res) => res.map((e) => e.value));
+
+         // Then we will process the categories data
+         const categories = productCategories
+            ?.filter((cat) => !cat?.parentCategory)
+            ?.map((cat) => ({
+               thumbnail:
+                  cat?.posterImage ||
+                  window.templateCustomizationSchema.placeholderThumbnail,
+               title: cat.title,
+               id: cat.id,
+               locaationId: cat.location,
+               productId: cat.product,
+               url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
+            }));
+
+         // Then we will inject the Dashboard HTML and initialize the navigation components
+         $rootContainerPage.innerHTML = `
+         <div class='template-container'>
+             <div class="dashboard">
+                     ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
+                     <div class="dashboard__wrapper">
+                         ${this.widgets.communityToggle()}
+                         ${this.widgets.heroBanner()}
+                         <div class="dashboard__categories">
+                             <p class="dashboard__categories__title">Categories</p>
+                             ${this.widgets.categoryGrid(categories)}      
+                         </div>  
+                     </div>
+             </div>
+         </div>
+         `;
+
+         // Finally we will update the body class to current page
+         this.coreMethods.utils.setPageClass("dashboard");
+      },
+
+      categoryPostPage: async (params = { categoryId }) => {
+         // First we will retrieve the root and root container on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
+         const $rootContainerPage = document.querySelector(
+            ".bm-theme-root__container__page",
+         );
+
+         // Then we will retrieve the category
+         const category = await this.coreMethods.data.fetchCategory(params?.categoryId);
+
+         // Then we will fetch the category data and prepare the breadcrumbs
+         const breadCrumbs = await (async () => {
+            // const $el = await this.coreMethods.utils.waitForElement(
+            //    "#product-breadcrumbs, #breadcrumb-container",
+            //    0,
+            // );
+            // $el?.querySelectorAll("a").forEach((e) => {
+            //    e.href = `/courses${e.getAttribute("href")}`;
+            // });
+            // return $el?.innerHTML;
+            return "";
+         })();
+
+         // Then we will helper function to map posts to our data structure
+         const generatePosts = (posts = []) => {
+            return posts?.map((post) => ({
+               id: post.id,
+               thumbnail:
+                  post?.posterImage ||
+                  window.templateCustomizationSchema.placeholderThumbnail,
+               title: post.title,
+               url: `/courses/products/${post?.productId}/categories/${post?.categoryId}/posts/${post?.id}`,
+            }));
          };
 
-         // Then we will retrieve the necessary containers
-         const $mediaTarget = resolveElement(mediaTarget, "Media target");
+         // Then we will build the HTML for subcategories if they exist
+         const subCategoriesHTML = category?.category?.subCategories?.reduce((a, c) => {
+            const posts = generatePosts(c.posts);
+            a += `
+            <div class="template-category-post__sub-categories__item">
+                <p class="template-category-post__sub-categories__item__title">${c.title}</p>
+                <div class="template-category-post__sub-categories__item__posts">
+                    ${this.widgets.postGrid(posts)}      
+                </div>  
+            </div>
+            `;
+            return a;
+         }, "");
 
-         const $commentsTarget = resolveElement(commentsTarget, "Comments target");
+         // Then we will render the Category Page HTML
+         $rootContainerPage.innerHTML = `
+         <p class="template-category-post-title">${category?.category?.title}</p>
+         <div class='template-container'>
+             <div class="template-category-post">
+                 <div class="template-category-post__breadcrumbs">${breadCrumbs}</div>
+                 <div class="template-category-post__wrapper">
+                     <div class="template-category-post__posts">
+                         ${this.widgets.postGrid(generatePosts(category?.category?.posts))}      
+                     </div>  
+                     ${subCategoriesHTML}
+                 </div>
+             </div>
+         </div>
+         `;
 
-         const $iframeParent = resolveElement(iframeParent, "Iframe parent");
+         // Finally we will update the body class to current page
+         this.coreMethods.utils.setPageClass("category-posts");
+      },
 
-         // Then we will remove an existing source iframe
-         $iframeParent.querySelector(".bm-ghl-lesson-source")?.remove();
+      categoriesPage: async () => {
+         // First we will retrieve the root and root container on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
 
-         // Then we will create the lesson URL
-         const lessonUrl = new URL(
-            [
-               `/courses/products/${productId}`,
-               `/modules/${categoryId}`,
-               `/lessons/${postId}`,
-            ].join(""),
-            location.origin,
+         // Then we will fetch all categories and filter out subcategories
+         const categories = await (async () => {
+            const data = await this.coreMethods.data.fetchCategories();
+            return data
+               .filter((cat) => !cat?.parentCategory)
+               ?.map((cat) => ({
+                  thumbnail:
+                     cat?.posterImage ||
+                     window.templateCustomizationSchema.placeholderThumbnail,
+                  title: cat.title,
+                  url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
+                  id: data.id,
+                  productId: data.productId,
+                  locationId: data.locationId,
+               }));
+         })();
+
+         // Then we will render the Categories List Page
+         $rootContainer.innerHTML = `
+          <p class="template-categories-title">Categories</p>
+          <div class='template-container'>
+              <div class="template-categories__list">
+                  <div class="template-categories__wrapper">
+                      ${this.widgets.categoryGrid(categories)}      
+                  </div>
+              </div>
+          </div>
+         `;
+
+         // Finally we will update the body class to current page
+         this.coreMethods.utils.setPageClass("categories");
+      },
+
+      postPage: async (params = { postId }) => {
+         // First we will retrieve the root and root container on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
+         const $rootContainerPage = document.querySelector(
+            ".bm-theme-root__container__page",
          );
 
-         lessonUrl.searchParams.set("location_id", locationId);
+         // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
+         const [completedPosts, currentPost, categories] = await Promise.allSettled([
+            this.coreMethods.data.fetchCompletedPosts(),
+            this.coreMethods.data.fetchPost(params.postId),
+            this.coreMethods.data.fetchCategories(),
+         ]).then((res) => res.map((e) => e.value));
 
-         // Then we will create the hidden iframe
-         const iframe = document.createElement("iframe");
+         // Then we will create the bread crumbs
+         const breadCrumbs = await (async () => {
+            // const $el = await this.coreMethods.utils.waitForElement(
+            //    "#product-breadcrumbs, #breadcrumb-container",
+            //    0,
+            // );
+            // $el?.querySelectorAll("a").forEach((e) => {
+            //    e.href = `/courses${e.getAttribute("href")}`;
+            // });
+            // return $el?.innerHTML;
+            return "";
+         })();
 
-         iframe.className = "bm-ghl-lesson-source";
-         iframe.setAttribute("aria-hidden", "true");
-         iframe.setAttribute("tabindex", "-1");
+         // Then we will build the header HTML including navigation arrows and completion buttons
+         const headerHTML = (() => {
+            // First we will retrieve all post from category and subcategories
+            const allPosts = this.coreMethods.utils.getDeepSequencedPosts(categories);
 
-         // We will force the iframe to use a desktop viewport
-         iframe.width = "1440";
-         iframe.height = "1000";
-
-         iframe.style.cssText = `
-         position: fixed;
-         top: 0;
-         left: -10000px;
-         width: 1440px;
-         min-width: 1440px;
-         height: 1000px;
-         min-height: 1000px;
-         display: block;
-         visibility: visible;
-         opacity: 0;
-         pointer-events: none;
-         border: 0;
-         z-index: -1;
-      `;
-
-         // We assign the URL after setting the desktop dimensions
-         iframe.src = lessonUrl.href;
-
-         // Then we will add it inside the current page
-         $iframeParent.append(iframe);
-
-         try {
-            // Then we will wait for the iframe to load
-            await new Promise((resolve, reject) => {
-               const timer = setTimeout(() => {
-                  reject(new Error("The lesson iframe timed out."));
-               }, timeout);
-
-               iframe.addEventListener(
-                  "load",
-                  () => {
-                     clearTimeout(timer);
-                     resolve();
-                  },
-                  { once: true },
-               );
-
-               iframe.addEventListener(
-                  "error",
-                  () => {
-                     clearTimeout(timer);
-
-                     reject(new Error("The lesson iframe failed to load."));
-                  },
-                  { once: true },
-               );
-            });
-
-            // Then we will retrieve the iframe window and document
-            const iframeWindow = iframe.contentWindow;
-
-            const iframeDocument = iframe.contentDocument;
-
-            if (!iframeWindow || !iframeDocument) {
-               throw new Error("Unable to access the lesson iframe.");
-            }
-
-            // Then we will confirm that it has a desktop viewport
-            if (iframeWindow.innerWidth < 1024) {
-               throw new Error(
-                  `The iframe did not render as desktop: ${iframeWindow.innerWidth}px`,
-               );
-            }
-
-            // Then we will create a reusable wait function
-            const waitFor = (callback, errorMessage) => {
-               return new Promise((resolve, reject) => {
-                  const startedAt = Date.now();
-
-                  const interval = setInterval(() => {
-                     const result = callback();
-
-                     if (result) {
-                        clearInterval(interval);
-                        resolve(result);
-                        return;
-                     }
-
-                     if (Date.now() - startedAt >= timeout) {
-                        clearInterval(interval);
-
-                        reject(new Error(errorMessage));
-                     }
-                  }, 100);
-               });
-            };
-
-            // Then we will wait for the desktop lesson container
-            await waitFor(() => {
-               return iframeDocument.querySelector("#post-details-container");
-            }, "The desktop lesson container was not found.");
-
-            // Then we will wait for either an audio or video player
-            await waitFor(() => {
-               return (
-                  iframeDocument.querySelector(
-                     ["#post-details-container", ".video-player-wrapper"].join(" "),
-                  ) ||
-                  iframeDocument.querySelector(
-                     ["#post-details-container", ".audio-player-wrapper"].join(" "),
-                  ) ||
-                  iframeDocument.querySelector(
-                     ["#post-details-container", ".plyr--video"].join(" "),
-                  ) ||
-                  iframeDocument.querySelector(
-                     ["#post-details-container", ".plyr--audio"].join(" "),
-                  )
-               );
-            }, "The audio or video player was not found.");
-
-            // Then we will wait for the comments component
-            const comments = await waitFor(() => {
-               const $desktopLesson = iframeDocument.querySelector(
-                  "#post-details-container",
-               );
-
-               if (!$desktopLesson) {
-                  return null;
+            // Then we will create the post widgets
+            const leftArrowHTML = (() => {
+               const currentPostIndex = allPosts.find(
+                  (p) => p.id === currentPost.id,
+               )?.sequenceNo;
+               if (currentPostIndex) {
+                  const previousPost = allPosts[currentPostIndex - 1];
+                  return `<a class="template-post-page-header__arrow prev" href="${`/courses/products/${previousPost?.productId}/categories/${previousPost?.categoryId}/posts/${previousPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
                }
-
-               const $commentsHeading = Array.from(
-                  $desktopLesson.querySelectorAll("div"),
-               ).find((element) => {
-                  return (
-                     element.textContent?.trim() === "Comments" &&
-                     element.children.length === 0
-                  );
-               });
-
-               return (
-                  $commentsHeading?.closest(".w-full.bg-white.mt-5.px-10.pb-10") ||
-                  $commentsHeading?.closest(".w-full.bg-white") ||
-                  null
-               );
-            }, "The comments component was not found.");
-
-            // Then we will copy GHL's external styles
-            (() => {
-               iframeDocument
-                  .querySelectorAll('link[rel="stylesheet"][href]')
-                  .forEach(($sourceLink) => {
-                     const href = $sourceLink.href;
-
-                     const alreadyLoaded = Array.from(
-                        document.querySelectorAll('link[rel="stylesheet"][href]'),
-                     ).some(($link) => {
-                        return $link.href === href;
-                     });
-
-                     if (alreadyLoaded) {
-                        return;
-                     }
-
-                     const $link = document.createElement("link");
-
-                     $link.rel = "stylesheet";
-                     $link.href = href;
-                     $link.dataset.ghlLessonStyle = "true";
-
-                     document.head.append($link);
-                  });
+               return "";
             })();
-
-            // Then we will copy GHL's inline styles
-            (() => {
-               iframeDocument.querySelectorAll("style").forEach(($sourceStyle) => {
-                  const content = $sourceStyle.textContent || "";
-
-                  if (!content.trim()) {
-                     return;
+            const rightArrowHTML = (() => {
+               const currentPostIndex = allPosts.find(
+                  (p) => p.id === currentPost.id,
+               )?.sequenceNo;
+               const lastPostIndex = allPosts.slice(-1)[0]?.sequenceNo;
+               const canGoToNextPost = currentPostIndex !== lastPostIndex;
+               if (canGoToNextPost) {
+                  const nextPost = allPosts[currentPostIndex + 1];
+                  return `<a class="template-post-page-header__arrow next" href="${`/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
+               }
+               return "";
+            })();
+            const downloadsHTML = (() => {
+               if (currentPost?.post_materials?.length) {
+                  return this.widgets.downloadSelect(currentPost?.post_materials);
+               }
+               return "";
+            })();
+            const markAsCompleteButton = (() => {
+               window.addEventListener("click", async (e) => {
+                  if (
+                     e.target.classList.contains(
+                        "template-post-page-header__mark-as-complete",
+                     )
+                  ) {
+                     const isCompleted =
+                        e.target.getAttribute("data-is-completed") === "true";
+                     if (!isCompleted) {
+                        const reqData =
+                           await this.coreMethods.actions.markPostAsCompleteOrIncomplete(
+                              currentPost.id,
+                              true,
+                           );
+                        e.target.innerText = "Lesson Done";
+                        e.target.setAttribute("data-is-completed", "true");
+                        e.target.getAttribute("data-uncomplete-id", reqData?.id);
+                     } else {
+                        const unCompleteId = e.target.getAttribute("data-uncomplete-id");
+                        await this.coreMethods.actions.markPostAsCompleteOrIncomplete(
+                           currentPost.id,
+                           false,
+                        );
+                        e.target.innerText = "Complete This Lesson";
+                        e.target.setAttribute("data-is-completed", "false");
+                     }
                   }
-
-                  const alreadyLoaded = Array.from(
-                     document.querySelectorAll("style[data-ghl-lesson-style]"),
-                  ).some(($style) => {
-                     return $style.textContent === content;
-                  });
-
-                  if (alreadyLoaded) {
-                     return;
-                  }
-
-                  const $style = document.createElement("style");
-
-                  $style.dataset.ghlLessonStyle = "true";
-
-                  $style.textContent = content;
-
-                  document.head.append($style);
                });
+               const postInsideCompletedPost = completedPosts?.find(
+                  (e) => e.postId === currentPost.id,
+               );
+               if (!postInsideCompletedPost) {
+                  return `<button class="template-post-page-header__mark-as-complete" data-is-completed='false'>Complete This Lesson</button>`;
+               }
+               return `<button class="template-post-page-header__mark-as-complete" data-is-completed='true' data-uncomplete-id='${postInsideCompletedPost?.id}'>Lesson Done</button>`;
             })();
 
-            // Then we will clear the visible containers
-            $mediaTarget.innerHTML = "";
-            $commentsTarget.innerHTML = "";
+            // Finallly we will create the header template
+            return `
+            <div class="template-post-page-header">
+                ${downloadsHTML}  
+                ${markAsCompleteButton}
+                ${leftArrowHTML}
+                ${rightArrowHTML}  
+            </div>
+            `;
+         })();
 
-            // Then we will create a function that will retrieve the audio and move it
-            const audio = (() => {
-               const $audioPlayer =
-                  iframeDocument.querySelector(
-                     ["#post-details-container", ".audio-player-wrapper"].join(" "),
-                  ) ||
-                  iframeDocument.querySelector(
-                     ["#post-details-container", '[class*="audio-player"]'].join(" "),
-                  ) ||
-                  iframeDocument.querySelector(
-                     ["#post-details-container", ".plyr--audio"].join(" "),
-                  );
+         // Finally we will append all container conditionally
+         await this.coreMethods.utils.extractLessonParts({
+            productId: currentPost.productId,
+            categoryId: currentPost.categoryId,
+            postId: currentPost.id,
+            locationId: currentPost.locationId,
+            mediaTarget: ".template-post-page__media",
+            commentsTarget: ".template-post-page__comments",
+            iframeParent: ".bm-theme-root__container__page",
+            muted: true,
+            timeout: 30000,
+         });
 
-               if (!$audioPlayer) {
-                  return null;
+         // Then we will render the page and re-attach the scraped elements (video, audio, comments)
+         $rootContainerPage.innerHTML = `
+         ${headerHTML}
+         <div class='template-container'>
+             <div class="template-post-page">
+                 <div class="template-post-page__breadcrumbs">${breadCrumbs}</div>
+                 <div class="template-post-page__wrapper">
+                     <p class="template-post-page__title">${currentPost?.title || ""}</p>
+                     <div class="template-post-page__media"></div>    
+                     <div class="template-post-page__description">${currentPost?.description || ""}</div>  
+                     <div class="template-post-page__comments"></div>  
+                 </div>
+             </div>
+         </div>
+         `;
+
+         // Then we will update the body class to current page
+         this.coreMethods.utils.setPageClass("post");
+
+         // if (audioContainer) {
+         //    document.querySelector(".template-post-page__audio")?.append(audioContainer);
+         // }
+
+         // if (commentContainer) {
+         //    document
+         //       .querySelector(".template-post-page__comments")
+         //       ?.append(commentContainer);
+         // }
+      },
+   };
+
+   // This object holds mobile pages
+   mobilePages = {
+      landingPage: async () => {
+         // First we will retrieve the root and root container on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
+
+         // Then we will retrieve the necessary data
+         const [
+            userData,
+            userProductProgress,
+            completedPosts,
+            productCategories,
+            product,
+            categoryProgress,
+         ] = await Promise.allSettled([
+            this.coreMethods.data.fetchUser(),
+            this.coreMethods.data.fetchUserProductProgress(),
+            this.coreMethods.data.fetchCompletedPosts(),
+            this.coreMethods.data.fetchCategories(),
+            this.coreMethods.data.fetchProduct(),
+            this.coreMethods.data.fetchCategoryProgress(),
+         ]).then((res) => res.map((e) => e.value));
+
+         // Then we will render the Categories List Page
+         $rootContainer.innerHTML = `
+          <img class="template-hero__image" src="${product?.posterImage}" />
+          ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
+          <div class='template-container'>
+               ${this.widgets.communityToggle()}
+               ${this.widgets.heroBanner(
+                  "Welcome to Template",
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                  "",
+                  "",
+                  "margin-bottom: 15px",
+               )}
+               ${this.widgets.categoryWithPostsDropdown("Course Curriculum", productCategories, completedPosts || [], categoryProgress || [])}
+          </div>
+         `;
+
+         // Finally we will invoke the necessary initializers
+         this.globalInitializers.initNavBar($rootContainer);
+         this.globalInitializers.initSidebar($root);
+         document.body.classList.add("page-dashboard");
+      },
+
+      postPage: async () => {
+         // First we will retrieve the root and root container on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
+
+         // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
+         const [product, completedPosts, currentPost, categories] =
+            await Promise.allSettled([
+               this.coreMethods.data.fetchProduct(),
+               this.coreMethods.data.fetchCompletedPosts(),
+               this.coreMethods.data.fetchPost(),
+               this.coreMethods.data.fetchCategories(),
+            ]).then((res) => res.map((e) => e.value));
+
+         // Then we will scrape and prepare the existing DOM elements (Video, Audio, Comments)
+         const videoContainer = await (async () => {
+            if (
+               Object.keys(currentPost?.video || {}).length ||
+               Object.keys(currentPost?.embedJson || {}).length
+            ) {
+               const container = await this.coreMethods.utils.waitForElement(
+                  ".video-player-container, .embedded-media-player",
+                  0,
+               );
+               return container;
+            }
+            return "";
+         })();
+         const audioContainer = await (async () => {
+            if (Object.keys(currentPost?.audio || {}).length) {
+               const container = await this.coreMethods.utils.waitForElement(
+                  ".audio-player-container",
+                  0,
+               );
+               return container;
+            }
+            return "";
+         })();
+         const commentContainer = (() => {
+            const $commentElement = Array.from(document.querySelectorAll("div")).filter(
+               (e) => e.innerText === "Comments",
+            );
+            return $commentElement?.length ? $commentElement[0]?.parentElement : "";
+         })();
+
+         // Then we will build the header HTML including navigation arrows and completion buttons
+         const headerHTML = (() => {
+            // First we will retrieve all post from category and subcategories
+            const allPosts = this.coreMethods.utils.getDeepSequencedPosts(categories);
+
+            // First we will create the post widgets
+            const leftArrowHTML = (() => {
+               const currentPostIndex = allPosts.find(
+                  (p) => p.id === currentPost.id,
+               )?.sequenceNo;
+               if (currentPostIndex) {
+                  const previousPost = allPosts[currentPostIndex - 1];
+                  return `<a class="template-post-page-header__arrow prev" href="${`/courses/products/${previousPost?.productId}/categories/${previousPost?.categoryId}/posts/${previousPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
                }
-
-               const $audio =
-                  $audioPlayer.closest(
-                     [".audio-player-wrapper", '[class*="player-wrapper"]'].join(","),
-                  ) || $audioPlayer;
-
-               if (muted) {
-                  $audio.querySelectorAll("audio").forEach(($element) => {
-                     $element.muted = true;
-                     $element.defaultMuted = true;
-                  });
+               return `<a class="template-post-page-header__arrow prev disabled" href="#"><i class="fas fa-arrow-circle-right"></i></a>`;
+            })();
+            const rightArrowHTML = (() => {
+               const currentPostIndex = allPosts.find(
+                  (p) => p.id === currentPost.id,
+               )?.sequenceNo;
+               const lastPostIndex = allPosts.slice(-1)[0]?.sequenceNo;
+               const canGoToNextPost = currentPostIndex !== lastPostIndex;
+               if (canGoToNextPost) {
+                  const nextPost = allPosts[currentPostIndex + 1];
+                  return `<a class="template-post-page-header__arrow next" href="${`/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
                }
-
-               $mediaTarget.append($audio);
-
-               return $audio;
+               return `<a class="template-post-page-header__arrow next disabled" href="#"><i class="fas fa-arrow-circle-right"></i></a>`;
+            })();
+            const downloadsHTML = (() => {
+               return this.widgets.downloadSelect(currentPost?.post_materials || []);
+            })();
+            const markAsCompleteButton = (() => {
+               window.addEventListener("click", async (e) => {
+                  if (
+                     e.target.classList.contains(
+                        "template-post-page-header__mark-as-complete",
+                     )
+                  ) {
+                     const isCompleted =
+                        e.target.getAttribute("data-is-completed") === "true";
+                     if (!isCompleted) {
+                        const reqData =
+                           await this.coreMethods.actions.markPostAsCompleteOrIncomplete(
+                              currentPost.id,
+                              true,
+                           );
+                        e.target.innerText = "Lesson Done";
+                        e.target.setAttribute("data-is-completed", "true");
+                        e.target.getAttribute("data-uncomplete-id", reqData?.id);
+                     } else {
+                        const unCompleteId = e.target.getAttribute("data-uncomplete-id");
+                        await this.coreMethods.actions.markPostAsCompleteOrIncomplete(
+                           unCompleteId,
+                           false,
+                        );
+                        e.target.innerText = "Complete This Lesson";
+                        e.target.setAttribute("data-is-completed", "false");
+                     }
+                  }
+               });
+               const postInsideCompletedPost = completedPosts.find(
+                  (e) => e.postId === currentPost.id,
+               );
+               if (!postInsideCompletedPost) {
+                  return `<button class="template-post-page-header__mark-as-complete" data-is-completed='false'>Complete This Lesson</button>`;
+               }
+               return `<button class="template-post-page-header__mark-as-complete" data-is-completed='false' data-uncomplete-id='${postInsideCompletedPost?.id}'>Lesson Done</button>`;
             })();
 
-            // Then we will create a function that will retrieve the video and move it
-            const video = (() => {
-               const $videoPlayer =
-                  iframeDocument.querySelector(
-                     [
-                        "#post-details-container",
-                        ".video-post-body-container",
-                        ".video-player-wrapper",
-                     ].join(" "),
-                  ) ||
-                  iframeDocument.querySelector(
-                     ["#post-details-container", ".video-player-wrapper"].join(" "),
-                  ) ||
-                  iframeDocument.querySelector(
-                     ["#post-details-container", ".plyr--video"].join(" "),
-                  );
+            // Finallly we will create the header template
+            return `
+            <div class="template-post-page-header">
+                ${downloadsHTML}  
+                ${markAsCompleteButton}
+                ${leftArrowHTML}
+                ${rightArrowHTML}  
+            </div>
+            `;
+         })();
 
-               if (!$videoPlayer) {
-                  return null;
-               }
+         // Then we will render the page and re-attach the scraped elements (video, audio, comments)
+         $rootContainer.innerHTML = `
+         ${headerHTML}
+         <div class='template-container'>
+             <div class="template-post-page">
+                 <div class="template-post-page__breadcrumbs">
+                     <a href="/courses/products/${product.id}/categories?source=courses">Dashboard</a>
+                     <span>/ <a href="#">${currentPost.title}</a></span>
+                 </div>
+                 <div class="template-post-page__wrapper">
+                     <p class="template-post-page__title">${currentPost?.title || ""}</p>
+                     <div class="template-post-page__video"></div>    
+                     <div class="template-post-page__audio"></div>
+                     <div class="template-post-page__description">${currentPost?.description || ""}</div>  
+                     <div class="template-post-page__comments"></div>  
+                 </div>
+             </div>
+         </div>
+         `;
 
-               const $video =
-                  $videoPlayer.closest(".video-player-wrapper") || $videoPlayer;
+         // Then we will invoke the necessary initializers
+         this.globalInitializers.initNavBar($rootContainer);
+         this.globalInitializers.initSidebar($root);
+         document.body.classList.add("page-post");
 
-               if (muted) {
-                  $video.querySelectorAll("video").forEach(($element) => {
-                     $element.muted = true;
-                     $element.defaultMuted = true;
-                  });
-               }
+         // Finally we will append all container conditionally
+         if (videoContainer) {
+            document.querySelector(".template-post-page__video")?.append(videoContainer);
+         }
 
-               $mediaTarget.append($video);
+         if (audioContainer) {
+            document.querySelector(".template-post-page__audio")?.append(audioContainer);
+         }
 
-               return $video;
-            })();
-
-            // Then we will create a function that will move the comments
-            const movedComments = (() => {
-               $commentsTarget.append(comments);
-
-               return comments;
-            })();
-
-            // Finally we will return the extracted elements
-            // The iframe must remain inside the current page
-            return {
-               iframe,
-               iframeWindow,
-               iframeDocument,
-               audio,
-               video,
-               comments: movedComments,
-            };
-         } catch (error) {
-            // We will remove the iframe only when loading fails
-            iframe.remove();
-
-            throw error;
+         if (commentContainer) {
+            document
+               .querySelector(".template-post-page__comments")
+               ?.append(commentContainer);
          }
       },
    };
+
+   // This object holds UI component templates
+   widgets = {
+      welcomeBanner: (
+         name = "User",
+         userProductProgress,
+         productCategories = [],
+         completedPosts = [],
+         additionalInlineStyling = "",
+      ) => {
+         // First we will generate the link and text for the banner button
+         const bannerButtonLinkAndText = (() => {
+            // First, we initialize the default button variables
+            let text = "Let's Start";
+            let nextPost = null;
+
+            // Then we will fetch the course categories to organize them into a sorted, flat array of posts.
+            const allPosts = (() => {
+               // First we will retrieve all of the categories
+               let allCategories = productCategories;
+
+               // Then we will sort categories by sequence number
+               allCategories = allCategories.sort((a, b) =>
+                  a.sequenceNo > b.sequenceNo ? 1 : -1,
+               );
+
+               // Then we will nest sub-categories and sort internal posts
+               allCategories.forEach((e) => {
+                  if (e.parentCategory) {
+                     e.posts = e.posts.sort((a, b) =>
+                        a.sequenceNo > b.sequenceNo ? 1 : -1,
+                     );
+                     allCategories.forEach((ca) => {
+                        if (ca.id === e.parentCategory) {
+                           allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
+                           ca.posts.push(e);
+                           ca.posts = ca.posts.sort((a, b) =>
+                              a.sequenceNo > b.sequenceNo ? 1 : -1,
+                           );
+                        }
+                     });
+                  }
+               });
+
+               // Then we will flatten the hierarchy into a single searchable list of posts with indexed positions
+               let index = 0;
+               const allPost = allCategories?.reduce((a, c) => {
+                  c?.posts?.forEach((post) => {
+                     index++;
+                     if (post?.posts) {
+                        post?.posts.forEach((subPost) => {
+                           subPost.index = index;
+                           a.push(subPost);
+                        });
+                     } else {
+                        post.index = index;
+                        a.push(post);
+                     }
+                  });
+                  return a;
+               }, []);
+
+               // Finally we will return all of the post
+               return allPost;
+            })();
+
+            // Then, we check the user's progress to determine if we should show "Resume Course" and find the next post in the sequence, or simply start from the beginning.
+            if (userProductProgress?.completedPosts >= 1) {
+               const lastCompletedPost = allPosts.find(
+                  (e) => e.id === completedPosts?.[0]?.postId,
+               );
+               text = "Resume Course";
+               nextPost = allPosts[lastCompletedPost?.index || 0 + 1];
+            } else if (userProductProgress?.progress === 100) {
+               text = "Course Completed";
+            } else {
+               nextPost = allPosts[0];
+            }
+
+            // Finally, we return the button object containing the display text and the constructed URL path for the next lesson.
+            return {
+               text,
+               link: `/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`,
+            };
+         })();
+
+         // Then we will generate the html
+         const html = `
+                    <div class="template-welcome" ${additionalInlineStyling ? `style='${additionalInlineStyling}'` : ""}>
+                        <div class="template-welcome__left">
+                            <p class="template-welcome__greeting">Welcome back, ${name}</p>
+                            <p class="template-welcome__progress">
+                                <i class="fa-solid fa-desktop template-welcome__progress-icon"></i>
+                                <span>${userProductProgress?.progress || 0}% COMPLETE</span>
+                            </p>
+                        </div>
+                        <a href="${userProductProgress?.progress === 100 ? "#" : bannerButtonLinkAndText.link}" class="template-welcome__button">${bannerButtonLinkAndText.text}</a>    
+                    </div>
+                `;
+
+         // Finally we will return the html
+         return html;
+      },
+      heroBanner: (
+         title = "Welcome to Template",
+         subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         paragraphHTML = "",
+         embedHTML = "",
+         additionalInlineStyling = "",
+      ) => {
+         const defaultEmbed = `<iframe width="560" height="315" src="https://www.youtube.com/embed/-KtdCRntB5I?si=ZMcV0CeJScDXSxwS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+         const defaultParagraph = `
+                    <p>
+                        <strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius non neque ullamcorper rutrum. Integer et malesuada metus. Nulla facilisi. Integer non commodo justo. Nam sed urna sit amet orci placerat vehicula. Nulla quis molestie mauris. Suspendisse mi est, ultrices at scelerisque nec, efficitur in leo. Cras at ultrices justo, ut sollicitudin nisi.</strong><br/>
+                        Ut interdum erat nec lectus euismod sagittis. Nulla semper, massa sed cursus vulputate, nisl sapien placerat diam, ut fermentum turpis sapien sit amet est. Phasellus convallis laoreet congue. Donec congue lobortis ex pellentesque malesuada. Maecenas mattis quis dui a malesuada. Morbi nec laoreet velit, id consequat leo. Maecenas nisi ex, iaculis at enim nec, bibendum vehicula lacus. Donec quis felis nisi. Aliquam cursus enim sit amet consequat eleifend. Aliquam eu sapien sapien. Morbi mollis nisl tellus, vitae bibendum dui interdum et. Vivamus accumsan diam vitae laoreet interdum.    
+                    </p>
+                `;
+         const html = `
+                    <div class="template-hero" ${additionalInlineStyling ? `style='${additionalInlineStyling}'` : ""}>
+                        <!-- Left Column: Text Content -->
+                        <div class="template-hero__left">
+                            <h1 class="template-hero__title" id="hero-title">${title}</h1>
+                            <span class="template-hero__subtitle" id="hero-subtitle">[${subtitle}]</span>
+                            ${paragraphHTML || defaultParagraph}
+                        </div>
+                        <!-- Right Column: Video Embed -->
+                        <div class="template-hero__right" style="padding-bottom;">
+                            <!-- Add the iframe embed code from your video hosting platform - e.g. YouTube -->
+                            ${defaultEmbed || embedHTML} 
+                        </div>
+                    </div>
+                `;
+         return html;
+      },
+      categoryGrid: (categories = []) => {
+         // First we will check if the assed categories is valid and is not empty, if it does then we will return a error html
+         if (!categories || categories.length === 0) {
+            return '<p class="text-center text-gray-500">No categories found to display.</p>';
+         }
+
+         // Then we will generate the category cards
+         const categoryCards = categories.reduce((a, c) => {
+            a += `
+                        <div onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-categories__card">
+                            <img 
+                                src="${c.thumbnail || window.templateCustomizationSchema.placeholderThumbnail}" 
+                                alt="Thumbnail for ${c.title}" 
+                                class="template-categories__thumbnail"
+                                loading="lazy"
+                                onerror="this.onerror=null; this.src='${window.templateCustomizationSchema.placeholderThumbnail}';"
+                            />
+                            <div class="template-categories__info">
+                                <h5 class="template-categories__title-text">${c.title}</h5>
+                            </div>
+                        </div>
+                    `;
+            return a;
+         }, "");
+
+         // Then we will wrap the cards in the main grid container
+         const html = `
+                    <div class="template-categories">
+                        <div class="template-categories__grid" id="category-grid-container">
+                            ${categoryCards}
+                        </div>
+                    </div>
+                `;
+
+         // Finally we will return the html
+         return html;
+      },
+      postGrid: (posts = []) => {
+         // First we will check if the assed post is valid and is not empty, if it does then we will return a error html
+         if (!posts || posts?.length === 0) {
+            return '<p class="text-center text-gray-500">No posts found to display.</p>';
+         }
+
+         // Then we will generate the category cards
+         const postCards = posts?.reduce((a, c) => {
+            a += `
+                        <div onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${c.id}'})" class="template-post__card">
+                            <img 
+                                src="${c.thumbnail ? `https://cdn.courses.apisystem.tech/${c.thumbnail}` : null || window.templateCustomizationSchema.placeholderThumbnail}" 
+                                alt="Thumbnail for ${c.title}" 
+                                class="template-post__thumbnail"
+                                loading="lazy"
+                                onerror="this.onerror=null; this.src='${window.templateCustomizationSchema.placeholderThumbnail}';"
+                            />
+                            <div class="template-post__info">
+                                <h3 class="template-post__title-text">${c.title}</h3>
+                            </div>
+                        </div>
+                    `;
+            return a;
+         }, "");
+
+         // Then we will wrap the cards in the main grid container
+         const html = `
+                    <div class="template-post">
+                        <div class="template-post__grid" id="post-grid-container">
+                            ${postCards}
+                        </div>
+                    </div>
+                `;
+
+         // Finally we will return the html
+         return html;
+      },
+      communityToggle: (
+         buttonText = "Ask the Community",
+         activeButtonText = "Hide Community Forum",
+         embedHTML = "",
+      ) => {
+         window.addEventListener("click", (e) => {
+            const $targetItem = e.target.closest(".template-community-toggle__button");
+            if ($targetItem) {
+               const $container = $targetItem.closest(".template-community-container");
+               const isActive = $container.classList.contains("active");
+               $targetItem.innerText = !isActive ? activeButtonText : buttonText;
+               $container.classList?.[isActive ? "remove" : "add"]("active");
+            }
+         });
+         const html = `
+                    <div class="template-community-container">
+                        <div class="template-community-toggle">
+                            <button 
+                                class="template-community-toggle__button" 
+                                id="community-toggle-button"
+                            >
+                                ${buttonText}
+                            </button>
+                        </div>
+                    
+                        <!-- This is the container that will be toggled by JavaScript -->
+                        <div class="template-community-embed" id="community-embed-area">
+                            ${embedHTML || `<iframe src="/communities/groups"></iframe>`}
+                        </div>
+                    </div>
+                `;
+         return html;
+      },
+      downloadSelect: (
+         items = [
+            {
+               url: "Test",
+               title: "Test",
+            },
+         ],
+      ) => {
+         const assetsHTML = items?.reduce((a, c) => {
+            a += `
+                <li class="template-downloads__item">
+                       <a href="${c.url}" download>
+                           <i class="fas fa-file-code"></i>
+                           ${c.title}
+                       </a>
+                </li>`;
+            return a;
+         }, "");
+         return `
+                <div id="custom-download" class="template-downloads ${!items?.length ? "disabled" : ""}">
+                    <button id="dropdown-button" onclick="this.parentElement.classList.toggle('active')" class="template-downloads__button" aria-expanded="false" aria-controls="dropdown-menu">
+                        <i class="fas fa-cloud-download-alt text-xl"></i>
+                        <span id="button-label" class="template-downloads__label">Downloads</span>
+                        <i id="dropdown-icon" class="fas fa-chevron-down template-downloads__icon-arrow text-sm"></i>
+                        <ul id="dropdown-menu" class="template-downloads__menu">
+                            ${assetsHTML}
+                        </ul>
+                    </button>
+                </div>
+            `;
+      },
+      categoryWithPostsDropdown: (
+         title = "Syllabus",
+         categories = [],
+         completedPosts = [],
+         categoryProgress = [],
+      ) => {
+         // First we will create the necessary variables
+         let fallbackImage = window.templateCustomizationSchema.placeholderThumbnail;
+
+         // Then we will add a boolean to each category if it is completed
+         categories.forEach((category) => {
+            const progress = categoryProgress?.error ? [] : categoryProgress || [];
+            const currentCategoryProgress = (progress || [])?.find(
+               (e) => e.categoryId === category.id,
+            );
+            category.isCompleted = currentCategoryProgress?.progress === 100;
+         });
+
+         categories.forEach((category) => {
+            category.posts.forEach((post) => {
+               const isCompleted = completedPosts.some((e) => e.postId === post.id);
+               post.isCompleted = isCompleted;
+            });
+         });
+
+         // Then we will organize subcategories under their parents
+         let allCategories = categories.sort((a, b) =>
+            a.sequenceNo > b.sequenceNo ? 1 : -1,
+         );
+         allCategories.forEach((e) => {
+            if (e.parentCategory) {
+               e.posts = e.posts.sort((a, b) => (a.sequenceNo > b.sequenceNo ? 1 : -1));
+               allCategories.forEach((ca) => {
+                  if (ca.id === e.parentCategory) {
+                     allCategories = allCategories.filter((fCa) => fCa.id !== e.id);
+                     ca.posts.push(e);
+                     ca.posts = ca.posts.sort((a, b) =>
+                        a.sequenceNo > b.sequenceNo ? 1 : -1,
+                     );
+                  }
+               });
+            }
+         });
+
+         // Then we will generate the categories html
+         const categoriesHTML = allCategories.reduce((a, c) => {
+            const postsHTML = c?.posts.reduce((cPA, cP) => {
+               const image = cP?.posterImage
+                  ? `https://cdn.courses.apisystem.tech${cP.posterImage}`
+                  : fallbackImage;
+               if (!cP?.posts) {
+                  cPA += `
+                            <a class="template-cwd__category__item__post" href="/courses/products/${cP.productId}/categories/${cP.categoryId}/posts/${cP.id}?source=courses">
+                                <img class="template-cwd__category__item__post__icon" src="${image}" />
+                                 <div>
+                                   <p class="template-cwd__category__item__post__text">${cP.title}</p>
+                                    <div style="display: flex; align-items: center; gap: 5px;">
+                                       <i class="template-cwd__category__item__post__completed ${!cP.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                       <p class="template-cwd__category__item__post__title">Lesson</p>
+                                    </div>
+                                 </div>
+                            </a>
+                        `;
+               } else {
+                  const posts = cP.posts.reduce((cPPA, cPP) => {
+                     const image = cPP?.posterImage
+                        ? `https://cdn.courses.apisystem.tech${cPP.posterImage}`
+                        : fallbackImage;
+                     cPPA += `
+                                    <a href="/courses/products/${cPP.productId}/categories/${cPP.categoryId}/posts/${cPP.id}?source=courses" class="template-cwd__category__item__post">
+                                        <img src="${image}" class="template-cwd__category__item__post__icon" />
+                                        <div>
+                                          <p class="template-cwd__category__item__post__text">${cPP.title}</p>
+                                          <div style="display: flex; align-items: center; gap: 5px;">
+                                             <i class="template-cwd__category__item__post__completed ${!cPP.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                             <p class="template-cwd__category__item__post__title">Lesson</p>
+                                          </div>
+                                        </div>
+                                    </a>
+                                `;
+                     return cPPA;
+                  }, "");
+                  cPA += `
+                            <div class="template-cwd__category__item__sub-folder">
+                                 <div class="template-cwd__category__item__sub-folder__title">
+                                    <div>
+                                       <img class="template-cwd__category__item__sub-folder__title__image" src="${image}" />
+                                       <div class="template-cwd__category__item__sub-folder__title__details">
+                                          <p class="template-cwd__category__item__sub-folder__title__details__name">${cP.title}</p>
+                                          <div style="display: flex; align-items: center; gap: 5px;">
+                                             <i class="template-cwd__category__item__sub-folder__title__details__completed ${!cP?.posts?.every((e) => e?.isCompleted) ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                             <p class="template-cwd__category__item__sub-folder__title__details__title">Category</p>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <i class="fas fa-angle-right template-cwd__category__item__sub-folder__title__icon"></i>
+                                </div>
+                                <div class="template-cwd-category__item__sub-folder__posts">
+                                    ${posts}    
+                                </div>
+                            </div>
+                            `;
+               }
+               return cPA;
+            }, "");
+            a += `
+                    <div class="template-cwd__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
+                        <div class="template-cwd__category__item__title">
+                              <div class="template-cwd__category__item__title__content">
+                                 <img class="template-cwd__category__item__title__content__image" src="${c?.posterImage || fallbackImage}" />
+                                 <div class="template-cwd__category__item__title__content__details">
+                                    <p class="template-cwd__category__item__title__content__details__title">${c.title}</p>
+                                    <div style="display: flex; align-items: center; gap: 5px;">
+                                       <i class="template-cwd__category__item__title__content__details__completed ${!c.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                       <p class="template-cwd__category__item__title__content__details__posts">${c?.posts?.length} Lessons</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <i class="fas fa-angle-right template-cwd__category__item__title__content__icon"></i>
+                        </div>
+                        <div class="template-cwd__category__item__content">
+                            ${postsHTML}     
+                        </div>       
+                    </div>
+                    `;
+            return a;
+         }, "");
+
+         // Then we will create full html structure
+         const html = `
+            <div class="template-cwd">
+               <p class="template-cwd__title" style="display: ${title ? "block" : "none"}">${title}<p>
+               <div class="template-cwd__content">${categoriesHTML}</div>
+            </div>
+         `;
+
+         // Then we will create the click listener for the dropdowns and post navigation
+         setTimeout(() => {
+            document.body.addEventListener("click", (e) => {
+               if (e.target.closest(".template-cwd__category__item__title")) {
+                  const $categoryItem = e.target.closest(".template-cwd__category__item");
+                  const isActive = $categoryItem.classList.contains("active");
+                  $categoryItem.classList?.[isActive ? "remove" : "add"]("active");
+               }
+
+               if (e.target.closest(".template-cwd__category__item__sub-folder__title")) {
+                  const $subFolder = e.target.closest(
+                     ".template-cwd__category__item__sub-folder",
+                  );
+                  const isActive = $subFolder.classList.contains("active");
+                  $subFolder.classList?.[isActive ? "remove" : "add"]("active");
+               }
+            });
+         }, 500);
+
+         // Finally we will return the html
+         return html;
+      },
+   };
+}
+
+if (!window.CourseTemplate) {
+   window.CourseTemplate = new CourseTemplate();
 }

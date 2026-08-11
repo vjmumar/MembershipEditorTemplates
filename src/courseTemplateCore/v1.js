@@ -789,7 +789,7 @@ class CourseTemplateCore {
             // Then we will wait for either an audio or video asset
             await waitFor(() => {
                const $videoAsset = iframeDocument.querySelector(
-                  ["#post-details-container", ".video-asset-wrapper"].join(" "),
+                  ["#post-details-container", "#post-video"].join(" "),
                );
 
                const $videoElement = $videoAsset?.querySelector("video");

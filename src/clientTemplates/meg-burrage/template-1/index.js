@@ -3444,19 +3444,6 @@ class CourseTemplate {
             `;
          })();
 
-         // Finally we will append all container conditionally
-         this.coreMethods.utils.extractLessonParts({
-            productId: currentPost.productId,
-            categoryId: currentPost.categoryId,
-            postId: currentPost.id,
-            locationId: currentPost.locationId,
-            mediaTarget: ".template-post-page__media",
-            commentsTarget: ".template-post-page__comments",
-            iframeParent: ".bm-theme-root__container__page",
-            muted: true,
-            timeout: 30000,
-         });
-
          // Then we will render the page and re-attach the scraped elements (video, audio, comments)
          $rootContainerPage.innerHTML = `
          ${headerHTML}
@@ -3472,6 +3459,19 @@ class CourseTemplate {
              </div>
          </div>
          `;
+
+         // Then we will append all container conditionally
+         this.coreMethods.utils.extractLessonParts({
+            productId: currentPost.productId,
+            categoryId: currentPost.categoryId,
+            postId: currentPost.id,
+            locationId: currentPost.locationId,
+            mediaTarget: ".template-post-page__media",
+            commentsTarget: ".template-post-page__comments",
+            iframeParent: ".bm-theme-root__container__page",
+            muted: true,
+            timeout: 30000,
+         });
 
          // Then we will update the body class to current page
          this.coreMethods.utils.setPageClass("post");

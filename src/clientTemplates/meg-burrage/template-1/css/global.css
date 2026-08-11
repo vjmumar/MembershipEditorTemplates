@@ -23,6 +23,7 @@
    overflow-y: auto;
    height: 100vh;
    align-self: flex-start;
+   top: 0;
 }
 .template-sidebar__back-button {
    display: flex;
@@ -229,6 +230,7 @@
    justify-content: space-between;
    padding-block: 30px;
    padding-inline: 15px;
+   max-width: calc(100% - 35px);
 }
 .template-navbar-wrapper * {
    z-index: 1;

@@ -2922,6 +2922,10 @@ class CourseTemplate {
             this.coreMethods = window.CourseTemplateCore;
             res(true);
          };
+
+         courseTemplateCoreScript.error = (err) => {
+            console.log(String(err))
+         }
       });
 
       // Then we will insert the global and widget styles

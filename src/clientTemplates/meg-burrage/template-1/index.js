@@ -2897,6 +2897,7 @@ class CourseTemplate {
    constructor() {
       this.isMobile = window.matchMedia("(max-width: 768px)").matches;
       this.baseURL = `https://membershipeditor.netlify.app`;
+      this.path = `/src/clientTemplates/meg-burrage/template-1/`;
       this.init();
    }
 
@@ -2913,17 +2914,17 @@ class CourseTemplate {
       // Then we will insert the global and widget styles
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link class="template-global-styles" rel="stylesheet" src="${this.baseURL}/template-1/css/global.css"></link>`,
+         `<link class="template-global-styles" rel="stylesheet" src="${this.baseURL}${this.path}global.css"></link>`,
       );
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link class="template-widget-styles" rel="stylesheet" src="${this.baseURL}/template-1/css/widget.css"></link>`,
+         `<link class="template-widget-styles" rel="stylesheet" src="${this.baseURL}${this.path}widget.css"></link>`,
       );
 
       // Then we will initialize the styles and the landing page
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link class="template-styles" rel="stylesheet" src="${this.baseURL}/template-1/css/page.css"></link>`,
+         `<link class="template-styles" rel="stylesheet" src="${this.baseURL}${this.path}page.css"></link>`,
       );
       await this.actions.navigate("landingPage");
 

@@ -2,11 +2,12 @@
    font-family: var(--branding-body-font-family), sans-serif;
 } 
 
-.bm-theme-root {
+/* Root Container */
+.bm-theme-root__container__page {
    position: relative;
 }
 
-.bm-theme-root::before {
+.bm-theme-root__container__page::before {
    content: "";
    position: fixed;
    top: 0;
@@ -22,7 +23,7 @@
    pointer-events: none;
 }
 
-.bm-theme-root.loading::before {
+.bm-theme-root__container__page.loading::before {
    opacity: 1;
    animation: template-page-loading 1.5s ease-in-out infinite;
 }

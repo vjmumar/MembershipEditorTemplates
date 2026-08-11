@@ -406,15 +406,17 @@ class CourseTemplateCore {
    // This object holds actions methods
    actions = {
       navigate: async (type = "", params = {}) => {
-         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainerPage = document.querySelector(
+            ".bm-theme-root__container__page",
+         );
          const pages = Object.keys(this.pages);
-         $root.classList.add("loading");
+         $rootContainerPage.classList.add("loading");
          if (pages.includes(type)) {
             await this?.pages[type](params);
          } else {
             alert(`Sorry Page Not Found! Possible Pages - ${String(pages)}`);
          }
-         $root.classList.remove("loading");
+         $rootContainerPage.classList.remove("loading");
       },
       markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {
          const auth = await this.utils.getAuth();

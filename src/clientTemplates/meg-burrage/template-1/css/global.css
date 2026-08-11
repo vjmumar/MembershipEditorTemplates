@@ -2,6 +2,31 @@
    font-family: var(--branding-body-font-family), sans-serif;
 } 
 
+.bm-theme-root {
+   position: relative;
+}
+
+.bm-theme-root::before {
+   content: "";
+   position: fixed;
+   top: 0;
+   left: 0;
+   z-index: 999999;
+   width: 0;
+   height: 4px;
+   background-color: var(
+      --branding-primary-accent-dark,
+      #d29a89
+   );
+   opacity: 0;
+   pointer-events: none;
+}
+
+.bm-theme-root.loading::before {
+   opacity: 1;
+   animation: template-page-loading 1.5s ease-in-out infinite;
+}
+
 /* Sidebar */
 .template-sidebar {
    position: fixed;
@@ -374,5 +399,23 @@
    }
    .template-sidebar__toggler i {
       font-size: 13px;
+   }
+}
+
+
+@keyframes template-page-loading {
+   0% {
+      left: 0;
+      width: 0;
+   }
+
+   50% {
+      left: 20%;
+      width: 60%;
+   }
+
+   100% {
+      left: 100%;
+      width: 0;
    }
 }

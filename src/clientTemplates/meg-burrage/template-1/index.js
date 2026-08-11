@@ -3346,45 +3346,47 @@ class CourseTemplate {
 
          // Then we will create the bread crumbs
          const breadCrumbs = await (async () => {
-            const $el = await this.coreMethods.utils.waitForElement(
-               "#product-breadcrumbs, #breadcrumb-container",
-               0,
-            );
-            $el?.querySelectorAll("a").forEach((e) => {
-               e.href = `/courses${e.getAttribute("href")}`;
-            });
-            return $el?.innerHTML;
+            // const $el = await this.coreMethods.utils.waitForElement(
+            //    "#product-breadcrumbs, #breadcrumb-container",
+            //    0,
+            // );
+            // $el?.querySelectorAll("a").forEach((e) => {
+            //    e.href = `/courses${e.getAttribute("href")}`;
+            // });
+            // return $el?.innerHTML;
+            return "";
          })();
 
          // Then we will scrape and prepare the existing DOM elements (Video, Audio, Comments)
          const videoContainer = await (async () => {
-            if (
-               Object.keys(currentPost?.video || {}).length ||
-               Object.keys(currentPost?.embedJson || {}).length
-            ) {
-               const container = await this.coreMethods.utils.waitForElement(
-                  ".video-player-container, .embedded-media-player",
-                  0,
-               );
-               return container;
-            }
+            // if (
+            //    Object.keys(currentPost?.video || {}).length ||
+            //    Object.keys(currentPost?.embedJson || {}).length
+            // ) {
+            //    const container = await this.coreMethods.utils.waitForElement(
+            //       ".video-player-container, .embedded-media-player",
+            //       0,
+            //    );
+            //    return container;
+            // }
             return "";
          })();
          const audioContainer = await (async () => {
-            if (Object.keys(currentPost?.audio || {}).length) {
-               const container = await this.coreMethods.utils.waitForElement(
-                  ".audio-player-container",
-                  0,
-               );
-               return container;
-            }
+            // if (Object.keys(currentPost?.audio || {}).length) {
+            //    const container = await this.coreMethods.utils.waitForElement(
+            //       ".audio-player-container",
+            //       0,
+            //    );
+            //    return container;
+            // }
             return "";
          })();
          const commentContainer = (() => {
-            const $commentElement = Array.from(document.querySelectorAll("div")).filter(
-               (e) => e.innerText === "Comments",
-            );
-            return $commentElement?.length ? $commentElement[0]?.parentElement : "";
+            // const $commentElement = Array.from(document.querySelectorAll("div")).filter(
+            //    (e) => e.innerText === "Comments",
+            // );
+            // return $commentElement?.length ? $commentElement[0]?.parentElement : "";
+            return "";
          })();
 
          // Then we will build the header HTML including navigation arrows and completion buttons

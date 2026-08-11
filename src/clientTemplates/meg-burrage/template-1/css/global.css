@@ -3,11 +3,11 @@
 } 
 
 /* Root Container */
-.bm-theme-root__container__page {
+.bm-theme-root {
    position: relative;
 }
 
-.bm-theme-root__container__page::before {
+.bm-theme-root::before {
    content: "";
    position: absolute;
    top: 0;

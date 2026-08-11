@@ -2918,7 +2918,7 @@ class CourseTemplate {
       document.head.append(courseTemplateCoreScript);
       await new Promise((res) => {
          courseTemplateCoreScript.onload = () => {
-            this.coreMethods = new CourseTemplateCore(this.pages);
+            this.coreMethods = new CourseTemplateCore(this.pages, this.globalWidgets);
             res(true);
          };
          courseTemplateCoreScript.error = (err) => {
@@ -3167,6 +3167,23 @@ class CourseTemplate {
                }
             });
          }, 500);
+      },
+      initLoader: async ($container) => {
+         // First we will retrieve the root and root container on where we will insert the page theme
+         const $root = document.querySelector(".bm-theme-root");
+         const $rootContainer = document.querySelector(".bm-theme-root__container");
+         const $rootContainerPage = document.querySelector(
+            ".bm-theme-root__container__page",
+         );
+
+         // Then we will insert the loader inside container page
+         $rootContainerPage.innerHTML = `
+            <div class="loading-overlay">
+              <div class="loading-overlay__container">
+                  <p>Loading</p>
+              </div>
+            </div>
+         `;
       },
    };
 

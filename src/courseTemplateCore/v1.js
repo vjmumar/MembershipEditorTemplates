@@ -1,7 +1,8 @@
 class CourseTemplateCore {
-   constructor(pages = {}) {
+   constructor(pages = {}, globalWidgets) {
       this.version = "v1";
       this.pages = pages;
+      this.globalWidgets = globalWidgets;
    }
 
    // This object holds data fetching and state management logic
@@ -407,8 +408,8 @@ class CourseTemplateCore {
    actions = {
       navigate: async (type = "", params = {}) => {
          const pages = Object.keys(this.pages);
-         document.querySelector(".bm-theme-root__container__page").innerHTML = ``;
          if (pages.includes(type)) {
+            this.globalWidgets.initLoader();
             await this?.pages[type](params);
          } else {
             alert(`Sorry Page Not Found! Possible Pages - ${String(pages)}`);

@@ -2990,7 +2990,7 @@ class CourseTemplate {
          // Finally we will render the Navbar
          const html = `
                     <header class="template-navbar-wrapper" id="custom-navbar">
-                        <div onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage', {categoryId: '${c.id}'})" class="template-navbar__logo-link"><img src="${logo}" /></div>
+                        <div onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')" class="template-navbar__logo-link"><img src="${logo}" /></div>
                         <!-- Center: Navigation Links -->
                         <div class="template-navbar__content">
                             <i class="fa-solid fa-xmark template-navbar__content__close" onclick="this.parentElement.classList.remove('active')"></i>

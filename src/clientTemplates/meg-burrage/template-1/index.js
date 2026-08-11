@@ -2912,24 +2912,24 @@ class CourseTemplate {
       // Then we will insert the global and widget styles
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link class="template-global-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/global.css"></link>`,
+         `<link class="template-global-styles" rel="stylesheet" src="${this.baseURL}/template-1/css/global.css"></link>`,
       );
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link class="template-widget-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/widget.css"></link>`,
+         `<link class="template-widget-styles" rel="stylesheet" src="${this.baseURL}/template-1/css/widget.css"></link>`,
       );
 
       // Finally we will initialize the styles
       if (this.isMobile) {
          document.head.insertAdjacentHTML(
             "beforeend",
-            `<link class="template-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/pageMobile.css"></link>`,
+            `<link class="template-styles" rel="stylesheet" src="${this.baseURL}/template-1/css/pageMobile.css"></link>`,
          );
          await this.mobileInitializers.initLandingPage();
       } else {
          document.head.insertAdjacentHTML(
             "beforeend",
-            `<link class="template-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/pageDesktop.css"></link>`,
+            `<link class="template-styles" rel="stylesheet" src="${this.baseURL}/template-1/css/pageDesktop.css"></link>`,
          );
          await this.desktopInitializers.initLandingPage();
       }

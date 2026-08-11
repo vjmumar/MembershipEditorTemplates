@@ -2909,22 +2909,7 @@ class CourseTemplate {
       fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
       document.head.append(fScript);
 
-      // Then we will initialize the styles
-      if (this.isMobile) {
-         await this.mobileInitializers.initLandingPage();
-         document.head.insertAdjacentHTML(
-            "beforeend",
-            `<link class="template-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/pageMobile.css"></link>`,
-         );
-      } else {
-         await this.desktopInitializers.initLandingPage();
-         document.head.insertAdjacentHTML(
-            "beforeend",
-            `<link class="template-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/pageDesktop.css"></link>`,
-         );
-      }
-
-      // Finally we will insert the global and widget styles
+      // Then we will insert the global and widget styles
       document.head.insertAdjacentHTML(
          "beforeend",
          `<link class="template-global-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/global.css"></link>`,
@@ -2933,6 +2918,21 @@ class CourseTemplate {
          "beforeend",
          `<link class="template-widget-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/widget.css"></link>`,
       );
+
+      // Finally we will initialize the styles
+      if (this.isMobile) {
+         document.head.insertAdjacentHTML(
+            "beforeend",
+            `<link class="template-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/pageMobile.css"></link>`,
+         );
+         await this.mobileInitializers.initLandingPage();
+      } else {
+         document.head.insertAdjacentHTML(
+            "beforeend",
+            `<link class="template-styles" rel="stylesheet" src="${this.baseURL}/${window.templateCustomizationSchema.id}/css/pageDesktop.css"></link>`,
+         );
+         await this.desktopInitializers.initLandingPage();
+      }
    };
 
    // This object holds global related initializers

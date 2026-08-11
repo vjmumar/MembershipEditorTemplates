@@ -3347,7 +3347,6 @@ class CourseTemplate {
             this.coreMethods.data.fetchCategories(),
          ]).then((res) => res.map((e) => e.value));
 
-         console.log(currentPost);
          // Then we will create the bread crumbs
          const breadCrumbs = await (async () => {
             // const $el = await this.coreMethods.utils.waitForElement(
@@ -3443,7 +3442,6 @@ class CourseTemplate {
             </div>
             `;
          })();
-         const videoAssets = currentPost?.asset_urls;
 
          // Then we will render the page and re-attach the scraped elements (video, audio, comments)
          $rootContainerPage.innerHTML = `
@@ -3453,16 +3451,8 @@ class CourseTemplate {
                  <div class="template-post-page__breadcrumbs">${breadCrumbs}</div>
                  <div class="template-post-page__wrapper">
                      <p class="template-post-page__title">${currentPost?.title || ""}</p>
-                     <div class="template-post-page__media">
-                           <video
-                              class="template-video__player"
-                              src="${videoAssets.url}"
-                              poster="${videoAssets.thumbnailUrl || ""}"
-                              preload="metadata"
-                              playsinline
-                              controls
-                           ></video>
-                     </div>    
+                     <div class="template-post-page__video"></div>    
+                     <div class="template-post-page__audio"></div>
                      <div class="template-post-page__description">${currentPost?.description || ""}</div>  
                      <div class="template-post-page__comments"></div>  
                  </div>
@@ -3470,31 +3460,43 @@ class CourseTemplate {
          </div>
          `;
 
-         // Then we will append all container conditionally
-         // this.coreMethods.utils.extractLessonParts({
-         //    productId: currentPost.productId,
-         //    categoryId: currentPost.categoryId,
-         //    postId: currentPost.id,
-         //    locationId: currentPost.locationId,
-         //    mediaTarget: ".template-post-page__media",
-         //    commentsTarget: ".template-post-page__comments",
-         //    iframeParent: ".bm-theme-root__container__page",
-         //    muted: true,
-         //    timeout: 30000,
-         // });
-
-         // // Then we will update the body class to current page
+         // Then we will update the body class to current page
          this.coreMethods.utils.setPageClass("post");
 
-         // if (audioContainer) {
-         //    document.querySelector(".template-post-page__audio")?.append(audioContainer);
-         // }
+         // Finally we will append all container conditionally
+         if (
+            currentPost.asset_urls.assetType === "video" &&
+            currentPost?.asset_urls?.url
+         ) {
+            document.querySelector(".template-post-page__video")?.insertAdjacentHTML(
+               "beforeend",
+               `
+                <video
+                  src="${currentPost?.asset_urls?.url}"
+                  poster="${currentPost?.asset_urls?.thumbnailUrl || ""}"
+                  preload="metadata"
+                  playsinline
+                  controls
+               ></video>
+            `,
+            );
+         }
 
-         // if (commentContainer) {
-         //    document
-         //       .querySelector(".template-post-page__comments")
-         //       ?.append(commentContainer);
-         // }
+         if (
+            currentPost.asset_urls.assetType === "audio" &&
+            currentPost?.asset_urls?.url
+         ) {
+            document.querySelector(".template-post-page__video")?.insertAdjacentHTML(
+               "beforeend",
+               `
+                <audio
+                     src="${currentPost?.asset_urls?.url}"
+                     preload="metadata"
+                     controls
+                  ></audio>
+            `,
+            );
+         }
       },
    };
 

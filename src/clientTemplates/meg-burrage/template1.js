@@ -3171,6 +3171,9 @@ class CourseTemplate {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
+         const $rootContainerPage = document.querySelector(
+            ".bm-theme-root__container__page",
+         );
 
          // Then we will wait for the product container
          await this.utils.waitForElement(".product-container", 0);
@@ -3199,7 +3202,7 @@ class CourseTemplate {
             }));
 
          // Then we will inject the Dashboard HTML and initialize the navigation components
-         $rootContainer.innerHTML = `
+         $rootContainerPage.innerHTML = `
          <div class='template-container'>
              <div class="dashboard">
                      ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
@@ -3226,6 +3229,9 @@ class CourseTemplate {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
+         const $rootContainerPage = document.querySelector(
+            ".bm-theme-root__container__page",
+         );
 
          // Then we will retrieve the category
          const category = await this.data.fetchCategory(categoryId);
@@ -3269,7 +3275,7 @@ class CourseTemplate {
          }, "");
 
          // Then we will render the Category Page HTML
-         $rootContainer.innerHTML = `
+         $rootContainerPage.innerHTML = `
          <p class="template-category-post-title">${category?.category?.title}</p>
          <div class='template-container'>
              <div class="template-category-post">
@@ -3902,7 +3908,7 @@ class CourseTemplate {
          return html;
       },
       categoryGrid: (categories = []) => {
-         console.log(categories)
+         console.log(categories);
          // First we will check if the assed categories is valid and is not empty, if it does then we will return a error html
          if (!categories || categories.length === 0) {
             return '<p class="text-center text-gray-500">No categories found to display.</p>';

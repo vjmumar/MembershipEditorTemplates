@@ -2936,14 +2936,21 @@ class CourseTemplate {
          `<link class="template-widget-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/widget.css"></link>`,
       );
 
-      // Then we will initialize the styles and the landing page
+      // Then we will initialize the styles, global widgets and the landing page
       document.head.insertAdjacentHTML(
          "beforeend",
          `<link class="template-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/page.css"></link>`,
       );
+      const $root = document.querySelector(".bm-theme-root");
+      const $rootContainer = document.querySelector(".bm-theme-root__container");
+      const $rootContainerPage = document.querySelector(
+         ".bm-theme-root__container__page",
+      );
+      await this.globalWidgets.initSidebar($rootContainer);
+      await this.globalWidgets.initNavBar($rootContainerPage);
       await this.coreMethods.actions.navigate("landingPage");
 
-      // Finally we will append a class to the body indicating that the template is ready
+      // Then we will append a class to the body indicating that the template is ready
       setTimeout(() => {
          document.body.classList.add("template-ready");
       }, 0);
@@ -2955,7 +2962,7 @@ class CourseTemplate {
    };
 
    // This object holds global related initializers
-   globalInitializers = {
+   globalWidgets = {
       initNavBar: async ($container = null) => {
          // First we will fetch the necessary data
          const [userData, product] = await Promise.allSettled([
@@ -3172,9 +3179,6 @@ class CourseTemplate {
          const $rootContainerPage = document.querySelector(
             ".bm-theme-root__container__page",
          );
-
-         // Then we will wait for the product container
-         // await this.coreMethods.utils.waitForElement(".product-container", 0);
 
          // Then we will retrieve the necessary data
          const [userData, userProductProgress, productCategories, completedPosts] =

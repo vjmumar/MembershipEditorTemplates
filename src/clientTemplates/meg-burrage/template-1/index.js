@@ -3174,7 +3174,7 @@ class CourseTemplate {
          );
 
          // Then we will wait for the product container
-         await this.coreMethods.utils.waitForElement(".product-container", 0);
+         // await this.coreMethods.utils.waitForElement(".product-container", 0);
 
          // Then we will retrieve the necessary data
          const [userData, userProductProgress, productCategories, completedPosts] =
@@ -3858,7 +3858,7 @@ class CourseTemplate {
          // Then we will generate the category cards
          const categoryCards = categories.reduce((a, c) => {
             a += `
-                        <div onclick="window.CourseTemplate.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-categories__card">
+                        <div onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-categories__card">
                             <img 
                                 src="${c.thumbnail || window.templateCustomizationSchema.placeholderThumbnail}" 
                                 alt="Thumbnail for ${c.title}" 

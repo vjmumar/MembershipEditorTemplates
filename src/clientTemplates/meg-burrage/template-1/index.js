@@ -3224,7 +3224,7 @@ class CourseTemplate {
          this.coreMethods.utils.setPageClass("dashboard");
       },
 
-      categoryPostPage: async (categoryId = "") => {
+      categoryPostPage: async (params = { categoryId }) => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
@@ -3233,7 +3233,7 @@ class CourseTemplate {
          );
 
          // Then we will retrieve the category
-         const category = await this.coreMethods.data.fetchCategory(categoryId);
+         const category = await this.coreMethods.data.fetchCategory(params?.categoryId);
 
          // Then we will fetch the category data and prepare the breadcrumbs
          const breadCrumbs = await (async () => {

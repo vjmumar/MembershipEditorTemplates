@@ -2960,6 +2960,7 @@ class CourseTemplate {
                         <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
                     </header>
                 `;
+         if (document.querySelector(".template-navbar-wrapper")) return;
          $container.insertAdjacentHTML("afterbegin", html);
       },
       initSidebar: async ($container = null) => {
@@ -3082,6 +3083,7 @@ class CourseTemplate {
                 `;
 
          // Finally we will inject the sidebar and attach event listeners for interactivity
+         if (document.querySelector(".template-sidebar")) return;
          $container.insertAdjacentHTML("afterbegin", html);
          setTimeout(() => {
             document.body.addEventListener("click", (e) => {
@@ -3130,25 +3132,26 @@ class CourseTemplate {
          document.head.append(fScript);
 
          // Then we will check the URL against regex patterns to determine which page view to load
-         if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
-            await this.desktopInitializers.initLandingPage();
-         } else if (
-            /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
-               url,
-            )
-         ) {
-            await this.desktopInitializers.initCategoryPostPage();
-         } else if (/products\/[0-9a-fA-F-]{36}\/categories\/?(\?.*)?$/.test(url)) {
-            await this.desktopInitializers.initCategoriesPage();
-         } else if (
-            /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/posts\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
-               url,
-            )
-         ) {
-            await this.desktopInitializers.initPostPage();
-         } else {
-            console.log("No page found");
-         }
+         await this.desktopInitializers.initLandingPage();
+         // if (/products\/[^/]+\/?(\?.*)?$/.test(url)) {
+         //    await this.desktopInitializers.initLandingPage();
+         // } else if (
+         //    /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
+         //       url,
+         //    )
+         // ) {
+         //    await this.desktopInitializers.initCategoryPostPage();
+         // } else if (/products\/[0-9a-fA-F-]{36}\/categories\/?(\?.*)?$/.test(url)) {
+         //    await this.desktopInitializers.initCategoriesPage();
+         // } else if (
+         //    /products\/[0-9a-fA-F-]{36}\/categories\/[0-9a-fA-F-]{36}\/posts\/[0-9a-fA-F-]{36}\/?(\?.*)?$/.test(
+         //       url,
+         //    )
+         // ) {
+         //    await this.desktopInitializers.initPostPage();
+         // } else {
+         //    console.log("No page found");
+         // }
 
          // Then we will append a class to the body indicating that the template is ready
          setTimeout(() => {

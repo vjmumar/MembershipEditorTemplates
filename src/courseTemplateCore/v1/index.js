@@ -795,22 +795,10 @@ class CourseTemplateCore {
          iframe.className = "bm-post-comments-iframe";
          iframe.width = "1440";
          iframe.height = "1000";
-         iframe.style.cssText = `
-            position: fixed;
-            left: -10000px;
-            width: 1440px;
-            height: 1000px;
-            opacity: 0;
-            pointer-events: none;
-            border: 0;
-         `;
-         iframe.src = [
-            `${location.origin}`,
-            `/courses/products/${productId}`,
-            `/modules/${categoryId}`,
-            `/lessons/${postId}`,
-            `?location_id=${locationId}`,
-         ].join("");
+         iframe.allow = "autoplay 'none'";
+         iframe.style.cssText =
+            "position:fixed;left:-10000px;top:0;width:1440px;height:1000px;opacity:0;pointer-events:none;border:0;";
+         iframe.src = `${location.origin}/courses/products/${productId}/modules/${categoryId}/lessons/${postId}?location_id=${locationId}`;
          $iframeContainer.append(iframe);
 
          try {
@@ -833,6 +821,21 @@ class CourseTemplateCore {
             if (!iframeDocument) {
                throw new Error("Unable to access the comments iframe.");
             }
+
+            // Then we will continuously stop the iframe media
+            const stopSoundInterval = setInterval(() => {
+               iframeDocument.querySelectorAll("video, audio").forEach((media) => {
+                  try {
+                     media.muted = true;
+                     media.volume = 0;
+                     media.pause();
+                     media.plyr?.pause();
+                     media.plyr?.destroy();
+                  } catch (error) {
+                     console.warn("Unable to stop iframe media:", error);
+                  }
+               });
+            }, 0);
 
             // Then we will wait for the comments
             const comments = await new Promise((resolve, reject) => {
@@ -900,23 +903,43 @@ class CourseTemplateCore {
             // Then we will move the comments
             $commentsTarget.replaceChildren(comments);
 
-            // Then we will destroy the iframe media players
-            iframeDocument.querySelectorAll("video, audio").forEach((media) => {
-               try {
-                  media.plyr?.destroy();
-               } catch (error) {
-                  console.warn("Unable to destroy media player:", error);
-               }
-            });
+            // Then we will preserve the media elements
+            iframeDocument
+               .querySelectorAll("video, audio")
+               .forEach((media) => iframeDocument.body.append(media));
 
-            // Finally we will remove unnecessary iframe elements
+            // Then we will remove all other iframe elements
             Array.from(iframeDocument.body.children).forEach((element) => {
-               if (!element.matches("script, link, style")) {
+               if (!element.matches("video, audio, script, link, style")) {
                   element.remove();
                }
             });
 
-            return { iframe, comments };
+            // Finally after one minute we will remove the iframe media
+            const stopSoundTimeout = setTimeout(() => {
+               clearInterval(stopSoundInterval);
+
+               iframeDocument.querySelectorAll("video, audio").forEach((media) => {
+                  try {
+                     media.pause();
+                     media.removeAttribute("src");
+                     media
+                        .querySelectorAll("source")
+                        .forEach((source) => source.remove());
+                     media.load();
+                     media.remove();
+                  } catch (error) {
+                     console.warn("Unable to remove iframe media:", error);
+                  }
+               });
+            }, 60000);
+
+            return {
+               iframe,
+               comments,
+               stopSoundInterval,
+               stopSoundTimeout,
+            };
          } catch (error) {
             iframe.remove();
             $commentsTarget.innerHTML = `

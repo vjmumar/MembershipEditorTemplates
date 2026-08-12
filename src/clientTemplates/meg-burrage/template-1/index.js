@@ -2702,7 +2702,7 @@ class CourseTemplate {
                      <div class="template-community-container">
                            <div class="template-community-toggle">
                               <button 
-                                 onclick="(e) => {console.log(this, this.parentElement,e)}"
+                                 onclick="((e) => {console.log(this, this.parentElement,e)})()"
                                  class="template-community-toggle__button" 
                                  id="community-toggle-button"
                               >

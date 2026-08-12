@@ -3205,7 +3205,7 @@ class CourseTemplate {
                   window.templateCustomizationSchema.placeholderThumbnail,
                title: cat.title,
                id: cat.id,
-               locaationId: cat.location,
+               locationId: cat.location,
                productId: cat.product,
                url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
             }));
@@ -3320,9 +3320,9 @@ class CourseTemplate {
                      window.templateCustomizationSchema.placeholderThumbnail,
                   title: cat.title,
                   url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
-                  id: data.id,
-                  productId: data.productId,
-                  locationId: data.locationId,
+                  id: cat.id,
+                  productId: cat.productId,
+                  locationId: cat.locationId,
                }));
          })();
 

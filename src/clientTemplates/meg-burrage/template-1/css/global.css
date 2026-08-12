@@ -28,6 +28,11 @@
    animation: template-page-loading 1.5s ease-in-out infinite !important;
 }
 
+.bm-theme-root.loading .bm-theme-root__container__page {
+   pointer-events: none;
+   opacity: .5;
+}
+
 /* Sidebar */
 .template-sidebar {
    position: fixed;

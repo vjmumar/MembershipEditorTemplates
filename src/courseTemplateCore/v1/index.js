@@ -487,31 +487,29 @@ class CourseTemplateCore {
 
    // This object holds widgets
    widgets = {
-      initPostPlayer: async ({ post, target = ".template-post-page__video" } = {}) => {
-         // First we will retrieve the target
-         const $target =
-            typeof target === "string" ? document.querySelector(target) : target;
+      postPlayer: async (post = {}, $container = null) => {
+         // First we will retrieve the assets
+         const assets = post?.asset_urls || {};
+         const assetType = assets?.assetType || post?.contentType;
+         const assetURL = assets?.url || post?.audio?.url || post?.video?.url;
+         const absoluteAssetURL = assetURL ? new URL(assetURL, location.origin).href : "";
 
-         if (!$target || !post) {
-            return;
+         // Then we will check if asset is valid
+         if (
+            !$container ||
+            !absoluteAssetURL ||
+            !["video", "audio"].includes(assetType)
+         ) {
+            return null;
          }
 
-         // Then we will retrieve the media details
-         const assetType = post?.asset_urls?.assetType || post?.contentType;
-         const mediaURL = post?.asset_urls?.url || post?.audio?.url || post?.video?.url;
-         const absoluteMediaURL = mediaURL ? new URL(mediaURL, location.origin).href : "";
-
-         // Then we will create the video
+         // Then we will create the video HTML
          const videoHTML = (() => {
-            if (assetType !== "video" || !absoluteMediaURL) {
-               return "";
-            }
-
             return `
                <video
-                  class="template-post-player template-post-player--video"
-                  src="${absoluteMediaURL}"
-                  poster="${post?.asset_urls?.thumbnailUrl || ""}"
+                  class="template-post-player__media"
+                  src="${absoluteAssetURL}"
+                  poster="${assets?.thumbnailUrl || ""}"
                   preload="metadata"
                   playsinline
                   controls
@@ -519,37 +517,95 @@ class CourseTemplateCore {
             `;
          })();
 
-         // Then we will create the audio
+         // Then we will create the audio HTML
          const audioHTML = (() => {
-            if (assetType !== "audio" || !absoluteMediaURL) {
-               return "";
-            }
             return `
-               <audio
-                  class="template-post-player template-post-player--audio"
-                  src="${absoluteMediaURL}"
-                  preload="metadata"
-                  controls
-               ></audio>
+               <div class="template-post-player__audio-content">
+                  ${
+                     assets?.thumbnailUrl
+                        ? `
+                           <img
+                              class="template-post-player__thumbnail"
+                              src="${assets.thumbnailUrl}"
+                              alt=""
+                           >
+                        `
+                        : ""
+                  }
+               
+                  <div class="template-post-player__audio-details">
+                     <p class="template-post-player__title">
+                        ${post?.title || "Audio"}
+                     </p>
+               
+                     <audio
+                        class="template-post-player__media"
+                        src="${absoluteAssetURL}"
+                        preload="metadata"
+                        controls
+                     ></audio>
+                  </div>
+               </div>
             `;
          })();
 
-         // Then we will retrieve the correct media
-         const mediaHTML =
-            assetType === "video" ? videoHTML : assetType === "audio" ? audioHTML : "";
-         if (!mediaHTML) {
-            return;
-         }
+         // Then we will retrieve the correct media HTML
+         const mediaHTML = assetType === "video" ? videoHTML : audioHTML;
 
-         // Then we will insert the media
-         $target.innerHTML = mediaHTML;
+         // Then we will render the player
+         $container.innerHTML = `
+            <div
+               class="
+                  template-post-player
+                  template-post-player--${assetType}
+               "
+            >
+               ${mediaHTML}
+            </div>
+         `;
 
-         // Finally we will initialize Plyr
-         const $media = $target.querySelector(".template-post-player");
-         if ($media && window.Plyr) {
-            return new Plyr($media);
-         }
-         return $media;
+         // Then we will retrieve the media element
+         const $media = $container.querySelector(".template-post-player__media");
+
+         // Then we will initialize Plyr
+         const player = new Plyr($media, {
+            controls:
+               assetType === "video"
+                  ? [
+                       "play-large",
+                       "play",
+                       "rewind",
+                       "fast-forward",
+                       "progress",
+                       "current-time",
+                       "duration",
+                       "mute",
+                       "volume",
+                       "settings",
+                       "pip",
+                       "fullscreen",
+                    ]
+                  : [
+                       "play",
+                       "rewind",
+                       "fast-forward",
+                       "progress",
+                       "current-time",
+                       "duration",
+                       "mute",
+                       "volume",
+                       "settings",
+                    ],
+            seekTime: 10,
+         });
+
+         // Finally we will return the useful references
+         return {
+            player,
+            media: $media,
+            type: assetType,
+            post,
+         };
       },
    };
 

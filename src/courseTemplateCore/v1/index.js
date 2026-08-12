@@ -909,11 +909,11 @@ class CourseTemplateCore {
                .forEach((media) => iframeDocument.body.append(media));
 
             // Then we will remove all other iframe elements
-            Array.from(iframeDocument.body.children).forEach((element) => {
-               if (!element.matches("video, audio, script, link, style")) {
-                  element.remove();
-               }
-            });
+            // Array.from(iframeDocument.body.children).forEach((element) => {
+            //    if (!element.matches("video, audio, script, link, style")) {
+            //       element.remove();
+            //    }
+            // });
 
             // Finally after one minute we will remove the iframe media
             setTimeout(() => {

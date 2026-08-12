@@ -406,19 +406,32 @@ class CourseTemplateCore {
    // This object holds actions methods
    actions = {
       navigate: async (type = "", params = {}) => {
+         // First we will retrieve the root and available pages
          const $root = document.querySelector(".bm-theme-root");
          const pages = Object.keys(this.pages);
+
+         // Then we will start the page loader
          $root.classList.add("loading");
+
+         // Then we will check if the page exists
          if (pages.includes(type)) {
-            await this?.pages[type](params);
+            // First we will update the current page attribute
+            document.body.setAttribute("data-bm-theme-page", type);
+
+            // Then we will smoothly scroll to the top
+            window.scrollTo({
+               top: 0,
+               left: 0,
+               behavior: "smooth",
+            });
+
+            // Finally we will initialize the page
+            await this.pages[type](params);
          } else {
             alert(`Sorry Page Not Found! Possible Pages - ${String(pages)}`);
          }
-         window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: "smooth",
-         });
+
+         // Finally we will stop the page loader
          $root.classList.remove("loading");
       },
       markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {
@@ -638,13 +651,6 @@ class CourseTemplateCore {
             }
          }
          throw null;
-      },
-      setPageClass: (page = "") => {
-         const currentPageClass = Array.from(document.body.classList).find((e) =>
-            e.includes("page-"),
-         );
-         document.body.classList.remove(currentPageClass);
-         document.body.classList.add(`page-${page}`);
       },
       waitForElement: (elementSelector = "", resolveDelay = 1000, timeout = null) => {
          return new Promise((res) => {

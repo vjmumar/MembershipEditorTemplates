@@ -221,6 +221,8 @@
 }
 .template-sidebar__image img {
    border-radius: 8px;
+   display: block;
+   width: 100%;
 }
 .template-sidebar__toggler {
    padding-inline: 6px;

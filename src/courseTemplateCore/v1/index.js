@@ -909,7 +909,7 @@ class CourseTemplateCore {
                .forEach((media) => iframeDocument.body.append(media));
 
             // Then we will remove all other iframe elements
-            const allowedTags = ["VIDEO", "AUDIO"];
+            const allowedTags = ["VIDEO", "AUDIO", "SCRIPT"];
             Array.from(iframeDocument.querySelectorAll("*")).forEach((element) => {
                if (!allowedTags.includes(element.tagName)) {
                   element.remove();

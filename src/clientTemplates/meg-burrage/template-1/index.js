@@ -2179,7 +2179,7 @@ class CourseTemplate {
                url: `/courses/products/${cat?.productId}/categories/${cat?.id}`,
             }));
 
-         // Then we will inject the Dashboard HTML and initialize the navigation components
+         // Finally we will inject the Dashboard HTML and initialize the navigation components
          $rootContainerPage.innerHTML = `
             <div class='template-container'>
                <div class="dashboard">
@@ -2195,9 +2195,6 @@ class CourseTemplate {
                </div>
             </div>
             `;
-
-         // Finally we will update the body class to current page
-         this.coreMethods.utils.setPageClass("dashboard");
       },
 
       "Category Posts": async (params = { categoryId }) => {
@@ -2259,7 +2256,7 @@ class CourseTemplate {
             return a;
          }, "");
 
-         // Then we will render the Category Page HTML
+         // Finally we will render the Category Page HTML
          $rootContainerPage.innerHTML = `
             <p class="template-category-post-title">${category?.category?.title}</p>
             <div class='template-container'>
@@ -2274,9 +2271,6 @@ class CourseTemplate {
                </div>
             </div>
             `;
-
-         // Finally we will update the body class to current page
-         this.coreMethods.utils.setPageClass("category-posts");
       },
 
       "Categories": async () => {
@@ -2304,7 +2298,7 @@ class CourseTemplate {
                }));
          })();
 
-         // Then we will render the Categories List Page
+         // Finally we will render the Categories List Page
          $rootContainerPage.innerHTML = `
             <p class="template-categories-title">Categories</p>
             <div class='template-container'>
@@ -2315,9 +2309,6 @@ class CourseTemplate {
                </div>
             </div>
             `;
-
-         // Finally we will update the body class to current page
-         this.coreMethods.utils.setPageClass("categories");
       },
 
       "Post": async (params = { postId }) => {
@@ -2461,9 +2452,6 @@ class CourseTemplate {
                </div>
             </div>
             `;
-
-         // Then we will update the body class to current page
-         this.coreMethods.utils.setPageClass("post");
 
          // Then we will append the media player
          const $mediaPostContainer = document.querySelector(".template-post-page__media");

@@ -404,44 +404,44 @@ window.templateCustomizationSchema = {
                      },
                      js: (customizations = []) => {
                         let js = `
-                        (() => {
-                           var menu = [
-                              {
-                                 name: "{{menu-text-1}}",
-                                 link: "{{menu-link-1}}",
-                              },
-                              {
-                                 name: "{{menu-text-2}}",
-                                 link: "{{menu-link-2}}",
-                              },
-                              {
-                                 name: "{{menu-text-3}}",
-                                 link: "{{menu-link-3}}",
-                              },
-                              {
-                                 name: "{{menu-text-4}}",
-                                 link: "{{menu-link-4}}",
-                              },
-                              {
-                                 name: "{{menu-text-5}}",
-                                 link: "{{menu-link-5}}",
-                              },
-                              {
-                                 name: "{{menu-text-6}}",
-                                 link: "{{menu-link-6}}",
-                              },
-                           ];
-                           const menuHTML = menu.reduce((a, c) => {
-                              if (c.name) {
-                                    a += \`<a href="\${c.link}">\${c.name}</a>\`;
+                           (() => {
+                              var menu = [
+                                 {
+                                    name: "{{menu-text-1}}",
+                                    link: "{{menu-link-1}}",
+                                 },
+                                 {
+                                    name: "{{menu-text-2}}",
+                                    link: "{{menu-link-2}}",
+                                 },
+                                 {
+                                    name: "{{menu-text-3}}",
+                                    link: "{{menu-link-3}}",
+                                 },
+                                 {
+                                    name: "{{menu-text-4}}",
+                                    link: "{{menu-link-4}}",
+                                 },
+                                 {
+                                    name: "{{menu-text-5}}",
+                                    link: "{{menu-link-5}}",
+                                 },
+                                 {
+                                    name: "{{menu-text-6}}",
+                                    link: "{{menu-link-6}}",
+                                 },
+                              ];
+                              const menuHTML = menu.reduce((a, c) => {
+                                 if (c.name) {
+                                       a += \`<a href="\${c.link}">\${c.name}</a>\`;
+                                 }
+                                 return a;
+                              }, "");
+                              if (document.querySelector('.template-navbar__content__nav-links')) {
+                                    document.querySelector('.template-navbar__content__nav-links').innerHTML =  menuHTML; 
                               }
-                              return a;
-                           }, "");
-                           if (document.querySelector('.template-navbar__content__nav-links')) {
-                                 document.querySelector('.template-navbar__content__nav-links').innerHTML =  menuHTML; 
-                           }
-                        })();
-                        `;
+                           })();
+                           `;
                         customizations.forEach((cItem) => {
                            js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
                         });
@@ -449,17 +449,17 @@ window.templateCustomizationSchema = {
                      },
                      cleanUpJs: (customizations = []) => {
                         let js = `
-                        (() => {
-                            const defaultLinks = [ { text: 'Home', url: '/' }, { text: "Library", url: "/courses/library-v2" }, { text: 'Favorites', url: '/favorites' }, { text: 'Announcements', url: '/announcements' }, { text: 'Contact', url: '/contact' } ];
-                            const linksHTML = defaultLinks.reduce((a, c) => {
-                                a += \`<a href="\${c.url}" class="template-navbar__link">\${c.text}</a>\`;
-                                return a
-                            }, '');
-                            if (document.querySelector('.template-navbar__content__nav-links')) {
-                                document.querySelector('.template-navbar__content__nav-links').innerHTML =  linksHTML; 
-                            }
-                        })();     
-                         `;
+                           (() => {
+                              const defaultLinks = [ { text: 'Home', url: '/' }, { text: "Library", url: "/courses/library-v2" }, { text: 'Favorites', url: '/favorites' }, { text: 'Announcements', url: '/announcements' }, { text: 'Contact', url: '/contact' } ];
+                              const linksHTML = defaultLinks.reduce((a, c) => {
+                                 a += \`<a href="\${c.url}" class="template-navbar__link">\${c.text}</a>\`;
+                                 return a
+                              }, '');
+                              if (document.querySelector('.template-navbar__content__nav-links')) {
+                                 document.querySelector('.template-navbar__content__nav-links').innerHTML =  linksHTML; 
+                              }
+                           })();     
+                           `;
                         customizations.forEach((cItem) => {
                            js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
                         });
@@ -1190,11 +1190,11 @@ window.templateCustomizationSchema = {
                      },
                      js: (customizations = []) => {
                         let js = `
-                        (() => {
-                           window['template-hero-right-previous-html'] = document.querySelector('.template-hero__right').innerHTML;
-                           document.querySelector('.template-hero__right').innerHTML =  '<video style="width: 100%;" src="{{template-hero-right-video-url}}" playsinline="" controls="" poster="{{template-hero-right-video-thumbnail}}"></video>'; 
-                        })();
-                        `;
+                           (() => {
+                              window['template-hero-right-previous-html'] = document.querySelector('.template-hero__right').innerHTML;
+                              document.querySelector('.template-hero__right').innerHTML =  '<video style="width: 100%;" src="{{template-hero-right-video-url}}" playsinline="" controls="" poster="{{template-hero-right-video-thumbnail}}"></video>'; 
+                           })();
+                           `;
                         customizations.forEach((cItem) => {
                            js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
                         });
@@ -1202,10 +1202,10 @@ window.templateCustomizationSchema = {
                      },
                      cleanUpJs: (customizations = []) => {
                         let js = `
-                        (() => {
-                            document.querySelector('.template-hero__right').innerHTML = window['template-hero-right-previous-html'];
-                        })();     
-                         `;
+                           (() => {
+                              document.querySelector('.template-hero__right').innerHTML = window['template-hero-right-previous-html'];
+                           })();     
+                           `;
                         customizations.forEach((cItem) => {
                            js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
                         });
@@ -2191,11 +2191,11 @@ window.templateCustomizationSchema = {
                      },
                      js: (customizations = []) => {
                         let js = `
-                        (() => {
-                           window['template-hero-right-previous-html'] = document.querySelector('.template-hero__right').innerHTML;
-                           document.querySelector('.template-hero__right').innerHTML =  '<video style="width: 100%;height: 100%;object-fit: cover; background-color: red;" src="{{template-hero-right-video-url}}" playsinline="" controls="" poster="{{template-hero-right-video-thumbnail}}"></video>'; 
-                        })();
-                        `;
+                           (() => {
+                              window['template-hero-right-previous-html'] = document.querySelector('.template-hero__right').innerHTML;
+                              document.querySelector('.template-hero__right').innerHTML =  '<video style="width: 100%;height: 100%;object-fit: cover; background-color: red;" src="{{template-hero-right-video-url}}" playsinline="" controls="" poster="{{template-hero-right-video-thumbnail}}"></video>'; 
+                           })();
+                           `;
                         customizations.forEach((cItem) => {
                            js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
                         });
@@ -2203,10 +2203,10 @@ window.templateCustomizationSchema = {
                      },
                      cleanUpJs: (customizations = []) => {
                         let js = `
-                        (() => {
-                            document.querySelector('.template-hero__right').innerHTML = window['template-hero-right-previous-html'];
-                        })();     
-                         `;
+                           (() => {
+                              document.querySelector('.template-hero__right').innerHTML = window['template-hero-right-previous-html'];
+                           })();     
+                           `;
                         customizations.forEach((cItem) => {
                            js = js.replace(`{{${cItem?.property}}}`, cItem?.value);
                         });
@@ -2996,27 +2996,27 @@ class CourseTemplate {
 
          // Finally we will render the Navbar
          const html = `
-                    <header class="template-navbar-wrapper" id="custom-navbar">
-                        <div onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')" class="template-navbar__logo-link"><img src="${logo}" /></div>
-                        <!-- Center: Navigation Links -->
-                        <div class="template-navbar__content">
-                            <i class="fa-solid fa-xmark template-navbar__content__close" onclick="this.parentElement.classList.remove('active')"></i>
-                            <nav class="template-navbar__content__nav-links">${linksHTML}</nav>
-                            <div class="template-navbar__content__actions">
-                                <!-- User Avatar -->
-                                <a href="/account?activeTab=Profile" class="template-navbar__content__avatar" id="navbar-avatar">
-                                    <!-- Placeholder image, ideally replaced with user's actual avatar -->
-                                    <img 
-                                        src="${userData?.avatar || "https://i0.wp.com/s3.amazonaws.com/kajabi-storefronts-production/static_assets/default_avatar.jpg?ssl=1"}" 
-                                        alt="User Avatar" 
-                                        class="template-navbar__content__avatar-img"
-                                    />
-                                </a>
-                            </div>    
-                        </div>
-                        <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
-                    </header>
-                `;
+                     <header class="template-navbar-wrapper" id="custom-navbar">
+                           <div onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')" class="template-navbar__logo-link"><img src="${logo}" /></div>
+                           <!-- Center: Navigation Links -->
+                           <div class="template-navbar__content">
+                              <i class="fa-solid fa-xmark template-navbar__content__close" onclick="this.parentElement.classList.remove('active')"></i>
+                              <nav class="template-navbar__content__nav-links">${linksHTML}</nav>
+                              <div class="template-navbar__content__actions">
+                                 <!-- User Avatar -->
+                                 <a href="/account?activeTab=Profile" class="template-navbar__content__avatar" id="navbar-avatar">
+                                       <!-- Placeholder image, ideally replaced with user's actual avatar -->
+                                       <img 
+                                          src="${userData?.avatar || "https://i0.wp.com/s3.amazonaws.com/kajabi-storefronts-production/static_assets/default_avatar.jpg?ssl=1"}" 
+                                          alt="User Avatar" 
+                                          class="template-navbar__content__avatar-img"
+                                       />
+                                 </a>
+                              </div>    
+                           </div>
+                           <i class="fa-solid fa-bars template-navbar__burgermenu" onclick="this.parentElement.querySelector('.template-navbar__content').classList.add('active')"></i>
+                     </header>
+                  `;
          if (document.querySelector(".template-navbar-wrapper")) return;
          $container.insertAdjacentHTML("afterbegin", html);
       },
@@ -3051,93 +3051,93 @@ class CourseTemplate {
             const postsHTML = c?.posts.reduce((cPA, cP) => {
                if (!cP?.posts) {
                   cPA += `
-                            <div onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${cP.id}'})" class="template-sidebar__category__item__post">
-                                <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#000000" fill-rule="nonzero">
-                                            <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
-                                            <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
-                                            <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
-                                        </g>
-                                        <rect class="color-stroke" id="Rectangle" stroke="#000000" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
-                                    </g>
-                                </svg>
-                                <p class="template-sidebar__category__item__post__text">${cP.title}</p>
-                            </div>
-                        `;
+                              <div onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${cP.id}'})" class="template-sidebar__category__item__post">
+                                 <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                       <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                          <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#000000" fill-rule="nonzero">
+                                             <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
+                                             <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
+                                             <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
+                                          </g>
+                                          <rect class="color-stroke" id="Rectangle" stroke="#000000" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
+                                       </g>
+                                 </svg>
+                                 <p class="template-sidebar__category__item__post__text">${cP.title}</p>
+                              </div>
+                           `;
                } else {
                   const posts = cP.posts.reduce((cPPA, cPP) => {
                      cPPA += `
-                                    <p onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${cPP.id}'})" class="template-sidebar__category__item__post">
-                                        <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                            <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#000000" fill-rule="nonzero">
-                                                    <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
-                                                    <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
-                                                    <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
-                                                </g>
-                                                <rect class="color-stroke" id="Rectangle" stroke="#000000" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
-                                            </g>
-                                        </svg>
-                                        <p class="template-sidebar__category__item__post__text">${cPP.title}</p>
-                                    </p>
-                                `;
+                                       <p onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${cPP.id}'})" class="template-sidebar__category__item__post">
+                                          <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                             <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                   <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#000000" fill-rule="nonzero">
+                                                      <rect id="Rectangle-Copy-2" x="0" y="0" width="9" height="1" rx="0.5"></rect>
+                                                      <rect id="Rectangle-Copy-4" x="0" y="3" width="9" height="1" rx="0.5"></rect>
+                                                      <rect id="Rectangle-Copy-6" x="0" y="6" width="5" height="1" rx="0.5"></rect>
+                                                   </g>
+                                                   <rect class="color-stroke" id="Rectangle" stroke="#000000" fill-rule="nonzero" x="0.5" y="0.5" width="14" height="14" rx="2"></rect>
+                                             </g>
+                                          </svg>
+                                          <p class="template-sidebar__category__item__post__text">${cPP.title}</p>
+                                       </p>
+                                 `;
                      return cPPA;
                   }, "");
                   cPA += `
-                            <div class="template-sidebar__category__item__sub-folder">
-                                <div class="template-sidebar__category__item__sub-folder__title">
-                                    <p class="template-sidebar__category__item__sub-folder__title__text">${cP.title}</p>
-                                    <a  onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
-                                </div>
-                                <div class="template-sidebar-category__item__sub-folder__posts">
-                                    ${posts}    
-                                </div>
-                            </div>
-                            `;
+                              <div class="template-sidebar__category__item__sub-folder">
+                                 <div class="template-sidebar__category__item__sub-folder__title">
+                                       <p class="template-sidebar__category__item__sub-folder__title__text">${cP.title}</p>
+                                       <a  onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
+                                 </div>
+                                 <div class="template-sidebar-category__item__sub-folder__posts">
+                                       ${posts}    
+                                 </div>
+                              </div>
+                              `;
                }
                return cPA;
             }, "");
             a += `
-                    <div class="template-sidebar__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
-                        <div class="template-sidebar__category__item__title">
-                            <div class="template-sidebar__category__item__title__content">
-                                <i class="fas fa-angle-right template-sidebar__category__item__title__content__icon"></i>
-                                <p class="template-sidebar__category__item__title__content__title">${c.title}</p>
-                            </div>
-                            <p  onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></p>
-                        </div>
-                        <div class="template-sidebar__category__item__content">
-                            ${postsHTML}     
-                        </div>       
-                    </div>
-                    `;
+                     <div class="template-sidebar__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
+                           <div class="template-sidebar__category__item__title">
+                              <div class="template-sidebar__category__item__title__content">
+                                 <i class="fas fa-angle-right template-sidebar__category__item__title__content__icon"></i>
+                                 <p class="template-sidebar__category__item__title__content__title">${c.title}</p>
+                              </div>
+                              <p  onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></p>
+                           </div>
+                           <div class="template-sidebar__category__item__content">
+                              ${postsHTML}     
+                           </div>       
+                     </div>
+                     `;
             return a;
          }, "");
          const html = `
-                    <div class="template-sidebar">
-                        <div class="template-sidebar__content">
-                            <a href="/library" class="template-sidebar__back-button">
-                                <i class="fa-solid fa-angle-left template-sidebar__back-button__icon"></i>
-                                <p class="template-sidebar__back-button__text">Library</p>    
-                            </a>
-                            <a onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')">
-                                <img class="template-sidebar__logo" src="https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png">    
-                            </a>
-                            <p onclick="window.CourseTemplate.coreMethods.actions.navigate('categoriesPage')" class='template-sidebar__titles'>Modules</p>
-                            <div class="template-sidebar__category">
-                                ${sideBarCategories}    
-                            </div>    
-                            <p onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')" class="template-sidebar__image">
-                                <img src="${product?.posterImage}" />    
-                            </p>
-                        </div>
-                        <div class="template-sidebar__toggler">
-                            <i class="fa-solid fa-angle-right open"></i>
-                            <i class="fa-solid fa-xmark close"></i>
-                        </div>
-                    </div>
-                `;
+                     <div class="template-sidebar">
+                           <div class="template-sidebar__content">
+                              <a href="/library" class="template-sidebar__back-button">
+                                 <i class="fa-solid fa-angle-left template-sidebar__back-button__icon"></i>
+                                 <p class="template-sidebar__back-button__text">Library</p>    
+                              </a>
+                              <a onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')">
+                                 <img class="template-sidebar__logo" src="https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png">    
+                              </a>
+                              <p onclick="window.CourseTemplate.coreMethods.actions.navigate('categoriesPage')" class='template-sidebar__titles'>Modules</p>
+                              <div class="template-sidebar__category">
+                                 ${sideBarCategories}    
+                              </div>    
+                              <p onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')" class="template-sidebar__image">
+                                 <img src="${product?.posterImage}" />    
+                              </p>
+                           </div>
+                           <div class="template-sidebar__toggler">
+                              <i class="fa-solid fa-angle-right open"></i>
+                              <i class="fa-solid fa-xmark close"></i>
+                           </div>
+                     </div>
+                  `;
 
          // Finally we will inject the sidebar and attach event listeners for interactivity
          if (document.querySelector(".template-sidebar")) return;
@@ -3212,20 +3212,20 @@ class CourseTemplate {
 
          // Then we will inject the Dashboard HTML and initialize the navigation components
          $rootContainerPage.innerHTML = `
-         <div class='template-container'>
-             <div class="dashboard">
-                     ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
-                     <div class="dashboard__wrapper">
-                         ${this.widgets.communityToggle()}
-                         ${this.widgets.heroBanner()}
-                         <div class="dashboard__categories">
-                             <p class="dashboard__categories__title">Categories</p>
-                             ${this.widgets.categoryGrid(categories)}      
-                         </div>  
-                     </div>
-             </div>
-         </div>
-         `;
+            <div class='template-container'>
+               <div class="dashboard">
+                        ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
+                        <div class="dashboard__wrapper">
+                           ${this.widgets.communityToggle()}
+                           ${this.widgets.heroBanner()}
+                           <div class="dashboard__categories">
+                              <p class="dashboard__categories__title">Categories</p>
+                              ${this.widgets.categoryGrid(categories)}      
+                           </div>  
+                        </div>
+               </div>
+            </div>
+            `;
 
          // Finally we will update the body class to current page
          this.coreMethods.utils.setPageClass("dashboard");
@@ -3271,31 +3271,31 @@ class CourseTemplate {
          const subCategoriesHTML = category?.category?.subCategories?.reduce((a, c) => {
             const posts = generatePosts(c.posts);
             a += `
-            <div class="template-category-post__sub-categories__item">
-                <p class="template-category-post__sub-categories__item__title">${c.title}</p>
-                <div class="template-category-post__sub-categories__item__posts">
-                    ${this.widgets.postGrid(posts)}      
-                </div>  
-            </div>
-            `;
+               <div class="template-category-post__sub-categories__item">
+                  <p class="template-category-post__sub-categories__item__title">${c.title}</p>
+                  <div class="template-category-post__sub-categories__item__posts">
+                     ${this.widgets.postGrid(posts)}      
+                  </div>  
+               </div>
+               `;
             return a;
          }, "");
 
          // Then we will render the Category Page HTML
          $rootContainerPage.innerHTML = `
-         <p class="template-category-post-title">${category?.category?.title}</p>
-         <div class='template-container'>
-             <div class="template-category-post">
-                 <div class="template-category-post__breadcrumbs">${breadCrumbs}</div>
-                 <div class="template-category-post__wrapper">
-                     <div class="template-category-post__posts">
-                         ${this.widgets.postGrid(generatePosts(category?.category?.posts))}      
-                     </div>  
-                     ${subCategoriesHTML}
-                 </div>
-             </div>
-         </div>
-         `;
+            <p class="template-category-post-title">${category?.category?.title}</p>
+            <div class='template-container'>
+               <div class="template-category-post">
+                  <div class="template-category-post__breadcrumbs">${breadCrumbs}</div>
+                  <div class="template-category-post__wrapper">
+                        <div class="template-category-post__posts">
+                           ${this.widgets.postGrid(generatePosts(category?.category?.posts))}      
+                        </div>  
+                        ${subCategoriesHTML}
+                  </div>
+               </div>
+            </div>
+            `;
 
          // Finally we will update the body class to current page
          this.coreMethods.utils.setPageClass("category-posts");
@@ -3328,15 +3328,15 @@ class CourseTemplate {
 
          // Then we will render the Categories List Page
          $rootContainerPage.innerHTML = `
-          <p class="template-categories-title">Categories</p>
-          <div class='template-container'>
-              <div class="template-categories__list">
-                  <div class="template-categories__wrapper">
-                      ${this.widgets.categoryGrid(categories)}      
-                  </div>
-              </div>
-          </div>
-         `;
+            <p class="template-categories-title">Categories</p>
+            <div class='template-container'>
+               <div class="template-categories__list">
+                     <div class="template-categories__wrapper">
+                        ${this.widgets.categoryGrid(categories)}      
+                     </div>
+               </div>
+            </div>
+            `;
 
          // Finally we will update the body class to current page
          this.coreMethods.utils.setPageClass("categories");
@@ -3444,30 +3444,30 @@ class CourseTemplate {
 
             // Finallly we will create the header template
             return `
-            <div class="template-post-page-header">
-                ${downloadsHTML}  
-                ${markAsCompleteButton}
-                ${leftArrowHTML}
-                ${rightArrowHTML}  
-            </div>
-            `;
+               <div class="template-post-page-header">
+                  ${downloadsHTML}  
+                  ${markAsCompleteButton}
+                  ${leftArrowHTML}
+                  ${rightArrowHTML}  
+               </div>
+               `;
          })();
 
          // Then we will render the page and re-attach the scraped elements (video, audio, comments)
          $rootContainerPage.innerHTML = `
-         ${headerHTML}
-         <div class='template-container'>
-             <div class="template-post-page">
-                 <div class="template-post-page__breadcrumbs">${breadCrumbs}</div>
-                 <div class="template-post-page__wrapper">
-                     <p class="template-post-page__title">${currentPost?.title || ""}</p>
-                     <div class="template-post-page__media"></div>    
-                     <div class="template-post-page__description">${currentPost?.description || ""}</div>  
-                     <div class="template-post-page__comments"></div>  
-                 </div>
-             </div>
-         </div>
-         `;
+            ${headerHTML}
+            <div class='template-container'>
+               <div class="template-post-page">
+                  <div class="template-post-page__breadcrumbs">${breadCrumbs}</div>
+                  <div class="template-post-page__wrapper">
+                        <p class="template-post-page__title">${currentPost?.title || ""}</p>
+                        <div class="template-post-page__media"></div>    
+                        <div class="template-post-page__description">${currentPost?.description || ""}</div>  
+                        <div class="template-post-page__comments"></div>  
+                  </div>
+               </div>
+            </div>
+            `;
 
          // Then we will update the body class to current page
          this.coreMethods.utils.setPageClass("post");
@@ -3515,20 +3515,20 @@ class CourseTemplate {
 
          // Then we will render the Categories List Page
          $rootContainer.innerHTML = `
-          <img class="template-hero__image" src="${product?.posterImage}" />
-          ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
-          <div class='template-container'>
-               ${this.widgets.communityToggle()}
-               ${this.widgets.heroBanner(
-                  "Welcome to Template",
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                  "",
-                  "",
-                  "margin-bottom: 15px",
-               )}
-               ${this.widgets.categoryWithPostsDropdown("Course Curriculum", productCategories, completedPosts || [], categoryProgress || [])}
-          </div>
-         `;
+            <img class="template-hero__image" src="${product?.posterImage}" />
+            ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
+            <div class='template-container'>
+                  ${this.widgets.communityToggle()}
+                  ${this.widgets.heroBanner(
+                     "Welcome to Template",
+                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                     "",
+                     "",
+                     "margin-bottom: 15px",
+                  )}
+                  ${this.widgets.categoryWithPostsDropdown("Course Curriculum", productCategories, completedPosts || [], categoryProgress || [])}
+            </div>
+            `;
 
          // Finally we will invoke the necessary initializers
          this.globalInitializers.initNavBar($rootContainer);
@@ -3652,34 +3652,34 @@ class CourseTemplate {
 
             // Finallly we will create the header template
             return `
-            <div class="template-post-page-header">
-                ${downloadsHTML}  
-                ${markAsCompleteButton}
-                ${leftArrowHTML}
-                ${rightArrowHTML}  
-            </div>
-            `;
+               <div class="template-post-page-header">
+                  ${downloadsHTML}  
+                  ${markAsCompleteButton}
+                  ${leftArrowHTML}
+                  ${rightArrowHTML}  
+               </div>
+               `;
          })();
 
          // Then we will render the page and re-attach the scraped elements (video, audio, comments)
          $rootContainer.innerHTML = `
-         ${headerHTML}
-         <div class='template-container'>
-             <div class="template-post-page">
-                 <div class="template-post-page__breadcrumbs">
-                     <a href="/courses/products/${product.id}/categories?source=courses">Dashboard</a>
-                     <span>/ <a href="#">${currentPost.title}</a></span>
-                 </div>
-                 <div class="template-post-page__wrapper">
-                     <p class="template-post-page__title">${currentPost?.title || ""}</p>
-                     <div class="template-post-page__video"></div>    
-                     <div class="template-post-page__audio"></div>
-                     <div class="template-post-page__description">${currentPost?.description || ""}</div>  
-                     <div class="template-post-page__comments"></div>  
-                 </div>
-             </div>
-         </div>
-         `;
+            ${headerHTML}
+            <div class='template-container'>
+               <div class="template-post-page">
+                  <div class="template-post-page__breadcrumbs">
+                        <a href="/courses/products/${product.id}/categories?source=courses">Dashboard</a>
+                        <span>/ <a href="#">${currentPost.title}</a></span>
+                  </div>
+                  <div class="template-post-page__wrapper">
+                        <p class="template-post-page__title">${currentPost?.title || ""}</p>
+                        <div class="template-post-page__video"></div>    
+                        <div class="template-post-page__audio"></div>
+                        <div class="template-post-page__description">${currentPost?.description || ""}</div>  
+                        <div class="template-post-page__comments"></div>  
+                  </div>
+               </div>
+            </div>
+            `;
 
          // Then we will invoke the necessary initializers
          this.globalInitializers.initNavBar($rootContainer);
@@ -3784,23 +3784,30 @@ class CourseTemplate {
             // Finally, we return the button object containing the display text and the constructed URL path for the next lesson.
             return {
                text,
-               link: `/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`,
+               nextPostId: nextPost.id,
             };
          })();
 
          // Then we will generate the html
          const html = `
-                    <div class="template-welcome" ${additionalInlineStyling ? `style='${additionalInlineStyling}'` : ""}>
-                        <div class="template-welcome__left">
-                            <p class="template-welcome__greeting">Welcome back, ${name}</p>
-                            <p class="template-welcome__progress">
-                                <i class="fa-solid fa-desktop template-welcome__progress-icon"></i>
-                                <span>${userProductProgress?.progress || 0}% COMPLETE</span>
-                            </p>
-                        </div>
-                        <a href="${userProductProgress?.progress === 100 ? "#" : bannerButtonLinkAndText.link}" class="template-welcome__button">${bannerButtonLinkAndText.text}</a>    
-                    </div>
-                `;
+                     <div class="template-welcome" ${additionalInlineStyling ? `style='${additionalInlineStyling}'` : ""}>
+                           <div class="template-welcome__left">
+                              <p class="template-welcome__greeting">Welcome back, ${name}</p>
+                              <p class="template-welcome__progress">
+                                 <i class="fa-solid fa-desktop template-welcome__progress-icon"></i>
+                                 <span>${userProductProgress?.progress || 0}% COMPLETE</span>
+                              </p>
+                           </div>
+                           <button 
+                              ${
+                                 userProductProgress?.progress === 100
+                                    ? `onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${nextPostId}'})"`
+                                    : ""
+                              }
+                              class="template-welcome__button">${bannerButtonLinkAndText.text}
+                           </button>    
+                     </div>
+                  `;
 
          // Finally we will return the html
          return html;
@@ -3814,26 +3821,26 @@ class CourseTemplate {
       ) => {
          const defaultEmbed = `<iframe width="560" height="315" src="https://www.youtube.com/embed/-KtdCRntB5I?si=ZMcV0CeJScDXSxwS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
          const defaultParagraph = `
-                    <p>
-                        <strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius non neque ullamcorper rutrum. Integer et malesuada metus. Nulla facilisi. Integer non commodo justo. Nam sed urna sit amet orci placerat vehicula. Nulla quis molestie mauris. Suspendisse mi est, ultrices at scelerisque nec, efficitur in leo. Cras at ultrices justo, ut sollicitudin nisi.</strong><br/>
-                        Ut interdum erat nec lectus euismod sagittis. Nulla semper, massa sed cursus vulputate, nisl sapien placerat diam, ut fermentum turpis sapien sit amet est. Phasellus convallis laoreet congue. Donec congue lobortis ex pellentesque malesuada. Maecenas mattis quis dui a malesuada. Morbi nec laoreet velit, id consequat leo. Maecenas nisi ex, iaculis at enim nec, bibendum vehicula lacus. Donec quis felis nisi. Aliquam cursus enim sit amet consequat eleifend. Aliquam eu sapien sapien. Morbi mollis nisl tellus, vitae bibendum dui interdum et. Vivamus accumsan diam vitae laoreet interdum.    
-                    </p>
-                `;
+                     <p>
+                           <strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius non neque ullamcorper rutrum. Integer et malesuada metus. Nulla facilisi. Integer non commodo justo. Nam sed urna sit amet orci placerat vehicula. Nulla quis molestie mauris. Suspendisse mi est, ultrices at scelerisque nec, efficitur in leo. Cras at ultrices justo, ut sollicitudin nisi.</strong><br/>
+                           Ut interdum erat nec lectus euismod sagittis. Nulla semper, massa sed cursus vulputate, nisl sapien placerat diam, ut fermentum turpis sapien sit amet est. Phasellus convallis laoreet congue. Donec congue lobortis ex pellentesque malesuada. Maecenas mattis quis dui a malesuada. Morbi nec laoreet velit, id consequat leo. Maecenas nisi ex, iaculis at enim nec, bibendum vehicula lacus. Donec quis felis nisi. Aliquam cursus enim sit amet consequat eleifend. Aliquam eu sapien sapien. Morbi mollis nisl tellus, vitae bibendum dui interdum et. Vivamus accumsan diam vitae laoreet interdum.    
+                     </p>
+                  `;
          const html = `
-                    <div class="template-hero" ${additionalInlineStyling ? `style='${additionalInlineStyling}'` : ""}>
-                        <!-- Left Column: Text Content -->
-                        <div class="template-hero__left">
-                            <h1 class="template-hero__title" id="hero-title">${title}</h1>
-                            <span class="template-hero__subtitle" id="hero-subtitle">[${subtitle}]</span>
-                            ${paragraphHTML || defaultParagraph}
-                        </div>
-                        <!-- Right Column: Video Embed -->
-                        <div class="template-hero__right" style="padding-bottom;">
-                            <!-- Add the iframe embed code from your video hosting platform - e.g. YouTube -->
-                            ${defaultEmbed || embedHTML} 
-                        </div>
-                    </div>
-                `;
+                     <div class="template-hero" ${additionalInlineStyling ? `style='${additionalInlineStyling}'` : ""}>
+                           <!-- Left Column: Text Content -->
+                           <div class="template-hero__left">
+                              <h1 class="template-hero__title" id="hero-title">${title}</h1>
+                              <span class="template-hero__subtitle" id="hero-subtitle">[${subtitle}]</span>
+                              ${paragraphHTML || defaultParagraph}
+                           </div>
+                           <!-- Right Column: Video Embed -->
+                           <div class="template-hero__right" style="padding-bottom;">
+                              <!-- Add the iframe embed code from your video hosting platform - e.g. YouTube -->
+                              ${defaultEmbed || embedHTML} 
+                           </div>
+                     </div>
+                  `;
          return html;
       },
       categoryGrid: (categories = []) => {
@@ -3845,30 +3852,30 @@ class CourseTemplate {
          // Then we will generate the category cards
          const categoryCards = categories.reduce((a, c) => {
             a += `
-                        <div onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-categories__card">
-                            <img 
-                                src="${c.thumbnail || window.templateCustomizationSchema.placeholderThumbnail}" 
-                                alt="Thumbnail for ${c.title}" 
-                                class="template-categories__thumbnail"
-                                loading="lazy"
-                                onerror="this.onerror=null; this.src='${window.templateCustomizationSchema.placeholderThumbnail}';"
-                            />
-                            <div class="template-categories__info">
-                                <h5 class="template-categories__title-text">${c.title}</h5>
-                            </div>
-                        </div>
-                    `;
+                           <div onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-categories__card">
+                              <img 
+                                 src="${c.thumbnail || window.templateCustomizationSchema.placeholderThumbnail}" 
+                                 alt="Thumbnail for ${c.title}" 
+                                 class="template-categories__thumbnail"
+                                 loading="lazy"
+                                 onerror="this.onerror=null; this.src='${window.templateCustomizationSchema.placeholderThumbnail}';"
+                              />
+                              <div class="template-categories__info">
+                                 <h5 class="template-categories__title-text">${c.title}</h5>
+                              </div>
+                           </div>
+                     `;
             return a;
          }, "");
 
          // Then we will wrap the cards in the main grid container
          const html = `
-                    <div class="template-categories">
-                        <div class="template-categories__grid" id="category-grid-container">
-                            ${categoryCards}
-                        </div>
-                    </div>
-                `;
+                     <div class="template-categories">
+                           <div class="template-categories__grid" id="category-grid-container">
+                              ${categoryCards}
+                           </div>
+                     </div>
+                  `;
 
          // Finally we will return the html
          return html;
@@ -3882,30 +3889,30 @@ class CourseTemplate {
          // Then we will generate the category cards
          const postCards = posts?.reduce((a, c) => {
             a += `
-                        <div onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${c.id}'})" class="template-post__card">
-                            <img 
-                                src="${c.thumbnail ? `https://cdn.courses.apisystem.tech/${c.thumbnail}` : null || window.templateCustomizationSchema.placeholderThumbnail}" 
-                                alt="Thumbnail for ${c.title}" 
-                                class="template-post__thumbnail"
-                                loading="lazy"
-                                onerror="this.onerror=null; this.src='${window.templateCustomizationSchema.placeholderThumbnail}';"
-                            />
-                            <div class="template-post__info">
-                                <h3 class="template-post__title-text">${c.title}</h3>
-                            </div>
-                        </div>
-                    `;
+                           <div onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${c.id}'})" class="template-post__card">
+                              <img 
+                                 src="${c.thumbnail ? `https://cdn.courses.apisystem.tech/${c.thumbnail}` : null || window.templateCustomizationSchema.placeholderThumbnail}" 
+                                 alt="Thumbnail for ${c.title}" 
+                                 class="template-post__thumbnail"
+                                 loading="lazy"
+                                 onerror="this.onerror=null; this.src='${window.templateCustomizationSchema.placeholderThumbnail}';"
+                              />
+                              <div class="template-post__info">
+                                 <h3 class="template-post__title-text">${c.title}</h3>
+                              </div>
+                           </div>
+                     `;
             return a;
          }, "");
 
          // Then we will wrap the cards in the main grid container
          const html = `
-                    <div class="template-post">
-                        <div class="template-post__grid" id="post-grid-container">
-                            ${postCards}
-                        </div>
-                    </div>
-                `;
+                     <div class="template-post">
+                           <div class="template-post__grid" id="post-grid-container">
+                              ${postCards}
+                           </div>
+                     </div>
+                  `;
 
          // Finally we will return the html
          return html;
@@ -3925,22 +3932,22 @@ class CourseTemplate {
             }
          });
          const html = `
-                    <div class="template-community-container">
-                        <div class="template-community-toggle">
-                            <button 
-                                class="template-community-toggle__button" 
-                                id="community-toggle-button"
-                            >
-                                ${buttonText}
-                            </button>
-                        </div>
-                    
-                        <!-- This is the container that will be toggled by JavaScript -->
-                        <div class="template-community-embed" id="community-embed-area">
-                            ${embedHTML || `<iframe src="/communities/groups"></iframe>`}
-                        </div>
-                    </div>
-                `;
+                     <div class="template-community-container">
+                           <div class="template-community-toggle">
+                              <button 
+                                 class="template-community-toggle__button" 
+                                 id="community-toggle-button"
+                              >
+                                 ${buttonText}
+                              </button>
+                           </div>
+                     
+                           <!-- This is the container that will be toggled by JavaScript -->
+                           <div class="template-community-embed" id="community-embed-area">
+                              ${embedHTML || `<iframe src="/communities/groups"></iframe>`}
+                           </div>
+                     </div>
+                  `;
          return html;
       },
       downloadSelect: (
@@ -3953,26 +3960,26 @@ class CourseTemplate {
       ) => {
          const assetsHTML = items?.reduce((a, c) => {
             a += `
-                <li class="template-downloads__item">
-                       <a href="${c.url}" download>
-                           <i class="fas fa-file-code"></i>
-                           ${c.title}
-                       </a>
-                </li>`;
+                  <li class="template-downloads__item">
+                        <a href="${c.url}" download>
+                              <i class="fas fa-file-code"></i>
+                              ${c.title}
+                        </a>
+                  </li>`;
             return a;
          }, "");
          return `
-                <div id="custom-download" class="template-downloads ${!items?.length ? "disabled" : ""}">
-                    <button id="dropdown-button" onclick="this.parentElement.classList.toggle('active')" class="template-downloads__button" aria-expanded="false" aria-controls="dropdown-menu">
-                        <i class="fas fa-cloud-download-alt text-xl"></i>
-                        <span id="button-label" class="template-downloads__label">Downloads</span>
-                        <i id="dropdown-icon" class="fas fa-chevron-down template-downloads__icon-arrow text-sm"></i>
-                        <ul id="dropdown-menu" class="template-downloads__menu">
-                            ${assetsHTML}
-                        </ul>
-                    </button>
-                </div>
-            `;
+                  <div id="custom-download" class="template-downloads ${!items?.length ? "disabled" : ""}">
+                     <button id="dropdown-button" onclick="this.parentElement.classList.toggle('active')" class="template-downloads__button" aria-expanded="false" aria-controls="dropdown-menu">
+                           <i class="fas fa-cloud-download-alt text-xl"></i>
+                           <span id="button-label" class="template-downloads__label">Downloads</span>
+                           <i id="dropdown-icon" class="fas fa-chevron-down template-downloads__icon-arrow text-sm"></i>
+                           <ul id="dropdown-menu" class="template-downloads__menu">
+                              ${assetsHTML}
+                           </ul>
+                     </button>
+                  </div>
+               `;
       },
       categoryWithPostsDropdown: (
          title = "Syllabus",
@@ -4026,89 +4033,89 @@ class CourseTemplate {
                   : fallbackImage;
                if (!cP?.posts) {
                   cPA += `
-                            <a class="template-cwd__category__item__post" href="/courses/products/${cP.productId}/categories/${cP.categoryId}/posts/${cP.id}?source=courses">
-                                <img class="template-cwd__category__item__post__icon" src="${image}" />
-                                 <div>
-                                   <p class="template-cwd__category__item__post__text">${cP.title}</p>
-                                    <div style="display: flex; align-items: center; gap: 5px;">
-                                       <i class="template-cwd__category__item__post__completed ${!cP.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
-                                       <p class="template-cwd__category__item__post__title">Lesson</p>
+                              <a class="template-cwd__category__item__post" href="/courses/products/${cP.productId}/categories/${cP.categoryId}/posts/${cP.id}?source=courses">
+                                 <img class="template-cwd__category__item__post__icon" src="${image}" />
+                                    <div>
+                                    <p class="template-cwd__category__item__post__text">${cP.title}</p>
+                                       <div style="display: flex; align-items: center; gap: 5px;">
+                                          <i class="template-cwd__category__item__post__completed ${!cP.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                          <p class="template-cwd__category__item__post__title">Lesson</p>
+                                       </div>
                                     </div>
-                                 </div>
-                            </a>
-                        `;
+                              </a>
+                           `;
                } else {
                   const posts = cP.posts.reduce((cPPA, cPP) => {
                      const image = cPP?.posterImage
                         ? `https://cdn.courses.apisystem.tech${cPP.posterImage}`
                         : fallbackImage;
                      cPPA += `
-                                    <a href="/courses/products/${cPP.productId}/categories/${cPP.categoryId}/posts/${cPP.id}?source=courses" class="template-cwd__category__item__post">
-                                        <img src="${image}" class="template-cwd__category__item__post__icon" />
-                                        <div>
-                                          <p class="template-cwd__category__item__post__text">${cPP.title}</p>
-                                          <div style="display: flex; align-items: center; gap: 5px;">
-                                             <i class="template-cwd__category__item__post__completed ${!cPP.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
-                                             <p class="template-cwd__category__item__post__title">Lesson</p>
+                                       <a href="/courses/products/${cPP.productId}/categories/${cPP.categoryId}/posts/${cPP.id}?source=courses" class="template-cwd__category__item__post">
+                                          <img src="${image}" class="template-cwd__category__item__post__icon" />
+                                          <div>
+                                             <p class="template-cwd__category__item__post__text">${cPP.title}</p>
+                                             <div style="display: flex; align-items: center; gap: 5px;">
+                                                <i class="template-cwd__category__item__post__completed ${!cPP.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                                <p class="template-cwd__category__item__post__title">Lesson</p>
+                                             </div>
                                           </div>
-                                        </div>
-                                    </a>
-                                `;
+                                       </a>
+                                 `;
                      return cPPA;
                   }, "");
                   cPA += `
-                            <div class="template-cwd__category__item__sub-folder">
-                                 <div class="template-cwd__category__item__sub-folder__title">
-                                    <div>
-                                       <img class="template-cwd__category__item__sub-folder__title__image" src="${image}" />
-                                       <div class="template-cwd__category__item__sub-folder__title__details">
-                                          <p class="template-cwd__category__item__sub-folder__title__details__name">${cP.title}</p>
-                                          <div style="display: flex; align-items: center; gap: 5px;">
-                                             <i class="template-cwd__category__item__sub-folder__title__details__completed ${!cP?.posts?.every((e) => e?.isCompleted) ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
-                                             <p class="template-cwd__category__item__sub-folder__title__details__title">Category</p>
+                              <div class="template-cwd__category__item__sub-folder">
+                                    <div class="template-cwd__category__item__sub-folder__title">
+                                       <div>
+                                          <img class="template-cwd__category__item__sub-folder__title__image" src="${image}" />
+                                          <div class="template-cwd__category__item__sub-folder__title__details">
+                                             <p class="template-cwd__category__item__sub-folder__title__details__name">${cP.title}</p>
+                                             <div style="display: flex; align-items: center; gap: 5px;">
+                                                <i class="template-cwd__category__item__sub-folder__title__details__completed ${!cP?.posts?.every((e) => e?.isCompleted) ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                                <p class="template-cwd__category__item__sub-folder__title__details__title">Category</p>
+                                             </div>
                                           </div>
                                        </div>
-                                    </div>
-                                    <i class="fas fa-angle-right template-cwd__category__item__sub-folder__title__icon"></i>
-                                </div>
-                                <div class="template-cwd-category__item__sub-folder__posts">
-                                    ${posts}    
-                                </div>
-                            </div>
-                            `;
+                                       <i class="fas fa-angle-right template-cwd__category__item__sub-folder__title__icon"></i>
+                                 </div>
+                                 <div class="template-cwd-category__item__sub-folder__posts">
+                                       ${posts}    
+                                 </div>
+                              </div>
+                              `;
                }
                return cPA;
             }, "");
             a += `
-                    <div class="template-cwd__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
-                        <div class="template-cwd__category__item__title">
-                              <div class="template-cwd__category__item__title__content">
-                                 <img class="template-cwd__category__item__title__content__image" src="${c?.posterImage || fallbackImage}" />
-                                 <div class="template-cwd__category__item__title__content__details">
-                                    <p class="template-cwd__category__item__title__content__details__title">${c.title}</p>
-                                    <div style="display: flex; align-items: center; gap: 5px;">
-                                       <i class="template-cwd__category__item__title__content__details__completed ${!c.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
-                                       <p class="template-cwd__category__item__title__content__details__posts">${c?.posts?.length} Lessons</p>
+                     <div class="template-cwd__category__item" data-category-id="${c.id}" data-category-location="${c.locationId}">
+                           <div class="template-cwd__category__item__title">
+                                 <div class="template-cwd__category__item__title__content">
+                                    <img class="template-cwd__category__item__title__content__image" src="${c?.posterImage || fallbackImage}" />
+                                    <div class="template-cwd__category__item__title__content__details">
+                                       <p class="template-cwd__category__item__title__content__details__title">${c.title}</p>
+                                       <div style="display: flex; align-items: center; gap: 5px;">
+                                          <i class="template-cwd__category__item__title__content__details__completed ${!c.isCompleted ? "fa-regular fa-circle" : "fa-solid fa-circle-check"}"></i>
+                                          <p class="template-cwd__category__item__title__content__details__posts">${c?.posts?.length} Lessons</p>
+                                       </div>
                                     </div>
                                  </div>
-                              </div>
-                              <i class="fas fa-angle-right template-cwd__category__item__title__content__icon"></i>
-                        </div>
-                        <div class="template-cwd__category__item__content">
-                            ${postsHTML}     
-                        </div>       
-                    </div>
-                    `;
+                                 <i class="fas fa-angle-right template-cwd__category__item__title__content__icon"></i>
+                           </div>
+                           <div class="template-cwd__category__item__content">
+                              ${postsHTML}     
+                           </div>       
+                     </div>
+                     `;
             return a;
          }, "");
 
          // Then we will create full html structure
          const html = `
-            <div class="template-cwd">
-               <p class="template-cwd__title" style="display: ${title ? "block" : "none"}">${title}<p>
-               <div class="template-cwd__content">${categoriesHTML}</div>
-            </div>
-         `;
+               <div class="template-cwd">
+                  <p class="template-cwd__title" style="display: ${title ? "block" : "none"}">${title}<p>
+                  <div class="template-cwd__content">${categoriesHTML}</div>
+               </div>
+            `;
 
          // Then we will create the click listener for the dropdowns and post navigation
          setTimeout(() => {

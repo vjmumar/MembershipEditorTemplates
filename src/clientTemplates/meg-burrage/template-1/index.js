@@ -3239,20 +3239,29 @@ class CourseTemplate {
             ".bm-theme-root__container__page",
          );
 
-         // Then we will retrieve the category
-         const category = await this.coreMethods.data.fetchCategory(params?.categoryId);
+         // Then we will retrieve the necessary data
+         const [product, category] = await Promise.allSettled([
+            this.coreMethods.data.fetchProduct(),
+            this.coreMethods.data.fetchCategory(params?.categoryId),
+         ]).then((res) => res.map((e) => e.value));
 
          // Then we will fetch the category data and prepare the breadcrumbs
          const breadCrumbs = await (async () => {
-            // const $el = await this.coreMethods.utils.waitForElement(
-            //    "#product-breadcrumbs, #breadcrumb-container",
-            //    0,
-            // );
-            // $el?.querySelectorAll("a").forEach((e) => {
-            //    e.href = `/courses${e.getAttribute("href")}`;
-            // });
-            // return $el?.innerHTML;
-            return "";
+            const productHTML = `
+               <p onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')">
+                  ${product.title}
+               </p>
+            `;
+            const categoryHTML = (() => {
+               return `
+                  <p onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${category.id}'})">
+                     ${category.title}
+                  </p>
+               `;
+            })();
+            return `
+               ${productHTML}/${categoryHTML}
+            `;
          })();
 
          // Then we will helper function to map posts to our data structure

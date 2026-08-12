@@ -3351,13 +3351,14 @@ class CourseTemplate {
          );
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
-         const [completedPosts, currentPost, categories] = await Promise.allSettled([
+         const [product, completedPosts, currentPost, categories] = await Promise.allSettled([
+            this.coreMethods.data.fetchProduct(),
             this.coreMethods.data.fetchCompletedPosts(),
             this.coreMethods.data.fetchPost(params.postId),
             this.coreMethods.data.fetchCategories(),
          ]).then((res) => res.map((e) => e.value));
 
-         console.log(currentPost);
+         console.log(product,currentPost, categories);
          // Then we will create the bread crumbs
          const breadCrumbs = await (async () => {
             // const $el = await this.coreMethods.utils.waitForElement(

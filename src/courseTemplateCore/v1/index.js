@@ -835,7 +835,7 @@ class CourseTemplateCore {
                      console.warn("Unable to stop iframe media:", error);
                   }
                });
-            }, 0);
+            }, 250);
 
             // Then we will wait for the comments
             const comments = await new Promise((resolve, reject) => {

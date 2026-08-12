@@ -3474,7 +3474,7 @@ class CourseTemplate {
          this.coreMethods.widgets.postPlayer(currentPost, $mediaPostContainer);
 
          // Finally we will retrieve the comments
-         this.coreMethods.utils.extractPostComments({
+         await this.coreMethods.utils.extractPostComments({
             productId: currentPost.productId,
             categoryId: currentPost.categoryId,
             postId: currentPost.id,

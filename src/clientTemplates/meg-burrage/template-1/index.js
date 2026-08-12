@@ -3051,7 +3051,7 @@ class CourseTemplate {
             const postsHTML = c?.posts.reduce((cPA, cP) => {
                if (!cP?.posts) {
                   cPA += `
-                            <dv href="${`/courses/products/${cP?.productId}/categories/${cP?.categoryId}/posts/${cP?.id}`}" class="template-sidebar__category__item__post">
+                            <div onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${cP.id}'})" class="template-sidebar__category__item__post">
                                 <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                         <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#000000" fill-rule="nonzero">
@@ -3063,7 +3063,7 @@ class CourseTemplate {
                                     </g>
                                 </svg>
                                 <p class="template-sidebar__category__item__post__text">${cP.title}</p>
-                            </a>
+                            </div>
                         `;
                } else {
                   const posts = cP.posts.reduce((cPPA, cPP) => {

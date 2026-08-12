@@ -2689,7 +2689,7 @@ class CourseTemplate {
          activeButtonText = "Hide Community Forum",
          embedHTML = "",
       ) => {
-         window.addEventListener("click", (e) => {
+         const handlClick = (e) => {
             const $targetItem = e.target.closest(".template-community-toggle__button");
             if ($targetItem) {
                const $container = $targetItem.closest(".template-community-container");
@@ -2697,6 +2697,10 @@ class CourseTemplate {
                $targetItem.innerText = !isActive ? activeButtonText : buttonText;
                $container.classList?.[isActive ? "remove" : "add"]("active");
             }
+         };
+         window.removeEventListener("click", handlClick);
+         window.addEventListener("click", (e) => {
+            handlClick(e);
          });
          const html = `
                      <div class="template-community-container">

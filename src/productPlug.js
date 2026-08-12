@@ -1,6 +1,5 @@
-(() => {
-  const $currentScript = document.currentScript;
-const client = $currentScript.getAttribute("data-client");
+var $currentScript = document.currentScript;
+var client = $currentScript.getAttribute("data-client");
 if (!window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID) {
   window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID = client;
   if (location.href.includes("membershipeditor=true")) {
@@ -27,4 +26,3 @@ if (!window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID) {
       });
     });
 }
-})();

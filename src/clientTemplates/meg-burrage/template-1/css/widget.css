@@ -552,37 +552,8 @@
    border-radius: 50%;
    outline: 2px solid var(--branding-primary-accent-dark);
 }
-@media (max-width: 1024px) {
-   /* Categories */
-   .template-categories {
-      padding-top: 20px;
-   }
-   .template-categories__grid {
-      grid-template-columns: 1fr;
-   }
-   .template-categories__thumbnail {
-      height: 200px;
-   }
-   .template-categories__title-text {
-      font-size: calc(var(--branding-p-font-size) - 2px);
-   } 
-   
-   /* Post */
-   .template-post {
-      padding-top: 20px;
-   }
-   .template-post__thumbnail {
-      height: 200px;
-   }
-   .template-post__title {
-      font-size: calc(var(--branding-p-font-size) - 2px);
-   }
-   .template-post__grid {
-      grid-template-columns: 1fr;
-   }
-}
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
    /* Welcome */
    .template-welcome {
       padding: 15px;

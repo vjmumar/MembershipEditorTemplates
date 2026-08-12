@@ -917,22 +917,22 @@ class CourseTemplateCore {
             // });
 
             // Finally after one minute we will remove the iframe media
-            setTimeout(() => {
-               clearInterval(stopSoundInterval);
-               iframeDocument.querySelectorAll("video, audio").forEach((media) => {
-                  try {
-                     media.pause();
-                     media.removeAttribute("src");
-                     media
-                        .querySelectorAll("source")
-                        .forEach((source) => source.remove());
-                     media.load();
-                     media.remove();
-                  } catch (error) {
-                     console.warn("Unable to remove iframe media:", error);
-                  }
-               });
-            }, 60000);
+            // setTimeout(() => {
+            //    clearInterval(stopSoundInterval);
+            //    iframeDocument.querySelectorAll("video, audio").forEach((media) => {
+            //       try {
+            //          media.pause();
+            //          media.removeAttribute("src");
+            //          media
+            //             .querySelectorAll("source")
+            //             .forEach((source) => source.remove());
+            //          media.load();
+            //          media.remove();
+            //       } catch (error) {
+            //          console.warn("Unable to remove iframe media:", error);
+            //       }
+            //    });
+            // }, 60000);
 
             return {
                iframe,

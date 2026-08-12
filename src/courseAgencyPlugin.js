@@ -25,11 +25,9 @@
       const cookie = document.cookie
          .split("; ")
          .find((cookie) => cookie.startsWith(`${encodeURIComponent(name)}=`));
-
       if (!cookie) {
          return null;
       }
-
       return decodeURIComponent(cookie.slice(cookie.indexOf("=") + 1));
    };
 
@@ -38,7 +36,6 @@
       return new Promise((res) => {
          const data = (() => {
             let result = {};
-
             const acatToken = getCookie("acat");
             const acatTokenV2 = getCookie("acatv2");
             const acatTokenSessionStorage =
@@ -49,7 +46,6 @@
                window.localStorage.getItem("acat");
             const acatTokenLocalStorageV2 =
                window.localStorage.getItem("acatv2");
-
             const catToken = getCookie("cat");
             const catTokenV2 = getCookie("catv2");
             const catTokenSessionStorage =
@@ -60,7 +56,6 @@
                window.localStorage.getItem("cat");
             const catTokenLocalStorageV2 =
                window.localStorage.getItem("catv2");
-
             const possibleTokens = [
                catTokenV2,
                catToken,
@@ -79,19 +74,16 @@
             for (let i = 0; i < possibleTokens.length; i++) {
                const possibleCurrent = possibleTokens[i];
                let decodedToken = "";
-
                try {
                   decodedToken = window.atob(possibleCurrent);
                } catch (error) {
                   continue;
                }
-
                if (decodedToken.includes("token")) {
                   result = JSON.parse(decodedToken);
                   break;
                }
             }
-
             return result;
          })();
 

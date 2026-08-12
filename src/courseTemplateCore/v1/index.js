@@ -795,14 +795,16 @@ class CourseTemplateCore {
          iframe.className = "bm-post-comments-iframe";
          iframe.width = "1440";
          iframe.height = "1000";
-         iframe.allow = "autoplay 'none'";
          iframe.style.cssText =
             "position:fixed;left:-10000px;top:0;width:1440px;height:1000px;opacity:0;pointer-events:none;border:0;";
          iframe.src = `${location.origin}/courses/products/${productId}/modules/${categoryId}/lessons/${postId}?location_id=${locationId}`;
          $iframeContainer.append(iframe);
+         let stopSoundInterval;
+         let stopSoundTimeout;
+         let followerObserver;
 
          try {
-            // First we will wait for the iframe
+            // Then we will wait for the iframe
             await new Promise((resolve, reject) => {
                const timer = setTimeout(() => {
                   reject(new Error("The comments iframe timed out."));
@@ -823,19 +825,35 @@ class CourseTemplateCore {
             }
 
             // Then we will continuously stop the iframe media
-            const stopSoundInterval = setInterval(() => {
+            stopSoundInterval = setInterval(() => {
                iframeDocument.querySelectorAll("video, audio").forEach((media) => {
                   try {
                      media.muted = true;
                      media.volume = 0;
                      media.pause();
                      media.plyr?.pause();
-                     media.plyr?.destroy();
                   } catch (error) {
                      console.warn("Unable to stop iframe media:", error);
                   }
                });
-            }, 250);
+            }, 0);
+
+            // Then we will move the follower containers to the parent
+            const moveFollowerContainers = () => {
+               iframeDocument
+                  .querySelectorAll(".v-binder-follower-container")
+                  .forEach((container) => {
+                     container.dataset.ghlCommentFollower = "true";
+                     document.body.append(container);
+                  });
+            };
+
+            moveFollowerContainers();
+            followerObserver = new MutationObserver(moveFollowerContainers);
+            followerObserver.observe(iframeDocument.body, {
+               childList: true,
+               subtree: true,
+            });
 
             // Then we will wait for the comments
             const comments = await new Promise((resolve, reject) => {
@@ -903,42 +921,30 @@ class CourseTemplateCore {
             // Then we will move the comments
             $commentsTarget.replaceChildren(comments);
 
-            // Then we will preserve the media elements
-            iframeDocument
-               .querySelectorAll("video, audio")
-               .forEach((media) => iframeDocument.body.append(media));
-
-            // Then we will remove all other iframe elements
-            // const allowedTags = ["VIDEO", "AUDIO", "SCRIPT"];
-            // Array.from(iframeDocument.querySelectorAll("*")).forEach((element) => {
-            //    if (!allowedTags.includes(element.tagName)) {
-            //       element.remove();
-            //    }
-            // });
-
             // Finally after one minute we will remove the iframe media
-            // setTimeout(() => {
-            //    clearInterval(stopSoundInterval);
-            //    iframeDocument.querySelectorAll("video, audio").forEach((media) => {
-            //       try {
-            //          media.pause();
-            //          media.removeAttribute("src");
-            //          media
-            //             .querySelectorAll("source")
-            //             .forEach((source) => source.remove());
-            //          media.load();
-            //          media.remove();
-            //       } catch (error) {
-            //          console.warn("Unable to remove iframe media:", error);
-            //       }
-            //    });
-            // }, 60000);
+            stopSoundTimeout = setTimeout(() => {
+               clearInterval(stopSoundInterval);
+               iframeDocument.querySelectorAll("video, audio").forEach((media) => {
+                  try {
+                     media.pause();
+                     media.remove();
+                  } catch (error) {
+                     console.warn("Unable to remove iframe media:", error);
+                  }
+               });
+            }, 60000);
 
             return {
                iframe,
                comments,
+               followerObserver,
+               stopSoundInterval,
+               stopSoundTimeout,
             };
          } catch (error) {
+            clearInterval(stopSoundInterval);
+            clearTimeout(stopSoundTimeout);
+            followerObserver?.disconnect();
             iframe.remove();
             $commentsTarget.innerHTML = `
          <div class="template-comments-loader template-comments-loader--error">

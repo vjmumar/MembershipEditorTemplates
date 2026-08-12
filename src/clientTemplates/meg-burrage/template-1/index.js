@@ -3121,7 +3121,7 @@ class CourseTemplate {
                                 <i class="fa-solid fa-angle-left template-sidebar__back-button__icon"></i>
                                 <p class="template-sidebar__back-button__text">Library</p>    
                             </a>
-                            <a href="/courses/products/${product.id}">
+                            <a onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')">
                                 <img class="template-sidebar__logo" src="https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png">    
                             </a>
                             <p onclick="window.CourseTemplate.coreMethods.actions.navigate('categoriesPage')" class='template-sidebar__titles'>Modules</p>
@@ -3382,7 +3382,7 @@ class CourseTemplate {
                )?.sequenceNo;
                if (currentPostIndex) {
                   const previousPost = allPosts[currentPostIndex - 1];
-                  return `<a class="template-post-page-header__arrow prev" href="${`/courses/products/${previousPost?.productId}/categories/${previousPost?.categoryId}/posts/${previousPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
+                  return `<p class="template-post-page-header__arrow prev" onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${previousPost?.id}'})"><i class="fas fa-arrow-circle-right"></i></p>`;
                }
                return "";
             })();
@@ -3394,7 +3394,7 @@ class CourseTemplate {
                const canGoToNextPost = currentPostIndex !== lastPostIndex;
                if (canGoToNextPost) {
                   const nextPost = allPosts[currentPostIndex + 1];
-                  return `<a class="template-post-page-header__arrow next" href="${`/courses/products/${nextPost?.productId}/categories/${nextPost?.categoryId}/posts/${nextPost?.id}`}"><i class="fas fa-arrow-circle-right"></i></a>`;
+                  return `<a class="template-post-page-header__arrow next" onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${nextPost?.id}'})"><i class="fas fa-arrow-circle-right"></i></a>`;
                }
                return "";
             })();

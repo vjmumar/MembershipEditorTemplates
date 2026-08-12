@@ -2689,23 +2689,21 @@ class CourseTemplate {
          activeButtonText = "Hide Community Forum",
          embedHTML = "",
       ) => {
-         const handlClick = (e) => {
-            const $targetItem = e.target.closest(".template-community-toggle__button");
-            if ($targetItem) {
-               const $container = $targetItem.closest(".template-community-container");
-               const isActive = $container.classList.contains("active");
-               $targetItem.innerText = !isActive ? activeButtonText : buttonText;
-               $container.classList?.[isActive ? "remove" : "add"]("active");
-            }
-         };
-         window.removeEventListener("click", handlClick);
-         window.addEventListener("click", handlClick);
          const html = `
                      <div class="template-community-container">
                            <div class="template-community-toggle">
                               <button 
                                  class="template-community-toggle__button" 
                                  id="community-toggle-button"
+                                 data-default-text="${buttonText}"
+                                 data-active-text="${activeButtonText}"
+                                 onclick="
+                                    const container = this.closest('.template-community-container');
+                                    container.classList.toggle('active');
+                                    this.innerText = container.classList.contains('active')
+                                       ? this.dataset.activeText
+                                       : this.dataset.defaultText;
+                                 "
                               >
                                  ${buttonText}
                               </button>

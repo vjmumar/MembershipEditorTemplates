@@ -778,7 +778,7 @@ class CourseTemplateCore {
          if (!document.querySelector("#template-comments-loader-styles")) {
             document.head.insertAdjacentHTML(
                "beforeend",
-               `<style id="template-comments-loader-styles">.template-comments-loader{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:120px;color:#667085}.template-comments-loader__spinner{width:22px;height:22px;border:2px solid #e4e7ec;border-top-color:currentColor;border-radius:50%;animation:template-comments-spin .7s linear infinite}.template-comments-loader__text{margin:0}.template-comments-loader--error{color:#d92d20}@keyframes template-comments-spin{to{transform:rotate(360deg)}}</style>`,
+               `<style id="template-comments-loader-styles">.template-comments-loader{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:120px;color:#667085}.template-comments-loader__spinner{width:22px;height:22px;border:2px solid #e4e7ec;border-top-color:currentColor;border-radius:50%;animation:template-comments-spin .7s linear infinite !important}.template-comments-loader__text{margin:0}.template-comments-loader--error{color:#d92d20}@keyframes template-comments-spin{to{transform:rotate(360deg)}}</style>`,
             );
          }
 
@@ -802,7 +802,7 @@ class CourseTemplateCore {
          $iframeContainer.append(iframe);
 
          try {
-            // Then we will wait for the iframe
+            // First we will wait for the iframe
             await new Promise((resolve, reject) => {
                const timer = setTimeout(() => {
                   reject(new Error("The comments iframe timed out."));
@@ -916,9 +916,8 @@ class CourseTemplateCore {
             });
 
             // Finally after one minute we will remove the iframe media
-            const stopSoundTimeout = setTimeout(() => {
+            setTimeout(() => {
                clearInterval(stopSoundInterval);
-
                iframeDocument.querySelectorAll("video, audio").forEach((media) => {
                   try {
                      media.pause();
@@ -937,8 +936,6 @@ class CourseTemplateCore {
             return {
                iframe,
                comments,
-               stopSoundInterval,
-               stopSoundTimeout,
             };
          } catch (error) {
             iframe.remove();

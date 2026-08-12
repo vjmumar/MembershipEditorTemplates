@@ -287,8 +287,7 @@ p {
    color: var(--branding-primary-heading-color, var(--branding-primary-text-color));
    text-wrap: balance;
 }
-.template-post-page__video,
-.template-post-page__audio {
+.template-post-page__media {
    max-width: 75%;
    margin-inline: auto;
 }

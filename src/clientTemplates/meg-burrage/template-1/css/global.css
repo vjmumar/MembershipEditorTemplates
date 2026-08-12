@@ -338,11 +338,11 @@
    }
 
    .bm-theme-root__container {
-
+       max-width: 100% !important;
    }
 
    .bm-theme-root__container__page {
-      max-width: 100%;
+      max-width: 100% !important;
    }
 
    /* Navbar */

@@ -414,6 +414,11 @@ class CourseTemplateCore {
          } else {
             alert(`Sorry Page Not Found! Possible Pages - ${String(pages)}`);
          }
+         window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+         });
          $root.classList.remove("loading");
       },
       markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {

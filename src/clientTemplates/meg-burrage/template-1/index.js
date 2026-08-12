@@ -3305,6 +3305,9 @@ class CourseTemplate {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
+         const $rootContainerPage = document.querySelector(
+            ".bm-theme-root__container__page",
+         );
 
          // Then we will fetch all categories and filter out subcategories
          const categories = await (async () => {
@@ -3324,7 +3327,7 @@ class CourseTemplate {
          })();
 
          // Then we will render the Categories List Page
-         $rootContainer.innerHTML = `
+         $rootContainerPage.innerHTML = `
           <p class="template-categories-title">Categories</p>
           <div class='template-container'>
               <div class="template-categories__list">

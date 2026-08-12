@@ -3351,25 +3351,37 @@ class CourseTemplate {
          );
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
-         const [product, completedPosts, currentPost, categories] = await Promise.allSettled([
-            this.coreMethods.data.fetchProduct(),
-            this.coreMethods.data.fetchCompletedPosts(),
-            this.coreMethods.data.fetchPost(params.postId),
-            this.coreMethods.data.fetchCategories(),
-         ]).then((res) => res.map((e) => e.value));
+         const [product, completedPosts, currentPost, categories] =
+            await Promise.allSettled([
+               this.coreMethods.data.fetchProduct(),
+               this.coreMethods.data.fetchCompletedPosts(),
+               this.coreMethods.data.fetchPost(params.postId),
+               this.coreMethods.data.fetchCategories(),
+            ]).then((res) => res.map((e) => e.value));
 
-         console.log(product,currentPost, categories);
          // Then we will create the bread crumbs
          const breadCrumbs = await (async () => {
-            // const $el = await this.coreMethods.utils.waitForElement(
-            //    "#product-breadcrumbs, #breadcrumb-container",
-            //    0,
-            // );
-            // $el?.querySelectorAll("a").forEach((e) => {
-            //    e.href = `/courses${e.getAttribute("href")}`;
-            // });
-            // return $el?.innerHTML;
-            return "";
+            const productHTML = `
+               <p onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')">
+                  ${product.title}
+               </p>
+            `;
+            const categoryHTML = (() => {
+               const category = categories.find((e) => e.id === currentPost.categoryId);
+               return `
+                  <p onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${category.id}'})">
+                     ${category.title}
+                  </p>
+               `;
+            })();
+            const postHTML = `
+               <p onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${currentPost.id}'})">
+                  ${currentPost.title}
+               </p>
+            `;
+            return `
+               ${productHTML}/${categoryHTML}/${postHTML}
+            `;
          })();
 
          // Then we will build the header HTML including navigation arrows and completion buttons

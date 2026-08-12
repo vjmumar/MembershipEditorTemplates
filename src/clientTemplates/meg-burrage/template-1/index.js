@@ -3051,7 +3051,7 @@ class CourseTemplate {
             const postsHTML = c?.posts.reduce((cPA, cP) => {
                if (!cP?.posts) {
                   cPA += `
-                            <a href="${`/courses/products/${cP?.productId}/categories/${cP?.categoryId}/posts/${cP?.id}`}" class="template-sidebar__category__item__post">
+                            <dv href="${`/courses/products/${cP?.productId}/categories/${cP?.categoryId}/posts/${cP?.id}`}" class="template-sidebar__category__item__post">
                                 <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                         <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#000000" fill-rule="nonzero">
@@ -3068,7 +3068,7 @@ class CourseTemplate {
                } else {
                   const posts = cP.posts.reduce((cPPA, cPP) => {
                      cPPA += `
-                                    <a href="${`/courses/products/${cPP?.productId}/categories/${cPP?.categoryId}/posts/${cPP?.id}`}" class="template-sidebar__category__item__post">
+                                    <p onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${cPP.id}'})" class="template-sidebar__category__item__post">
                                         <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                             <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                 <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#000000" fill-rule="nonzero">
@@ -3080,7 +3080,7 @@ class CourseTemplate {
                                             </g>
                                         </svg>
                                         <p class="template-sidebar__category__item__post__text">${cPP.title}</p>
-                                    </a>
+                                    </p>
                                 `;
                      return cPPA;
                   }, "");
@@ -3088,7 +3088,7 @@ class CourseTemplate {
                             <div class="template-sidebar__category__item__sub-folder">
                                 <div class="template-sidebar__category__item__sub-folder__title">
                                     <p class="template-sidebar__category__item__sub-folder__title__text">${cP.title}</p>
-                                    <a  style="display: ${this.isMobile ? "none" : "flex"}" href="/courses/products/${cP?.productId}/categories/${cP?.id}" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
+                                    <a  onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
                                 </div>
                                 <div class="template-sidebar-category__item__sub-folder__posts">
                                     ${posts}    
@@ -3105,7 +3105,7 @@ class CourseTemplate {
                                 <i class="fas fa-angle-right template-sidebar__category__item__title__content__icon"></i>
                                 <p class="template-sidebar__category__item__title__content__title">${c.title}</p>
                             </div>
-                            <a  style="display: ${this.isMobile ? "none" : "flex"}" href="/courses/products/${c?.productId}/categories/${c?.id}" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></a>
+                            <p  onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></p>
                         </div>
                         <div class="template-sidebar__category__item__content">
                             ${postsHTML}     
@@ -3124,13 +3124,13 @@ class CourseTemplate {
                             <a href="/courses/products/${product.id}">
                                 <img class="template-sidebar__logo" src="https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png">    
                             </a>
-                            <a href="${this.isMobile ? "#" : `/courses/products/${product.id}/categories`}" class='template-sidebar__titles'>Modules</a>
+                            <p onclick="window.CourseTemplate.coreMethods.actions.navigate('categoriesPage')" class='template-sidebar__titles'>Modules</p>
                             <div class="template-sidebar__category">
                                 ${sideBarCategories}    
                             </div>    
-                            <a class="template-sidebar__image" href="#">
+                            <p onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')" class="template-sidebar__image">
                                 <img src="${product?.posterImage}" />    
-                            </a>
+                            </p>
                         </div>
                         <div class="template-sidebar__toggler">
                             <i class="fa-solid fa-angle-right open"></i>
@@ -3478,7 +3478,7 @@ class CourseTemplate {
             productId: currentPost.productId,
             categoryId: currentPost.categoryId,
             postId: currentPost.id,
-            locationId: currentPost.locaationId,
+            locationId: currentPost.locationId,
             iframeContainer: ".bm-theme-root__container__page",
             commentsTarget: ".template-post-page__comments",
             timeout: 30000,

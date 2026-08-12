@@ -135,7 +135,6 @@
       });
    };
 
-   alert("helllo world")
    // Then we will check if the url includes bm_theme_not_load, if it includes then we will not proceed
    if (location.href.includes("bm_theme_not_load=true")) return;
 
@@ -145,8 +144,10 @@
    // Then we will retrieve the client
    const client = product.customHeader?.match(/data-client=["']([^"']+)["']/i)?.[1];
 
-   // Then we will check if it is an old theme
-   const isOldTheme = document.querySelector(".cp-root-shell");
+   // Then we will check if it is an new client portal
+   const isNewClientPortal = document.querySelector(".cp-root-shell");
+
+   console.log("hello", isNewClientPortal)
 
    // Then we will check first if root already exist, if does then we will not proceed
    if (
@@ -172,7 +173,7 @@
          );
 
          // Finally we will remove the original Nuxt application if it is an old theme, else remove the app
-         if (isOldTheme) {
+         if (isNewClientPortal) {
             const $nuxt = document.querySelector("#__nuxt");
             $nuxt.remove();
          } else {
@@ -191,7 +192,7 @@
          );
 
          // Then if it is an old theme then we will insert the css and js
-         if (isOldTheme) {
+         if (isNewClientPortal) {
             const $styleTag = document.querySelector("style");
             const $scriptTag = document.createElement("script");
             $scriptTag.innerHTML = product.customJs;

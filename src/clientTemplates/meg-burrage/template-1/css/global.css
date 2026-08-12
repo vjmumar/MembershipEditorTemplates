@@ -2,6 +2,10 @@
    font-family: var(--branding-body-font-family), sans-serif;
 } 
 
+*[onclick] {
+   cursor: pointer;
+}
+
 /* Root Container */
 .bm-theme-root {
    position: relative;

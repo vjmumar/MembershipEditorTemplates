@@ -1,20 +1,218 @@
 (async () => {
-   // First we will retrieve the product ID from the URL
-   const getCurrentProductId = () => {
-      return location.pathname
-         .match(/\/courses\/products\/([^/?#]+)/)?.[1] || null;
+   // First we will create a function that is responsible for fetching data
+   const relayUrlFetch = async (urls, options) => {
+      let lastError;
+      for (const url of urls) {
+         try {
+            const response = await fetch(url, options);
+            if (response.ok) {
+               return response;
+            }
+            lastError = new Error(
+               `Fetch failed: ${response.status} ${response.statusText}`,
+            );
+            console.warn(`Failed, trying next URL: ${url}`, lastError);
+         } catch (error) {
+            lastError = error;
+            console.warn(`Fetch error, trying next URL: ${url}`, error);
+         }
+      }
+      throw lastError;
    };
 
-   // Then we will initialize the course theme
+   // Then we will create a utility function to retrieve the cookie value
+   const getCookie = (name = "") => {
+      const cookie = document.cookie
+         .split("; ")
+         .find((cookie) => cookie.startsWith(`${encodeURIComponent(name)}=`));
+
+      if (!cookie) {
+         return null;
+      }
+
+      return decodeURIComponent(cookie.slice(cookie.indexOf("=") + 1));
+   };
+
+   // Then we will create a function that is responsible for retrieving auth
+   const getAuth = async () => {
+      return new Promise((res) => {
+         const data = (() => {
+            let result = {};
+
+            const acatToken = getCookie("acat");
+            const acatTokenV2 = getCookie("acatv2");
+            const acatTokenSessionStorage =
+               window.sessionStorage.getItem("acat");
+            const acatTokenSessionStorageV2 =
+               window.sessionStorage.getItem("acatv2");
+            const acatTokenLocalStorage =
+               window.localStorage.getItem("acat");
+            const acatTokenLocalStorageV2 =
+               window.localStorage.getItem("acatv2");
+
+            const catToken = getCookie("cat");
+            const catTokenV2 = getCookie("catv2");
+            const catTokenSessionStorage =
+               window.sessionStorage.getItem("cat");
+            const catTokenSessionStorageV2 =
+               window.sessionStorage.getItem("catv2");
+            const catTokenLocalStorage =
+               window.localStorage.getItem("cat");
+            const catTokenLocalStorageV2 =
+               window.localStorage.getItem("catv2");
+
+            const possibleTokens = [
+               catTokenV2,
+               catToken,
+               acatToken,
+               acatTokenV2,
+               catTokenSessionStorage,
+               catTokenSessionStorageV2,
+               acatTokenSessionStorage,
+               acatTokenLocalStorage,
+               acatTokenSessionStorageV2,
+               acatTokenLocalStorageV2,
+               catTokenLocalStorageV2,
+               catTokenLocalStorage,
+            ];
+
+            for (let i = 0; i < possibleTokens.length; i++) {
+               const possibleCurrent = possibleTokens[i];
+               let decodedToken = "";
+
+               try {
+                  decodedToken = window.atob(possibleCurrent);
+               } catch (error) {
+                  continue;
+               }
+
+               if (decodedToken.includes("token")) {
+                  result = JSON.parse(decodedToken);
+                  break;
+               }
+            }
+
+            return result;
+         })();
+
+         if (!("productId" in data)) {
+            data.productId = location.pathname
+               .match(/\/courses\/products\/([^/?#]+)/)?.[1];
+         }
+
+         if (!("tokenId" in data)) {
+            data.tokenId = data.token;
+         }
+
+         res(data);
+      });
+   };
+
+   // Then we will create a function that retrieves the current product ID
+   const getCurrentProductId = () => {
+      return (
+         location.pathname
+            .match(/\/courses\/products\/([^/?#]+)/)?.[1] || null
+      );
+   };
+
+   // Then we will create a function that is responsible for retrieving the product
+   const fetchProduct = async (currentProductId = "") => {
+      const auth = await getAuth();
+      const productId = currentProductId || auth?.productId;
+      const locationId = auth?.locationId;
+      const token = auth?.tokenId;
+      const storageName = `${productId}-product`;
+
+      return await new Promise((resolve) => {
+         const urls = [
+            `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/products/${productId}`,
+            `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/${productId}`,
+         ];
+
+         if (!token || !productId) {
+            console.log("No Token or Product Found!");
+            resolve({});
+            return;
+         }
+
+         relayUrlFetch(urls, {
+            headers: {
+               accept: "application/json, text/plain, */*",
+               "accept-language": "en-US,en;q=0.6",
+               authorization: `Bearer ${token}`,
+               channel: "APP",
+               source: "PORTAL_USER",
+               "x-product-id": productId,
+               version: "2021-07-28",
+            },
+            body: null,
+            method: "GET",
+            priority: "high",
+         })
+            .then((response) => response.json())
+            .then((product) => {
+               sessionStorage.setItem(
+                  storageName,
+                  JSON.stringify(product),
+               );
+               resolve(product);
+            })
+            .catch(() => {
+               resolve(
+                  JSON.parse(
+                     sessionStorage.getItem(storageName) || "{}",
+                  ),
+               );
+            });
+      });
+   };
+
+   // Then we will create a function that restores the original application
+   const restoreOriginalApplication = () => {
+      const $nuxt = document.querySelector("#__nuxt");
+      const $app = document.querySelector("#app");
+
+      if ($nuxt) {
+         $nuxt.style.display = "";
+         $nuxt.style.visibility = "";
+      }
+
+      if ($app) {
+         $app.style.display = "";
+         $app.style.visibility = "";
+      }
+   };
+
+   // Then we will create a function that removes the current theme
+   const removeCourseTheme = () => {
+      document.querySelector(".bm-theme-root")?.remove();
+      document.querySelector(".bm-editor-root")?.remove();
+
+      document
+         .querySelectorAll('[data-bm-product-plug="true"]')
+         .forEach((script) => script.remove());
+
+      document.body.classList.remove("theme-ready");
+      document.body.removeAttribute("data-bm-theme-page");
+
+      restoreOriginalApplication();
+   };
+
+   // Then we will create a function that initializes the course theme
    const initializeCourseTheme = async () => {
       // First we will retrieve the product ID
       const productId = getCurrentProductId();
 
-      // Then we will check if the current page is a product
-      if (
-         !productId ||
-         location.href.includes("bm_theme_not_load=true")
-      ) {
+      // Then we will stop if the current page is not a product
+      if (!productId) {
+         removeCourseTheme();
+         return;
+      }
+
+      // Then we will check if the theme should not load
+      if (location.href.includes("bm_theme_not_load=true")) {
+         removeCourseTheme();
          return;
       }
 
@@ -29,21 +227,22 @@
       // Then we will retrieve the product
       const product = await fetchProduct(productId);
 
+      // Then we will check if the route changed while fetching
+      if (getCurrentProductId() !== productId) {
+         return;
+      }
+
       // Then we will retrieve the client
       const client = product?.customHeader
          ?.match(/data-client=["']([^"']+)["']/i)?.[1];
 
       // Then we will stop if the product does not use our theme
       if (!client) {
+         restoreOriginalApplication();
          return;
       }
 
-      // Then we will check if the user is still viewing the same product
-      if (getCurrentProductId() !== productId) {
-         return;
-      }
-
-      // Then we will retrieve the current client portal
+      // Then we will check if it is a new client portal
       const isNewClientPortal =
          document.querySelector(".cp-root-shell");
 
@@ -54,19 +253,22 @@
       script.setAttribute("data-client", client);
       script.setAttribute("data-bm-product-plug", "true");
 
-      // Then we will initialize the editor or theme
+      // Then we will check if the membership editor is enabled
       if (location.href.includes("membershipeditor=true")) {
+         // First we will create the editor root
          document.body.insertAdjacentHTML(
             "afterbegin",
             `<div class="bm-editor-root"></div>`,
          );
 
+         // Finally we will remove the original application
          if (isNewClientPortal) {
             document.querySelector("#__nuxt")?.remove();
          } else {
             document.querySelector("#app")?.remove();
          }
       } else {
+         // Otherwise we will create the theme root
          document.body.insertAdjacentHTML(
             "afterbegin",
             `<div class="bm-theme-root loading">
@@ -76,27 +278,49 @@
             </div>`,
          );
 
-         const $originalApp = isNewClientPortal
-            ? document.querySelector("#__nuxt")
-            : document.querySelector("#app");
+         // Then if it is a new client portal we will insert the CSS and JS
+         if (isNewClientPortal) {
+            const $styleTag = document.querySelector("style");
 
-         if ($originalApp) {
-            $originalApp.style.display = "none";
-            $originalApp.style.visibility = "hidden";
+            if (product?.customJs) {
+               const $scriptTag = document.createElement("script");
+               $scriptTag.innerHTML = product.customJs;
+               document.body.append($scriptTag);
+            }
+
+            if ($styleTag && product?.customCss) {
+               $styleTag.innerHTML = product.customCss;
+            }
+
+            // Then we will hide the original Nuxt application
+            const $nuxt = document.querySelector("#__nuxt");
+
+            if ($nuxt) {
+               $nuxt.style.display = "none";
+               $nuxt.style.visibility = "hidden";
+            }
+         } else {
+            // Then we will hide the original application
+            const $app = document.querySelector("#app");
+
+            if ($app) {
+               $app.style.display = "none";
+               $app.style.visibility = "hidden";
+            }
          }
       }
 
       // Then we will mark the theme as ready
       document.body.classList.add("theme-ready");
 
-      // Finally we will load the product script
+      // Finally we will load the client script
       document.head.append(script);
    };
 
    // Then we will initialize the current route
    await initializeCourseTheme();
 
-   // Finally we will observe SPA navigation
+   // Finally we will observe SPA URL changes
    let previousURL = location.href;
 
    const routeObserver = new MutationObserver(() => {
@@ -117,6 +341,12 @@
    });
 
    window.addEventListener("popstate", () => {
+      if (previousURL === location.href) {
+         return;
+      }
+
+      previousURL = location.href;
+
       setTimeout(() => {
          initializeCourseTheme();
       }, 100);

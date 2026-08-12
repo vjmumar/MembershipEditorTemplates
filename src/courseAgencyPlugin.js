@@ -135,6 +135,7 @@
       });
    };
 
+   alert("helllo world")
    // Then we will check if the url includes bm_theme_not_load, if it includes then we will not proceed
    if (location.href.includes("bm_theme_not_load=true")) return;
 

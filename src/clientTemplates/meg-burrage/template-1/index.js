@@ -2336,7 +2336,7 @@ class CourseTemplate {
                this.coreMethods.data.fetchPost(params.postId),
                this.coreMethods.data.fetchCategories(),
             ]).then((res) => res.map((e) => e.value));
-            console.log(currentPost)
+         console.log(currentPost);
 
          // Then we will create the bread crumbs
          const breadCrumbs = await (async () => {

@@ -2086,10 +2086,11 @@
           })();
 
           // Then, we select the default page editor configuration based on the device type (Desktop or Mobile).
-          this.activePageOnTemplate =
-            this.activeTemplate?.[
-              this.isDesktop ? "pages" : "mobilePages"
-            ][0]?.editor;
+          // this.activePageOnTemplate =
+          //   this.activeTemplate?.[
+          //     this.isDesktop ? "pages" : "mobilePages"
+          //   ][0]?.editor;
+           this.activePageOnTemplate = this.activeTemplate?.["pages"][0]?.editor;
 
           // Then we will sync the template customization schema to the global scope
           window.templateCustomizationSchema = this.activeTemplate;

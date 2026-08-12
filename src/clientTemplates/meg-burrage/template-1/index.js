@@ -2711,7 +2711,7 @@ class CourseTemplate {
                      
                            <!-- This is the container that will be toggled by JavaScript -->
                            <div class="template-community-embed" id="community-embed-area">
-                              ${embedHTML || `<iframe src="/communities/groups"></iframe>`}
+                              ${embedHTML || `<iframe src="/communities"></iframe>`}
                            </div>
                      </div>
                   `;

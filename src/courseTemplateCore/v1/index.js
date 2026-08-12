@@ -774,12 +774,27 @@ class CourseTemplateCore {
             throw new Error("The iframe container or comments target was not found.");
          }
 
+         // Then we will insert the comments loader styles
+         if (!document.querySelector("#template-comments-loader-styles")) {
+            document.head.insertAdjacentHTML(
+               "beforeend",
+               `<style id="template-comments-loader-styles">.template-comments-loader{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:120px;color:#667085}.template-comments-loader__spinner{width:22px;height:22px;border:2px solid #e4e7ec;border-top-color:currentColor;border-radius:50%;animation:template-comments-spin .7s linear infinite}.template-comments-loader__text{margin:0}.template-comments-loader--error{color:#d92d20}@keyframes template-comments-spin{to{transform:rotate(360deg)}}</style>`,
+            );
+         }
+
+         // Then we will add the comments loader
+         $commentsTarget.innerHTML = `
+            <div class="template-comments-loader">
+               <div class="template-comments-loader__spinner"></div>
+               <p class="template-comments-loader__text">Loading comments...</p>
+            </div>
+         `;
+
          // Then we will create the iframe
          const iframe = document.createElement("iframe");
          iframe.className = "bm-post-comments-iframe";
          iframe.width = "1440";
          iframe.height = "1000";
-         iframe.allow = "autoplay 'none'";
          iframe.style.cssText = `
             position: fixed;
             left: -10000px;
@@ -798,145 +813,119 @@ class CourseTemplateCore {
          ].join("");
          $iframeContainer.append(iframe);
 
-         // Then we will wait for the iframe
-         await new Promise((resolve, reject) => {
-            const timer = setTimeout(() => {
-               reject(new Error("The comments iframe timed out."));
-            }, timeout);
-            iframe.onload = () => {
-               clearTimeout(timer);
-               resolve();
-            };
-            iframe.onerror = reject;
-         });
-         const iframeWindow = iframe.contentWindow;
-         const iframeDocument = iframe.contentDocument;
-         if (!iframeWindow || !iframeDocument) {
-            throw new Error("Unable to access the comments iframe.");
-         }
+         try {
+            // Then we will wait for the iframe
+            await new Promise((resolve, reject) => {
+               const timer = setTimeout(() => {
+                  reject(new Error("The comments iframe timed out."));
+               }, timeout);
+               iframe.onload = () => {
+                  clearTimeout(timer);
+                  resolve();
+               };
+               iframe.onerror = () => {
+                  clearTimeout(timer);
+                  reject(new Error("The comments iframe failed to load."));
+               };
+            });
 
-         // Then we will stop all iframe media
-         const stopMedia = () => {
+            const iframeDocument = iframe.contentDocument;
+            if (!iframeDocument) {
+               throw new Error("Unable to access the comments iframe.");
+            }
+
+            // Then we will wait for the comments
+            const comments = await new Promise((resolve, reject) => {
+               const startedAt = Date.now();
+               const interval = setInterval(() => {
+                  const heading = Array.from(iframeDocument.querySelectorAll("div")).find(
+                     (element) => {
+                        return (
+                           element.textContent?.trim() === "Comments" &&
+                           element.children.length === 0
+                        );
+                     },
+                  );
+                  const wrapper =
+                     heading?.closest(".w-full.bg-white.mt-5.px-10.pb-10") ||
+                     heading?.closest(".w-full.bg-white");
+
+                  if (wrapper) {
+                     clearInterval(interval);
+                     resolve(wrapper);
+                     return;
+                  }
+
+                  if (Date.now() - startedAt >= timeout) {
+                     clearInterval(interval);
+                     reject(new Error("The comments were not found."));
+                  }
+               }, 100);
+            });
+
+            // Then we will copy the stylesheet links
+            iframeDocument
+               .querySelectorAll('link[rel="stylesheet"][href]')
+               .forEach((source) => {
+                  const exists = Array.from(
+                     document.querySelectorAll('link[rel="stylesheet"][href]'),
+                  ).some((link) => link.href === source.href);
+
+                  if (exists) return;
+
+                  const link = document.createElement("link");
+                  link.rel = "stylesheet";
+                  link.href = source.href;
+                  link.dataset.ghlCommentsStyle = "true";
+                  document.head.append(link);
+               });
+
+            // Then we will copy the inline styles
+            iframeDocument.querySelectorAll("style").forEach((source) => {
+               const content = source.textContent || "";
+               if (!content.trim()) return;
+
+               const exists = Array.from(
+                  document.querySelectorAll("style[data-ghl-comments-style]"),
+               ).some((style) => style.textContent === content);
+
+               if (exists) return;
+
+               const style = document.createElement("style");
+               style.dataset.ghlCommentsStyle = "true";
+               style.textContent = content;
+               document.head.append(style);
+            });
+
+            // Then we will move the comments
+            $commentsTarget.replaceChildren(comments);
+
+            // Then we will destroy the iframe media players
             iframeDocument.querySelectorAll("video, audio").forEach((media) => {
                try {
-                  media.pause();
-                  media.muted = true;
-                  media.defaultMuted = true;
-                  media.volume = 0;
-                  media.autoplay = false;
-                  media.srcObject = null;
-                  media.removeAttribute("src");
-                  media.removeAttribute("autoplay");
-                  media.querySelectorAll("source, track").forEach((source) => {
-                     source.removeAttribute("src");
-                  });
-                  media.load();
+                  media.plyr?.destroy();
                } catch (error) {
-                  console.warn("Unable to stop iframe media:", error);
+                  console.warn("Unable to destroy media player:", error);
                }
             });
-         };
-         stopMedia();
-         iframeDocument.addEventListener(
-            "play",
-            (event) => {
-               if (event.target?.matches?.("video, audio")) {
-                  event.target.pause();
-                  event.target.muted = true;
-                  event.target.volume = 0;
-               }
-            },
-            true,
-         );
-         const mediaObserver = new iframeWindow.MutationObserver(stopMedia);
-         mediaObserver.observe(iframeDocument.documentElement, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ["src", "autoplay"],
-         });
 
-         // Then we will wait for the comments
-         const comments = await new Promise((resolve, reject) => {
-            const startedAt = Date.now();
-            const interval = setInterval(() => {
-               stopMedia();
-               const heading = Array.from(iframeDocument.querySelectorAll("div")).find(
-                  (element) => {
-                     return (
-                        element.textContent?.trim() === "Comments" &&
-                        element.children.length === 0
-                     );
-                  },
-               );
-               const wrapper =
-                  heading?.closest(".w-full.bg-white.mt-5.px-10.pb-10") ||
-                  heading?.closest(".w-full.bg-white");
-               if (wrapper) {
-                  clearInterval(interval);
-                  resolve(wrapper);
-                  return;
+            // Finally we will remove unnecessary iframe elements
+            Array.from(iframeDocument.body.children).forEach((element) => {
+               if (!element.matches("script, link, style")) {
+                  element.remove();
                }
-               if (Date.now() - startedAt >= timeout) {
-                  clearInterval(interval);
-                  reject(new Error("The comments were not found."));
-               }
-            }, 100);
-         });
-
-         // Then we will copy the stylesheet links
-         iframeDocument
-            .querySelectorAll('link[rel="stylesheet"][href]')
-            .forEach((source) => {
-               const alreadyLoaded = Array.from(
-                  document.querySelectorAll('link[rel="stylesheet"][href]'),
-               ).some((link) => link.href === source.href);
-               if (alreadyLoaded) {
-                  return;
-               }
-               const link = document.createElement("link");
-               link.rel = "stylesheet";
-               link.href = source.href;
-               link.dataset.ghlCommentsStyle = "true";
-               document.head.append(link);
             });
 
-         // Then we will copy the inline styles
-         iframeDocument.querySelectorAll("style").forEach((source) => {
-            const content = source.textContent || "";
-            if (!content.trim()) {
-               return;
-            }
-            const alreadyLoaded = Array.from(
-               document.querySelectorAll("style[data-ghl-comments-style]"),
-            ).some((style) => style.textContent === content);
-            if (alreadyLoaded) {
-               return;
-            }
-            const style = document.createElement("style");
-            style.dataset.ghlCommentsStyle = "true";
-            style.textContent = content;
-            document.head.append(style);
-         });
-
-         // Then we will append the comments
-         $commentsTarget.replaceChildren(comments);
-
-         // Then we will stop media before removing the iframe content
-         stopMedia();
-         Array.from(iframeDocument.body.children).forEach((element) => {
-            if (!element.matches("script, link, style")) {
-               element.remove();
-            }
-         });
-         stopMedia();
-
-         // Finally we will return the comments instance
-         return {
-            iframe,
-            comments,
-            mediaObserver,
-         };
+            return { iframe, comments };
+         } catch (error) {
+            iframe.remove();
+            $commentsTarget.innerHTML = `
+         <div class="template-comments-loader template-comments-loader--error">
+            Unable to load comments.
+         </div>
+      `;
+            throw error;
+         }
       },
    };
 }

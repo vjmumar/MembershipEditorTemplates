@@ -491,7 +491,11 @@ class CourseTemplateCore {
          // First we will retrieve the assets
          const assets = post?.asset_urls || {};
          const assetType = assets?.assetType || post?.contentType;
-         const assetURL = assets?.url || post?.audio?.url || post?.video?.url;
+         const assetURL =
+            post?.asset_urls?.url ||
+            (post?.audio?.url
+               ? `https://cdn.courses.apisystem.tech${post.audio.url}`
+               : "");
          const absoluteAssetURL = assetURL ? new URL(assetURL, location.origin).href : "";
 
          // Then we will check if asset is valid

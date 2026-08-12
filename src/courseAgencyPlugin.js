@@ -143,7 +143,6 @@
 
    // Then we will retrieve the client
    const client = product.customHeader?.match(/data-client=["']([^"']+)["']/i)?.[1];
-   console.log(client, product)
 
    // Then we will check if it is an new client portal
    const isNewClientPortal = document.querySelector(".cp-root-shell");

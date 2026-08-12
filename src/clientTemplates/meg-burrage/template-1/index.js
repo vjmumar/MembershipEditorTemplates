@@ -3394,7 +3394,7 @@ class CourseTemplate {
                const canGoToNextPost = currentPostIndex !== lastPostIndex;
                if (canGoToNextPost) {
                   const nextPost = allPosts[currentPostIndex + 1];
-                  return `<a class="template-post-page-header__arrow next" onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${nextPost?.id}'})"><i class="fas fa-arrow-circle-right"></i></a>`;
+                  return `<p class="template-post-page-header__arrow next" onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${nextPost?.id}'})"><i class="fas fa-arrow-circle-right"></i></p>`;
                }
                return "";
             })();

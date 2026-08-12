@@ -779,6 +779,7 @@ class CourseTemplateCore {
          iframe.className = "bm-post-comments-iframe";
          iframe.width = "1440";
          iframe.height = "1000";
+         iframe.allow = "autoplay 'none'";
          iframe.style.cssText = `
             position: fixed;
             left: -10000px;
@@ -795,7 +796,6 @@ class CourseTemplateCore {
             `/lessons/${postId}`,
             `?location_id=${locationId}`,
          ].join("");
-
          $iframeContainer.append(iframe);
 
          // Then we will wait for the iframe
@@ -803,12 +803,10 @@ class CourseTemplateCore {
             const timer = setTimeout(() => {
                reject(new Error("The comments iframe timed out."));
             }, timeout);
-
             iframe.onload = () => {
                clearTimeout(timer);
                resolve();
             };
-
             iframe.onerror = reject;
          });
          const iframeWindow = iframe.contentWindow;
@@ -817,47 +815,52 @@ class CourseTemplateCore {
             throw new Error("Unable to access the comments iframe.");
          }
 
-         // Then we will keep iframe media muted
-         const muteMedia = () => {
+         // Then we will stop all iframe media
+         const stopMedia = () => {
             iframeDocument.querySelectorAll("video, audio").forEach((media) => {
                try {
+                  media.pause();
                   media.muted = true;
                   media.defaultMuted = true;
                   media.volume = 0;
                   media.autoplay = false;
+                  media.srcObject = null;
+                  media.removeAttribute("src");
                   media.removeAttribute("autoplay");
-                  if (!media.paused) {
-                     media.pause();
-                  }
+                  media.querySelectorAll("source, track").forEach((source) => {
+                     source.removeAttribute("src");
+                  });
+                  media.load();
                } catch (error) {
-                  console.warn("Unable to mute iframe media:", error);
+                  console.warn("Unable to stop iframe media:", error);
                }
             });
          };
-         muteMedia();
-
-         // Then we will prevent iframe media playback
+         stopMedia();
          iframeDocument.addEventListener(
             "play",
             (event) => {
                if (event.target?.matches?.("video, audio")) {
+                  event.target.pause();
                   event.target.muted = true;
                   event.target.volume = 0;
-                  event.target.pause();
                }
             },
             true,
          );
-         const mediaObserver = new iframeWindow.MutationObserver(muteMedia);
+         const mediaObserver = new iframeWindow.MutationObserver(stopMedia);
          mediaObserver.observe(iframeDocument.documentElement, {
             childList: true,
             subtree: true,
+            attributes: true,
+            attributeFilter: ["src", "autoplay"],
          });
 
          // Then we will wait for the comments
          const comments = await new Promise((resolve, reject) => {
             const startedAt = Date.now();
             const interval = setInterval(() => {
+               stopMedia();
                const heading = Array.from(iframeDocument.querySelectorAll("div")).find(
                   (element) => {
                      return (
@@ -876,7 +879,6 @@ class CourseTemplateCore {
                }
                if (Date.now() - startedAt >= timeout) {
                   clearInterval(interval);
-
                   reject(new Error("The comments were not found."));
                }
             }, 100);
@@ -888,10 +890,7 @@ class CourseTemplateCore {
             .forEach((source) => {
                const alreadyLoaded = Array.from(
                   document.querySelectorAll('link[rel="stylesheet"][href]'),
-               ).some((link) => {
-                  return link.href === source.href;
-               });
-
+               ).some((link) => link.href === source.href);
                if (alreadyLoaded) {
                   return;
                }
@@ -910,9 +909,7 @@ class CourseTemplateCore {
             }
             const alreadyLoaded = Array.from(
                document.querySelectorAll("style[data-ghl-comments-style]"),
-            ).some((style) => {
-               return style.textContent === content;
-            });
+            ).some((style) => style.textContent === content);
             if (alreadyLoaded) {
                return;
             }
@@ -925,12 +922,14 @@ class CourseTemplateCore {
          // Then we will append the comments
          $commentsTarget.replaceChildren(comments);
 
-         // Then we will remove the unnecessary iframe content
+         // Then we will stop media before removing the iframe content
+         stopMedia();
          Array.from(iframeDocument.body.children).forEach((element) => {
             if (!element.matches("script, link, style")) {
                element.remove();
             }
          });
+         stopMedia();
 
          // Finally we will return the comments instance
          return {

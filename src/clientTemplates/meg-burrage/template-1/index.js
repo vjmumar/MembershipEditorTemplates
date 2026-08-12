@@ -3469,9 +3469,20 @@ class CourseTemplate {
          // Then we will update the body class to current page
          this.coreMethods.utils.setPageClass("post");
 
-         // Finally we will append the media player
+         // Then we will append the media player
          const $mediaPostContainer = document.querySelector(".template-post-page__media");
          this.coreMethods.widgets.postPlayer(currentPost, $mediaPostContainer);
+
+         // Finally we will retrieve the comments
+         this.coreMethods.utils.extractPostComments({
+            productId: currentPost.productId,
+            categoryId: currentPost.categoryId,
+            postId: currentPost.id,
+            locationId: currentPost.locaationId,
+            iframeContainer: ".bm-theme-root__container__page",
+            commentsTarget: ".template-post-page__comments",
+            timeout: 30000,
+         });
       },
    };
 

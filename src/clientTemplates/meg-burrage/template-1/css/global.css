@@ -290,7 +290,7 @@
    font-family: var(--branding-body-font-family), sans-serif;
 }
 .template-navbar__content__close {
-   display: none;
+   display: none !important;
 }
 .template-navbar__content__nav-links {
    display: flex;
@@ -310,7 +310,7 @@
    border-radius: 50%;
 }
 .template-navbar__burgermenu {
-   display: none;
+   display: none !important;
 }
 @media (max-width: 1024px) {
    html {
@@ -328,7 +328,7 @@
       height: 50px;
    }
    .template-navbar__burgermenu {
-      display: block;
+      display: block !important;
       font-family: var(--_fa-family) !important;
       color: var(--branding-primary-text-color);
       font-size: 25px;
@@ -354,7 +354,7 @@
       transition-duration: 0.5s !important;
    }
    .template-navbar__content__close {
-      display: block;
+      display: block !important;
       font-family: var(--_fa-family) !important;
       color: var(--branding-primary-text-color);
       font-size: 25px;

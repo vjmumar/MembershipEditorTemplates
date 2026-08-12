@@ -406,7 +406,7 @@ p {
       flex-wrap: wrap;
       gap: 5px;
       padding-inline: 5px;
-      font-size: var(--branding-h6-font-size);
+      font-size: 12px;
       line-height: 1.4;
       text-align: center;
    }
@@ -477,7 +477,7 @@ p {
       flex-wrap: wrap;
       gap: 5px;
       padding-inline: 5px;
-      font-size: var(--branding-h6-font-size);
+      font-size: 12px;
       line-height: 1.4;
       text-align: center;
    }

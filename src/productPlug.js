@@ -1,4 +1,5 @@
-const $currentScript = document.currentScript;
+(() => {
+  const $currentScript = document.currentScript;
 const client = $currentScript.getAttribute("data-client");
 if (!window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID) {
   window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID = client;
@@ -26,3 +27,4 @@ if (!window.MEMBERSHIP_CUSTOMIZER_CLIENT_ID) {
       });
     });
 }
+})();

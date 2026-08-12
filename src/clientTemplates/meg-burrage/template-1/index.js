@@ -2699,9 +2699,7 @@ class CourseTemplate {
             }
          };
          window.removeEventListener("click", handlClick);
-         window.addEventListener("click", (e) => {
-            handlClick(e);
-         });
+         window.addEventListener("click", handlClick);
          const html = `
                      <div class="template-community-container">
                            <div class="template-community-toggle">

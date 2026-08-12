@@ -3244,6 +3244,7 @@ class CourseTemplate {
             this.coreMethods.data.fetchProduct(),
             this.coreMethods.data.fetchCategory(params?.categoryId),
          ]).then((res) => res.map((e) => e.value));
+         console.log(category);
 
          // Then we will fetch the category data and prepare the breadcrumbs
          const breadCrumbs = await (async () => {

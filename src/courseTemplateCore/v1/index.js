@@ -818,7 +818,7 @@ class CourseTemplateCore {
          iframe.height = "1000";
          iframe.style.cssText =
             "position:fixed;left:-10000px;top:0;width:1440px;height:1000px;opacity:0;pointer-events:none;border:0;";
-         iframe.src = `${location.origin}/courses/products/${productId}/modules/${categoryId}/lessons/${postId}?location_id=${locationId}`;
+         iframe.src = `${location.origin}/courses/products/${productId}/modules/${categoryId}/lessons/${postId}?location_id=${locationId}?bm_theme_not_load=true`;
          $iframeContainer.append(iframe);
          let stopSoundInterval;
          let stopSoundTimeout;

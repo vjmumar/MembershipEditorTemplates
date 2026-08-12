@@ -2728,7 +2728,7 @@ class CourseTemplate {
          const assetsHTML = items?.reduce((a, c) => {
             a += `
                   <li class="template-downloads__item">
-                        <a href="${c.url}" download>
+                        <a href="https://cdn.courses.apisystem.tech/memberships${c.url}" download>
                               <i class="fas fa-file-code"></i>
                               ${c.title}
                         </a>

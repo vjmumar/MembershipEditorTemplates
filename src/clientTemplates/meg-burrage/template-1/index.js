@@ -2467,7 +2467,7 @@ class CourseTemplate {
 
          // Then we will append the media player
          const $mediaPostContainer = document.querySelector(".template-post-page__media");
-         this.coreMethods.widgets.postPlayer(currentPost, $mediaPostContainer);
+         this.coreMethods.widgets["Post Player"](currentPost, $mediaPostContainer);
 
          // Finally we will retrieve the comments
          await this.coreMethods.utils.extractPostComments({

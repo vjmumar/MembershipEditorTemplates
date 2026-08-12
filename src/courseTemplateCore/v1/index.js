@@ -672,18 +672,23 @@ class CourseTemplateCore {
             }
          });
       },
+      getCookie: (name = "") => {
+         const cookie = document.cookie
+            .split("; ")
+            .find((cookie) => cookie.startsWith(`${encodeURIComponent(name)}=`));
+         if (!cookie) {
+            return null;
+         }
+         return decodeURIComponent(cookie.slice(cookie.indexOf("=") + 1));
+      },
       getAuth: async () => {
          return new Promise((res) => {
             const interval = setInterval(() => {
-               if (
-                  (document.querySelector(".product-container, #app-container") &&
-                     window?.$cookies) ||
-                  document.body.classList.contains("theme-ready")
-               ) {
+               if (document.body.classList.contains("theme-ready")) {
                   const data = (() => {
                      let result = {};
-                     const acatToken = window?.$cookies?.get("acat");
-                     const acatTokenV2 = window?.$cookies?.get("acatv2");
+                     const acatToken = this.utils.getCookie("acat");
+                     const acatTokenV2 = this.utils.getCookie("acatv2");
                      const acatTokenSessionStorage =
                         window.sessionStorage.getItem("acat");
                      const acatTokenSessionStorageV2 =
@@ -692,8 +697,8 @@ class CourseTemplateCore {
                      const acatTokenLocalStorageV2 =
                         window.localStorage.getItem("acatv2");
 
-                     const catToken = window?.$cookies?.get("cat");
-                     const catTokenV2 = window?.$cookies?.get("catv2");
+                     const catToken = this.utils.getCookie("cat");
+                     const catTokenV2 = this.utils.getCookie("catv2");
                      const catTokenSessionStorage = window.sessionStorage.getItem("cat");
                      const catTokenSessionStorageV2 =
                         window.sessionStorage.getItem("catv2");

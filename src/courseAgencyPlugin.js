@@ -20,19 +20,30 @@
       throw null;
    };
 
+   // Then we will create a utility function to retrieve the cookie value
+   const getCookie = (name = "") => {
+      const cookie = document.cookie
+         .split("; ")
+         .find((cookie) => cookie.startsWith(`${encodeURIComponent(name)}=`));
+      if (!cookie) {
+         return null;
+      }
+      return decodeURIComponent(cookie.slice(cookie.indexOf("=") + 1));
+   };
+
    // Then we will create a function that is responsible for retrieving auth
    const getAuth = async () => {
       return new Promise((res) => {
          const data = (() => {
             let result = {};
-            const acatToken = window?.$cookies?.get("acat");
-            const acatTokenV2 = window?.$cookies?.get("acatv2");
+            const acatToken = getCookie("acat");
+            const acatTokenV2 = getCookie("acatv2");
             const acatTokenSessionStorage = window.sessionStorage.getItem("acat");
             const acatTokenSessionStorageV2 = window.sessionStorage.getItem("acatv2");
             const acatTokenLocalStorage = window.localStorage.getItem("acat");
             const acatTokenLocalStorageV2 = window.localStorage.getItem("acatv2");
-            const catToken = window?.$cookies?.get("cat");
-            const catTokenV2 = window?.$cookies?.get("catv2");
+            const catToken = getCookie("cat");
+            const catTokenV2 = getCookie("catv2");
             const catTokenSessionStorage = window.sessionStorage.getItem("cat");
             const catTokenSessionStorageV2 = window.sessionStorage.getItem("catv2");
             const catTokenLocalStorage = window.localStorage.getItem("cat");

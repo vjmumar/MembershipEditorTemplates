@@ -487,7 +487,7 @@ class CourseTemplateCore {
 
    // This object holds widgets
    widgets = {
-      postPlayer: async (post = {}, $container = null) => {
+      "Post Player": async (post = {}, $container = null) => {
          // First we will retrieve the assets
          const assets = post?.asset_urls || {};
          const assetType = assets?.assetType || post?.contentType;

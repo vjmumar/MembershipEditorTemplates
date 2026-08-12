@@ -1922,9 +1922,9 @@ class CourseTemplate {
       const $rootContainerPage = document.querySelector(
          ".bm-theme-root__container__page",
       );
-      await this.globalWidgets.initSidebar($rootContainer);
-      await this.globalWidgets.initNavBar($rootContainer);
-      await this.coreMethods.actions.navigate("landingPage");
+      await this.globalWidgets?.["Sidebar"]($rootContainer);
+      await this.globalWidgets?.["Navbar"]($rootContainer);
+      await this.coreMethods.actions.navigate("Dashboard");
 
       // Then we will append a class to the body indicating that the template is ready
       setTimeout(() => {
@@ -1939,7 +1939,7 @@ class CourseTemplate {
 
    // This object holds global related initializers
    globalWidgets = {
-      initNavBar: async ($container = null) => {
+      Navbar: async ($container = null) => {
          // First we will fetch the necessary data
          const [userData, product] = await Promise.allSettled([
             this.coreMethods.data.fetchUser(),
@@ -1966,7 +1966,7 @@ class CourseTemplate {
          // Finally we will render the Navbar
          const html = `
                      <header class="template-navbar-wrapper" id="custom-navbar">
-                           <div onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')" class="template-navbar__logo-link"><img src="${logo}" /></div>
+                           <div onclick="window.CourseTemplate.coreMethods.actions.navigate('Dashboard')" class="template-navbar__logo-link"><img src="${logo}" /></div>
                            <!-- Center: Navigation Links -->
                            <div class="template-navbar__content">
                               <i class="fa-solid fa-xmark template-navbar__content__close" onclick="this.parentElement.classList.remove('active')"></i>
@@ -1989,7 +1989,7 @@ class CourseTemplate {
          if (document.querySelector(".template-navbar-wrapper")) return;
          $container.insertAdjacentHTML("afterbegin", html);
       },
-      initSidebar: async ($container = null) => {
+      Sidebar: async ($container = null) => {
          // First we will fetch all necessary data
          const [product, categories] = await Promise.allSettled([
             this.coreMethods.data.fetchProduct(),
@@ -2020,7 +2020,7 @@ class CourseTemplate {
             const postsHTML = c?.posts.reduce((cPA, cP) => {
                if (!cP?.posts) {
                   cPA += `
-                              <div onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${cP.id}'})" class="template-sidebar__category__item__post">
+                              <div onclick="window.CourseTemplate.coreMethods.actions.navigate('Post', {postId: '${cP.id}'})" class="template-sidebar__category__item__post">
                                  <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                        <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                           <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#000000" fill-rule="nonzero">
@@ -2037,7 +2037,7 @@ class CourseTemplate {
                } else {
                   const posts = cP.posts.reduce((cPPA, cPP) => {
                      cPPA += `
-                                       <p onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${cPP.id}'})" class="template-sidebar__category__item__post">
+                                       <p onclick="window.CourseTemplate.coreMethods.actions.navigate('Post', {postId: '${cPP.id}'})" class="template-sidebar__category__item__post">
                                           <svg class="template-sidebar__category__item__post__icon" width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                              <g id="text-lesson-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                    <g class="color-fill" id="Group" transform="translate(7.500000, 7.500000) scale(1, -1) translate(-7.500000, -7.500000) translate(3.000000, 4.000000)" fill="#000000" fill-rule="nonzero">
@@ -2057,7 +2057,7 @@ class CourseTemplate {
                               <div class="template-sidebar__category__item__sub-folder">
                                  <div class="template-sidebar__category__item__sub-folder__title">
                                        <p class="template-sidebar__category__item__sub-folder__title__text">${cP.title}</p>
-                                       <a  onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
+                                       <a  onclick="window.CourseTemplate.coreMethods.actions.navigate('Category Posts', {categoryId: '${c.id}'})" class="template-sidebar__category__item__sub-folder__title__icon"><i class="fa-regular fa-circle-right"></i></a>
                                  </div>
                                  <div class="template-sidebar-category__item__sub-folder__posts">
                                        ${posts}    
@@ -2074,7 +2074,7 @@ class CourseTemplate {
                                  <i class="fas fa-angle-right template-sidebar__category__item__title__content__icon"></i>
                                  <p class="template-sidebar__category__item__title__content__title">${c.title}</p>
                               </div>
-                              <p  onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></p>
+                              <p  onclick="window.CourseTemplate.coreMethods.actions.navigate('Category Posts', {categoryId: '${c.id}'})" class="template-sidebar__category__item__title__link"><i class="fa-regular fa-circle-right"></i></p>
                            </div>
                            <div class="template-sidebar__category__item__content">
                               ${postsHTML}     
@@ -2090,14 +2090,14 @@ class CourseTemplate {
                                  <i class="fa-solid fa-angle-left template-sidebar__back-button__icon"></i>
                                  <p class="template-sidebar__back-button__text">Library</p>    
                               </a>
-                              <a onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')">
+                              <a onclick="window.CourseTemplate.coreMethods.actions.navigate('Dashboard')">
                                  <img class="template-sidebar__logo" src="https://res.cloudinary.com/dpr6hw8uh/image/upload/v1774393003/Meg_Burrage_Saasy_Funnels_Logos_1-Icon_2_z4z0gh.png">    
                               </a>
-                              <p onclick="window.CourseTemplate.coreMethods.actions.navigate('categoriesPage')" class='template-sidebar__titles'>Modules</p>
+                              <p onclick="window.CourseTemplate.coreMethods.actions.navigate('Categories')" class='template-sidebar__titles'>Modules</p>
                               <div class="template-sidebar__category">
                                  ${sideBarCategories}    
                               </div>    
-                              <p onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')" class="template-sidebar__image">
+                              <p onclick="window.CourseTemplate.coreMethods.actions.navigate('Dashboard')" class="template-sidebar__image">
                                  <img src="${product?.posterImage}" />    
                               </p>
                            </div>
@@ -2148,7 +2148,7 @@ class CourseTemplate {
 
    // This object holds desktop pages
    pages = {
-      landingPage: async () => {
+      "Dashboard": async () => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
@@ -2183,13 +2183,13 @@ class CourseTemplate {
          $rootContainerPage.innerHTML = `
             <div class='template-container'>
                <div class="dashboard">
-                        ${this.widgets.welcomeBanner(userData?.email, userProductProgress, productCategories, completedPosts, "")}
+                        ${this.widgets["Welcome Banner"](userData?.email, userProductProgress, productCategories, completedPosts, "")}
                         <div class="dashboard__wrapper">
-                           ${this.widgets.communityToggle()}
-                           ${this.widgets.heroBanner()}
+                           ${this.widgets["Community Toggle"]()}
+                           ${this.widgets["Hero Banner"]()}
                            <div class="dashboard__categories">
                               <p class="dashboard__categories__title">Categories</p>
-                              ${this.widgets.categoryGrid(categories)}      
+                              ${this.widgets["Category Grid"](categories)}      
                            </div>  
                         </div>
                </div>
@@ -2200,7 +2200,7 @@ class CourseTemplate {
          this.coreMethods.utils.setPageClass("dashboard");
       },
 
-      categoryPostPage: async (params = { categoryId }) => {
+      "Category Posts": async (params = { categoryId }) => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
@@ -2217,13 +2217,13 @@ class CourseTemplate {
          // Then we will fetch the category data and prepare the breadcrumbs
          const breadCrumbs = await (async () => {
             const productHTML = `
-               <p onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')">
+               <p onclick="window.CourseTemplate.coreMethods.actions.navigate('Dashboard')">
                   ${product.title}
                </p>
             `;
             const categoryHTML = (() => {
                return `
-                  <p onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${category.category.id}'})">
+                  <p onclick="window.CourseTemplate.coreMethods.actions.navigate('Category Posts', {categoryId: '${category.category.id}'})">
                      ${category.category.title}
                   </p>
                `;
@@ -2252,7 +2252,7 @@ class CourseTemplate {
                <div class="template-category-post__sub-categories__item">
                   <p class="template-category-post__sub-categories__item__title">${c.title}</p>
                   <div class="template-category-post__sub-categories__item__posts">
-                     ${this.widgets.postGrid(posts)}      
+                     ${this.widgets["Post Grid"](posts)}      
                   </div>  
                </div>
                `;
@@ -2267,7 +2267,7 @@ class CourseTemplate {
                   <div class="template-category-post__breadcrumbs">${breadCrumbs}</div>
                   <div class="template-category-post__wrapper">
                         <div class="template-category-post__posts">
-                           ${this.widgets.postGrid(generatePosts(category?.category?.posts))}      
+                           ${this.widgets["Post Grid"](generatePosts(category?.category?.posts))}      
                         </div>  
                         ${subCategoriesHTML}
                   </div>
@@ -2279,7 +2279,7 @@ class CourseTemplate {
          this.coreMethods.utils.setPageClass("category-posts");
       },
 
-      categoriesPage: async () => {
+      "Categories": async () => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
@@ -2310,7 +2310,7 @@ class CourseTemplate {
             <div class='template-container'>
                <div class="template-categories__list">
                      <div class="template-categories__wrapper">
-                        ${this.widgets.categoryGrid(categories)}      
+                        ${this.widgets["Category Grid"](categories)}      
                      </div>
                </div>
             </div>
@@ -2320,7 +2320,7 @@ class CourseTemplate {
          this.coreMethods.utils.setPageClass("categories");
       },
 
-      postPage: async (params = { postId }) => {
+      "Post": async (params = { postId }) => {
          // First we will retrieve the root and root container on where we will insert the page theme
          const $root = document.querySelector(".bm-theme-root");
          const $rootContainer = document.querySelector(".bm-theme-root__container");
@@ -2341,20 +2341,20 @@ class CourseTemplate {
          // Then we will create the bread crumbs
          const breadCrumbs = await (async () => {
             const productHTML = `
-               <p onclick="window.CourseTemplate.coreMethods.actions.navigate('landingPage')">
+               <p onclick="window.CourseTemplate.coreMethods.actions.navigate('Dashboard')">
                   ${product.title}
                </p>
             `;
             const categoryHTML = (() => {
                const category = categories.find((e) => e.id === currentPost.categoryId);
                return `
-                  <p onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${category.id}'})">
+                  <p onclick="window.CourseTemplate.coreMethods.actions.navigate('Category Posts', {categoryId: '${category.id}'})">
                      ${category.title}
                   </p>
                `;
             })();
             const postHTML = `
-               <p onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${currentPost.id}'})">
+               <p onclick="window.CourseTemplate.coreMethods.actions.navigate('Post', {postId: '${currentPost.id}'})">
                   ${currentPost.title}
                </p>
             `;
@@ -2375,7 +2375,7 @@ class CourseTemplate {
                )?.sequenceNo;
                if (currentPostIndex) {
                   const previousPost = allPosts[currentPostIndex - 1];
-                  return `<p class="template-post-page-header__arrow prev" onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${previousPost?.id}'})"><i class="fas fa-arrow-circle-right"></i></p>`;
+                  return `<p class="template-post-page-header__arrow prev" onclick="window.CourseTemplate.coreMethods.actions.navigate('Post', {postId: '${previousPost?.id}'})"><i class="fas fa-arrow-circle-right"></i></p>`;
                }
                return "";
             })();
@@ -2387,13 +2387,13 @@ class CourseTemplate {
                const canGoToNextPost = currentPostIndex !== lastPostIndex;
                if (canGoToNextPost) {
                   const nextPost = allPosts[currentPostIndex + 1];
-                  return `<p class="template-post-page-header__arrow next" onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${nextPost?.id}'})"><i class="fas fa-arrow-circle-right"></i></p>`;
+                  return `<p class="template-post-page-header__arrow next" onclick="window.CourseTemplate.coreMethods.actions.navigate('Post', {postId: '${nextPost?.id}'})"><i class="fas fa-arrow-circle-right"></i></p>`;
                }
                return "";
             })();
             const downloadsHTML = (() => {
                if (currentPost?.post_materials?.length) {
-                  return this.widgets.downloadSelect(currentPost?.post_materials);
+                  return this.widgets["Download Select"](currentPost?.post_materials);
                }
                return "";
             })();
@@ -2484,7 +2484,7 @@ class CourseTemplate {
 
    // This object holds UI component templates
    widgets = {
-      welcomeBanner: (
+      "Welcome Banner": (
          name = "User",
          userProductProgress,
          productCategories = [],
@@ -2580,7 +2580,7 @@ class CourseTemplate {
                            <button 
                               ${
                                  userProductProgress?.progress === 100
-                                    ? `onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${nextPostId}'})"`
+                                    ? `onclick="window.CourseTemplate.coreMethods.actions.navigate('Post', {postId: '${nextPostId}'})"`
                                     : ""
                               }
                               class="template-welcome__button">${bannerButtonLinkAndText.text}
@@ -2591,7 +2591,7 @@ class CourseTemplate {
          // Finally we will return the html
          return html;
       },
-      heroBanner: (
+      "Hero Banner": (
          title = "Welcome to Template",
          subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
          paragraphHTML = "",
@@ -2622,7 +2622,7 @@ class CourseTemplate {
                   `;
          return html;
       },
-      categoryGrid: (categories = []) => {
+      "Category Grid": (categories = []) => {
          // First we will check if the assed categories is valid and is not empty, if it does then we will return a error html
          if (!categories || categories.length === 0) {
             return '<p class="text-center text-gray-500">No categories found to display.</p>';
@@ -2631,7 +2631,7 @@ class CourseTemplate {
          // Then we will generate the category cards
          const categoryCards = categories.reduce((a, c) => {
             a += `
-                           <div onclick="window.CourseTemplate.coreMethods.actions.navigate('categoryPostPage', {categoryId: '${c.id}'})" class="template-categories__card">
+                           <div onclick="window.CourseTemplate.coreMethods.actions.navigate('Category Posts', {categoryId: '${c.id}'})" class="template-categories__card">
                               <img 
                                  src="${c.thumbnail || window.templateCustomizationSchema.placeholderThumbnail}" 
                                  alt="Thumbnail for ${c.title}" 
@@ -2659,7 +2659,7 @@ class CourseTemplate {
          // Finally we will return the html
          return html;
       },
-      postGrid: (posts = []) => {
+      "Post Grid": (posts = []) => {
          // First we will check if the assed post is valid and is not empty, if it does then we will return a error html
          if (!posts || posts?.length === 0) {
             return '<p class="text-center text-gray-500">No posts found to display.</p>';
@@ -2668,7 +2668,7 @@ class CourseTemplate {
          // Then we will generate the category cards
          const postCards = posts?.reduce((a, c) => {
             a += `
-                           <div onclick="window.CourseTemplate.coreMethods.actions.navigate('postPage', {postId: '${c.id}'})" class="template-post__card">
+                           <div onclick="window.CourseTemplate.coreMethods.actions.navigate('Post', {postId: '${c.id}'})" class="template-post__card">
                               <img 
                                  src="${c.thumbnail ? `https://cdn.courses.apisystem.tech/${c.thumbnail}` : null || window.templateCustomizationSchema.placeholderThumbnail}" 
                                  alt="Thumbnail for ${c.title}" 
@@ -2696,7 +2696,7 @@ class CourseTemplate {
          // Finally we will return the html
          return html;
       },
-      communityToggle: (
+      "Community Toggle": (
          buttonText = "Ask the Community",
          activeButtonText = "Hide Community Forum",
          embedHTML = "",
@@ -2729,7 +2729,7 @@ class CourseTemplate {
                   `;
          return html;
       },
-      downloadSelect: (
+      "Download Select": (
          items = [
             {
                url: "Test",
@@ -2760,7 +2760,7 @@ class CourseTemplate {
                   </div>
                `;
       },
-      categoryWithPostsDropdown: (
+      "Category With Dropdown Post": (
          title = "Syllabus",
          categories = [],
          completedPosts = [],

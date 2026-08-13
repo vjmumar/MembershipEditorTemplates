@@ -30,7 +30,7 @@ var version = {
 
          // Then we will wait for the parser script to load
          await new Promise((res) => {
-            scriptTag.onload(() => {
+            scriptTag.onload = () => {
                // First we will resolve the promise
                res(true);
 
@@ -41,7 +41,7 @@ var version = {
                setTimeout(() => {
                   document.body.classList.add("template-ready");
                }, 1000);
-            });
+            };
          });
       })();
 
@@ -52,19 +52,19 @@ var version = {
          scriptTag.src = `${baseURL}/src/previewer/${version.previwer}.js`;
          document.head.append(scriptTag);
 
-         // Then we will wait for the previewer script to load
+         // Finally we will wait for the previewer script to load
          await new Promise((res) => {
-            scriptTag.onload(() => {
+            scriptTag.onload = () => {
                // First we will resolve the promise
                res(true);
 
                // Finally we will initialize the membership preview
                window.MembershipPreview = new MembershipPreview();
-            });
+            };
          });
       }
 
-      // Then we will initialize the editor
+      // Finally we will initialize the editor
       if (isEdit) {
          // First we will retrieve the editor HTML
          fetch(`${baseURL}/src/editor/${version.editor}.html`, {

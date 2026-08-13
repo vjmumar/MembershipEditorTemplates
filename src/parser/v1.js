@@ -56,6 +56,7 @@ class MembershipParser {
           * resolve the default page editor state, and trigger the application initialization sequence.
           */
          script.onload = async () => {
+            console.log("loaded")
             // First we will assign the this.originalTemplateCustomizationSchema to the current templates schema so that we have a clean copy of template schema
             await new Promise((res) => {
                const interval = setInterval(() => {

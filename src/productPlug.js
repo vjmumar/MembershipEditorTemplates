@@ -26,7 +26,7 @@ var version = {
          // First we will create and insert the parser script
          const scriptTag = document.createElement("script");
          scriptTag.src = `${baseURL}/src/parser/${version.parser}.js`;
-         document.head.append(fScript);
+         document.head.append(scriptTag);
 
          // Then we will wait for the parser script to load
          await new Promise((res) => {
@@ -50,7 +50,7 @@ var version = {
          // First we will create and insert the previewer script
          const scriptTag = document.createElement("script");
          scriptTag.src = `${baseURL}/src/previewer/${version.previwer}.js`;
-         document.head.append(fScript);
+         document.head.append(scriptTag);
 
          // Then we will wait for the previewer script to load
          await new Promise((res) => {

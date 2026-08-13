@@ -1,7 +1,7 @@
 class MembershipPreview {
    constructor() {
       setTimeout(() => {
-            this.initializers.init();
+         this.initializers.init();
       }, 3000);
    }
 
@@ -25,6 +25,40 @@ class MembershipPreview {
                if ($element) $element.outerHTML = $element.outerHTML;
             });
          });
+
+         // Then we will insert the preview tooltip stylesheet
+         document.head.insertAdjacentHTML(
+            "afterbegin",
+            `
+            <style>
+                .bm-editor-root {
+                  display: flex;
+                }
+
+                .bm-editor-root iframe {
+                  flex: 1;
+                }
+
+                [data-editable="true"] {
+                  outline: 1.5px dashed rgba(16, 185, 129, 0.7);
+                  outline-offset: -1px;
+                  cursor: pointer;
+                  transition:
+                    outline-color 0.15s ease,
+                    outline-width 0.15s ease;
+                }
+
+                [data-editable="true"] iframe {
+                  pointer-events: none;
+                }
+
+                [data-editable="true"]:hover {
+                  outline: 2px solid rgba(16, 185, 129, 0.7);
+                  outline-offset: -2px;
+                }
+            </style>    
+        `,
+         );
 
          // Then we will disable all anchor tags to prevent accidental navigation while editing
          setTimeout(() => {

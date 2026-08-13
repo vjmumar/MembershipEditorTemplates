@@ -40,32 +40,6 @@
       ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   }
 
-  .bm-editor-root {
-    display: flex;
-  }
-
-  .bm-editor-root iframe {
-    flex: 1;
-  }
-
-  [data-editable="true"] {
-    outline: 1.5px dashed rgba(16, 185, 129, 0.7);
-    outline-offset: -1px;
-    cursor: pointer;
-    transition:
-      outline-color 0.15s ease,
-      outline-width 0.15s ease;
-  }
-
-  [data-editable="true"] iframe {
-    pointer-events: none;
-  }
-
-  [data-editable="true"]:hover {
-    outline: 2px solid var(--bm-primary);
-    outline-offset: -2px;
-  }
-
   .jscolor-wrap {
     z-index: 9999999999 !important;
   }
@@ -2420,7 +2394,7 @@
         $sidebarContent.innerHTML = `
                    <div class="global-contents">
                        <div class="global-contents__header">
-                           ${this.widgets.withToolTip(`<i onclick="window.MembershipEditor.actions.switchEditorMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>`, `Switch To ${this.isDesktop ? "Mobile" : "Desktop"}`)}
+                           ${this.widgets.withToolTip(`<i onclick="window.MembershipEditor.actions.switchPreviewMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>`, `Switch To ${this.isDesktop ? "Mobile" : "Desktop"}`)}
                            <p class="global-contents__header__text">Global</p>
                            <div class="global-contents__header__control">
                               ${this.widgets.withToolTip(`<i onclick="window.MembershipEditor.actions.undoChanges()" class="fa-solid fa-rotate-left ${this.templateUndoStack?.length ? "" : "disabled"} undo"></i>`, "Undo")}
@@ -4360,6 +4334,13 @@
         const styleHTML = `<style id="custom-fonts">${googleFontsUsedCss}${customFonts}</style>`;
         editor?.getDoc()?.querySelector("#custom-fonts")?.remove();
         editor?.getDoc()?.head.insertAdjacentHTML("beforeend", styleHTML);
+      },
+
+      // This method update the preview iframe from desktop to mobile or vice versa
+      switchPreviewMode: async (isDesktop = true) => {
+        this.isDesktop = isDesktop;
+        this.$iframe.style.maxWidth = isDesktop ? "100%" : "500px";
+        this.$iframe.style.width = "100%";
       },
 
       // This method toggles the editor view between desktop and mobile modes.

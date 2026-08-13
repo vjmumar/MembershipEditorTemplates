@@ -100,7 +100,10 @@ class MembershipPreview {
    data = {
       // This helper method retrieves the editable page names and URLs
       getListOfEditablePages: async () => {
-         // First we will retrieve the categories
+         // First we will retrieve the template schema
+         const templateSchema = window.templateCustomizationSchema;
+
+         // Then we will retrieve the categories
          const categories =
             await window.CourseTemplate.coreMethods.data.fetchCategories();
 
@@ -140,25 +143,17 @@ class MembershipPreview {
             postId: post?.id || "",
          };
 
+         // Then we will retrieve the active page
+         const activePage = document.body.getAttribute("data-bm-theme-page");
+
          // Finally we will return the editable pages
-         return [
-            {
-               page: "Dashboard",
+         return (templateSchema?.pages || []).map((page) => {
+            return {
+               page: page.name,
                params,
-            },
-            {
-               page: "Category Posts",
-               params,
-            },
-            {
-               page: "Categories",
-               params,
-            },
-            {
-               page: "Post",
-               params,
-            },
-         ];
+               isActive: activePage === page.name,
+            };
+         });
       },
    };
 

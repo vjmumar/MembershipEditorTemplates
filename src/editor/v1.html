@@ -2476,7 +2476,7 @@
 
         // Then we will generate the list of editable pages html
         const listOfPagesHTML = listOfEditablePages.reduce((a, c) => {
-          const clickAction = `window.MembershipEditor.actions.switchPage('${c.url}')`;
+          const clickAction = `document.querySelector("iframe").contentWindow.CourseTemplate.coreMethods.actions.navigate('${c.name}',${Object.keys(c.params)})`;
           a += `
                   <div onclick="${c.isActive ? "" : clickAction}" class="editable-pages__list__item">
                      <input ${c.isActive ? "checked" : ""} type="checkbox" style="pointer-events: none;" />
@@ -4297,49 +4297,6 @@
         this.isDesktop = isDesktop;
         this.$iframe.style.maxWidth = isDesktop ? "100%" : "500px";
         this.$iframe.style.width = "100%";
-      },
-
-      // This method toggles the editor view between desktop and mobile modes.
-      switchEditorMode: async (isDesktop = true) => {
-        // First we will ask the user to confirm their decision to open the mobile customizer
-        const isConfirm = confirm(
-          `Please save your changes before switching to another view. If you have already saved, you may continue; otherwise, we advise saving now so your changes are not lost.`,
-        );
-
-        // Then we will check the user's decision and if they did not agree then we will not proceed
-        if (!isConfirm) return;
-
-        // Then we will update the iframe
-        this.isDesktop = isDesktop;
-        this.$iframe.style.maxWidth = isDesktop ? "100%" : "500px";
-        this.$iframe.style.width = "100%";
-        this.$iframe.contentDocument.body.style.display = "none";
-        setTimeout(async () => {
-          const auth = await this.utils.getAuth();
-          const newPreviewLinkToken = await this.data.getNewLoginToken();
-          const url = this.$iframe.src.replace(
-            /(\/courses\/products\/[^/?]+)\/?(\?.*)?$/,
-            "$1/categories$2",
-          );
-          const iframeUrl = new URL(url);
-          iframeUrl.searchParams.set("token", newPreviewLinkToken);
-          this.$iframe.src = iframeUrl.toString();
-        }, 500);
-
-        // Finally we will add a loading indicator inside the sidebar editor
-        document.querySelector(".editor-customizer-sidebar").insertAdjacentHTML(
-          "beforeend",
-          `
-               <div style="padding: 24px 16px;background: #f9f9f9;border-radius: 8px;border: 1px solid #eee;text-align: center;font-family: sans-serif;position: absolute;top: 0;height: 100%;z-index: 99999999;display: flex;flex-direction: column;align-items: center; width: 100%;">
-                  <div style="margin: 0 auto 16px auto; width: 24px; height: 24px; border: 3px solid #ddd; border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite !important;"></div>
-                  <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
-                  <h3 style="margin: 0 0 8px 0; color: #000; font-size: 18px; font-weight: 600;">Changing View</h3>
-                  <p style="color: #444; font-size: 14px; line-height: 1.5; margin: 0;">
-                      Please wait while we are changing the view...
-                  </p>
-               </div>
-            `,
-        );
       },
 
       // This method updates the page of the preview URL with the passed page URL.

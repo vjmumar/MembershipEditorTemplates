@@ -46,6 +46,7 @@
 
   .bm-editor-root iframe {
     flex: 1;
+    transition-duration: .5s !important;
   }
   
   .jscolor-wrap {
@@ -2336,7 +2337,19 @@
         $sidebarContent.innerHTML = `
                    <div class="global-contents">
                        <div class="global-contents__header">
-                           ${this.widgets.withToolTip(`<i onclick="window.MembershipEditor.actions.switchPreviewMode(${!this.isDesktop})" class="fa-solid ${this.isDesktop ? "fa-mobile-screen" : "fa-desktop"} global-contents__header__mobile-switch"></i>`, `Switch Preview To ${this.isDesktop ? "Mobile" : "Desktop"}`)}
+                           ${this.widgets.withToolTip(`
+                            <i 
+                            onclick="
+                               const nextMode = !window.MembershipEditor.isDesktop;
+                               window.MembershipEditor.actions.switchPreviewMode(nextMode);
+                               this.classList.toggle('fa-mobile-screen', !nextMode);
+                               this.classList.toggle('fa-desktop', nextMode);
+                               this.title = nextMode
+                                  ? 'Switch Preview To Mobile'
+                                  : 'Switch Preview To Desktop';
+                            "
+                            class="fa-desktop global-contents__header__mobile-switch"></i>`, `Switch Preview
+                           `)}
                            <p class="global-contents__header__text">Global</p>
                            <div class="global-contents__header__control">
                               ${this.widgets.withToolTip(`<i onclick="window.MembershipEditor.actions.undoChanges()" class="fa-solid fa-rotate-left ${this.templateUndoStack?.length ? "" : "disabled"} undo"></i>`, "Undo")}

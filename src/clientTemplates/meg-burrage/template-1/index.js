@@ -883,7 +883,6 @@ window.templateCustomizationSchema = {
    pages: [
       {
          name: "Dashboard",
-         urlRegex: "\\/courses\\/products\\/[^/]+\\/?(\\?.*)?$",
          editor: [
             {
                elementSelector: ".template-welcome",
@@ -1282,7 +1281,6 @@ window.templateCustomizationSchema = {
       },
       {
          name: "Category Posts",
-         urlRegex: "/courses/products/[^/]+/categories/[^/]+/?(\\?.*)?$",
          editor: [
             {
                elementSelector: ".template-category-post-title",
@@ -1456,7 +1454,6 @@ window.templateCustomizationSchema = {
       },
       {
          name: "Categories",
-         urlRegex: "/courses/products/[^/]+/categories/?(\\?.*)?$",
          editor: [
             {
                elementSelector: ".template-categories-title",
@@ -1567,7 +1564,6 @@ window.templateCustomizationSchema = {
       },
       {
          name: "Post",
-         urlRegex: "/courses/products/[^/]+/categories/[^/]+/posts/[^/]+/?(\\?.*)?$",
          editor: [
             {
                elementSelector: ".template-post-page",
@@ -1883,15 +1879,6 @@ class CourseTemplate {
       const fScript = document.createElement("script");
       fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
       document.head.append(fScript);
-
-      // Then we will insert plyr script and link
-      const plyrLink = document.querySelector("link");
-      const plyrScript = document.createElement("script");
-      fScript.src = "https://cdn.plyr.io/3.8.4/plyr.js";
-      plyrLink.rel = "stylesheet";
-      plyrLink.href = "https://cdn.plyr.io/3.8.4/plyr.css";
-      document.head.append(fScript);
-      document.head.append(plyrLink);
 
       // Then we will insert the template core and core widget css
       const courseTemplateCoreScript = document.createElement("script");

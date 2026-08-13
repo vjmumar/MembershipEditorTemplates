@@ -100,76 +100,65 @@ class MembershipPreview {
    data = {
       // This helper method retrieves the editable page names and URLs
       getListOfEditablePages: async () => {
-         // First, we will retrieve the template schema inside the preview iframe
-         const templateSchema = window.templateCustomizationSchema;
+         // First we will retrieve the categories
+         const categories =
+            await window.CourseTemplate.coreMethods.data.fetchCategories();
 
-         // Then, we will request to retrieve the categories inside the course template
-         const categoriesWithPost = await window.CourseTemplate.data.fetchCategories();
-
-         // Then, we will retrieve the productId, valid category ID, and valid post ID
-         const categoryWithValidPosts = [...categoriesWithPost]
-            .filter((cat) => !cat.parentCategory)
+         // Then we will retrieve a valid category
+         const category = [...categories]
+            .filter((category) => !category.parentCategory)
             .sort((a, b) => {
-               const hasMedia = (cat) =>
-                  cat.posts?.some(
-                     (p) => p.video !== null || p.audio !== null || !!p.embedJson,
-                  );
+               const hasMedia = (category) => {
+                  return category.posts?.some((post) => {
+                     return (
+                        post.video !== null || post.audio !== null || !!post.embedJson
+                     );
+                  });
+               };
+
                if (hasMedia(a) && !hasMedia(b)) return -1;
                if (!hasMedia(a) && hasMedia(b)) return 1;
+
                return (a.sequenceNo || 0) - (b.sequenceNo || 0);
             })[0];
-         const productId = categoryWithValidPosts?.["productId"];
-         const categoryId = categoryWithValidPosts?.["id"];
 
-         const postId = (() => {
-            const rawPosts = categoryWithValidPosts?.posts || [];
-            return [...rawPosts].sort((a, b) => {
-               const aHasMedia = a.video !== null || a.audio !== null || !!a.embedJson;
-               const bHasMedia = b.video !== null || b.audio !== null || !!b.embedJson;
-               if (aHasMedia && !bHasMedia) return -1;
-               if (!aHasMedia && bHasMedia) return 1;
-               return (a.sequenceNo || 0) - (b.sequenceNo || 0);
-            })[0]?.id;
-         })();
+         // Then we will retrieve a valid post
+         const post = [...(category?.posts || [])].sort((a, b) => {
+            const aHasMedia = a.video !== null || a.audio !== null || !!a.embedJson;
 
-         // Then, we will create a function that will hydrate the GHL URL regex
-         const hydrateGhlUrl = (urlRegex, pId, cId = null, poId = null) => {
-            const currentUrl = new URL(window.location.href);
-            let path = urlRegex.replace(/\\/g, "").replace(/\(\?.*\)\?\$$/, "");
-            if (pId) path = path.replace("[^/]+", pId);
-            if (cId) path = path.replace("[^/]+", cId);
-            if (poId) path = path.replace("[^/]+", poId);
-            const finalUrl = new URL(path, window.location.origin);
-            currentUrl.searchParams.forEach((value, key) => {
-               finalUrl.searchParams.set(key, value);
-            });
-            return finalUrl.href;
+            const bHasMedia = b.video !== null || b.audio !== null || !!b.embedJson;
+
+            if (aHasMedia && !bHasMedia) return -1;
+            if (!aHasMedia && bHasMedia) return 1;
+
+            return (a.sequenceNo || 0) - (b.sequenceNo || 0);
+         })[0];
+
+         // Then we will create the shared page parameters
+         const params = {
+            categoryId: category?.id || "",
+            postId: post?.id || "",
          };
 
-         // Then, we will retrieve the pages from the template schema based on the window size
-         const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-         const pages = templateSchema[isDesktop ? "pages" : "mobilePages"];
-
-         // Then, we will format the pages and return them
-         const allPages = pages.map((page) => {
-            const fullUrl = hydrateGhlUrl(page.urlRegex, productId, categoryId, postId);
-            const isActive = (() => {
-               const currentRegex = new RegExp(page.urlRegex);
-               if (!currentRegex.test(location.pathname)) return false;
-               const segmentCount = (regex) => (regex.match(/\//g) || []).length;
-               const hasBetterMatch = pages.some((otherPage) => {
-                  if (otherPage.name === page.name) return false;
-                  const otherRegex = new RegExp(otherPage.urlRegex);
-                  return (
-                     otherRegex.test(location.pathname) &&
-                     segmentCount(otherPage.urlRegex) > segmentCount(page.urlRegex)
-                  );
-               });
-               return !hasBetterMatch;
-            })();
-            return { name: page.name, url: fullUrl, isActive };
-         });
-         return allPages;
+         // Finally we will return the editable pages
+         return [
+            {
+               page: "Dashboard",
+               params,
+            },
+            {
+               page: "Category Posts",
+               params,
+            },
+            {
+               page: "Categories",
+               params,
+            },
+            {
+               page: "Post",
+               params,
+            },
+         ];
       },
    };
 

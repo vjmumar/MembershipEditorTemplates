@@ -2476,7 +2476,23 @@
 
         // Then we will generate the list of editable pages html
         const listOfPagesHTML = listOfEditablePages.reduce((a, c) => {
-          const clickAction = `document.querySelector("iframe").contentWindow.CourseTemplate.coreMethods.actions.navigate('${c.page}',${Object.keys(c.params)})`;
+          const clickAction = `
+             this
+                .closest(".editable-pages__list")
+                .querySelectorAll('input[type="checkbox"]')
+                .forEach((checkbox) => checkbox.checked = false);
+             this.querySelector('input[type="checkbox"]').checked = true;
+             document
+                .querySelector("iframe")
+                .contentWindow
+                .CourseTemplate
+                .coreMethods
+                .actions
+                .navigate(
+                   ${JSON.stringify(c.page)},
+                   ${JSON.stringify(c.params)},
+                );
+          `;
           a += `
                   <div onclick="${c.isActive ? "" : clickAction}" class="editable-pages__list__item">
                      <input ${c.isActive ? "checked" : ""} type="checkbox" style="pointer-events: none;" />

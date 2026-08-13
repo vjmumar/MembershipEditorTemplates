@@ -224,7 +224,6 @@ class MembershipParser {
    initializers = {
       // This method serves as the entry point for the application initialization
       init: () => {
-         console.log("hit sync");
          this.initializers.initSyncConfig();
       },
 

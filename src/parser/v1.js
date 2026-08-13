@@ -19,7 +19,6 @@ class MembershipParser {
             ?.then((e) => e.json())
             ?.then((e) => {
                this.templates = e;
-               console.log(e);
             });
 
          // Then, we retrieve any saved template changes from media storage and inject them into the document.
@@ -236,7 +235,8 @@ class MembershipParser {
          // First we will retrieve the current URL to determine which page configuration should be applied
          const url = window.location.href;
 
-         // Then we will sync the template's custom CSS so base styles are applied before other customizations
+         try {
+            // Then we will sync the template's custom CSS so base styles are applied before other customizations
          this.actions.syncTemplateCustomCss();
 
          // Then we will sync the template's used google fonts
@@ -247,6 +247,9 @@ class MembershipParser {
 
          // Then we will sync the template's branding styles
          this.actions.syncTemplateBrandingCss();
+         } catch (err) {
+            console.log(err)
+         }
 
          // Finally we will iterate through the template pages to find the current view and process it
          this.activeTemplate?.["page"]?.forEach((page) => {

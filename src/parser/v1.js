@@ -227,6 +227,7 @@ class MembershipParser {
    initializers = {
       // This method serves as the entry point for the application initialization
       init: () => {
+        console.log("hit sync")
          this.initializers.initSyncConfig();
       },
 
@@ -235,8 +236,7 @@ class MembershipParser {
          // First we will retrieve the current URL to determine which page configuration should be applied
          const url = window.location.href;
 
-         try {
-            // Then we will sync the template's custom CSS so base styles are applied before other customizations
+         // Then we will sync the template's custom CSS so base styles are applied before other customizations
          this.actions.syncTemplateCustomCss();
 
          // Then we will sync the template's used google fonts
@@ -247,9 +247,6 @@ class MembershipParser {
 
          // Then we will sync the template's branding styles
          this.actions.syncTemplateBrandingCss();
-         } catch (err) {
-            console.log(err)
-         }
 
          // Finally we will iterate through the template pages to find the current view and process it
          this.activeTemplate?.["page"]?.forEach((page) => {

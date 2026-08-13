@@ -1726,10 +1726,10 @@
 
         // Then we will disable all navigation for spa
         setTimeout(() => {
-          document.querySelectorAll(`*[onclick *="window.CourseTemplate.coreMethods.actions.navigate("]`).forEach((a) => {
+          document.querySelectorAll(`*[onclick *= "window.CourseTemplate.coreMethods.actions.navigate("]`).forEach((a) => {
             a.removeAttribute("onclick");
           });
-        }, 1500)
+        }, 1500);
 
         /**
          * Then we will initialize the global editor from the parent window,
@@ -2102,9 +2102,7 @@
         this.actions.syncTemplateBrandingCss();
 
         // Finally we will iterate through the template pages to find the current view and process it
-        this.activeTemplate?.[
-          this.isDesktop
-        ]?.forEach((page) => {
+        this.activeTemplate?.["page"]?.forEach((page) => {
           /**
            * First we will create a RegExp instance using the page's URL pattern.
            * This allows us to support dynamic route matching instead of exact URL comparison.

@@ -19,6 +19,7 @@ class MembershipParser {
             ?.then((e) => e.json())
             ?.then((e) => {
                this.templates = e;
+               console.log(e);
             });
 
          // Then, we retrieve any saved template changes from media storage and inject them into the document.

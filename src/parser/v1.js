@@ -661,5 +661,3 @@ class MembershipParser {
       },
    };
 }
-
-window.MembershipParser = new MembershipParser();

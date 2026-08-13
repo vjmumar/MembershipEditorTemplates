@@ -31,14 +31,6 @@ class MembershipPreview {
             "afterbegin",
             `
             <style>
-                .bm-editor-root {
-                  display: flex;
-                }
-
-                .bm-editor-root iframe {
-                  flex: 1;
-                }
-
                 [data-editable="true"] {
                   outline: 1.5px dashed rgba(16, 185, 129, 0.7);
                   outline-offset: -1px;

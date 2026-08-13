@@ -40,6 +40,14 @@
       ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   }
 
+  .bm-editor-root {
+    display: flex;
+  }
+
+  .bm-editor-root iframe {
+    flex: 1;
+  }
+  
   .jscolor-wrap {
     z-index: 9999999999 !important;
   }
@@ -1737,73 +1745,7 @@
               isEditorAlreadyInserted ? "initializeEditor" : "initShowEditor"
             ]();
           };
-        } else {
-        }
-      },
-
-      // This method is responsible for showing the floating widget that toggles the page into editing
-      initFloatingWidgetToggler: () => {
-        // First we will define the visual styles and HTML structure for the floating toggle button
-        const html = `
-                           <style>
-                           .editor-floating-toggler {
-                               position: fixed;
-                               bottom: 30px;
-                               right: 30px;
-                               width: 60px;
-                               height: 60px;
-                               background-color: white;
-                               border-radius: 50%;
-                               box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                               display: flex;
-                               align-items: center;
-                               justify-content: center;
-                               cursor: pointer;
-                               z-index: 2147483647;
-                               transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                               border: 2px solid black;
-                           }
-
-                           .editor-floating-toggler:hover {
-                               transform: scale(1.1) rotate(10deg);
-                               box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-                               background-color: black;
-                               border-color: black;
-                           }
-
-                           .editor-floating-toggler svg {
-                               width: 24px;
-                               height: 24px;
-                               color: black;
-                               stroke-width: 2px;
-                               pointer-events: none;
-                               transition: color 0.3s ease;
-                           }
-
-                           .editor-floating-toggler:hover svg {
-                               color: white;
-                           }
-                           </style>
-                           <div class="editor-floating-toggler">
-                               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                                   <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                               </svg>
-                           </div>
-                       `;
-
-        // Then we will inject the floating widget into the document body
-        document.body.insertAdjacentHTML("beforeend", html);
-
-        // Finally we will attach a click listener to reload the page with the editor parameter enabled
-        setTimeout(() => {
-          document
-            .querySelector(".editor-floating-toggler")
-            .addEventListener("click", () => {
-              const u = new URL(window.location);
-              u.searchParams.set("membershipeditor", "true");
-              window.location.href = u.toString();
-            });
-        }, 500);
+        } 
       },
 
       // This method will wait until the .bm-editor-root container exists before initializing the editor

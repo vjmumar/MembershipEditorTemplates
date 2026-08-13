@@ -2476,25 +2476,31 @@
 
         // Then we will generate the list of editable pages html
         const listOfPagesHTML = listOfEditablePages.reduce((a, c) => {
+          const page = String(c.page).replace(/'/g, "\\'");
+          const params = Object.entries(c.params)
+             .map(([key, value]) => {
+                return `${key}: '${String(value).replace(/'/g, "\\'")}'`;
+             })
+             .join(", ");
           const clickAction = `
              this
-                .closest(".editable-pages__list")
-                .querySelectorAll('input[type="checkbox"]')
+                .closest('.editable-pages__list')
+                .querySelectorAll('input[type=checkbox]')
                 .forEach((checkbox) => checkbox.checked = false);
-             this.querySelector('input[type="checkbox"]').checked = true;
+             this.querySelector('input[type=checkbox]').checked = true;
              document
-                .querySelector("iframe")
+                .querySelector('iframe')
                 .contentWindow
                 .CourseTemplate
                 .coreMethods
                 .actions
                 .navigate(
-                   ${JSON.stringify(c.page)},
-                   ${JSON.stringify(c.params)},
+                   '${page}',
+                   { ${params} },
                 );
           `;
           a += `
-                  <div onclick='${c.isActive ? "" : clickAction}' class="editable-pages__list__item">
+                  <div onclick="${c.isActive ? "" : clickAction}" class="editable-pages__list__item">
                      <input ${c.isActive ? "checked" : ""} type="checkbox" style="pointer-events: none;" />
                      <p>${c.page}</p>
                   </div>

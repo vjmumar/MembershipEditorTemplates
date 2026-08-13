@@ -7,6 +7,11 @@ class MembershipParser {
       this.activePageOnTemplate = null;
       this.isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
+      // Then we will load lodash
+      const lodashScript = document.createElement("script");
+      lodashScript.src = "https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js";
+      document.head.prepend(lodashScript);
+
       // Finally, we start the process of initializing the application and fetching the client's active templates.
       (async () => {
          // First, we retrieve the client's available templates from the remote source.
@@ -56,16 +61,7 @@ class MembershipParser {
           * resolve the default page editor state, and trigger the application initialization sequence.
           */
          script.onload = async () => {
-            console.log("loaded")
             // First we will assign the this.originalTemplateCustomizationSchema to the current templates schema so that we have a clean copy of template schema
-            await new Promise((res) => {
-               const interval = setInterval(() => {
-                  if (typeof window?._?.cloneDeep !== "undefined") {
-                     res(true);
-                     clearInterval(interval);
-                  }
-               }, 0);
-            });
             this.originalTemplateCustomizationSchema = window._.cloneDeep(
                window?.templateCustomizationSchema,
             );
@@ -228,7 +224,7 @@ class MembershipParser {
    initializers = {
       // This method serves as the entry point for the application initialization
       init: () => {
-        console.log("hit sync")
+         console.log("hit sync");
          this.initializers.initSyncConfig();
       },
 

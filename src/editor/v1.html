@@ -2478,12 +2478,12 @@
         const listOfPagesHTML = listOfEditablePages.reduce((a, c) => {
           const clickAction = `
              this
-                .closest(".editable-pages__list")
-                .querySelectorAll('input[type="checkbox"]')
+                .closest('.editable-pages__list')
+                .querySelectorAll('input[type='checkbox']')
                 .forEach((checkbox) => checkbox.checked = false);
-             this.querySelector('input[type="checkbox"]').checked = true;
+             this.querySelector('input[type='checkbox']').checked = true;
              document
-                .querySelector("iframe")
+                .querySelector('iframe')
                 .contentWindow
                 .CourseTemplate
                 .coreMethods

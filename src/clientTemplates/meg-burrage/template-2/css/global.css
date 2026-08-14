@@ -13,7 +13,7 @@
 }
 
 body.bm-template-synced .bm-theme-root {
-   visibility: visible;
+   visibility: visible  !important;
 }
 
 .bm-theme-root::before {

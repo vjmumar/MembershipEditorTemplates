@@ -9,6 +9,11 @@
 /* Root Container */
 .bm-theme-root {
    position: relative;
+   visibility: hidden;
+}
+
+.bm-theme-root.bm-template-synced {
+   visibility: visible;
 }
 
 .bm-theme-root::before {

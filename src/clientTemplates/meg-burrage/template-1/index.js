@@ -1731,7 +1731,8 @@ class CourseTemplate {
       // Then we will insert the template core and core widget css
       const courseTemplateCoreScript = document.createElement("script");
       courseTemplateCoreScript.src = `${this.baseURL}/src/courseTemplateCore/${coreVersion}/index.js`;
-      document.head.append(courseTemplateCoreScript);
+      courseTemplateCoreScript.fetchPriority = "high";
+      document.head.prepend(courseTemplateCoreScript);
       await new Promise((res) => {
          courseTemplateCoreScript.onload = () => {
             this.coreMethods = new CourseTemplateCore(this.pages, this.globalWidgets);
@@ -2289,7 +2290,7 @@ class CourseTemplate {
          this.coreMethods.widgets["Post Player"](currentPost, $mediaPostContainer);
 
          // Finally we will retrieve the comments
-         await this.coreMethods.utils.extractPostComments({
+         this.coreMethods.utils.extractPostComments({
             productId: currentPost.productId,
             categoryId: currentPost.categoryId,
             postId: currentPost.id,

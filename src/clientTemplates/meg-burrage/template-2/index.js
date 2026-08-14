@@ -1712,7 +1712,6 @@ class CourseTemplate {
       this.isMobile = window.matchMedia("(max-width: 768px)").matches;
       this.baseURL = `https://membershipeditor.netlify.app`;
       this.path = `/src/clientTemplates/meg-burrage/template-1/`;
-      this.init();
    }
 
    // This method initialize the script

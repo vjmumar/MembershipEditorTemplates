@@ -3674,12 +3674,6 @@
             this.templateUndoStack = [];
             document.querySelector(".undo")?.classList?.add("disabled");
 
-            // Then we will reload the preview iframe
-            const newPreviewLinkToken = await this.data.getNewLoginToken();
-            const iframeUrl = new URL(this.$iframe.src);
-            iframeUrl.searchParams.set("token", newPreviewLinkToken);
-            this.$iframe.src = iframeUrl.toString();
-
             /**
              * Finally, we provide visual confirmation to the user that their changes have been saved successfully,
              * or we catch any errors to provide a helpful failure message.

@@ -418,21 +418,46 @@ class CourseTemplateCore {
             // First we will initialize the page
             await this.pages[type](params);
 
-            // Then we will smoothly scroll to the top
+            // Finally we will smoothly scroll to the top
             window.scrollTo({
                top: 0,
                left: 0,
                behavior: "smooth",
             });
-
-            // Finally we will update the current page attribute
-            document.body.setAttribute("data-bm-theme-page", type);
          } else {
             alert(`Sorry Page Not Found! Possible Pages - ${String(pages)}`);
          }
 
          // Finally we will stop the page loader
          $root.classList.remove("loading");
+      },
+      initializePage: () => {
+         // First we will retrieve the root elements
+         const root = {
+            parent: document.querySelector(".bm-theme-root"),
+            container: document.querySelector(".bm-theme-root__container"),
+            page: document.querySelector(".bm-theme-root__container__page"),
+         };
+
+         // Then we will mark the page as rendering
+         root.page.classList.remove("bm-page-ready");
+         root.page.classList.add("bm-page-rendering");
+
+         // Then we will create a function that updates the page
+         const renderPage = (type = "", html = "") => {
+            // First we will insert the page HTML
+            root.page.innerHTML = html;
+
+            // Then we will update the active page
+            document.body.setAttribute("data-bm-theme-page", type);
+
+            // Finally we will mark the page as ready
+            root.page.classList.remove("bm-page-rendering");
+            root.page.classList.add("bm-page-ready");
+         };
+
+         // Finally we will return the root elements and page updater
+         return [root, renderPage];
       },
       markPostAsCompleteOrIncomplete: async (postId = "", isComplete = true) => {
          const auth = await this.utils.getAuth();

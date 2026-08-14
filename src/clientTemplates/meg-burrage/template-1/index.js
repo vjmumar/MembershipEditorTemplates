@@ -2068,12 +2068,8 @@ class CourseTemplate {
    // This object holds desktop pages
    pages = {
       "Dashboard": async () => {
-         // First we will retrieve the root and root container on where we will insert the page theme
-         const $root = document.querySelector(".bm-theme-root");
-         const $rootContainer = document.querySelector(".bm-theme-root__container");
-         const $rootContainerPage = document.querySelector(
-            ".bm-theme-root__container__page",
-         );
+         // First we will initialize the page rendering process
+         const [root, renderPage] = this.coreMethods.actions.initializePage();
 
          // Then we will retrieve the necessary data
          const [userData, userProductProgress, productCategories, completedPosts] =
@@ -2099,7 +2095,7 @@ class CourseTemplate {
             }));
 
          // Finally we will inject the Dashboard HTML and initialize the navigation components
-         $rootContainerPage.innerHTML = `
+         const html = `
             <div class='template-container'>
                <div class="dashboard">
                         ${this.widgets["Welcome Banner"](userData?.email, userProductProgress, productCategories, completedPosts, "")}
@@ -2114,15 +2110,12 @@ class CourseTemplate {
                </div>
             </div>
             `;
+         renderPage("Dashboard", html);
       },
 
       "Category Posts": async (params = { categoryId }) => {
-         // First we will retrieve the root and root container on where we will insert the page theme
-         const $root = document.querySelector(".bm-theme-root");
-         const $rootContainer = document.querySelector(".bm-theme-root__container");
-         const $rootContainerPage = document.querySelector(
-            ".bm-theme-root__container__page",
-         );
+         // First we will initialize the page rendering process
+         const [root, renderPage] = this.coreMethods.actions.initializePage();
 
          // Then we will retrieve the necessary data
          const [product, category] = await Promise.allSettled([
@@ -2176,7 +2169,7 @@ class CourseTemplate {
          }, "");
 
          // Finally we will render the Category Page HTML
-         $rootContainerPage.innerHTML = `
+         const html = `
             <p class="template-category-post-title">${category?.category?.title}</p>
             <div class='template-container'>
                <div class="template-category-post">
@@ -2190,15 +2183,12 @@ class CourseTemplate {
                </div>
             </div>
             `;
+         renderPage("Category Posts", html);
       },
 
       "Categories": async () => {
-         // First we will retrieve the root and root container on where we will insert the page theme
-         const $root = document.querySelector(".bm-theme-root");
-         const $rootContainer = document.querySelector(".bm-theme-root__container");
-         const $rootContainerPage = document.querySelector(
-            ".bm-theme-root__container__page",
-         );
+         // First we will initialize the page rendering process
+         const [root, renderPage] = this.coreMethods.actions.initializePage();
 
          // Then we will fetch all categories and filter out subcategories
          const categories = await (async () => {
@@ -2218,7 +2208,7 @@ class CourseTemplate {
          })();
 
          // Finally we will render the Categories List Page
-         $rootContainerPage.innerHTML = `
+         const html = `
             <p class="template-categories-title">Categories</p>
             <div class='template-container'>
                <div class="template-categories__list">
@@ -2228,15 +2218,12 @@ class CourseTemplate {
                </div>
             </div>
             `;
+         renderPage("Categories", html);
       },
 
       "Post": async (params = { postId }) => {
-         // First we will retrieve the root and root container on where we will insert the page theme
-         const $root = document.querySelector(".bm-theme-root");
-         const $rootContainer = document.querySelector(".bm-theme-root__container");
-         const $rootContainerPage = document.querySelector(
-            ".bm-theme-root__container__page",
-         );
+         // First we will initialize the page rendering process
+         const [root, renderPage] = this.coreMethods.actions.initializePage();
 
          // Then we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [product, completedPosts, currentPost, categories] =
@@ -2246,7 +2233,6 @@ class CourseTemplate {
                this.coreMethods.data.fetchPost(params.postId),
                this.coreMethods.data.fetchCategories(),
             ]).then((res) => res.map((e) => e.value));
-         console.log(currentPost);
 
          // Then we will create the bread crumbs
          const breadCrumbs = await (async () => {
@@ -2357,7 +2343,7 @@ class CourseTemplate {
          })();
 
          // Then we will render the page and re-attach the scraped elements (video, audio, comments)
-         $rootContainerPage.innerHTML = `
+         const html = `
             ${headerHTML}
             <div class='template-container'>
                <div class="template-post-page">
@@ -2371,6 +2357,7 @@ class CourseTemplate {
                </div>
             </div>
             `;
+         renderPage("Post", html);
 
          // Then we will append the media player
          const $mediaPostContainer = document.querySelector(".template-post-page__media");

@@ -1,9 +1,6 @@
 class MembershipPreview {
    constructor() {
-      // First we will retrieve the root
-      const $themeRoot = document.querySelector(".bm-theme-root");
-
-      // Then we will initialize the previewer
+      // First we will initialize the previewer
       setTimeout(() => {
          this.initializers.init();
       }, 3000);
@@ -18,10 +15,8 @@ class MembershipPreview {
          });
          if (pageChanged) {
             setTimeout(() => {
-               $themeRoot?.classList.add("loading");
                this.initializers.init();
-               $themeRoot?.classList.remove("loading");
-            }, 3000);
+            }, 500);
          }
       });
 

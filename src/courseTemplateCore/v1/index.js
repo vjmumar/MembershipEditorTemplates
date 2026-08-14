@@ -415,8 +415,8 @@ class CourseTemplateCore {
 
          // Then we will check if the page exists
          if (pages.includes(type)) {
-            // First we will update the current page attribute
-            document.body.setAttribute("data-bm-theme-page", type);
+            // First we will initialize the page
+            await this.pages[type](params);
 
             // Then we will smoothly scroll to the top
             window.scrollTo({
@@ -425,8 +425,8 @@ class CourseTemplateCore {
                behavior: "smooth",
             });
 
-            // Finally we will initialize the page
-            await this.pages[type](params);
+            // Finally we will update the current page attribute
+            document.body.setAttribute("data-bm-theme-page", type);
          } else {
             alert(`Sorry Page Not Found! Possible Pages - ${String(pages)}`);
          }

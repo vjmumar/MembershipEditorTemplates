@@ -268,14 +268,12 @@ class MembershipParser {
          console.log("hello wrold");
 
          // Finally we will iterate through the template pages to find the current view and process it
-         this.activeTemplate?.["page"]?.forEach((page) => {
-            console.log(page);
+         this.activeTemplate?.["pages"]?.forEach((page) => {
             /**
              * We will check if the current URL matches the pattern.
              * If it does, we proceed with applying the corresponding page configuration.
              */
             if (page.name === currentActivePage) {
-               console.log(page.name, currentActivePage);
                // First we will update the active page state with the editor configuration that matches the current URL
                this.activePageOnTemplate = page.editor;
 

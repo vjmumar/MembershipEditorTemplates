@@ -246,7 +246,7 @@ class MembershipParser {
                this.initializers.initSyncConfig();
             }
          });
-         pageObserver.observe($rootContainerPage, {
+         pageObserver.observe($root, {
             attributes: true,
             attributeFilter: ["class"],
          });

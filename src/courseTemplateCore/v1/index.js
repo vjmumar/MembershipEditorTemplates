@@ -440,8 +440,8 @@ class CourseTemplateCore {
          };
 
          // Then we will mark the root as rendering
-         root.classList.remove("bm-page-ready");
-         root.classList.add("bm-page-rendering");
+         root.parent.classList.remove("bm-page-ready");
+         root.parent.classList.add("bm-page-rendering");
 
          // Then we will create a function that updates the page
          const renderPage = (type = "", html = "") => {
@@ -452,8 +452,8 @@ class CourseTemplateCore {
             document.body.setAttribute("data-bm-theme-page", type);
 
             // Finally we will mark the root as ready
-            root.classList.remove("bm-page-rendering");
-            root.classList.add("bm-page-ready");
+            root.parent.classList.remove("bm-page-rendering");
+            root.parent.classList.add("bm-page-ready");
          };
 
          // Finally we will return the root elements and page updater

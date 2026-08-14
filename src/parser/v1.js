@@ -86,7 +86,6 @@ class MembershipParser {
                         if (item.type && item.target) {
                            return `type-target:${item.type}:${item.target}`;
                         }
-                        if (item.urlRegex) return `urlRegex:${item.urlRegex}`;
                         if (item.name) return `name:${item.name}`;
                         if (item.label) return `label:${item.label}`;
                         return "";
@@ -224,13 +223,35 @@ class MembershipParser {
    initializers = {
       // This method serves as the entry point for the application initialization
       init: () => {
+         // First we will sync the current configuration
          this.initializers.initSyncConfig();
+
+         // Then we will observe page changes and sync the configuration again
+         if (window.bmParserPageObserver === "initialized") return;
+         window.bmParserPageObserver = new MutationObserver((mutations) => {
+            const pageUpdated = mutations.some((mutation) => {
+               return (
+                  mutation.type === "attributes" &&
+                  mutation.attributeName === "data-bm-theme-page"
+               );
+            });
+            if (pageUpdated) {
+               this.initializers.initSyncConfig();
+            }
+         });
+
+         window.bmParserPageObserver.observe(document.body, {
+            attributes: true,
+         });
+
+         // Finally we will set window.bmParserPageObserver to initialized
+         window.bmParserPageObserver = "initialized";
       },
 
       // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution
       initSyncConfig: (immediateSync = false) => {
-         // First we will retrieve the current URL to determine which page configuration should be applied
-         const url = window.location.href;
+         // First we will check the body data-bm-theme-page
+         const currentActivePage = document.body.getAttribute("data-bm-theme-page");
 
          // Then we will sync the template's custom CSS so base styles are applied before other customizations
          this.actions.syncTemplateCustomCss();
@@ -247,16 +268,10 @@ class MembershipParser {
          // Finally we will iterate through the template pages to find the current view and process it
          this.activeTemplate?.["page"]?.forEach((page) => {
             /**
-             * First we will create a RegExp instance using the page's URL pattern.
-             * This allows us to support dynamic route matching instead of exact URL comparison.
-             */
-            const urlRegex = new RegExp(page?.urlRegex);
-
-            /**
-             * Finally we will check if the current URL matches the pattern.
+             * We will check if the current URL matches the pattern.
              * If it does, we proceed with applying the corresponding page configuration.
              */
-            if (urlRegex?.test(url)) {
+            if (page.name === currentActivePage) {
                // First we will update the active page state with the editor configuration that matches the current URL
                this.activePageOnTemplate = page.editor;
 

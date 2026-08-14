@@ -258,16 +258,17 @@ class CourseTemplateCore {
             }
          });
       },
-      fetchUserProductProgress: async (cId = "") => {
+      fetchUserProductProgress: async () => {
+         alert("test");
          // First we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [categories, completedPosts] = await Promise.allSettled([
             this.coreMethods.data.fetchCompletedPosts(),
             this.coreMethods.data.fetchCategories(),
          ]).then((res) => res.map((e) => e.value));
+         console.log(categories, completedPosts);
 
          if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
-            console.log(categories, completedPosts);
             return 50;
             sessionStorage.setItem(storageName, JSON.stringify(e || "{}"));
          });

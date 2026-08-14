@@ -297,11 +297,13 @@ class MembershipParser {
             });
 
             // Finally we will apply the feature customizations
-            await this.actions.syncTemplateFeatureCustomizations(null, null, true);
+            this.actions.syncTemplateFeatureCustomizations(null, null, true);
          }
 
          // Finally we will mark the template as synchronized
-         document.body.classList.add("bm-template-synced");
+         setTimeout(() => {
+            document.body.classList.add("bm-template-synced");
+         }, 1000);
       },
    };
 
@@ -545,12 +547,9 @@ class MembershipParser {
             // First we will run the cleanup script to reset any previous states before removing the feature
             eval(featureItem.cleanUpJs(featureItem.customizations));
 
-            // Then we will remove the existing feature style and script tags from the DOM
+            // Then we will remove the existing feature style from the DOM
             document
                .querySelector(`style[id = '${templateItemKey}-${featureKey}']`)
-               ?.remove();
-            document
-               .querySelector(`script[id = '${templateItemKey}-${featureKey}']`)
                ?.remove();
 
             // Then we will re-insert the fresh style tag with the updated CSS

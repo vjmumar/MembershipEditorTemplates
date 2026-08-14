@@ -216,9 +216,6 @@ class MembershipParser {
             // Then we will sync the template customization schema to the global scope
             window.templateCustomizationSchema = this.activeTemplate;
 
-            // Then we will initialize the course template
-            window.CourseTemplate.init();
-
             // Finally, we invoke the main application initializer.
             this.initializers.init();
          };

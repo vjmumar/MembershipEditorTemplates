@@ -9,6 +9,11 @@
 /* Root Container */
 .bm-theme-root {
    position: relative;
+   visibility: hidden;
+}
+
+.bm-theme-root.bm-template-synced {
+   visibility: visible;
 }
 
 .bm-theme-root::before {
@@ -285,6 +290,7 @@
    top: 0;
    z-index: 0;
 }
+
 .template-navbar__logo-link img {
    margin-left: 50px;
    max-height: 100px;

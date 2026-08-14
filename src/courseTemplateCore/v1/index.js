@@ -264,8 +264,8 @@ class CourseTemplateCore {
          const storageName = `${productId}-product-progress`;
          // First we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [categories, completedPosts] = await Promise.allSettled([
-            this.coreMethods.data.fetchCategories(),
-            this.coreMethods.data.fetchCompletedPosts(),
+            this.data.fetchCategories(),
+            this.data.fetchCompletedPosts(),
          ]).then((res) => res.map((e) => e.value));
          console.log(categories, completedPosts);
 

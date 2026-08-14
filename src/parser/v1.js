@@ -236,7 +236,6 @@ class MembershipParser {
          const $root = document.querySelector(".bm-theme-root");
 
          // Then we will initialize the page observer
-         let isSync = false;
          const pageObserver = new MutationObserver((mutations) => {
             const pageIsReady = mutations.some((mutation) => {
                return (
@@ -245,8 +244,7 @@ class MembershipParser {
                   mutation.target.classList.contains("bm-page-ready")
                );
             });
-            if (pageIsReady && !isSync) {
-               isSync = true;
+            if (pageIsReady) {
                this.initializers.initSyncConfig(true);
             }
          });
@@ -262,11 +260,10 @@ class MembershipParser {
       // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution
       initSyncConfig: async (immediateSync = false) => {
          // First we will retrieve the theme root and current active page
-         const $root = document.querySelector(".bm-theme-root");
          const currentActivePage = document.body.getAttribute("data-bm-theme-page");
 
          // Then we will mark the template as not yet synchronized
-         $root?.classList.remove("bm-template-synced");
+         document.body.classList.remove("bm-template-synced");
 
          // Then we will sync the template's custom CSS so base styles are applied before other customizations
          this.actions.syncTemplateCustomCss();
@@ -304,9 +301,7 @@ class MembershipParser {
          }
 
          // Finally we will mark the template as synchronized
-         setTimeout(() => {
-            $root?.classList.add("bm-template-synced");
-         }, 100);
+         document.body.classList.add("bm-template-synced");
       },
    };
 

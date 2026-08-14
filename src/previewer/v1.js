@@ -10,7 +10,7 @@ class MembershipPreview {
                clearInterval(interval);
                setTimeout(() => {
                   this.initializers.init();
-               }, 500);
+               }, 0);
             }
          }, 100);
       };

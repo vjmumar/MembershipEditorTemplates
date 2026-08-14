@@ -308,9 +308,7 @@ class MembershipParser {
          }
 
          // Finally we will mark the template as synchronized
-         setTimeout(() => {
-            document.body.classList.add("bm-template-synced");
-         }, 1000);
+         document.body.classList.add("bm-template-synced");
       },
    };
 

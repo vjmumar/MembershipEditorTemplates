@@ -292,16 +292,16 @@ class MembershipParser {
             this.actions.syncTemplateElementsCustomization();
 
             // Then we will wait until the feature customizations are ready
-            // await new Promise((resolve) => {
-            //    setTimeout(resolve, immediateSync ? 0 : 5500);
-            // });
+            await new Promise((resolve) => {
+               setTimeout(resolve, immediateSync ? 0 : 5500);
+            });
 
             // Finally we will apply the feature customizations
             await this.actions.syncTemplateFeatureCustomizations(null, null, true);
          }
 
          // Finally we will mark the template as synchronized
-         document.body.classList.add("bm-template-synced");
+         //  document.body.classList.add("bm-template-synced");
       },
    };
 

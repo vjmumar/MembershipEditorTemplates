@@ -1,6 +1,6 @@
 window.templateCustomizationSchema = {
    name: "Production",
-   id: "template-3",
+   id: "template-1",
    customCss:
       "@font-face { font-family: 'Ogg'; src: url('https://res.cloudinary.com/dpr6hw8uh/raw/upload/v1659948521/Ogg-Roman_vloao9.otf') format('opentype'); font-weight: normal; font-style: normal; font-display: swap; }",
    customFonts: [],
@@ -1728,6 +1728,16 @@ class CourseTemplate {
       fScript.src = "https://kit.fontawesome.com/d84a98056b.js";
       document.head.append(fScript);
 
+      // Then we will insert the templates global, widget and pages styles
+      document.head.insertAdjacentHTML(
+         "afterbegin",
+         `
+            <link class="template-global-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/global.css" fetchpriority="high"></link>
+            <link class="template-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/page.css" fetchpriority="high"></link>
+            <link class="template-widget-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/widget.css" fetchpriority="high"></link>
+         `,
+      );
+
       // Then we will insert the template core and core widget css
       const courseTemplateCoreScript = document.createElement("script");
       courseTemplateCoreScript.src = `${this.baseURL}/src/courseTemplateCore/${coreVersion}/index.js`;
@@ -1744,24 +1754,10 @@ class CourseTemplate {
       });
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link class="template-global-styles" rel="stylesheet" href="${this.baseURL}/src/courseTemplateCore/${coreVersion}/css/widgets.css"></link>`,
+         `<link class="template-global-styles" rel="stylesheet" href="${this.baseURL}/src/courseTemplateCore/${coreVersion}/css/widgets.css" fetchpriority="high"></link>`,
       );
 
-      // Then we will insert the global and widget styles
-      document.head.insertAdjacentHTML(
-         "beforeend",
-         `<link class="template-global-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/global.css"></link>`,
-      );
-      document.head.insertAdjacentHTML(
-         "beforeend",
-         `<link class="template-widget-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/widget.css"></link>`,
-      );
-
-      // Then we will initialize the styles, global widgets and the landing page
-      document.head.insertAdjacentHTML(
-         "beforeend",
-         `<link class="template-styles" rel="stylesheet" href="${this.baseURL}${this.path}css/page.css"></link>`,
-      );
+      // Then we will initialize the  global widgets and the landing page
       const $root = document.querySelector(".bm-theme-root");
       const $rootContainer = document.querySelector(".bm-theme-root__container");
       const $rootContainerPage = document.querySelector(

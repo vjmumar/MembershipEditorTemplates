@@ -186,7 +186,9 @@ class MembershipPreview {
          };
 
          // Then we will retrieve the active page
-         const activePage = document.body.getAttribute("data-bm-theme-page");
+         const activePage = document
+            .querySelector(".bm-theme-root")
+            .getAttribute("data-bm-theme-page");
 
          // Finally we will return the editable pages
          return (templateSchema?.pages || []).map((page) => {

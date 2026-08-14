@@ -543,15 +543,7 @@ class MembershipParser {
          // Then we will define a helper function to handle the actual DOM manipulation (Cleanup -> Removal -> Injection)
          const syncFeature = (templateItemKey = "", featureKey = "") => {
             // First we will run the cleanup script to reset any previous states before removing the feature
-            const scriptTagCleanUp = document.createElement("script");
-            scriptTagCleanUp.id = `${templateItemKey}-${featureKey}`;
-            scriptTagCleanUp.innerHTML = featureItem.cleanUpJs(
-               featureItem.customizations,
-            );
-            document.body.append(scriptTagCleanUp);
-            setTimeout(() => {
-               scriptTagCleanUp.remove();
-            }, 500);
+            eval(featureItem.cleanUpJs(featureItem.customizations));
 
             // Then we will remove the existing feature style and script tags from the DOM
             document
@@ -572,10 +564,7 @@ class MembershipParser {
             );
 
             // Finally we will re-insert the fresh script tag with the updated JavaScript
-            const scriptTag = document.createElement("script");
-            scriptTag.id = `${templateItemKey}-${featureKey}`;
-            scriptTag.innerHTML = featureItem.js(featureItem.customizations);
-            document.body.append(scriptTag);
+            eval(featureItem.js(featureItem.customizations));
          };
 
          // Then if a forced synchronization is requested, we will proceed to update all active features across the entire template

@@ -13,11 +13,8 @@ class MembershipPreview {
                mutation.attributeName === "data-bm-theme-page"
             );
          });
-
          if (pageChanged) {
-            setTimeout(() => {
-               this.initializers.init();
-            }, 3000);
+            this.initializers.init();
          }
       });
 
@@ -49,10 +46,11 @@ class MembershipPreview {
          });
 
          // Then we will insert the preview tooltip stylesheet
+         if (document.head.querySelector("#bm-preview-style")) return;
          document.head.insertAdjacentHTML(
             "afterbegin",
             `
-            <style>
+            <style id="bm-preview-style">
                 [data-editable="true"] {
                   outline: 1.5px dashed rgba(16, 185, 129, 0.7);
                   outline-offset: -1px;
@@ -99,7 +97,8 @@ class MembershipPreview {
           */
          window.parent?.MembershipEditor?.initializers?.initializeGlobalContents();
 
-         // Finally we will attach the main click listener to detect interactions with editable elements
+         // Then we will attach the main click listener to detect interactions with editable elements
+         if (window.bmPreviewClickListener === "initialized") return;
          window.addEventListener("click", (e) => {
             /**
              * We will check if the clicked element or any of its parent elements
@@ -115,6 +114,9 @@ class MembershipPreview {
                );
             }
          });
+
+         // Finally we will set window.bmPreviewClickListener to initialized
+         window.bmPreviewClickListener = "initialized";
       },
    };
 

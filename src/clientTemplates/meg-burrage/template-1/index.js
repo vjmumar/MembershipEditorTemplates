@@ -2390,12 +2390,12 @@ class CourseTemplate {
                               <p class="template-welcome__greeting">Welcome back, ${name}</p>
                               <p class="template-welcome__progress">
                                  <i class="fa-solid fa-desktop template-welcome__progress-icon"></i>
-                                 <span>${userProductProgress?.progress || 0}% COMPLETE</span>
+                                 <span>${userProductProgress || 0}% COMPLETE</span>
                               </p>
                            </div>
                            <button 
                               ${
-                                 userProductProgress?.progress !== 100
+                                 userProductProgress !== 100
                                     ? `onclick="window.CourseTemplate.coreMethods.actions.navigate('Post', {postId: '${bannerButtonLinkAndText.nextPostId}'})"`
                                     : ""
                               }

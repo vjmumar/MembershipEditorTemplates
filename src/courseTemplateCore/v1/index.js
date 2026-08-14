@@ -271,7 +271,7 @@ class CourseTemplateCore {
 
          if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
-            return 50;
+            res(30);
             sessionStorage.setItem(storageName, JSON.stringify(e || "{}"));
          });
       },

@@ -306,7 +306,7 @@ class MembershipParser {
          // Finally we will mark the template as synchronized
          setTimeout(() => {
             $root?.classList.add("bm-template-synced");
-         }, 0);
+         }, 100);
       },
    };
 

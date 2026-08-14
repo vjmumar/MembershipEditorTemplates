@@ -224,7 +224,7 @@ class MembershipParser {
       // This method serves as the entry point for the application initialization
       init: () => {
          // First we will sync the current configuration
-         this.initializers.initSyncConfig();
+         this.initializers.initSyncConfig(true);
 
          // Then we will observe when the page is ready and sync the configuration again
          if (window.bmParserPageObserver === "initialized") return;

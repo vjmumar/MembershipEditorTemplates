@@ -6,6 +6,12 @@
    min-width: 0;
 }
 
+.template-post-player__media {
+   width: 100%;
+   max-width: 100%;
+   min-width: 0;
+}
+
 .template-post-player--video {
    background: #000;
 }

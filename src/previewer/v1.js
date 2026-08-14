@@ -1,9 +1,11 @@
 class MembershipPreview {
    constructor() {
-      // First we will create a function that initializes the previewer once the theme is no longer loading
+      // First we will retrieve the theme root
+      const $themeRoot = document.querySelector(".bm-theme-root");
+
+      // Then we will create a function that initializes the previewer once the theme is no longer loading
       const initializeWhenThemeIsReady = () => {
          const interval = setInterval(() => {
-            const $themeRoot = document.querySelector(".bm-theme-root");
             if ($themeRoot && !$themeRoot.classList.contains("loading")) {
                clearInterval(interval);
                setTimeout(() => {
@@ -26,13 +28,14 @@ class MembershipPreview {
                mutation.attributeName === "data-bm-theme-page"
             );
          });
+
          if (pageChanged) {
             initializeWhenThemeIsReady();
          }
       });
 
       // Finally we will initialize the page observer
-      pageObserver.observe(document.body, {
+      pageObserver.observe($themeRoot, {
          attributes: true,
          attributeFilter: ["data-bm-theme-page"],
       });

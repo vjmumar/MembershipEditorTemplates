@@ -449,7 +449,7 @@ class CourseTemplateCore {
             root.page.innerHTML = html;
 
             // Then we will update the active page
-            document.body.setAttribute("data-bm-theme-page", type);
+            root.parent.setAttribute("data-bm-theme-page", type);
 
             // Finally we will mark the root as ready
             root.parent.classList.remove("bm-page-rendering");

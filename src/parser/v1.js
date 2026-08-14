@@ -267,12 +267,13 @@ class MembershipParser {
       // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution
       initSyncConfig: async (immediateSync = false) => {
          // First we will retrieve the theme root and current active page
-         const currentActivePage = document.body.getAttribute("data-bm-theme-page");
+         const $root = document.querySelector(".bm-theme-root");
+         const currentActivePage = $root.getAttribute("data-bm-theme-page");
 
-         // Then we will mark the template as not yet synchronized
-         document.body.classList.remove("bm-template-synced");
+         // Then we will mark the template as not synchronized
+         $root.classList.remove("bm-template-synced");
 
-         // Then we will sync the template's custom CSS so base styles are applied before other customizations
+         // Then we will sync the template's custom CSS
          this.actions.syncTemplateCustomCss();
 
          // Then we will sync the template's used google fonts
@@ -294,11 +295,11 @@ class MembershipParser {
             // First we will update the active page state
             this.activePageOnTemplate = activePage.editor;
 
-            // Then we will apply CSS and element-level customizations
+            // Then we will apply the page customizations
             this.actions.syncTemplateCssCustomizations();
             this.actions.syncTemplateElementsCustomization();
 
-            // Then we will wait until the feature customizations are ready
+            // Then we will wait until feature customizations are ready
             await new Promise((resolve) => {
                setTimeout(resolve, immediateSync ? 0 : 5500);
             });
@@ -308,7 +309,7 @@ class MembershipParser {
          }
 
          // Finally we will mark the template as synchronized
-         document.body.classList.add("bm-template-synced");
+         $root.classList.add("bm-template-synced");
       },
    };
 

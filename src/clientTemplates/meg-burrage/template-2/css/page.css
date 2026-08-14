@@ -9,7 +9,7 @@ p {
 } 
 
 /* Dashboard */
-body[data-bm-theme-page = "Dashboard"] .bm-theme-root__container__page {
+.bm-theme-root[data-bm-theme-page = "Dashboard"] .bm-theme-root__container__page {
    width: 100%;
    max-width: calc(100% - 40px);
    margin-left: auto;
@@ -55,7 +55,7 @@ body[data-bm-theme-page = "Dashboard"] .bm-theme-root__container__page {
 } 
 
 /* Category Posts */
-body[data-bm-theme-page = "Category Posts"] .bm-theme-root__container__page {
+.bm-theme-root[data-bm-theme-page = "Category Posts"] .bm-theme-root__container__page {
    width: 100%;
    max-width: calc(100% - 40px);
    margin-left: auto;
@@ -141,7 +141,7 @@ body[data-bm-theme-page = "Category Posts"] .bm-theme-root__container__page {
 } 
 
 /* Categories */
-body[data-bm-theme-page = "Categories"] .bm-theme-root__container__page {
+.bm-theme-root[data-bm-theme-page = "Categories"] .bm-theme-root__container__page {
    width: 100%;
    max-width: calc(100% - 40px);
    margin-left: auto;
@@ -204,7 +204,7 @@ body[data-bm-theme-page = "Categories"] .bm-theme-root__container__page {
 } 
 
 /* Post */
-body[data-bm-theme-page="Post"] .bm-theme-root__container__page {
+.bm-theme-root[data-bm-theme-page="Post"] .bm-theme-root__container__page {
    width: 100%;
    max-width: calc(100% - 40px);
    margin-left: auto;
@@ -359,11 +359,11 @@ body[data-bm-theme-page="Post"] .bm-theme-root__container__page {
 
 @media (max-width: 1024px) {
    /* Dashboard */
-   body[data-bm-theme-page = "Dashboard"] .bm-theme-root__container {
+   .bm-theme-root[data-bm-theme-page = "Dashboard"] .bm-theme-root__container {
       width: 100%;
       max-width: calc(100% - 35px);
    }
-   body[data-bm-theme-page = "Dashboard"] .bm-theme-root__container__page {
+   .bm-theme-root[data-bm-theme-page = "Dashboard"] .bm-theme-root__container__page {
       width: 100%;
       max-width: 100%;
       margin-left: 0;
@@ -384,11 +384,11 @@ body[data-bm-theme-page="Post"] .bm-theme-root__container__page {
    }
 
    /* Category Posts */
-   body[data-bm-theme-page = "Category Posts"] .bm-theme-root__container {
+   .bm-theme-root[data-bm-theme-page = "Category Posts"] .bm-theme-root__container {
       width: 100%;
       max-width: calc(100% - 35px);
    }
-   body[data-bm-theme-page = "Category Posts"] .bm-theme-root__container__page {
+   .bm-theme-root[data-bm-theme-page = "Category Posts"] .bm-theme-root__container__page {
       width: 100%;
       max-width: 100%;
       margin-left: 0;
@@ -421,11 +421,11 @@ body[data-bm-theme-page="Post"] .bm-theme-root__container__page {
    }
 
    /* Categories */
-   body[data-bm-theme-page = "Categories"] .bm-theme-root__container {
+   .bm-theme-root[data-bm-theme-page = "Categories"] .bm-theme-root__container {
       width: 100%;
       max-width: calc(100% - 35px);
    }
-   body[data-bm-theme-page = "Categories"] .bm-theme-root__container__page {
+   .bm-theme-root[data-bm-theme-page = "Categories"] .bm-theme-root__container__page {
       width: 100%;
       max-width: 100%;
       margin-left: 0;
@@ -450,11 +450,11 @@ body[data-bm-theme-page="Post"] .bm-theme-root__container__page {
    }
 
    /* Post */
-   body[data-bm-theme-page="Post"] .bm-theme-root__container {
+   .bm-theme-root[data-bm-theme-page="Post"] .bm-theme-root__container {
       width: 100%;
       max-width: calc(100% - 35px);
    }
-   body[data-bm-theme-page="Post"] .bm-theme-root__container__page {
+   .bm-theme-root[data-bm-theme-page="Post"] .bm-theme-root__container__page {
       width: 100%;
       max-width: 100%;
       margin-left: 0;

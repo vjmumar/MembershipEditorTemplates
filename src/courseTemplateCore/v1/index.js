@@ -262,16 +262,36 @@ class CourseTemplateCore {
          const auth = await this.utils.getAuth();
          const productId = auth?.productId;
          const storageName = `${productId}-product-progress`;
-         // First we will fetch all necessary data for the lesson (Post, Category, Completions)
+
+         // First we will fetch the categories and completed posts
          const [categories, completedPosts] = await Promise.allSettled([
             this.data.fetchCategories(),
             this.data.fetchCompletedPosts(),
-         ]).then((res) => res.map((e) => e.value));
-         console.log(categories, completedPosts);
+         ]).then((res) => res.map((e) => e.value || []));
 
-         return await new Promise(async (resolved, reject) => {
-            res(30);
+         // Then we will retrieve all posts inside the categories
+         const allPosts = categories.flatMap((category) => {
+            return category?.posts || [];
          });
+
+         // Then we will retrieve the completed post IDs
+         const completedPostIds = new Set(completedPosts.map((post) => post.postId));
+
+         // Then we will retrieve the total completed posts
+         const totalCompletedPosts = allPosts.filter((post) => {
+            return completedPostIds.has(post.id);
+         }).length;
+
+         // Then we will calculate the product progress
+         const progress = allPosts.length
+            ? Math.round((totalCompletedPosts / allPosts.length) * 100)
+            : 0;
+
+         // Then we will store the product progress
+         sessionStorage.setItem(storageName, String(progress));
+
+         // Finally we will return the product progress
+         return progress;
       },
       fetchCategoryProgress: async () => {
          const auth = await this.utils.getAuth();

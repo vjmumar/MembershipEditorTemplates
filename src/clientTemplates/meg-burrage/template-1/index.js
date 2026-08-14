@@ -2364,7 +2364,7 @@ class CourseTemplate {
             })();
 
             // Then, we check the user's progress to determine if we should show "Resume Course" and find the next post in the sequence, or simply start from the beginning.
-            if (userProductProgress?.completedPosts >= 1) {
+            if (userProductProgress >= 1) {
                const lastCompletedPost = allPosts.find(
                   (e) => e.id === completedPosts?.[0]?.postId,
                );

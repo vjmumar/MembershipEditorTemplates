@@ -216,9 +216,6 @@ class MembershipParser {
             // Then we will sync the template customization schema to the global scope
             window.templateCustomizationSchema = this.activeTemplate;
 
-            // Then we will initialize the course template
-            window.CourseTemplate.init();
-
             // Finally, we invoke the main application initializer.
             this.initializers.init();
          };
@@ -262,9 +259,13 @@ class MembershipParser {
       },
 
       // This method is responsible for synchronizing the CSS, element, and feature customizations in a single execution
-      initSyncConfig: (immediateSync = false) => {
-         // First we will check the body data-bm-theme-page
+      initSyncConfig: async (immediateSync = false) => {
+         // First we will retrieve the theme root and current active page
+         const $root = document.querySelector(".bm-theme-root");
          const currentActivePage = document.body.getAttribute("data-bm-theme-page");
+
+         // Then we will mark the template as not yet synchronized
+         $root?.classList.remove("bm-template-synced");
 
          // Then we will sync the template's custom CSS so base styles are applied before other customizations
          this.actions.syncTemplateCustomCss();
@@ -278,32 +279,31 @@ class MembershipParser {
          // Then we will sync the template's branding styles
          this.actions.syncTemplateBrandingCss();
 
-         // Finally we will iterate through the template pages to find the current view and process it
-         this.activeTemplate?.["pages"]?.forEach((page) => {
-            /**
-             * We will check if the current URL matches the pattern.
-             * If it does, we proceed with applying the corresponding page configuration.
-             */
-            if (page.name === currentActivePage) {
-               // First we will update the active page state with the editor configuration that matches the current URL
-               this.activePageOnTemplate = page.editor;
-
-               // Then we will invoke all synchronizers to apply CSS and element-level customizations for this page
-               this.actions.syncTemplateCssCustomizations();
-               this.actions.syncTemplateElementsCustomization();
-
-               /**
-                * Finally we will delay feature customizations to ensure the DOM
-                * and previous customizations are fully applied before executing
-                */
-               setTimeout(
-                  () => {
-                     this.actions.syncTemplateFeatureCustomizations(null, null, true);
-                  },
-                  immediateSync ? 0 : 5500,
-               );
-            }
+         // Then we will retrieve the current page configuration
+         const activePage = this.activeTemplate?.["pages"]?.find((page) => {
+            return page.name === currentActivePage;
          });
+
+         // Then we will process the current page configuration
+         if (activePage) {
+            // First we will update the active page state
+            this.activePageOnTemplate = activePage.editor;
+
+            // Then we will apply CSS and element-level customizations
+            this.actions.syncTemplateCssCustomizations();
+            this.actions.syncTemplateElementsCustomization();
+
+            // Then we will wait until the feature customizations are ready
+            await new Promise((resolve) => {
+               setTimeout(resolve, immediateSync ? 0 : 5500);
+            });
+
+            // Finally we will apply the feature customizations
+            await this.actions.syncTemplateFeatureCustomizations(null, null, true);
+         }
+
+         // Finally we will mark the template as synchronized
+         $root?.classList.add("bm-template-synced");
       },
    };
 

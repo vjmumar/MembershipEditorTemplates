@@ -259,11 +259,10 @@ class CourseTemplateCore {
          });
       },
       fetchUserProductProgress: async () => {
-         alert("test");
          // First we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [categories, completedPosts] = await Promise.allSettled([
-            this.coreMethods.data.fetchCompletedPosts(),
             this.coreMethods.data.fetchCategories(),
+            this.coreMethods.data.fetchCompletedPosts(),
          ]).then((res) => res.map((e) => e.value));
          console.log(categories, completedPosts);
 

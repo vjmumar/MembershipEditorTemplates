@@ -1,10 +1,10 @@
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
+.bm-theme-root h1,
+.bm-theme-root h2,
+.bm-theme-root h3,
+.bm-theme-root h4,
+.bm-theme-root h5,
+.bm-theme-root h6,
+.bm-theme-root p {
    margin: 0;
 } 
 

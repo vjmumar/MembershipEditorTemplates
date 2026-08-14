@@ -1,8 +1,8 @@
-*:not(strong):not(em) {
+.bm-theme-root *:not(strong):not(em) {
    font-family: var(--branding-body-font-family), sans-serif;
 } 
 
-*[onclick] {
+.bm-theme-root *[onclick] {
    cursor: pointer;
 }
 

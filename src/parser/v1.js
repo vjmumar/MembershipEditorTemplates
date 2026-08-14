@@ -10,6 +10,7 @@ class MembershipParser {
       // Then we will load lodash
       const lodashScript = document.createElement("script");
       lodashScript.src = "https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js";
+      lodashScript.fetchPriority = "high";
       document.head.prepend(lodashScript);
 
       // Finally, we start the process of initializing the application and fetching the client's active templates.
@@ -35,7 +36,8 @@ class MembershipParser {
                ?.then((e) => {
                   const script = document.createElement("script");
                   script.innerHTML = e;
-                  document.body.append(script);
+                  script.fetchPriority = "high";
+                  document.head.append(script);
                   return e;
                });
          }
@@ -54,7 +56,8 @@ class MembershipParser {
          );
          const script = document.createElement("script");
          script.src = (currentTemplate ? currentTemplate : this.templates[0])?.scriptLink;
-         document.body.append(script);
+         script.fetchPriority = "high";
+         document.head.append(script);
 
          /**
           * Finally, once the template script has finished loading, we initialize the active template configuration,

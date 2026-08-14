@@ -2395,7 +2395,7 @@ class CourseTemplate {
                            </div>
                            <button 
                               ${
-                                 userProductProgress?.progress === 100
+                                 userProductProgress?.progress !== 100
                                     ? `onclick="window.CourseTemplate.coreMethods.actions.navigate('Post', {postId: '${nextPostId}'})"`
                                     : ""
                               }

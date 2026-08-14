@@ -1,7 +1,9 @@
 .template-post-player {
-   width: 100%;
    overflow: hidden;
    border-radius: 8px;
+   width: 100%;
+   max-width: 100%;
+   min-width: 0;
 }
 
 .template-post-player--video {

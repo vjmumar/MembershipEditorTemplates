@@ -235,9 +235,8 @@ class MembershipParser {
                   mutation.attributeName === "data-bm-theme-page"
                );
             });
-            console.log("parser", pageUpdated);
             if (pageUpdated) {
-               this.initializers.initSyncConfig();
+               this.initializers.initSyncConfig(true);
             }
          });
 
@@ -273,6 +272,7 @@ class MembershipParser {
              * If it does, we proceed with applying the corresponding page configuration.
              */
             if (page.name === currentActivePage) {
+               console.log(page.name, currentActivePage);
                // First we will update the active page state with the editor configuration that matches the current URL
                this.activePageOnTemplate = page.editor;
 

@@ -235,6 +235,7 @@ class MembershipParser {
                   mutation.attributeName === "data-bm-theme-page"
                );
             });
+            console.log("parser", pageUpdated);
             if (pageUpdated) {
                this.initializers.initSyncConfig();
             }

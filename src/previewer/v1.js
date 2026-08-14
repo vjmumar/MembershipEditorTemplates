@@ -14,7 +14,9 @@ class MembershipPreview {
             );
          });
          if (pageChanged) {
-            this.initializers.init();
+            setTimeout(() => {
+               this.initializers.init();
+            }, 3000);
          }
       });
 

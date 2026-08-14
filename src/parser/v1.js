@@ -265,6 +265,7 @@ class MembershipParser {
 
          // Then we will sync the template's branding styles
          this.actions.syncTemplateBrandingCss();
+         console.log("hello wrold");
 
          // Finally we will iterate through the template pages to find the current view and process it
          this.activeTemplate?.["page"]?.forEach((page) => {

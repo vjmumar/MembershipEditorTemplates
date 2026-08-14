@@ -236,10 +236,9 @@ class MembershipParser {
                );
             });
             if (pageUpdated) {
-               this.initializers.initSyncConfig(true);
+               this.initializers.initSyncConfig();
             }
          });
-
          window.bmParserPageObserver.observe(document.body, {
             attributes: true,
          });

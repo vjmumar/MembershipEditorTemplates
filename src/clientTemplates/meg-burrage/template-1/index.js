@@ -2396,7 +2396,7 @@ class CourseTemplate {
                            <button 
                               ${
                                  userProductProgress?.progress !== 100
-                                    ? `onclick="window.CourseTemplate.coreMethods.actions.navigate('Post', {postId: '${nextPostId}'})"`
+                                    ? `onclick="window.CourseTemplate.coreMethods.actions.navigate('Post', {postId: '${bannerButtonLinkAndText.nextPostId}'})"`
                                     : ""
                               }
                               class="template-welcome__button">${bannerButtonLinkAndText.text}

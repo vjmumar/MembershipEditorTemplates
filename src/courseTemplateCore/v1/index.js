@@ -259,51 +259,17 @@ class CourseTemplateCore {
          });
       },
       fetchUserProductProgress: async (cId = "") => {
-         const auth = await this.utils.getAuth();
-         const productId = auth?.productId;
-         const locationId = auth?.locationId;
-         const token = auth?.tokenId;
-         const contactId = auth?.contactId;
-         const storageName = `${productId}-product-progress`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "{}");
+         // First we will fetch all necessary data for the lesson (Post, Category, Completions)
+         const [categories, completedPosts] = await Promise.allSettled([
+            this.coreMethods.data.fetchCompletedPosts(),
+            this.coreMethods.data.fetchCategories(),
+         ]).then((res) => res.map((e) => e.value));
+
          if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
-            if (token) {
-               this.utils
-                  .relayUrlFetch(
-                     [
-                        `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/products/user-activity/${cId || contactId}`,
-                        `https://services.leadconnectorhq.com/membership/locations/${locationId}/products/user-activity/${cId || contactId}`,
-                     ],
-                     {
-                        headers: {
-                           "accept": "application/json, text/plain, */*",
-                           "accept-language": "en-US,en;q=0.5",
-                           "token-id": token,
-                           "content-type": "application/json",
-                        },
-                        body: null,
-                        method: "POST",
-                        mode: "cors",
-                        credentials: "omit",
-                        priority: "high",
-                     },
-                  )
-                  .then((e) => e.json())
-                  .then((e) => {
-                     e.progressPercentage = (
-                        (e.completedPosts / e.totalPosts) *
-                        100
-                     ).toFixed(0);
-                     sessionStorage.setItem(storageName, JSON.stringify(e || "{}"));
-                     resolved(e);
-                  })
-                  .catch(() => {
-                     resolved({});
-                  });
-            } else {
-               console.log("No Token Found! Product Progress!");
-            }
+            console.log(categories, completedPosts);
+            return 50;
+            sessionStorage.setItem(storageName, JSON.stringify(e || "{}"));
          });
       },
       fetchCategoryProgress: async () => {

@@ -24,7 +24,6 @@ class MembershipPreview {
       // Finally we will initialize the page observer
       pageObserver.observe(document.body, {
          attributes: true,
-         attributeFilter: ["data-bm-theme-page"],
       });
    }
 

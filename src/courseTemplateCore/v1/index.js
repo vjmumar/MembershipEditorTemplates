@@ -259,6 +259,9 @@ class CourseTemplateCore {
          });
       },
       fetchUserProductProgress: async () => {
+         const auth = await this.utils.getAuth();
+         const productId = auth?.productId;
+         const storageName = `${productId}-product-progress`;
          // First we will fetch all necessary data for the lesson (Post, Category, Completions)
          const [categories, completedPosts] = await Promise.allSettled([
             this.coreMethods.data.fetchCategories(),

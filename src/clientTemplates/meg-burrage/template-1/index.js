@@ -1744,7 +1744,7 @@ class CourseTemplate {
       });
       document.head.insertAdjacentHTML(
          "beforeend",
-         `<link class="template-global-styles" rel="stylesheet" href="${this.baseURL}/src/courseTemplateCore/${coreVersion}/css/widget.css"></link>`,
+         `<link class="template-global-styles" rel="stylesheet" href="${this.baseURL}/src/courseTemplateCore/${coreVersion}/css/widgets.css"></link>`,
       );
 
       // Then we will insert the global and widget styles

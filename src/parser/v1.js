@@ -226,21 +226,29 @@ class MembershipParser {
          // First we will sync the current configuration
          this.initializers.initSyncConfig();
 
-         // Then we will observe page changes and sync the configuration again
+         // Then we will observe when the page is ready and sync the configuration again
          if (window.bmParserPageObserver === "initialized") return;
-         window.bmParserPageObserver = new MutationObserver((mutations) => {
-            const pageUpdated = mutations.some((mutation) => {
+
+         // Then we will retrieve the page container
+         const $root = document.querySelector(".bm-theme-root");
+
+         // Then we will initialize the page observer
+         const pageObserver = new MutationObserver((mutations) => {
+            const pageIsReady = mutations.some((mutation) => {
                return (
                   mutation.type === "attributes" &&
-                  mutation.attributeName === "data-bm-theme-page"
+                  mutation.attributeName === "class" &&
+                  mutation.target.classList.contains("bm-page-ready")
                );
             });
-            if (pageUpdated) {
+
+            if (pageIsReady) {
                this.initializers.initSyncConfig();
             }
          });
-         window.bmParserPageObserver.observe(document.body, {
+         pageObserver.observe($rootContainerPage, {
             attributes: true,
+            attributeFilter: ["class"],
          });
 
          // Finally we will set window.bmParserPageObserver to initialized

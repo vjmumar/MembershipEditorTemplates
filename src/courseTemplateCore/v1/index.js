@@ -439,9 +439,9 @@ class CourseTemplateCore {
             page: document.querySelector(".bm-theme-root__container__page"),
          };
 
-         // Then we will mark the page as rendering
-         root.page.classList.remove("bm-page-ready");
-         root.page.classList.add("bm-page-rendering");
+         // Then we will mark the root as rendering
+         root.classList.remove("bm-page-ready");
+         root.classList.add("bm-page-rendering");
 
          // Then we will create a function that updates the page
          const renderPage = (type = "", html = "") => {
@@ -451,9 +451,9 @@ class CourseTemplateCore {
             // Then we will update the active page
             document.body.setAttribute("data-bm-theme-page", type);
 
-            // Finally we will mark the page as ready
-            root.page.classList.remove("bm-page-rendering");
-            root.page.classList.add("bm-page-ready");
+            // Finally we will mark the root as ready
+            root.classList.remove("bm-page-rendering");
+            root.classList.add("bm-page-ready");
          };
 
          // Finally we will return the root elements and page updater

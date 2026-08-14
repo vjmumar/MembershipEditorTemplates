@@ -217,9 +217,6 @@ class CourseTemplateCore {
          const token = auth?.tokenId;
          const contactId = auth?.contactId;
          const userId = auth?.externalUserId;
-         const storageName = `${productId}-completed-post`;
-         const previousData = JSON.parse(sessionStorage.getItem(storageName) || "[]");
-         if (previousData.length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             if (token) {
                const url = [
@@ -245,10 +242,6 @@ class CourseTemplateCore {
                   .then((e) => {
                      const isArray = Array.isArray(e);
                      resolved(isArray ? e : []);
-                     sessionStorage.setItem(
-                        storageName,
-                        JSON.stringify(isArray ? e : []),
-                     );
                   })
                   .catch(() => {
                      resolved([]);
@@ -482,10 +475,14 @@ class CourseTemplateCore {
                   },
                );
             } else {
+               const completedPosts = await fetchCompletedPosts();
+               const completedCurrentPost = completedPosts.find(
+                  (e) => (e.postId = postId),
+               );
                req = await this.utils.relayUrlFetch(
                   [
-                     `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-post-completion/${postId}`,
-                     `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion/${postId}`,
+                     `https://services.leadconnectorhq.com/clientportal-middleware/memberships/locations/${locationId}/user-post-completion/${completedCurrentPost.id}`,
+                     `https://services.leadconnectorhq.com/membership/locations/${locationId}/user-post-completion/${completedCurrentPost.id}`,
                   ],
                   {
                      headers: {

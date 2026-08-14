@@ -269,10 +269,8 @@ class CourseTemplateCore {
          ]).then((res) => res.map((e) => e.value));
          console.log(categories, completedPosts);
 
-         if (Object.keys(previousData).length > 0) return previousData;
          return await new Promise(async (resolved, reject) => {
             res(30);
-            sessionStorage.setItem(storageName, JSON.stringify(e || "{}"));
          });
       },
       fetchCategoryProgress: async () => {

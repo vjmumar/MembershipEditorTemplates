@@ -475,7 +475,7 @@ class CourseTemplateCore {
                   },
                );
             } else {
-               const completedPosts = await fetchCompletedPosts();
+               const completedPosts = await this.data.fetchCompletedPosts();
                const completedCurrentPost = completedPosts.find(
                   (e) => (e.postId = postId),
                );

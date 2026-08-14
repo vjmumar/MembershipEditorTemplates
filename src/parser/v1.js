@@ -252,7 +252,6 @@ class MembershipParser {
       initSyncConfig: (immediateSync = false) => {
          // First we will check the body data-bm-theme-page
          const currentActivePage = document.body.getAttribute("data-bm-theme-page");
-         console.log(currentActivePage);
 
          // Then we will sync the template's custom CSS so base styles are applied before other customizations
          this.actions.syncTemplateCustomCss();
@@ -265,7 +264,6 @@ class MembershipParser {
 
          // Then we will sync the template's branding styles
          this.actions.syncTemplateBrandingCss();
-         console.log("hello wrold");
 
          // Finally we will iterate through the template pages to find the current view and process it
          this.activeTemplate?.["pages"]?.forEach((page) => {

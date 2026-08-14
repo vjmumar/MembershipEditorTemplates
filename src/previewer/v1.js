@@ -48,31 +48,32 @@ class MembershipPreview {
          });
 
          // Then we will insert the preview tooltip stylesheet
-         if (document.head.querySelector("#bm-preview-style")) return;
-         document.head.insertAdjacentHTML(
-            "afterbegin",
-            `
-            <style id="bm-preview-style">
-                [data-editable="true"] {
-                  outline: 1.5px dashed rgba(16, 185, 129, 0.7);
-                  outline-offset: -1px;
-                  cursor: pointer;
-                  transition:
-                    outline-color 0.15s ease,
-                    outline-width 0.15s ease;
-                }
-
-                [data-editable="true"] iframe {
-                  pointer-events: none;
-                }
-
-                [data-editable="true"]:hover {
-                  outline: 2px solid rgba(16, 185, 129, 0.7);
-                  outline-offset: -2px;
-                }
-            </style>    
-        `,
-         );
+         if (!document.head.querySelector("#bm-preview-style")) {
+            document.head.insertAdjacentHTML(
+               "afterbegin",
+               `
+                <style id="bm-preview-style">
+                    [data-editable="true"] {
+                      outline: 1.5px dashed rgba(16, 185, 129, 0.7);
+                      outline-offset: -1px;
+                      cursor: pointer;
+                      transition:
+                        outline-color 0.15s ease,
+                        outline-width 0.15s ease;
+                    }
+    
+                    [data-editable="true"] iframe {
+                      pointer-events: none;
+                    }
+    
+                    [data-editable="true"]:hover {
+                      outline: 2px solid rgba(16, 185, 129, 0.7);
+                      outline-offset: -2px;
+                    }
+                </style>    
+            `,
+            );
+         }
 
          // Then we will disable all anchor tags to prevent accidental navigation while editing
          setTimeout(() => {

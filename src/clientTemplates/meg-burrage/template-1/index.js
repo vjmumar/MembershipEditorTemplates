@@ -918,13 +918,6 @@ window.templateCustomizationSchema = {
                      value: "",
                   },
                   {
-                     name: "Font Size",
-                     property: "font-size",
-                     type: "text",
-                     placeholder: "E.g: 20px",
-                     value: "",
-                  },
-                  {
                      name: "Font Family",
                      property: "font-family",
                      type: "font",
@@ -943,13 +936,6 @@ window.templateCustomizationSchema = {
                      property: "color",
                      type: "color",
                      placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Size",
-                     property: "font-size",
-                     type: "text",
-                     placeholder: "E.g: 20px",
                      value: "",
                   },
                ],
@@ -973,13 +959,6 @@ window.templateCustomizationSchema = {
                      important: true,
                      value: "",
                   },
-                  {
-                     name: "Font Size",
-                     property: "font-size",
-                     type: "text",
-                     placeholder: "",
-                     value: "",
-                  },
                ],
             },
             {
@@ -999,13 +978,6 @@ window.templateCustomizationSchema = {
                      property: "font-family",
                      type: "font",
                      important: true,
-                     value: "",
-                  },
-                  {
-                     name: "Font Size",
-                     property: "font-size",
-                     type: "text",
-                     placeholder: "E.g: 20px",
                      value: "",
                   },
                   {
@@ -1062,13 +1034,6 @@ window.templateCustomizationSchema = {
                      property: "font-family",
                      type: "font",
                      important: true,
-                     value: "",
-                  },
-                  {
-                     name: "Font Size",
-                     property: "font-size",
-                     type: "text",
-                     placeholder: "E.g: 20px",
                      value: "",
                   },
                   {
@@ -1413,13 +1378,6 @@ window.templateCustomizationSchema = {
                      important: true,
                      value: "",
                   },
-                  {
-                     name: "Font Size",
-                     property: "font-size",
-                     type: "text",
-                     placeholder: "E.g: 20px",
-                     value: "",
-                  },
                ],
             },
             {
@@ -1577,13 +1535,6 @@ window.templateCustomizationSchema = {
                      placeholder: "",
                      value: "",
                   },
-                  {
-                     name: "Minimum Height",
-                     property: "min-height",
-                     type: "text",
-                     placeholder: "E.g: 400px",
-                     value: "",
-                  },
                ],
             },
             {
@@ -1682,13 +1633,6 @@ window.templateCustomizationSchema = {
                      placeholder: "",
                      value: "",
                   },
-                  {
-                     name: "Size",
-                     property: "font-size",
-                     type: "text",
-                     placeholder: "E.g: 20px",
-                     value: "",
-                  },
                ],
             },
             {
@@ -1701,13 +1645,6 @@ window.templateCustomizationSchema = {
                      property: "color",
                      type: "color",
                      placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Size",
-                     property: "font-size",
-                     type: "text",
-                     placeholder: "E.g: 20px",
                      value: "",
                   },
                ],
@@ -1758,13 +1695,6 @@ window.templateCustomizationSchema = {
                      type: "color",
                      important: true,
                      placeholder: "",
-                     value: "",
-                  },
-                  {
-                     name: "Size",
-                     property: "font-size",
-                     type: "text",
-                     placeholder: "E.g: 20px",
                      value: "",
                   },
                ],
@@ -1821,13 +1751,6 @@ window.templateCustomizationSchema = {
                      property: "font-family",
                      type: "font",
                      important: true,
-                     value: "",
-                  },
-                  {
-                     name: "Font Size",
-                     property: "font-size",
-                     type: "text",
-                     placeholder: "E.g: 20px",
                      value: "",
                   },
                   {

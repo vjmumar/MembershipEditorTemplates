@@ -268,6 +268,7 @@ class MembershipParser {
 
          // Finally we will iterate through the template pages to find the current view and process it
          this.activeTemplate?.["page"]?.forEach((page) => {
+            console.log(page);
             /**
              * We will check if the current URL matches the pattern.
              * If it does, we proceed with applying the corresponding page configuration.

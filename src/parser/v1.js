@@ -243,7 +243,7 @@ class MembershipParser {
             });
 
             if (pageIsReady) {
-               this.initializers.initSyncConfig();
+               this.initializers.initSyncConfig(true);
             }
          });
          pageObserver.observe($root, {

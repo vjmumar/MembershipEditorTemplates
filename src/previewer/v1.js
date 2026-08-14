@@ -1,8 +1,21 @@
 class MembershipPreview {
    constructor() {
-      // First we will initialize the previewer
+      // First we will create a function that initializes the previewer once the theme is no longer loading
+      const initializeWhenThemeIsReady = () => {
+         const interval = setInterval(() => {
+            const $themeRoot = document.querySelector(".bm-theme-root");
+            if ($themeRoot && !$themeRoot.classList.contains("loading")) {
+               clearInterval(interval);
+               setTimeout(() => {
+                  this.initializers.init();
+               }, 500);
+            }
+         }, 100);
+      };
+
+      // Then we will initialize the previewer
       setTimeout(() => {
-         this.initializers.init();
+         initializeWhenThemeIsReady();
       }, 3000);
 
       // Then we will reinitialize the previewer when the active page changes
@@ -14,15 +27,14 @@ class MembershipPreview {
             );
          });
          if (pageChanged) {
-            setTimeout(() => {
-               this.initializers.init();
-            }, 500);
+            initializeWhenThemeIsReady();
          }
       });
 
       // Finally we will initialize the page observer
       pageObserver.observe(document.body, {
          attributes: true,
+         attributeFilter: ["data-bm-theme-page"],
       });
    }
 

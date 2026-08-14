@@ -1,8 +1,31 @@
 class MembershipPreview {
    constructor() {
+      // First we will initialize the previewer
       setTimeout(() => {
          this.initializers.init();
       }, 3000);
+
+      // Then we will reinitialize the previewer when the active page changes
+      const pageObserver = new MutationObserver((mutations) => {
+         const pageChanged = mutations.some((mutation) => {
+            return (
+               mutation.type === "attributes" &&
+               mutation.attributeName === "data-bm-theme-page"
+            );
+         });
+
+         if (pageChanged) {
+            setTimeout(() => {
+               this.initializers.init();
+            }, 3000);
+         }
+      });
+
+      // Finally we will initialize the page observer
+      pageObserver.observe(document.body, {
+         attributes: true,
+         attributeFilter: ["data-bm-theme-page"],
+      });
    }
 
    // Initializer module

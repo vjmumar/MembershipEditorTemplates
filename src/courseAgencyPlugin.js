@@ -361,10 +361,11 @@
       }
 
       // Then we will retrieve the client
-      const client = product?.customHeader
-         ?.match(
-            /data-client=["']([^"']+)["']/i,
-         )?.[1];
+      // const client = product?.customHeader
+      //    ?.match(
+      //       /data-client=["']([^"']+)["']/i,
+      //    )?.[1];
+      const client = "meg-burrage";
 
       // Then we will restore the original application if there is no client
       if (!client) {
